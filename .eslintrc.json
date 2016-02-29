@@ -1,33 +1,41 @@
 {
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-	"env": {
-		"browser": true,
-		"node": true,
-		"es6": true
-	},
-	"plugins": ["react"],
-	"extends": ["eslint:recommended", "plugin:react/recommended"],
-	"rules": {
-      "curly": 2,
-	  "default-case": 2,
-	  "eqeqeq": 2,
-	  "no-empty-function": 2,
-	  "no-eval": 2,
-	  "strict": 2,
-	  "init-declarations": 2,	  
-	  "object-shorthand": 2,
-	  "prefer-spread": 2,
-	  "prefer-rest-params": 2,
-	  "prefer-template": 2,
-	  "yoda": [2, "never"],
-	  "prefer-const": 1,
-	  "prefer-reflect": 1,
-	  "no-var": 1
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
     }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "curly": 2,
+    "default-case": 2,
+    "eqeqeq": 2,
+    "no-empty-function": 2,
+    "no-eval": 2,
+    "strict": 2,
+    "init-declarations": 2,
+    "object-shorthand": 2,
+    "prefer-spread": 2,
+    "prefer-rest-params": 2,
+    "prefer-template": 2,
+    "yoda": [
+      2,
+      "never"
+    ],
+    "prefer-const": 1,
+    "prefer-reflect": 1,
+    "no-var": 1
+  }
 }
