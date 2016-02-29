@@ -1,0 +1,20 @@
+{
+  "name": "bayuk",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A buy and sell application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lexnapoles/Bayuk.git"
+  },
+  "author": "Alejandro Napoles",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lexnapoles/Bayuk/issues"
+  },
+  "homepage": "https://github.com/lexnapoles/Bayuk#readme"
+}
