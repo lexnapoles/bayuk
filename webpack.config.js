@@ -1,49 +1,53 @@
-const path = require("path");
+(function () {
+	var path = require("path");
 
-module.exports = {
-	context: path.resolve("src"),
+	var DIST_DIR   = path.join(__dirname, "dist"),
+			CLIENT_DIR = path.join(__dirname, "src");
 
-	entry:   "./main",
+	module.exports = {
+		context: CLIENT_DIR,
 
-	output:  {
-		path:       path.resolve("dist/js/"),
-		publicPath: "public/js/",
-		filename:   "bundle.js"
-	},
+		entry: "./main",
 
-	devtool: "inline-source-map",
+		output: {
+			path:     DIST_DIR,
+			filename: "bundle.js"
+		},
 
-	module:  {
-		preLoaders: [
-			{
-				test:    /\.js$/,
-				exclude: /node_modules/,
-				loader:  "eslint-loader"
-			}
-		],
+		devtool: "inline-source-map",
 
-		loaders:    [
-			{
-				test:    /\.jsx?$/,
-				exclude: /node_modules/,
-				loader:  "babel-loader"
-			},
+		module: {
+			preLoaders: [
+				{
+					test:    /\.js$/,
+					exclude: /node_modules/,
+					loader:  "eslint-loader"
+				}
+			],
 
-			{
-				test:    /\.css$/,
-				exclude: /node_modules/,
-				loader:  "style-loader!css-loader!autoprefixer-loader"
-			},
+			loaders: [
+				{
+					test:    /\.jsx?$/,
+					exclude: /node_modules/,
+					loader:  "babel-loader"
+				},
 
-			{
-				test:    /\.(png|jpg|ttf|eot)$/,
-				exclude: /node_modules/,
-				loader:  "url-loader?limit=10000"
-			}
-		]
-	},
+				{
+					test:    /\.css$/,
+					exclude: /node_modules/,
+					loader:  "style-loader!css-loader!autoprefixer-loader"
+				},
 
-	resolve: {
-		extensions: ['', '.js', '.jsx']
-	}
-};
+				{
+					test:    /\.(png|jpg|ttf|eot)$/,
+					exclude: /node_modules/,
+					loader:  "url-loader?limit=10000"
+				}
+			]
+		},
+
+		resolve: {
+			extensions: ['', '.js', '.jsx']
+		}
+	};
+})();
