@@ -3,7 +3,7 @@ import express from "express";
 import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
-import * as config from "./webpack.config.js";
+import * as config from "./webpack.dev.config.js";
 
 const app      = express(),
 			DIST_DIR = path.join(__dirname, "dist"),
