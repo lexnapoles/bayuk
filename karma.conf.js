@@ -1,6 +1,6 @@
 // Karma configuration
 // Generated on Tue Mar 01 2016 00:50:12 GMT+0100 (Hora estándar romance)
-var webpackConfig = require("./webpack.config.js");
+var webpackConfig = require("./webpack.base.config.js");
 webpackConfig.entry = {};
 
 module.exports = function (config) {
