@@ -9,7 +9,7 @@ const app         = express(),
 			DIST_DIR    = path.join(__dirname, "dist"),
 			PORT        = 3000,
 			compiler    = webpack(config),
-			environment = process.env.NODE_ENV;
+			environment = process.env.NODE_ENV || "development";
 
 if (environment === "development") {
 	app.use(webpackDevMiddleware(compiler, {
