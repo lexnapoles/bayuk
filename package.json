@@ -6,9 +6,8 @@
   "main": "server.js",
   "scripts": {
     "test": "karma run",
-    "start": "babel-node server.js",
-    "build:dev": "webpack && npm start",
-    "build:prod": "webpack -p --config webpack.prod.config.js",
+    "dev": "babel-node server.js",
+    "build": "webpack -p --config webpack.prod.config.js",
     "karma": "karma start"
   },
   "repository": {
