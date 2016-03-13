@@ -5,6 +5,8 @@ baseConfig.entry = ["webpack-hot-middleware/client", "./main"];
 
 baseConfig.output.publicPath = "/";
 
+baseConfig.devtool = "eval";
+
 baseConfig.plugins = [
 	new webpack.optimize.OccurenceOrderPlugin(),
 	new webpack.HotModuleReplacementPlugin(),
