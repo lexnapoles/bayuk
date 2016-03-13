@@ -6,9 +6,23 @@
   "main": "server.js",
   "scripts": {
     "test": "karma run",
-    "dev": "babel-node server.js",
-    "build": "webpack -p --config webpack.prod.config.js",
+    "dev": "better-npm-run dev",
+    "build": "better-npm-run build",
     "karma": "karma start"
+  },
+  "betterScripts": {
+    "dev": {
+      "command": "babel-node server.js",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "build": {
+      "command": "webpack -p --config webpack.prod.config.js --progress",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
   },
   "repository": {
     "type": "git",
