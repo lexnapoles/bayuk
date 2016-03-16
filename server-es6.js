@@ -8,11 +8,11 @@ import * as config from "./webpack.dev.config.js";
 const app         = express(),
 			DIST_DIR    = path.join(__dirname, "dist"),
 			compiler    = webpack(config),
-			environment = process.env.NODE_ENV || "development";
+			isDevelopment = process.env.NODE_ENV !== "production";
 
 app.set("port", process.env.PORT || 3000);
 
-if (environment === "development") {
+if (isDevelopment) {
 	app.use(webpackDevMiddleware(compiler, {
 		publicPath: config.output.publicPath
 	}));
