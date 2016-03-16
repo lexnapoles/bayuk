@@ -5,8 +5,10 @@
   "description": "A buy and sell application",
   "main": "server.js",
   "scripts": {
+    "postinstall": "npm run build",
     "test": "karma run",
     "dev": "better-npm-run dev",
+    "start": "node server.js",
     "build:server": "babel server-es6.js -o server.js",
     "build:client": "webpack -p --config webpack.prod.config.js --progress",
     "build": "better-npm-run build",
