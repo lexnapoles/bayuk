@@ -1,6 +1,9 @@
 #Webstorm
 .idea
 
+#npm
+node_modules
+
 #Distribution files
 dist
 server.js
