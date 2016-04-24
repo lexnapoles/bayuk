@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import Header from "./Header";
-import ProductTable from "./ProductTable";
+import Header from "../Header/Header";
+import ProductTable from "../Products/ProductTable/ProductTable";
 
 class App extends Component {
 	render() {
