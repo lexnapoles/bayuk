@@ -5,8 +5,8 @@ import styles from "./app.css";
 
 class App extends Component {
 	render() {
-		const {products} = this.props;
-		const {container, header, main, aside1, aside2, footer} = styles;
+		const {products} = this.props,
+					{container, header, main, aside1, aside2, footer} = styles;
 
 		return (
 			<div className={container}>

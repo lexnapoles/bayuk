@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Product from "../Product/Product";
+import styles from "./productTable.css";
 
 class ProductTable extends Component {
 	renderProducts(products) {
@@ -9,10 +10,11 @@ class ProductTable extends Component {
 	}
 
 	render() {
-		const {products} = this.props;
+		const {products} = this.props,
+					{container} = styles;
 
 		return (
-			<div>
+			<div className={container}>
 				{this.renderProducts(products)}
 			</div>
 		)
