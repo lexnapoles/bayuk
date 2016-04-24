@@ -3,13 +3,13 @@ import React, {Component} from "react";
 class Header extends Component {
 	render() {
 		return (
-			<header>
+			<div>
 				<nav>
 					<div>Menu</div>
 					<div>Bayuk</div>
 					<div>Search</div>
 				</nav>
-			</header>
+			</div>
 		)
 	}
 }

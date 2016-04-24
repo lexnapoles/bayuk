@@ -1,0 +1,46 @@
+html {
+	box-sizing: border-box;
+}
+
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
+.container {
+	display: flex;
+	flex-flow: row wrap;
+	padding: 1em;
+}
+
+.header, .main, .aside1, .aside2, .footer {
+	flex: 1 100%;
+}
+
+@media all and (min-width: 600px) {
+	.aside1, .aside2 {
+		flex: 1 auto;
+	}
+}
+
+@media all and (min-width: 800px) {
+	.main {
+		flex: 2 0px;
+	}
+
+	.aside1 {
+		order: 1;
+	}
+
+	.main {
+		order: 2;
+	}
+
+	.aside2 {
+		order: 3;
+	}
+
+	.footer {
+		order: 4;
+	}
+}
+

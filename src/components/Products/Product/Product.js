@@ -3,6 +3,7 @@ import React, {Component} from "react";
 class Product extends Component {
 	render() {
 		const {photo, name, category, price} = this.props.product;
+		
 		return (
 			<div>
 				<img src={photo}/>
