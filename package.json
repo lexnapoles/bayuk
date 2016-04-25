@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/lexnapoles/Bayuk#readme",
   "devDependencies": {
-    "autoprefixer-loader": "^3.2.0",
+    "autoprefixer": "^6.3.6",
     "babel-cli": "^6.6.5",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.4",
@@ -59,6 +59,7 @@
     "karma-webpack": "^1.7.0",
     "mocha": "^2.4.5",
     "node-libs-browser": "^1.0.0",
+    "postcss-loader": "^0.8.2",
     "rimraf": "^2.5.2",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
@@ -76,5 +77,4 @@
   "engines": {
     "node": "5.8.0"
   }
-
 }

@@ -1,4 +1,5 @@
-var path = require("path");
+var path = require("path"),
+		autoprefixer = require('autoprefixer');
 
 var DIST_DIR   = path.join(__dirname, "dist"),
 		CLIENT_DIR = path.join(__dirname, "src");
@@ -16,7 +17,7 @@ module.exports = {
 	module: {
 		preLoaders: [
 			{
-				test:    /\.jsx?$/,
+				test:    /\.js$/,
 				exclude: /node_modules/,
 				loader:  "eslint-loader"
 			}
@@ -24,14 +25,14 @@ module.exports = {
 
 		loaders: [
 			{
-				test:    /\.jsx?$/,
+				test:    /\.js$/,
 				exclude: /node_modules/,
 				loader:  "babel-loader"
 			},
 
 			{
 				test:   /\.css$/,
-				loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+				loader: "style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader"
 			},
 
 			{
@@ -42,7 +43,9 @@ module.exports = {
 		]
 	},
 
+	postcss: [autoprefixer({browsers: ['last 2 versions']})],
+
 	resolve: {
-		extensions: ['', '.js', '.jsx']
+		extensions: ['', '.js']
 	}
 };
