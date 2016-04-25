@@ -11,6 +11,7 @@
 }
 
 .menu {
+	composes: fa fa-bars fa-lg from "font-awesome/css/font-awesome.css";
 	text-align: left;
 }
 
@@ -19,5 +20,6 @@
 }
 
 .search {
+	composes: fa fa-search fa-lg from "font-awesome/css/font-awesome.css";
 	text-align: right;
 }

@@ -8,9 +8,9 @@ class Header extends Component {
 		return (
 			<div className={header}>
 				<nav className={nav}>
-					<div className={menu}>Menu</div>
+					<span className={menu}></span>
 					<div className={logo}>Bayuk</div>
-					<div className={search}>Search</div>
+					<span className={search}></span>
 				</nav>
 			</div>
 		)
