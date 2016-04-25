@@ -16,6 +16,7 @@ html {
 	flex: 1 100%;
 }
 
+
 @media all and (min-width: 600px) {
 	.aside1, .aside2 {
 		flex: 1 auto;

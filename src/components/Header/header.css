@@ -1,0 +1,23 @@
+.header {
+	padding: 20px;
+}
+
+.nav  {
+	display: flex;
+}
+
+.logo, .menu, .search {
+	flex: 1 100%;
+}
+
+.menu {
+	text-align: left;
+}
+
+.logo {
+text-align: center;
+}
+
+.search {
+	text-align: right;
+}

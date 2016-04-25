@@ -16,9 +16,9 @@ class App extends Component {
 				<main className={main}>
 					<ProductTable products={products}/>
 				</main>
-				<aside className={aside1}>Aside 1</aside>
-				<aside className={aside2}>Aside 2</aside>
-				<footer className={footer}>Footer</footer>
+				<aside className={aside1}>&nbsp;</aside>
+				<aside className={aside2}>&nbsp;</aside>
+				<footer className={footer}>&nbsp;</footer>
 			</div>
 		)
 	}
