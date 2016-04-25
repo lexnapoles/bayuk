@@ -6,19 +6,17 @@ import styles from "./app.css";
 class App extends Component {
 	render() {
 		const {products} = this.props,
-					{container, header, main, aside1, aside2, footer} = styles;
+					{container, main} = styles;
 
 		return (
-			<div className={container}>
-				<header className={header}>
+			<div className={container}>	
+				<header>
 					<Header />
 				</header>
 				<main className={main}>
 					<ProductTable products={products}/>
 				</main>
-				<aside className={aside1}>&nbsp;</aside>
-				<aside className={aside2}>&nbsp;</aside>
-				<footer className={footer}>&nbsp;</footer>
+				<footer></footer>
 			</div>
 		)
 	}

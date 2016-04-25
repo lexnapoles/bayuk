@@ -1,13 +1,13 @@
 .header {
-	padding: 20px;
+	padding: 1em;
 }
 
-.nav  {
+.nav {
 	display: flex;
 }
 
 .logo, .menu, .search {
-	flex: 1 100%;
+	flex: 1;
 }
 
 .menu {
@@ -15,7 +15,7 @@
 }
 
 .logo {
-text-align: center;
+	text-align: center;
 }
 
 .search {

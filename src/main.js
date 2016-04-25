@@ -14,4 +14,4 @@ const PRODUCTS = [
 	{id: 4, photo: "http://placehold.it/140x100", name: "Journey", category: "books", price: 100}
 ]
 
-ReactDOM.render(<App products={PRODUCTS}/>, document.querySelector(".container"));
+ReactDOM.render(<App products={PRODUCTS}/>, document.querySelector(".app"));
