@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import Header from "../Header/Header";
-import ProductTable from "../Products/ProductTable/ProductTable";
+import Header from "../header/Header";
+import ProductTable from "../products/productTable/ProductTable";
 import styles from "./app.css";
 
 class App extends Component {

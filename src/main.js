@@ -1,7 +1,7 @@
 import "file?name=index.html!./index.html";
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./components/App/App";
+import App from "./components/app/App";
 
 if (module.hot) {
 	module.hot.accept();
