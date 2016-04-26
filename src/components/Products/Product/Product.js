@@ -3,15 +3,14 @@ import styles from "./product.css";
 
 class Product extends Component {
 	render() {
-		const {photo, name, category, price} = this.props.product,
+		const {photo, name, price} = this.props.product,
 					{product} = styles;
 
 		return (
 			<div className={product}>
 				<img src={photo}/>
-				<p>{name}</p>
-				<p>{category}</p>
-				<p>{price}</p>
+				<h2>{price}</h2>
+				<h3>{name}</h3>
 			</div>
 		);
 	}

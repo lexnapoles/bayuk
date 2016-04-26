@@ -1,4 +1,5 @@
 import "file?name=index.html!./index.html";
+import "normalize.css/normalize.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/app/App";
