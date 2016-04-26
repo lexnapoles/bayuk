@@ -1,5 +1,6 @@
 .header {
 	padding: 1em;
+	background: #FFE981;
 }
 
 .nav {
@@ -13,6 +14,7 @@
 .menu {
 	composes: fa fa-bars fa-lg from "font-awesome/css/font-awesome.css";
 	text-align: left;
+
 }
 
 .logo {
