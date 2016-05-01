@@ -3,14 +3,20 @@ import styles from "./header.css";
 
 class Header extends Component {
 	render() {
-		const {header, nav, menu, logo, search} = styles;
+		const {header, nav, menuIcon, logo, searchIcon, iconText} = styles;
 
 		return (
 			<div className={header}>
 				<nav className={nav}>
-					<span className={menu}></span>
+					<div>
+						<i className={menuIcon}></i>
+						<p className={iconText}>Menu</p>
+					</div>
 					<div className={logo}>Bayuk</div>
-					<span className={search}></span>
+					<div>
+						<i className={searchIcon}></i>
+						<p className={iconText}>Search</p>
+					</div>
 				</nav>
 			</div>
 		)

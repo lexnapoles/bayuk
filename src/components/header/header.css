@@ -7,21 +7,27 @@
 	display: flex;
 }
 
-.logo, .menu, .search {
+.logo {
 	flex: 1;
 }
 
-.menu {
+.menuIcon {
 	composes: fa fa-bars fa-lg from "font-awesome/css/font-awesome.css";
-	text-align: left;
-
+	width: 60px;
+	text-align: center;
 }
 
 .logo {
 	text-align: center;
 }
 
-.search {
+.searchIcon {
 	composes: fa fa-search fa-lg from "font-awesome/css/font-awesome.css";
-	text-align: right;
+	width: 60px;
+	text-align:  center;
+}
+
+.iconText {
+	font-size: smaller;
+	text-align: center;
 }
