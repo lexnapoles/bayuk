@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import{header, nav, iconBox, logo, iconText} from "./header.css";
+import {header, nav, logo} from "./header.css";
 import Icon from "react-fa";
 
 class Header extends Component {
@@ -7,15 +7,9 @@ class Header extends Component {
 		return (
 			<div className={header}>
 				<nav className={nav}>
-					<div className={iconBox}>
-						<Icon name="bars" />
-						<p className={iconText}>Menu</p>
-					</div>
+					<Icon name="bars" size="lg"/>
 					<div className={logo}>Bayuk</div>
-					<div className={iconBox}>
-						<Icon name="search" />
-						<p className={iconText}>Search</p>
-					</div>
+					<Icon name="search" size="lg"/>
 				</nav>
 			</div>
 		)
