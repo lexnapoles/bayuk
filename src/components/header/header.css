@@ -9,22 +9,12 @@
 
 .logo {
 	flex: 1;
-}
-
-.menuIcon {
-	composes: fa fa-bars fa-lg from "font-awesome/css/font-awesome.css";
-	width: 60px;
 	text-align: center;
 }
 
-.logo {
-	text-align: center;
-}
-
-.searchIcon {
-	composes: fa fa-search fa-lg from "font-awesome/css/font-awesome.css";
+.iconBox {
 	width: 60px;
-	text-align:  center;
+	text-align: center;
 }
 
 .iconText {

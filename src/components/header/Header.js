@@ -1,20 +1,19 @@
 import React, {Component} from "react";
-import styles from "./header.css";
+import{header, nav, iconBox, logo, iconText} from "./header.css";
+import Icon from "react-fa";
 
 class Header extends Component {
 	render() {
-		const {header, nav, menuIcon, logo, searchIcon, iconText} = styles;
-
 		return (
 			<div className={header}>
 				<nav className={nav}>
-					<div>
-						<i className={menuIcon}></i>
+					<div className={iconBox}>
+						<Icon name="bars" />
 						<p className={iconText}>Menu</p>
 					</div>
 					<div className={logo}>Bayuk</div>
-					<div>
-						<i className={searchIcon}></i>
+					<div className={iconBox}>
+						<Icon name="search" />
 						<p className={iconText}>Search</p>
 					</div>
 				</nav>
