@@ -1,14 +1,15 @@
 import React, {Component} from "react";
-import {header, nav, logo} from "./header.css";
+import styles from "./header.css";
+import CSSModules from "react-css-modules";
 import Icon from "react-fa";
 
 class Header extends Component {
 	render() {
 		return (
-			<div className={header}>
-				<nav className={nav}>
+			<div  styleName="header">
+				<nav  styleName="nav">
 					<Icon name="bars" size="lg"/>
-					<div className={logo}>Bayuk</div>
+					<div  styleName="logo">Bayuk</div>
 					<Icon name="search" size="lg"/>
 				</nav>
 			</div>
@@ -16,4 +17,4 @@ class Header extends Component {
 	}
 }
 
-export default Header;
+export default CSSModules(Header, styles);
