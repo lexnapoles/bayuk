@@ -1,7 +1,16 @@
 // Karma configuration
 // Generated on Tue Mar 01 2016 00:50:12 GMT+0100 (Hora estándar romance)
 var webpackConfig = require("./webpack.base.config.js");
+
 webpackConfig.entry = {};
+webpackConfig.devtool = "inline-source-map";
+webpackConfig.externals = {
+	"cheerio":                        "window",
+	"react/addons":                   true,
+	"react/lib/ExecutionEnvironment": true,
+	"react/lib/ReactContext":         true
+
+};
 
 module.exports = function (config) {
 	config.set({
