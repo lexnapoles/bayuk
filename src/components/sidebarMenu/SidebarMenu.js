@@ -39,10 +39,11 @@ import styles from "./sidebarMenu.css";
 class SidebarMenu extends Component {
 	render() {
 		const style = {
-			position: "absolute",
-			top: 0,
-			left: 0,
-			height: "100%",
+			position:   "absolute",
+			top:        0,
+			left:       0,
+			width: 			this.props.width,
+			height:     "100%",
 			background: "grey"
 		};
 
@@ -53,4 +54,9 @@ class SidebarMenu extends Component {
 		)
 	}
 }
+
+SidebarMenu.propTypes = {
+	width: React.PropTypes.number
+}
+
 export default CSSModules(SidebarMenu, styles);   

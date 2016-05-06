@@ -1,5 +1,5 @@
 import React from "react";
-import {shallow} from "enzyme";
+import {shallow, mount} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
 
 const sidebar = () => shallow(<SidebarMenu />).find(".sidebar");
@@ -40,6 +40,21 @@ describe("<SidebarMenu />", function () {
 
 	it("fills the screen vertically", function () {
 		assert.equal(sidebarStyle().height, "100%");
+	});
+
+	it("accepts a width as prop", function () {
+		const width            = 100,
+					sidebarWithWidth = mount(<SidebarMenu width={width}/>);
+
+		assert.equal(sidebarWithWidth.props().width, width);
+	});
+
+	it("has a width determined by the width prop", function () {
+		const width            = 100,
+					sidebarWithWidth = shallow(<SidebarMenu width={width}/>).find(".sidebar"),
+					style = sidebarWithWidth.prop("style");
+
+		assert.equal(style.width, width);
 	});
 });
 
