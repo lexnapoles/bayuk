@@ -2,10 +2,11 @@ import React from "react";
 import {shallow} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
 
+const sidebar = () => shallow(<SidebarMenu />).find(".sidebar");
+
 const sidebarStyle = () => {
-	const sidebarDiv = shallow(<SidebarMenu />).find(".sidebar");
-	return sidebarDiv.prop("style");
-}
+	return sidebar().prop("style");
+};
 
 describe("<SidebarMenu />", function () {
 	it("has a div with sidebar class", function () {
@@ -16,8 +17,7 @@ describe("<SidebarMenu />", function () {
 	});
 
 	it("has style", function () {
-		const sidebarDiv = shallow(<SidebarMenu />).find(".sidebar"),
-					style      = sidebarDiv.prop("style");
+		const style = sidebar().prop("style");
 
 		assert.isObject(style);
 	});
