@@ -1,12 +1,11 @@
 import React from "react";
-import {shallow, mount} from "enzyme";
+import {shallow} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
 
-const sidebar = () => shallow(<SidebarMenu />).find(".sidebar");
+const sidebar = (props = {}) => shallow(<SidebarMenu {...props} />).find(".sidebar");
 
-const sidebarStyle = () => {
-	return sidebar().prop("style");
-};
+const sidebarStyle = (component = sidebar()) => component.prop("style");
+
 
 describe("<SidebarMenu />", function () {
 	it("has a div with sidebar class", function () {
@@ -22,7 +21,7 @@ describe("<SidebarMenu />", function () {
 		assert.isObject(style);
 	});
 
-	it("is has absolute position", function () {
+	it("has absolute position", function () {
 		assert.equal(sidebarStyle().position, "absolute");
 	});
 
@@ -42,20 +41,6 @@ describe("<SidebarMenu />", function () {
 		assert.equal(sidebarStyle().height, "100%");
 	});
 
-	it("accepts a width as prop", function () {
-		const width            = 100,
-					sidebarWithWidth = mount(<SidebarMenu width={width}/>);
-
-		assert.equal(sidebarWithWidth.props().width, width);
-	});
-
-	it("has a width determined by the width prop", function () {
-		const width            = 100,
-					sidebarWithWidth = shallow(<SidebarMenu width={width}/>).find(".sidebar"),
-					style = sidebarWithWidth.prop("style");
-
-		assert.equal(style.width, width);
-	});
 });
 
 

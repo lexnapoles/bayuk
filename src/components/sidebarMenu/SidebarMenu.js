@@ -37,19 +37,24 @@ import styles from "./sidebarMenu.css";
 
 
 class SidebarMenu extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {width: 0};
+	}
+
 	render() {
 		const style = {
 			position:   "absolute",
 			top:        0,
 			left:       0,
-			width: 			this.props.width,
 			height:     "100%",
 			background: "grey"
 		};
 
 		return (
-			<div className="sidebar" style={style}>
-				Wololo
+			<div className="sidebar" style={style} ref="sidebar">
+				Wololol
 			</div>
 		)
 	}
