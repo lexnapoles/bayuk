@@ -9,21 +9,8 @@ const sidebar = (props = {}) => shallow(<SidebarMenu {...props} />).first();
 
 
 describe("<SidebarMenu />", function () {
-	it("has a div with sidebar class", function () {
-		const sidebar = shallow(<SidebarMenu />),
-					element = sidebar.first();
-
-		assert.equal(element.type(), "div");
-	});
-
-	it("has style", function () {
-		const style = sidebar().prop("style");
-
-		assert.isObject(style);
-	});
-
 	it("calculates its width dynamically when mounted", function () {
-			const sidebar  = ReactDOM.render(<SidebarMenu />, document.body),
+		const sidebar  = ReactDOM.render(<SidebarMenu />, document.body),
 					style    = window.getComputedStyle(ReactDOM.findDOMNode(sidebar)),
 					domWidth = Math.round(parseFloat(style.getPropertyValue("width")));
 
