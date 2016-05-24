@@ -43,6 +43,12 @@ class SidebarMenu extends Component {
 		this.state = {width: 0};
 	}
 
+	calculateWidth() {
+		this.setState({
+			width: this.refs.sidebar.offsetWidth
+		});
+	}
+
 	render() {
 		const style = {
 			position:   "absolute",

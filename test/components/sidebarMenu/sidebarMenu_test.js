@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import {shallow} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
 
@@ -40,6 +41,20 @@ describe("<SidebarMenu />", function () {
 	it("fills the screen vertically", function () {
 		assert.equal(sidebarStyle().height, "100%");
 	});
+
+	it("calculates its width dynamically", function () {
+		const sidebar = ReactDOM.render(<SidebarMenu />, document.body),
+					style = window.getComputedStyle(ReactDOM.findDOMNode(sidebar)),
+					domWidth = Math.round(parseFloat(style.getPropertyValue("width")));
+
+
+		sidebar.calculateWidth();
+
+		ReactDOM.unmountComponentAtNode(document.body);
+
+		assert.equal(sidebar.state.width, domWidth);
+	});
+
 
 });
 
