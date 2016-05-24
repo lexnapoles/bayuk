@@ -43,7 +43,11 @@ class SidebarMenu extends Component {
 		this.state = {width: 0};
 	}
 
-	calculateWidth() {
+	componentDidMount() {
+		this.setSidebarWidth();
+	}
+
+	setSidebarWidth() {
 		this.setState({
 			width: this.refs.sidebar.offsetWidth
 		});
@@ -51,9 +55,9 @@ class SidebarMenu extends Component {
 
 	render() {
 		const style = {
-			left: 0
+			left: -this.state.width
 		};
-
+		
 		return (
 			<div styleName="sidebar" style={style} ref="sidebar">
 				Wololol
