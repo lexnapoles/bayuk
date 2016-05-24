@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {shallow} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
 
-const sidebar = (props = {}) => shallow(<SidebarMenu {...props} />).find(".sidebar");
+const sidebar = (props = {}) => shallow(<SidebarMenu {...props} />).first();
 
 const sidebarStyle = (component = sidebar()) => component.prop("style");
 
@@ -11,7 +11,7 @@ const sidebarStyle = (component = sidebar()) => component.prop("style");
 describe("<SidebarMenu />", function () {
 	it("has a div with sidebar class", function () {
 		const sidebar = shallow(<SidebarMenu />),
-					element = sidebar.find(".sidebar");
+					element = sidebar.first();
 
 		assert.equal(element.type(), "div");
 	});
@@ -22,31 +22,16 @@ describe("<SidebarMenu />", function () {
 		assert.isObject(style);
 	});
 
-	it("has absolute position", function () {
-		assert.equal(sidebarStyle().position, "absolute");
-	});
+	it("is a left sidebar", function () {
+		const style = sidebarStyle();
 
-	it("starts at the top left corner", function () {
-		const style         = sidebarStyle(),
-					sidebarCoords = {top: style.top, left: style.left},
-					topLeftCorner = {top: 0, left: 0};
-
-		assert.deepEqual(sidebarCoords, topLeftCorner);
-	});
-
-	it("has a background color", function () {
-		assert.isDefined(sidebarStyle().background);
-	});
-
-	it("fills the screen vertically", function () {
-		assert.equal(sidebarStyle().height, "100%");
+		assert.equal(style.left, 0);
 	});
 
 	it("calculates its width dynamically", function () {
-		const sidebar = ReactDOM.render(<SidebarMenu />, document.body),
-					style = window.getComputedStyle(ReactDOM.findDOMNode(sidebar)),
+		const sidebar  = ReactDOM.render(<SidebarMenu />, document.body),
+					style    = window.getComputedStyle(ReactDOM.findDOMNode(sidebar)),
 					domWidth = Math.round(parseFloat(style.getPropertyValue("width")));
-
 
 		sidebar.calculateWidth();
 

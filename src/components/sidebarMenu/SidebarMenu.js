@@ -51,15 +51,11 @@ class SidebarMenu extends Component {
 
 	render() {
 		const style = {
-			position:   "absolute",
-			top:        0,
-			left:       0,
-			height:     "100%",
-			background: "grey"
+			left: 0
 		};
 
 		return (
-			<div className="sidebar" style={style} ref="sidebar">
+			<div styleName="sidebar" style={style} ref="sidebar">
 				Wololol
 			</div>
 		)
