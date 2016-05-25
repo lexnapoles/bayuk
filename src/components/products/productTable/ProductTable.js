@@ -1,7 +1,7 @@
 import React, {Component} from "react";
+import CSSModules from "react-css-modules";
 import Product from "../product/Product";
 import styles from "./productTable.css";
-import CSSModules from "react-css-modules";
 
 class ProductTable extends Component {
 	renderProducts(products) {

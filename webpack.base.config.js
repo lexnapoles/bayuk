@@ -19,7 +19,7 @@ module.exports = {
 			{
 				test:    /\.js$/,
 				exclude: /node_modules/,
-				loader:  "eslint-loader"
+				loader:  "eslint"
 			}
 		],
 
@@ -27,31 +27,30 @@ module.exports = {
 			{
 				test:    /\.js$/,
 				exclude: /node_modules/,
-				loader:  "babel-loader"
+				loader:  "babel"
 			},
 
 			{
 				test:    /\.css$/,
 				exclude: /src/,
-				loader:  "style!css-loader!postcss-loader"
+				loader:  "style!css!postcss"
 			},
 
 			{
 				test:    /\.css$/,
 				exclude: /node_modules/,
-				loader:  "style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader"
+				loader:  "style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss"
 			},
 
 			{
 				test:   /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+				loader: "url?limit=10000&mimetype=application/font-woff"
 			},
 
 			{
 				test:   /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: 'file-loader'
+				loader: "file"
 			}
-
 		]
 	},
 
