@@ -1,19 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {shallow ,mount} from "enzyme";
+import {shallow, mount} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
 import sidebarStyles from "../../../src/components/sidebarMenu/sidebarMenu.css";
 
 describe("<SidebarMenu />", function () {
 	it("has a sidebar class", function () {
-		const sidebar = shallow(<SidebarMenu />),
+		const sidebar      = shallow(<SidebarMenu />),
 					sidebarClass = sidebarStyles.sidebar;
 
 		assert.isTrue(sidebar.hasClass(sidebarClass));
 	});
 
 	it("calculates its width dynamically when mounted", function () {
-		const sidebar  = ReactDOM.render(<SidebarMenu />, document.body),
+		const sidebar  = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
 					style    = window.getComputedStyle(ReactDOM.findDOMNode(sidebar)),
 					domWidth = Math.round(parseFloat(style.getPropertyValue("width")));
 
@@ -30,18 +30,18 @@ describe("<SidebarMenu />", function () {
 
 
 	it("is positioned to the left when hidden", function () {
-			const sidebar               = ReactDOM.render(<SidebarMenu />, document.body),
-						sidebarDOMNode        = ReactDOM.findDOMNode(sidebar),
-						sidebarTopRightCorner = sidebarDOMNode.getBoundingClientRect().right;
+		const sidebar               = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
+					sidebarDOMNode        = ReactDOM.findDOMNode(sidebar),
+					sidebarTopRightCorner = sidebarDOMNode.getBoundingClientRect().right;
 
-			ReactDOM.unmountComponentAtNode(document.body);
+		ReactDOM.unmountComponentAtNode(document.body);
 
-			assert.isBelow(sidebarTopRightCorner, 0);
+		assert.isBelow(sidebarTopRightCorner, 0);
 	});
 
 	it("is visible when hidden is false", function () {
-		const sidebar               = ReactDOM.render(<SidebarMenu hidden={false}/>, document.body),
-					sidebarDOMNode        = ReactDOM.findDOMNode(sidebar),
+		const sidebar              = ReactDOM.render(<SidebarMenu hidden={false}>Test</SidebarMenu>, document.body),
+					sidebarDOMNode       = ReactDOM.findDOMNode(sidebar),
 					sidebarTopLeftCorner = sidebarDOMNode.getBoundingClientRect().left;
 
 		ReactDOM.unmountComponentAtNode(document.body);
