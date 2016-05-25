@@ -3,16 +3,5 @@
 	top: 0;
 	height: 100%;
 	background : #00d4b4;
-}
-
-.sidebarLeft {
-	composes: sidebar;
-	left: -100px;
-	transition: left 1s ease;
-}
-
-.sidebarLeftIsVisible {
-	composes: sidebar;
-	left: 0px;
 	transition: left 1s ease;
 }

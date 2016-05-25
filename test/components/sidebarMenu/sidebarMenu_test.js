@@ -1,14 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {shallow} from "enzyme";
+import {shallow ,mount} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
-
-const sidebar = (props = {}) => shallow(<SidebarMenu {...props} />).first();
-
-//const sidebarStyle = (component = sidebar()) => component.prop("style");
-
+import sidebarStyles from "../../../src/components/sidebarMenu/sidebarMenu.css";
 
 describe("<SidebarMenu />", function () {
+	it("has a sidebar class", function () {
+		const sidebar = shallow(<SidebarMenu />),
+					sidebarClass = sidebarStyles.sidebar;
+
+		assert.isTrue(sidebar.hasClass(sidebarClass));
+	});
+
 	it("calculates its width dynamically when mounted", function () {
 		const sidebar  = ReactDOM.render(<SidebarMenu />, document.body),
 					style    = window.getComputedStyle(ReactDOM.findDOMNode(sidebar)),
@@ -19,14 +22,31 @@ describe("<SidebarMenu />", function () {
 		assert.equal(sidebar.state.width, domWidth);
 	});
 
-	it("starts hidden to the left", function () {
-		const sidebar               = ReactDOM.render(<SidebarMenu />, document.body),
+	it("defaults to hidden", function () {
+		const sidebar = mount(<SidebarMenu />);
+
+		assert.equal(sidebar.prop("hidden"), true);
+	});
+
+
+	it("is positioned to the left when hidden", function () {
+			const sidebar               = ReactDOM.render(<SidebarMenu />, document.body),
+						sidebarDOMNode        = ReactDOM.findDOMNode(sidebar),
+						sidebarTopRightCorner = sidebarDOMNode.getBoundingClientRect().right;
+
+			ReactDOM.unmountComponentAtNode(document.body);
+
+			assert.isBelow(sidebarTopRightCorner, 0);
+	});
+
+	it("is visible when hidden is false", function () {
+		const sidebar               = ReactDOM.render(<SidebarMenu hidden={false}/>, document.body),
 					sidebarDOMNode        = ReactDOM.findDOMNode(sidebar),
-					sidebarTopRightCorner = sidebarDOMNode.getBoundingClientRect().right;
+					sidebarTopLeftCorner = sidebarDOMNode.getBoundingClientRect().left;
 
 		ReactDOM.unmountComponentAtNode(document.body);
 
-		assert.isBelow(sidebarTopRightCorner, 0);
+		assert.equal(sidebarTopLeftCorner, 0);
 	});
 });
 

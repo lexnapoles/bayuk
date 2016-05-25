@@ -41,6 +41,8 @@ class SidebarMenu extends Component {
 		super(props);
 
 		this.state = {width: 0};
+
+		this.setSidebarWidth = this.setSidebarWidth.bind(this);
 	}
 
 	componentDidMount() {
@@ -54,10 +56,14 @@ class SidebarMenu extends Component {
 	}
 
 	render() {
-		const style = {
-			left: -this.state.width
-		};
-		
+		let style = {};
+
+		if (this.state.width) {
+			style = {
+				left: this.props.hidden ? -this.state.width : 0
+			};
+		}
+
 		return (
 			<div styleName="sidebar" style={style} ref="sidebar">
 				Wololol
@@ -66,8 +72,14 @@ class SidebarMenu extends Component {
 	}
 }
 
+
 SidebarMenu.propTypes = {
-	width: React.PropTypes.number
-}
+	width: React.PropTypes.number,
+	hidden: React.PropTypes.bool
+};
+
+SidebarMenu.defaultProps = {
+	hidden: true
+};
 
 export default CSSModules(SidebarMenu, styles);   
