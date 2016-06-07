@@ -20,8 +20,8 @@ class SidebarMenuWithOverlay extends Component {
 	}
 
 	getStyle() {
-		return this.state.width
-			? {left: this.props.hidden	? -this.state.sidebarWidth	: 0}
+		return this.state.sidebarWidth
+			? {left: this.props.visible	? 0 : -this.state.sidebarWidth}
 			: {}
 	}
 
@@ -40,12 +40,12 @@ class SidebarMenuWithOverlay extends Component {
 }
 
 SidebarMenuWithOverlay.propTypes = {
-	hidden: React.PropTypes.bool,
+	visible: React.PropTypes.bool,
 	children: React.PropTypes.node
 };
 
 SidebarMenuWithOverlay.defaultProps = {
-	hidden: true
+	visible: false
 };
 
 export default CSSModules(SidebarMenuWithOverlay, styles);

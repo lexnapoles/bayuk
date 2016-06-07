@@ -19,10 +19,10 @@ describe("<SidebarMenuOverlay />", function () {
 		assert.equal(overlay.length, 1);
 	});
 
-	it("defaults to hidden", function () {
+	it("is hidden by default", function () {
 		const sidebarMenu = mount(<SidebarMenu />);
 
-		assert.equal(sidebarMenu.prop("hidden"), true);
+		assert.isFalse(sidebarMenu.prop("visible"));
 	});
 
 	it("calculates the sidebar width dynamically when mounted", function () {
