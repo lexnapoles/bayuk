@@ -35,7 +35,6 @@ class SidebarMenu extends Component {
 }
 
 SidebarMenu.propTypes = {
-	width:  React.PropTypes.number,
 	hidden: React.PropTypes.bool,
 	children: React.PropTypes.node
 };
