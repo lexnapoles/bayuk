@@ -36,15 +36,26 @@ describe("<SidebarMenuOverlay />", function () {
 		assert.equal(sidebarMenu.state.sidebarWidth, sidebarDOMWidth);
 	});
 
-	// it("is positioned to the left when hidden", function () {
-	// 	const sidebar               = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
-	// 				sidebarDOMNode        = ReactDOM.findDOMNode(sidebar),
-	// 				sidebarTopRightCorner = sidebarDOMNode.getBoundingClientRect().right;
-	//
-	// 	ReactDOM.unmountComponentAtNode(document.body);
-	//
-	// 	assert.isBelow(sidebarTopRightCorner, 0);
-	// });
+	it("moves the sidebar to the left, out of the screen, when hidden", function () {
+		const sidebarMenu           = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
+					sidebar               = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
+					sidebarTopRightCorner = sidebar.getBoundingClientRect().right;
+
+		ReactDOM.unmountComponentAtNode(document.body);
+
+		assert.isBelow(sidebarTopRightCorner, 0);
+	});
+
+	it("moves the overlay to the top left corner, occupying the whole screen, when the sidebar is hidden", function () {
+		const sidebarMenu           = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
+					overlay               = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
+					overlayTopLeftCorner = overlay.getBoundingClientRect().left;
+
+		ReactDOM.unmountComponentAtNode(document.body);
+
+		assert.equal(overlayTopLeftCorner, 0);
+	});
+
 	//
 	// it("is visible when hidden is false", function () {
 	// 	const sidebar              = ReactDOM.render(<SidebarMenu hidden={false}>Test</SidebarMenu>, document.body),

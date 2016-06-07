@@ -19,19 +19,25 @@ class SidebarMenuWithOverlay extends Component {
 		});
 	}
 
-	getStyle() {
+	getSidebarStyle() {
 		return this.state.sidebarWidth
 			? {left: this.props.visible	? 0 : -this.state.sidebarWidth}
+			: {}
+	}
+
+	getOverlayStyle() {
+		return this.state.sidebarWidth
+			? {left: this.props.visible	? (void 0) : 0}
 			: {}
 	}
 
 	render() {
 		return (
 			<div>
-				<div styleName="sidebar" style={this.getStyle()} ref="sidebar">
+				<div styleName="sidebar" style={this.getSidebarStyle()} ref="sidebar">
 					{this.props.children}
 				</div>
-				<div styleName="overlay">
+				<div styleName="overlay" style={this.getOverlayStyle()}>
 				</div>
 			</div>
 
