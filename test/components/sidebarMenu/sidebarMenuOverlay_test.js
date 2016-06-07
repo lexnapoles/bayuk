@@ -1,5 +1,5 @@
 import React from "react";
-//import ReactDOM from "react-dom";
+import ReactDOM from "react-dom";
 import {shallow, mount} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenuWithOverlay";
 import sidebarStyles from "../../../src/components/sidebarMenu/sidebarMenu.css";
@@ -7,14 +7,14 @@ import sidebarStyles from "../../../src/components/sidebarMenu/sidebarMenu.css";
 describe("<SidebarMenuOverlay />", function () {
 	it("has a sidebar element", function () {
 		const sidebarMenu = shallow(<SidebarMenu />),
-					sidebar = sidebarMenu.find(`.${sidebarStyles.sidebar}`);
+					sidebar     = sidebarMenu.find(`.${sidebarStyles.sidebar}`);
 
 		assert.equal(sidebar.length, 1);
 	});
 
 	it("has an overlay element", function () {
 		const sidebarMenu = shallow(<SidebarMenu />),
-					overlay = sidebarMenu.find(`.${sidebarStyles.overlay}`);
+					overlay     = sidebarMenu.find(`.${sidebarStyles.overlay}`);
 
 		assert.equal(overlay.length, 1);
 	});
@@ -25,20 +25,17 @@ describe("<SidebarMenuOverlay />", function () {
 		assert.equal(sidebarMenu.prop("hidden"), true);
 	});
 
-	//
-	// it("calculates its width dynamically when mounted", function () {
-	// 	const sidebar  = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
-	// 				style    = window.getComputedStyle(ReactDOM.findDOMNode(sidebar)),
-	// 				domWidth = Math.round(parseFloat(style.getPropertyValue("width")));
-	//
-	// 	ReactDOM.unmountComponentAtNode(document.body);
-	//
-	// 	assert.equal(sidebar.state.width, domWidth);
-	// });
-	//
+	it("calculates the sidebar width dynamically when mounted", function () {
+		const sidebarMenu     = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
+					sidebar         = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
+					style           = window.getComputedStyle(sidebar),
+					sidebarDOMWidth = Math.round(parseFloat(style.getPropertyValue("width")));
 
-	//
-	//
+		ReactDOM.unmountComponentAtNode(document.body);
+
+		assert.equal(sidebarMenu.state.sidebarWidth, sidebarDOMWidth);
+	});
+
 	// it("is positioned to the left when hidden", function () {
 	// 	const sidebar               = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
 	// 				sidebarDOMNode        = ReactDOM.findDOMNode(sidebar),

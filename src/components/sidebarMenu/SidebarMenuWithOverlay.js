@@ -6,7 +6,7 @@ class SidebarMenuWithOverlay extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {width: 0};
+		this.state = {sidebarWidth: 0};
 	}
 
 	componentDidMount() {
@@ -15,13 +15,13 @@ class SidebarMenuWithOverlay extends Component {
 
 	setSidebarWidth() {
 		this.setState({
-			width: this.refs.sidebar.offsetWidth
+			sidebarWidth: this.refs.sidebar.offsetWidth
 		});
 	}
 
 	getStyle() {
 		return this.state.width
-			? {left: this.props.hidden	? -this.state.width	: 0}
+			? {left: this.props.hidden	? -this.state.sidebarWidth	: 0}
 			: {}
 	}
 
