@@ -4,6 +4,9 @@ import {shallow, mount} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenuWithOverlay";
 import sidebarStyles from "../../../src/components/sidebarMenu/sidebarMenu.css";
 
+const renderSidebarMenuToDOM = (props = {}, children = "Test") =>
+	ReactDOM.render(<SidebarMenu {...props}>{children}</SidebarMenu>, document.body);
+
 describe("<SidebarMenuOverlay />", function () {
 	it("has a sidebar element", function () {
 		const sidebarMenu = shallow(<SidebarMenu />),
@@ -26,7 +29,7 @@ describe("<SidebarMenuOverlay />", function () {
 	});
 
 	it("calculates the sidebar width dynamically when mounted", function () {
-		const sidebarMenu     = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
+		const sidebarMenu     = renderSidebarMenuToDOM(),
 					sidebar         = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
 					style           = window.getComputedStyle(sidebar),
 					sidebarDOMWidth = Math.round(parseFloat(style.getPropertyValue("width")));
@@ -37,8 +40,9 @@ describe("<SidebarMenuOverlay />", function () {
 	});
 
 	it("moves the sidebar to the left, out of the screen, when hidden", function () {
-		const sidebarMenu           = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
-					sidebar               = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
+		renderSidebarMenuToDOM();
+
+		const sidebar               = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
 					sidebarTopRightCorner = sidebar.getBoundingClientRect().right;
 
 		ReactDOM.unmountComponentAtNode(document.body);
@@ -47,8 +51,9 @@ describe("<SidebarMenuOverlay />", function () {
 	});
 
 	it("moves the overlay to the top left corner, occupying the whole screen, when the sidebar is hidden", function () {
-		const sidebarMenu           = ReactDOM.render(<SidebarMenu>Test</SidebarMenu>, document.body),
-					overlay               = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
+		renderSidebarMenuToDOM();
+
+		const overlay              = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
 					overlayTopLeftCorner = overlay.getBoundingClientRect().left;
 
 		ReactDOM.unmountComponentAtNode(document.body);
@@ -56,16 +61,28 @@ describe("<SidebarMenuOverlay />", function () {
 		assert.equal(overlayTopLeftCorner, 0);
 	});
 
-	//
-	// it("is visible when hidden is false", function () {
-	// 	const sidebar              = ReactDOM.render(<SidebarMenu hidden={false}>Test</SidebarMenu>, document.body),
-	// 				sidebarDOMNode       = ReactDOM.findDOMNode(sidebar),
-	// 				sidebarTopLeftCorner = sidebarDOMNode.getBoundingClientRect().left;
-	//
-	// 	ReactDOM.unmountComponentAtNode(document.body);
-	//
-	// 	assert.equal(sidebarTopLeftCorner, 0);
-	// });
+
+	it("when the sidebar is hidden, ", function () {
+		renderSidebarMenuToDOM();
+
+		const overlay              = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
+					overlayTopLeftCorner = overlay.getBoundingClientRect().left;
+
+		ReactDOM.unmountComponentAtNode(document.body);
+
+		assert.equal(overlayTopLeftCorner, 0);
+	});
+
+	it("makes the sidebar visible when visible is true", function () {
+		renderSidebarMenuToDOM({visible: true});
+
+		const sidebar              = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
+					sidebarTopLeftCorner = sidebar.getBoundingClientRect().left;
+
+		ReactDOM.unmountComponentAtNode(document.body);
+
+		assert.equal(sidebarTopLeftCorner, 0);
+	});
 });
 
 
