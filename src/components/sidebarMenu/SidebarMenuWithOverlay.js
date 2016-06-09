@@ -27,7 +27,7 @@ class SidebarMenuWithOverlay extends Component {
 
 	getOverlayStyle() {
 		return this.state.sidebarWidth
-			? {left: this.props.visible	? (void 0) : 0}
+			? {left: this.props.visible	? this.state.sidebarWidth : 0}
 			: {}
 	}
 
