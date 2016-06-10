@@ -29,13 +29,16 @@ class SidebarMenuWithOverlay extends Component {
 
 	getOverlayStyle() {
 		if (this.state.sidebarWidth) {
+			const visible = this.props.visible;
+
 			return {
-				left:       this.props.visible ? this.state.sidebarWidth: 0,
-				visibility: this.props.visible ? "visible" : "hidden"
+				left:       visible ? this.state.sidebarWidth: 0,
+				visibility: visible ? "visible" : "hidden",
+				opacity: 		visible ? 0.5 : 0
 			};
 		}
 
-		return {};
+		return {opacity: 0};
 	}
 
 	onOverlayClicked() {
@@ -59,8 +62,8 @@ class SidebarMenuWithOverlay extends Component {
 }
 
 SidebarMenuWithOverlay.propTypes = {
-	visible:          React.PropTypes.bool.isRequired,
-	onOverlayClicked: React.PropTypes.func.isRequired,
+	visible:          React.PropTypes.bool,
+	onOverlayClicked: React.PropTypes.func,
 	children:         React.PropTypes.node
 };
 

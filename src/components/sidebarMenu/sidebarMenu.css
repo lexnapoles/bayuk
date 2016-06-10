@@ -2,15 +2,15 @@
 	position: absolute;
 	top: 0;
 	height: 100%;
-	background : #00d4b4;
-	transition: left 1s ease;
+	background: #00d4b4;
+	transition: left 1s;
 }
 
 .overlay {
 	position: absolute;
 	top: 0;
 	height: 100%;
-	opacity: 0.5;
-	background: grey;
-	transition: left 1s ease;
+	width: 100%;
+	background: dimgray;
+	transition: left 1s, opacity linear 1s;
 }

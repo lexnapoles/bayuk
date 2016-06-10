@@ -6,26 +6,26 @@ describe("<Header />", function () {
 	it("hides the sidebar by default", function () {
 		const header = shallow(<Header />);
 
-		assert.isTrue(header.state("sidebarHidden"));
+		assert.isFalse(header.state("sidebarVisible"));
 	});
 
-	it("passes the sidebarHidden state to the sidebar", function () {
+	it("passes the sidebarVisible state to the sidebar", function () {
 		const header  = mount(<Header />),
-					sidebar = header.find("SidebarMenu");
+					sidebar = header.find("SidebarMenuWithOverlay");
 
-		header.setState({sidebarHidden: false});
+		header.setState({sidebarVisible: true});
 
-		assert.isFalse(sidebar.prop("hidden"));
+		assert.isTrue(sidebar.prop("visible"));
 	});
 
 	it("opens the sidebar when the menu icon is clicked", function () {
 		const header   = mount(<Header />),
-					sidebar  = header.find("SidebarMenu"),
+					sidebar  = header.find("SidebarMenuWithOverlay"),
 					menuIcon = header.find(".menuIcon");
 
 		menuIcon.simulate("click");
 
-		assert.isFalse(sidebar.prop("hidden"));
+		assert.isTrue(sidebar.prop("visible"));
 	});
 });
 

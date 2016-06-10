@@ -2,27 +2,29 @@ import React, {Component} from "react";
 import styles from "./header.css";
 import CSSModules from "react-css-modules";
 import Icon from "react-fa";
-import SidebarMenu from "../sidebarMenu/SidebarMenu";
+import SidebarMenu from "../sidebarMenu/SidebarMenuWithOverlay";
 
 class Header extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {sidebarHidden: true};
+		this.state = {sidebarVisible: false};
 
-		this.toggleVisibility = this.toggleVisibility.bind(this);
+		this.toggleSidebarVisibility = this.toggleSidebarVisibility.bind(this);
 	}
 
-	toggleVisibility() {
-		this.setState({sidebarHidden: false});
+	toggleSidebarVisibility() {
+		this.setState({sidebarVisible: !this.state.sidebarVisible});
 	}
 
 	render() {
 		return (
 			<div styleName="header">
 				<nav styleName="nav">
-					<SidebarMenu hidden={this.state.sidebarHidden}/>
-					<Icon name="bars" size="lg" className="menuIcon" onClick={this.toggleVisibility}/>
+					<SidebarMenu visible={this.state.sidebarVisible} onOverlayClicked={this.toggleSidebarVisibility}>
+						Menu
+					</SidebarMenu>
+					<Icon name="bars" size="lg" className="menuIcon" onClick={this.toggleSidebarVisibility}/>
 					<div styleName="logo">Bayuk</div>
 					<Icon name="search" size="lg"/>
 				</nav>
