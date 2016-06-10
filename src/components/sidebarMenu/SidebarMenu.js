@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import CSSModules from "react-css-modules";
 import styles from "./sidebarMenu.css";
 
-class SidebarMenuWithOverlay extends Component {
+class SidebarMenu extends Component {
 	constructor(props) {
 		super(props);
 
@@ -61,14 +61,14 @@ class SidebarMenuWithOverlay extends Component {
 	}
 }
 
-SidebarMenuWithOverlay.propTypes = {
+SidebarMenu.propTypes = {
 	visible:          React.PropTypes.bool,
-	onOverlayClicked: React.PropTypes.func,
+	onOverlayClicked: React.PropTypes.func.isRequired,
 	children:         React.PropTypes.node
 };
 
-SidebarMenuWithOverlay.defaultProps = {
+SidebarMenu.defaultProps = {
 	visible: false
 };
 
-export default CSSModules(SidebarMenuWithOverlay, styles);
+export default CSSModules(SidebarMenu, styles);

@@ -11,7 +11,7 @@ describe("<Header />", function () {
 
 	it("passes the sidebarVisible state to the sidebar", function () {
 		const header  = mount(<Header />),
-					sidebar = header.find("SidebarMenuW");
+					sidebar = header.find("SidebarMenu");
 
 		header.setState({sidebarVisible: true});
 
