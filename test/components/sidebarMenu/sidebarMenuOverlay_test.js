@@ -41,71 +41,78 @@ describe("<SidebarMenuOverlay />", function () {
 		assert.equal(sidebarMenu.state.sidebarWidth, sidebarDOMWidth);
 	});
 
-	it("moves the sidebar to the left, out of the screen, when hidden", function () {
-		mountSidebarMenu();
+	describe("sidebar", function () {
+		it("moves to the left, out of the screen, when hidden", function () {
+			mountSidebarMenu();
 
-		const sidebar               = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
-					sidebarTopRightCorner = sidebar.getBoundingClientRect().right;
+			const sidebar               = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
+						sidebarTopRightCorner = sidebar.getBoundingClientRect().right;
 
-		unmountSidebarMenu();
+			unmountSidebarMenu();
 
-		assert.isBelow(sidebarTopRightCorner, 0);
+			assert.isBelow(sidebarTopRightCorner, 0);
+		});
+
+
+		it("moves to the top left corner when visible", function () {
+			mountSidebarMenu({visible: true});
+
+			const sidebar              = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
+						sidebarTopLeftCorner = sidebar.getBoundingClientRect().left;
+
+			unmountSidebarMenu();
+
+			assert.equal(sidebarTopLeftCorner, 0);
+		});
 	});
 
-	it("hides the overlay when the sidebar is hidden", function () {
-		mountSidebarMenu();
+	describe("overlay", function () {
+		it("hides when the sidebar is hidden", function () {
+			mountSidebarMenu();
 
-		const overlay           = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
-					overlayVisibility = window.getComputedStyle(overlay).getPropertyValue("visibility");
+			const overlay           = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
+						overlayVisibility = window.getComputedStyle(overlay).getPropertyValue("visibility");
 
-		unmountSidebarMenu();
+			unmountSidebarMenu();
 
-		assert.equal(overlayVisibility, "hidden");
+			assert.equal(overlayVisibility, "hidden");
+		});
 
-	});
-	it("moves the overlay to the top left corner, occupying the whole screen, when the sidebar is hidden", function () {
-		mountSidebarMenu();
+		it("moves to the top left corner, occupying the whole screen, when the sidebar is hidden", function () {
+			mountSidebarMenu();
 
-		const overlay              = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
-					overlayTopLeftCorner = overlay.getBoundingClientRect().left;
+			const overlay              = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
+						overlayTopLeftCorner = overlay.getBoundingClientRect().left;
 
-		unmountSidebarMenu();
+			unmountSidebarMenu();
 
-		assert.equal(overlayTopLeftCorner, 0);
-	});
+			assert.equal(overlayTopLeftCorner, 0);
+		});
 
-	it("moves the sidebar to top left corner when visible", function () {
-		mountSidebarMenu({visible: true});
+		it("is visible when the sidebar is also visible", function () {
+			mountSidebarMenu({visible: true});
 
-		const sidebar              = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
-					sidebarTopLeftCorner = sidebar.getBoundingClientRect().left;
+			const overlay           = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
+						overlayVisibility = window.getComputedStyle(overlay).getPropertyValue("visibility");
 
-		unmountSidebarMenu();
+			unmountSidebarMenu();
 
-		assert.equal(sidebarTopLeftCorner, 0);
-	});
+			assert.equal(overlayVisibility, "visible");
+		});
 
-	it("moves the overlay next to the sidebar when the latter is visible ", function () {
-		const sidebarMenu      = mountSidebarMenu({visible: true}),
-					sidebarWidth     = sidebarMenu.state.sidebarWidth,
-					overlay          = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
-					overlayLeftCoord = Math.round(overlay.getBoundingClientRect().left);
+		it("is next to the sidebar when the latter is visible ", function () {
+			const sidebarMenu      = mountSidebarMenu({visible: true}),
+						sidebarWidth     = sidebarMenu.state.sidebarWidth,
+						overlay          = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
+						overlayLeftCoord = Math.round(overlay.getBoundingClientRect().left);
 
-		unmountSidebarMenu();
+			unmountSidebarMenu();
 
-		assert.equal(overlayLeftCoord, sidebarWidth);
-	});
-	
-	it("makes the overlay visible when the sidebar is also visible", function () {
-		mountSidebarMenu({visible: true});
+			assert.equal(overlayLeftCoord, sidebarWidth);
+		});
 
-		const overlay           = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
-					overlayVisibility = window.getComputedStyle(overlay).getPropertyValue("visibility");
 
-		unmountSidebarMenu();
-
-		assert.equal(overlayVisibility, "visible");
-	});
+	})
 });
 
 
