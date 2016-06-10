@@ -2,11 +2,13 @@ import React, {Component} from "react";
 import CSSModules from "react-css-modules";
 import styles from "./sidebarMenu.css";
 
-class SidebarMenu extends Component {
+class SidebarMenuWithOverlay extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {width: 0};
+		this.state = {sidebarWidth: 0};
+
+		this.onOverlayClicked = this.onOverlayClicked.bind(this);
 	}
 
 	componentDidMount() {
@@ -15,32 +17,58 @@ class SidebarMenu extends Component {
 
 	setSidebarWidth() {
 		this.setState({
-			width: this.refs.sidebar.offsetWidth
+			sidebarWidth: this.refs.sidebar.offsetWidth
 		});
 	}
 
-	getStyle() {
-		return this.state.width
-			? {left: this.props.hidden	? -this.state.width	: 0}
+	getSidebarStyle() {
+		return this.state.sidebarWidth
+			? {left: this.props.visible	? 0 : -this.state.sidebarWidth}
 			: {}
+	}
+
+	getOverlayStyle() {
+		if (this.state.sidebarWidth) {
+			const visible = this.props.visible;
+
+			return {
+				left:       visible ? this.state.sidebarWidth: 0,
+				visibility: visible ? "visible" : "hidden",
+				opacity: 		visible ? 0.5 : 0
+			};
+		}
+
+		return {opacity: 0};
+	}
+
+	onOverlayClicked() {
+		if (this.props.visible) {
+			this.props.onOverlayClicked();
+		}
 	}
 
 	render() {
 		return (
-			<div styleName="sidebar" style={this.getStyle()} ref="sidebar">
-				{this.props.children}
+			<div>
+				<div styleName="sidebar" style={this.getSidebarStyle()} ref="sidebar">
+					{this.props.children}
+				</div>
+				<div styleName="overlay" style={this.getOverlayStyle()} onClick={this.onOverlayClicked}>
+				</div>
 			</div>
+
 		)
 	}
 }
 
-SidebarMenu.propTypes = {
-	hidden: React.PropTypes.bool,
-	children: React.PropTypes.node
+SidebarMenuWithOverlay.propTypes = {
+	visible:          React.PropTypes.bool,
+	onOverlayClicked: React.PropTypes.func,
+	children:         React.PropTypes.node
 };
 
-SidebarMenu.defaultProps = {
-	hidden: true
+SidebarMenuWithOverlay.defaultProps = {
+	visible: false
 };
 
-export default CSSModules(SidebarMenu, styles);   
+export default CSSModules(SidebarMenuWithOverlay, styles);

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import styles from "./header.css";
 import CSSModules from "react-css-modules";
 import Icon from "react-fa";
-import SidebarMenu from "../sidebarMenu/SidebarMenuWithOverlay";
+import SidebarMenu from "../sidebarMenu/SidebarMenu";
 
 class Header extends Component {
 	constructor(props) {

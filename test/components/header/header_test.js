@@ -11,7 +11,7 @@ describe("<Header />", function () {
 
 	it("passes the sidebarVisible state to the sidebar", function () {
 		const header  = mount(<Header />),
-					sidebar = header.find("SidebarMenuWithOverlay");
+					sidebar = header.find("SidebarMenuW");
 
 		header.setState({sidebarVisible: true});
 
@@ -20,7 +20,7 @@ describe("<Header />", function () {
 
 	it("opens the sidebar when the menu icon is clicked", function () {
 		const header   = mount(<Header />),
-					sidebar  = header.find("SidebarMenuWithOverlay"),
+					sidebar  = header.find("SidebarMenu"),
 					menuIcon = header.find(".menuIcon");
 
 		menuIcon.simulate("click");
