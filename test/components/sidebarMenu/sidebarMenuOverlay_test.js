@@ -95,6 +95,17 @@ describe("<SidebarMenuOverlay />", function () {
 
 		assert.equal(overlayLeftCoord, sidebarWidth);
 	});
+	
+	it("makes the overlay visible when the sidebar is also visible", function () {
+		mountSidebarMenu({visible: true});
+
+		const overlay           = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
+					overlayVisibility = window.getComputedStyle(overlay).getPropertyValue("visibility");
+
+		unmountSidebarMenu();
+
+		assert.equal(overlayVisibility, "visible");
+	});
 });
 
 
