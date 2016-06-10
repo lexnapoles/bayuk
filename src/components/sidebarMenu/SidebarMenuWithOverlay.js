@@ -7,6 +7,8 @@ class SidebarMenuWithOverlay extends Component {
 		super(props);
 
 		this.state = {sidebarWidth: 0};
+
+		this.onOverlayClicked = this.onOverlayClicked.bind(this);
 	}
 
 	componentDidMount() {
@@ -36,13 +38,19 @@ class SidebarMenuWithOverlay extends Component {
 		return {};
 	}
 
+	onOverlayClicked() {
+		if (this.props.visible) {
+			this.props.onOverlayClicked();
+		}
+	}
+
 	render() {
 		return (
 			<div>
 				<div styleName="sidebar" style={this.getSidebarStyle()} ref="sidebar">
 					{this.props.children}
 				</div>
-				<div styleName="overlay" style={this.getOverlayStyle()}>
+				<div styleName="overlay" style={this.getOverlayStyle()} onClick={this.onOverlayClicked}>
 				</div>
 			</div>
 
@@ -51,8 +59,9 @@ class SidebarMenuWithOverlay extends Component {
 }
 
 SidebarMenuWithOverlay.propTypes = {
-	visible: React.PropTypes.bool,
-	children: React.PropTypes.node
+	visible:          React.PropTypes.bool.isRequired,
+	onOverlayClicked: React.PropTypes.func.isRequired,
+	children:         React.PropTypes.node
 };
 
 SidebarMenuWithOverlay.defaultProps = {

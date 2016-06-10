@@ -41,6 +41,26 @@ describe("<SidebarMenuOverlay />", function () {
 		assert.equal(sidebarMenu.state.sidebarWidth, sidebarDOMWidth);
 	});
 
+	it("doesn't warn the parent component that the overlay was clicked if it's hidden", function () {
+		const onClick     = sinon.spy(),
+					sidebarMenu = shallow(<SidebarMenu visible={false} onOverlayClicked={onClick} />),
+					overlay     = sidebarMenu.find(`.${sidebarStyles.overlay}`);
+
+		overlay.simulate("click");
+
+		assert.isFalse(onClick.called);
+	});
+
+	it("warns the parent component that the overlay was clicked if it's visible", function () {
+		const onClick     = sinon.spy(),
+					sidebarMenu = shallow(<SidebarMenu visible={true} onOverlayClicked={onClick} />),
+					overlay     = sidebarMenu.find(`.${sidebarStyles.overlay}`);
+
+		overlay.simulate("click");
+
+		assert.isTrue(onClick.called);
+	});
+
 	describe("sidebar", function () {
 		it("moves to the left, out of the screen, when hidden", function () {
 			mountSidebarMenu();
@@ -121,7 +141,6 @@ describe("<SidebarMenuOverlay />", function () {
 
 			assert.isAtMost(opacity, 0.5);
 		});
-
 	})
 });
 
