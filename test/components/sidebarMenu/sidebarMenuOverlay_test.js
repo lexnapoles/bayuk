@@ -111,6 +111,16 @@ describe("<SidebarMenuOverlay />", function () {
 			assert.equal(overlayLeftCoord, sidebarWidth);
 		});
 
+		it("is translucent when visible", function () {
+			mountSidebarMenu({visible: true});
+
+			const overlay = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
+						opacity = window.getComputedStyle(overlay).getPropertyValue("opacity");
+
+			unmountSidebarMenu();
+
+			assert.isAtMost(opacity, 0.5);
+		});
 
 	})
 });

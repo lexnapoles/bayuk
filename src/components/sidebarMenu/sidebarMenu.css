@@ -10,4 +10,7 @@
 	position: absolute;
 	top: 0;
 	height: 100%;
+	opacity: 0.5;
+	background: grey;
+	transition: left 1s ease;
 }
