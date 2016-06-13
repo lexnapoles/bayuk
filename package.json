@@ -78,10 +78,10 @@
     "font-awesome": "^4.6.1",
     "history": "^2.0.0",
     "karma-chai": "^0.1.0",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
     "react-fa": "^4.0.1",
-    "react-router": "^2.0.0"
+    "react-router": "^2.4.1"
   },
   "engines": {
     "node": "5.8.0"
