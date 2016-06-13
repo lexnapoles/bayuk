@@ -19,7 +19,7 @@ class Header extends Component {
 
 	render() {
 		return (
-			<div styleName="header">
+			<header styleName="header">
 				<nav styleName="nav">
 					<SidebarMenu visible={this.state.sidebarVisible} onOverlayClicked={this.toggleSidebarVisibility}>
 						Menu
@@ -28,7 +28,7 @@ class Header extends Component {
 					<div styleName="logo">Bayuk</div>
 					<Icon name="search" size="lg"/>
 				</nav>
-			</div>
+			</header>
 		)
 	}
 }

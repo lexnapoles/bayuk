@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Header from "../header/Header";
 import ProductTable from "../products/productTable/ProductTable";
-import styles from "./app.css";
+import styles from "../layout.css";
 import CSSModules from "react-css-modules";
 
 class App extends Component {
@@ -10,9 +10,7 @@ class App extends Component {
 
 		return (
 			<div styleName="container">
-				<header>
-					<Header />
-				</header>
+				<Header />
 				<main styleName="main">
 					<ProductTable products={products}/>
 				</main>
