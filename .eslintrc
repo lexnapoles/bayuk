@@ -19,7 +19,8 @@
   ],
 
   "globals": {
-    "assert": true
+    "assert": true,
+    "sinon": true
   },
 
   "extends": [
