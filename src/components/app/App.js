@@ -19,8 +19,4 @@ class App extends Component {
 	}
 }
 
-App.propTypes = {
-	products: React.PropTypes.array.isRequired
-};
-
 export default CSSModules(App, styles);
