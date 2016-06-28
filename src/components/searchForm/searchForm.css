@@ -1,0 +1,19 @@
+.searchForm {
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: space-around;
+	background: grey;
+	padding: 2em;
+}
+
+.returnIcon {
+	flex: 1;
+	color: black;
+	text-align: left;
+}
+
+.checkIcon {
+	flex: 1;
+	text-align: right;
+}
+
