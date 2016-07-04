@@ -5,7 +5,62 @@ import CSSModules from "react-css-modules";
 import {Link} from "react-router";
 import Icon from "react-fa";
 
+import Filter from "./Filter";
+
 class SearchForm extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			name: "",
+			category: {"Music": false, "Videgames": false, "Movies": false, "Literature": false},
+			price: {min: 0, max: 0}
+		};
+
+		this.submitForm = this.submitForm.bind(this);
+	}
+
+	submitForm(event) {
+		event.preventDefault();
+
+		const searchData = {
+			name:     this.refs.name.value,
+			category: this.getCategories(),
+			price:    this.getPrice()
+		};
+
+		this.setState(searchData);
+	}
+
+	getPrice() {
+		return {
+			min: this.refs.minPrice.value, 
+			max: this.refs.maxPrice.value
+		};
+	}
+
+
+	getCategories() {
+		const categoryKeys = Object.keys(this.state.category);
+		const categories = {};
+
+		for (const category of categoryKeys) {
+			Object.assign(categories, {[category]: this.refs[category].checked});
+		}
+
+		return categories;
+	}
+
+	renderCategories() {
+		const categories = Object.keys(this.state.category);
+
+		return categories.map((name) =>
+			<div key={name}>
+				<label htmlFor={name}>{name}</label>
+				<input id={name} type="checkbox" ref={name}/>
+			</div>
+		)
+	}
 	render() {
 		return (
 			<div className={container}>
@@ -14,52 +69,32 @@ class SearchForm extends Component {
 						<Link to={"/"} >
 							<Icon name="arrow-left" size="lg" styleName="returnIcon"/>
 						</Link>
-						<div styleName="checkIcon">
+						<div styleName="checkIcon" onClick={this.submitForm}>
 							<Icon name="check" size="lg"/>
 						</div>
 					</nav>
 				</header>
 				<main className={main}>
-					<form styleName="searchForm">
-						<div styleName="filter">
-							<label htmlFor="name" styleName="title">Name</label>
-							<hr/>
-							<input id="name" type="text" placeholder="Name" />
-						</div>
-						<div styleName="filter">
-							<label styleName="title">Category</label>
-							<hr/>
-							<div>
-								<div>
-									<label htmlFor="Music">Music</label>
-									<input id="Music" type="checkbox"/>
-								</div>
-								<div>
-									<label htmlFor="Videogames">Videogames</label>
-									<input id="Videogames" type="checkbox"/>
-								</div>
-								<div>
-									<label htmlFor="Movies">Movies</label>
-									<input id="Movies" type="checkbox"/>
-								</div>
-								<div>
-									<label htmlFor="Literature">Literature</label>
-									<input id="Literature" type="checkbox"/>
-								</div>
-							</div>
-						</div>
-						<div styleName="filter">
-							<label styleName="title">Price</label>
-							<hr/>
+					<form styleName="searchForm" onSubmit={this.submitForm}>
+
+						<Filter name="Name">
+							<input id="name" type="text" placeholder="Name" ref="name"/>
+						</Filter>
+
+						<Filter name="Category">
+							{this.renderCategories()}
+						</Filter>
+
+						<Filter name="Price">
 							<div >
 								<label htmlFor="minPrice">Min price</label>
-								<input id="minPrice" type="number" min="0" step="0.01" />
+								<input id="minPrice" type="number" min="0" step="0.01" ref="minPrice"/>
 							</div>
 							<div>
 								<label htmlFor="maxPrice">Max price</label>
-								<input id="maxPrice" type="number" min="0" step="0.01" />
+								<input id="maxPrice" type="number" min="0" step="0.01" ref="maxPrice"/>
 							</div>
-						</div>
+						</Filter>
 					</form>
 				</main>
 			</div>

@@ -15,18 +15,3 @@
 	text-align: right;
 }
 
-.filter {
-	padding: 1em;
-	margin-bottom: 2em;
-  border: 2px solid lightgrey;
-	border-radius: 10px;
-}
-
-.title {
-	display: block;
-	margin-bottom: 5px;
-}
-
-.filter hr {
-	margin-bottom: 1em;
-}
