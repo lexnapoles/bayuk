@@ -7,6 +7,7 @@ import Icon from "react-fa";
 
 import Filter from "./Filter";
 import NameFilter from "./NameFilter";
+import PriceFilter from "./PriceFilter";
 
 class SearchForm extends Component {
 	constructor(props) {
@@ -97,16 +98,8 @@ class SearchForm extends Component {
 							{this.renderCategories()}
 						</Filter>
 
-						<Filter name="Price">
-							<div >
-								<label htmlFor="min">Min price</label>
-								<input id="max" type="number" min="0"onChange={this.onPriceChange} required/>
-							</div>
-							<div>
-								<label htmlFor="max">Max price</label>
-								<input id="min" type="number" min="0" onChange={this.onPriceChange} required/>
-							</div>
-						</Filter>
+						<PriceFilter onChange={this.onPriceChange} />
+
 					</form>
 				</main>
 			</div>
