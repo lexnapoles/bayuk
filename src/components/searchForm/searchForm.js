@@ -6,6 +6,7 @@ import {Link} from "react-router";
 import Icon from "react-fa";
 
 import Filter from "./Filter";
+import NameFilter from "./NameFilter";
 
 class SearchForm extends Component {
 	constructor(props) {
@@ -90,9 +91,7 @@ class SearchForm extends Component {
 				<main className={main}>
 					<form id="searchForm" styleName="searchForm" onSubmit={this.submitForm}>
 
-						<Filter name="Name">
-							<input id="name" type="text" value={this.state.name} placeholder="Name" onChange={this.onNameChange} required/>
-						</Filter>
+						<NameFilter name={this.state.name} onChange={this.onNameChange} />
 
 						<Filter name="Category">
 							{this.renderCategories()}
