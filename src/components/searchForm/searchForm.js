@@ -12,77 +12,62 @@ class SearchForm extends Component {
 		super(props);
 
 		this.state = {
-			name: "",
-			category: {"Music": false, "Videgames": false, "Movies": false, "Literature": false},
-			price: {min: 0, max: 0}
+			name:       "",
+			categories: {"Music": false, "Videgames": false, "Movies": false, "Literature": false},
+			price:      {min: 0, max: 0}
 		};
 
 		this.submitForm = this.submitForm.bind(this);
 		this.onNameChange = this.onNameChange.bind(this);
-		this.onCategoryChange = this.onCategoryChange.bind(this);
 		this.onPriceChange = this.onPriceChange.bind(this);
+		this.onCategoryChange = this.onCategoryChange.bind(this);
 	}
 
 	submitForm(event) {
 		event.preventDefault();
 
 		const searchData = {
-			name:     this.refs.name.value,
-			category: this.getCategories(),
-			price:    this.getPrice()
+			name:       this.refs.name.value,
+			categories: this.getCategories(),
+			price:      this.getPrice()
 		};
 
 		this.setState(searchData);
 	}
 
-	getPrice() {
-		return {
-			min: this.refs.minPrice.value, 
-			max: this.refs.maxPrice.value
-		};
+	onNameChange(event) {
+		this.setState({name: event.target.value});
 	}
 
-
-	getCategories() {
-		const categoryKeys = Object.keys(this.state.category);
-		const categories = {};
-
-		for (const category of categoryKeys) {
-			Object.assign(categories, {[category]: this.refs[category].checked});
-		}
-
-		return categories;
-	}
-
-	onNameChange() {
-		this.setState({name: this.refs.name.value});
-	}
-
-	onPriceChange() {
-		this.setState({
-			price: {
-				min: this.refs.minPrice.value,
-				max: this.refs.maxPrice.value
-			}
+	onPriceChange(event) {
+		Object.assign(this.state.price, {
+			[event.target.id]: event.target.value
 		});
+
+		this.setState({price: this.state.price});
 	}
 
-	onCategoryChange() {
-		return "";
+	onCategoryChange(event) {
+		const name = event.target.id,
+					categories = this.state.categories;
+
+		Object.assign(categories, {
+			[name]: !categories[name]
+		});
+
+		this.setState({categories});
 	}
-
-
 
 	renderCategories() {
-		const categories = Object.keys(this.state.category);
+		const categories = Object.keys(this.state.categories);
 
 		return categories.map((name) => {
-			const isChecked = this.state.category[name];
+			const isChecked = this.state.categories[name];
 
 			return (
 			<div key={name}>
 					<label htmlFor={name}>{name}</label>
-					<input id={name} type="checkbox" ref={name} checked={isChecked}  onChange={this.onCategoryChange}/>
+					<input id={name} type="checkbox" checked={isChecked} onChange={this.onCategoryChange}/>
 				</div>
 			)}
 		)
@@ -106,7 +91,7 @@ class SearchForm extends Component {
 					<form id="searchForm" styleName="searchForm" onSubmit={this.submitForm}>
 
 						<Filter name="Name">
-							<input id="name" type="text" value={this.state.name} placeholder="Name" ref="name" onChange={this.onNameChange} required/>
+							<input id="name" type="text" value={this.state.name} placeholder="Name" onChange={this.onNameChange} required/>
 						</Filter>
 
 						<Filter name="Category">
@@ -115,12 +100,12 @@ class SearchForm extends Component {
 
 						<Filter name="Price">
 							<div >
-								<label htmlFor="minPrice">Min price</label>
-								<input id="minPrice" type="number" min="0" step="0.01" ref="minPrice" onChange={this.onPriceChange} required/>
+								<label htmlFor="min">Min price</label>
+								<input id="max" type="number" min="0"onChange={this.onPriceChange} required/>
 							</div>
 							<div>
-								<label htmlFor="maxPrice">Max price</label>
-								<input id="maxPrice" type="number" min="0" step="0.01" ref="maxPrice" onChange={this.onPriceChange} required/>
+								<label htmlFor="max">Max price</label>
+								<input id="min" type="number" min="0" onChange={this.onPriceChange} required/>
 							</div>
 						</Filter>
 					</form>
