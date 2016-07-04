@@ -1,16 +1,11 @@
-import React, {Component} from "react";
+import React from "react";
 
 import Filter from "./Filter";
 
-class NameFilter extends Component {
-	render() {
-		return (
-			<Filter name="Name">
-				<input id="name" type="text" value={this.props.name} placeholder="Name" onChange={this.props.onChange} required/>
-			</Filter>
-		);
-	}
-}
+const NameFilter = ({name, onChange}) =>
+	<Filter name="Name">
+		<input id="name" type="text" value={name} placeholder="Name" onChange={onChange} required/>
+	</Filter>
 
 NameFilter.propTypes = {
 	name:     React.PropTypes.string.isRequired,

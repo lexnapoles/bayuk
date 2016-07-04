@@ -99,7 +99,7 @@ class SearchForm extends Component {
 						</Filter>
 
 						<PriceFilter onChange={this.onPriceChange} />
-
+						
 					</form>
 				</main>
 			</div>
