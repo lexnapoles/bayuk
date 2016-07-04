@@ -18,6 +18,9 @@ class SearchForm extends Component {
 		};
 
 		this.submitForm = this.submitForm.bind(this);
+		this.onNameChange = this.onNameChange.bind(this);
+		this.onCategoryChange = this.onCategoryChange.bind(this);
+		this.onPriceChange = this.onPriceChange.bind(this);
 	}
 
 	submitForm(event) {
@@ -51,14 +54,37 @@ class SearchForm extends Component {
 		return categories;
 	}
 
+	onNameChange() {
+		this.setState({name: this.refs.name.value});
+	}
+
+	onPriceChange() {
+		this.setState({
+			price: {
+				min: this.refs.minPrice.value,
+				max: this.refs.maxPrice.value
+			}
+		});
+	}
+
+	onCategoryChange() {
+		return "";
+	}
+
+
+
 	renderCategories() {
 		const categories = Object.keys(this.state.category);
 
-		return categories.map((name) =>
+		return categories.map((name) => {
+			const isChecked = this.state.category[name];
+
+			return (
 			<div key={name}>
-				<label htmlFor={name}>{name}</label>
-				<input id={name} type="checkbox" ref={name}/>
-			</div>
+					<label htmlFor={name}>{name}</label>
+					<input id={name} type="checkbox" ref={name} checked={isChecked}  onChange={this.onCategoryChange}/>
+				</div>
+			)}
 		)
 	}
 	render() {
@@ -80,7 +106,7 @@ class SearchForm extends Component {
 					<form id="searchForm" styleName="searchForm" onSubmit={this.submitForm}>
 
 						<Filter name="Name">
-							<input id="name" type="text" placeholder="Name" ref="name" required/>
+							<input id="name" type="text" value={this.state.name} placeholder="Name" ref="name" onChange={this.onNameChange} required/>
 						</Filter>
 
 						<Filter name="Category">
@@ -90,11 +116,11 @@ class SearchForm extends Component {
 						<Filter name="Price">
 							<div >
 								<label htmlFor="minPrice">Min price</label>
-								<input id="minPrice" type="number" min="0" step="0.01" ref="minPrice" required/>
+								<input id="minPrice" type="number" min="0" step="0.01" ref="minPrice" onChange={this.onPriceChange} required/>
 							</div>
 							<div>
 								<label htmlFor="maxPrice">Max price</label>
-								<input id="maxPrice" type="number" min="0" step="0.01" ref="maxPrice" required/>
+								<input id="maxPrice" type="number" min="0" step="0.01" ref="maxPrice" onChange={this.onPriceChange} required/>
 							</div>
 						</Filter>
 					</form>
