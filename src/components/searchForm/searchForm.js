@@ -69,16 +69,18 @@ class SearchForm extends Component {
 						<Link to={"/"} >
 							<Icon name="arrow-left" size="lg" styleName="returnIcon"/>
 						</Link>
-						<div styleName="checkIcon" onClick={this.submitForm}>
-							<Icon name="check" size="lg"/>
+						<div styleName="check">
+							<button styleName="checkButton" form="searchForm">
+								<Icon name="check" size="lg"/>
+							</button>
 						</div>
 					</nav>
 				</header>
 				<main className={main}>
-					<form styleName="searchForm" onSubmit={this.submitForm}>
+					<form id="searchForm" styleName="searchForm" onSubmit={this.submitForm}>
 
 						<Filter name="Name">
-							<input id="name" type="text" placeholder="Name" ref="name"/>
+							<input id="name" type="text" placeholder="Name" ref="name" required/>
 						</Filter>
 
 						<Filter name="Category">
@@ -88,11 +90,11 @@ class SearchForm extends Component {
 						<Filter name="Price">
 							<div >
 								<label htmlFor="minPrice">Min price</label>
-								<input id="minPrice" type="number" min="0" step="0.01" ref="minPrice"/>
+								<input id="minPrice" type="number" min="0" step="0.01" ref="minPrice" required/>
 							</div>
 							<div>
 								<label htmlFor="maxPrice">Max price</label>
-								<input id="maxPrice" type="number" min="0" step="0.01" ref="maxPrice"/>
+								<input id="maxPrice" type="number" min="0" step="0.01" ref="maxPrice" required/>
 							</div>
 						</Filter>
 					</form>

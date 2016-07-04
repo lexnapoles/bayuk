@@ -5,13 +5,17 @@
 }
 
 .returnIcon {
-	flex: 1;
 	color: black;
 	text-align: left;
 }
 
-.checkIcon {
+
+.check {
 	flex: 1;
 	text-align: right;
 }
 
+.checkButton {
+	border: none;
+	background: none;
+}
