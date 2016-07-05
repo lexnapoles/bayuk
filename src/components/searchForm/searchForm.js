@@ -34,6 +34,6 @@ SearchForm.propTypes = {
 	onNameChange:     React.PropTypes.func.isRequired,
 	onCategoryChange: React.PropTypes.func.isRequired,
 	onPriceChange:    React.PropTypes.func.isRequired
-}
+};
 
 export default CSSModules(SearchForm, styles);

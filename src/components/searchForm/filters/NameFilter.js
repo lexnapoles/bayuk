@@ -1,6 +1,6 @@
 import React from "react";
 
-import Filter from "./Filter";
+import Filter from "./filter/Filter";
 
 const NameFilter = ({name, onChange}) =>
 	<Filter name="Name">

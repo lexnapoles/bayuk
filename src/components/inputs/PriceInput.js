@@ -1,17 +1,19 @@
 import React from "react";
+import {input} from "./priceInput.css";
 import Input from "./input/Input";
 
 const PriceInput = ({id, description, onChange}) => {
 	const inputConf = {
-		type: "number",
-		min:  "0"
+		type:      "number",
+		min:       "0",
+		className: input
 	};
 
 	return <Input id={id}
 								description={description}
 								onChange={onChange}
-								inputConf={inputConf} />
-}
+								inputConf={inputConf}/>
+};
 
 PriceInput.propTypes = {
 	onChange:    React.PropTypes.func.isRequired,

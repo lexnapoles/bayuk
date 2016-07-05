@@ -8,10 +8,10 @@ const Input = ({id, description, onChange, inputConf}) =>
 	</div>
 
 Input.propTypes = {
-	onChange: React.PropTypes.func.isRequired,
-	id: React.PropTypes.string.isRequired,
+	onChange:    React.PropTypes.func.isRequired,
+	id:          React.PropTypes.string.isRequired,
 	description: React.PropTypes.string.isRequired,
-	inputConf: React.PropTypes.object
+	inputConf:   React.PropTypes.object
 };
 
 export default Input;

@@ -11,8 +11,8 @@ const Filter = ({name, children}) =>
 	</div>
 
 Filter.propTypes = {
-	name: React.PropTypes.string,
-	children:  React.PropTypes.node
+	name:     React.PropTypes.string,
+	children: React.PropTypes.node
 }
 
 export default Filter;
