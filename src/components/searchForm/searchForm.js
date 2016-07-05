@@ -5,9 +5,9 @@ import CSSModules from "react-css-modules";
 import {Link} from "react-router";
 import Icon from "react-fa";
 
-import Filter from "./Filter";
 import NameFilter from "./NameFilter";
 import PriceFilter from "./PriceFilter";
+import CategoryFilter from "./CategoryFilter";
 
 class SearchForm extends Component {
 	constructor(props) {
@@ -28,13 +28,6 @@ class SearchForm extends Component {
 	submitForm(event) {
 		event.preventDefault();
 
-		const searchData = {
-			name:       this.refs.name.value,
-			categories: this.getCategories(),
-			price:      this.getPrice()
-		};
-
-		this.setState(searchData);
 	}
 
 	onNameChange(event) {
@@ -60,20 +53,6 @@ class SearchForm extends Component {
 		this.setState({categories});
 	}
 
-	renderCategories() {
-		const categories = Object.keys(this.state.categories);
-
-		return categories.map((name) => {
-			const isChecked = this.state.categories[name];
-
-			return (
-			<div key={name}>
-					<label htmlFor={name}>{name}</label>
-					<input id={name} type="checkbox" checked={isChecked} onChange={this.onCategoryChange}/>
-				</div>
-			)}
-		)
-	}
 	render() {
 		return (
 			<div className={container}>
@@ -91,15 +70,9 @@ class SearchForm extends Component {
 				</header>
 				<main className={main}>
 					<form id="searchForm" styleName="searchForm" onSubmit={this.submitForm}>
-
 						<NameFilter name={this.state.name} onChange={this.onNameChange} />
-
-						<Filter name="Category">
-							{this.renderCategories()}
-						</Filter>
-
+						<CategoryFilter categories={this.state.categories} onChange={this.onCategoryChange} />
 						<PriceFilter onChange={this.onPriceChange} />
-						
 					</form>
 				</main>
 			</div>

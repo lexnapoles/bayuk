@@ -10,6 +10,6 @@ const NameFilter = ({name, onChange}) =>
 NameFilter.propTypes = {
 	name:     React.PropTypes.string.isRequired,
 	onChange: React.PropTypes.func.isRequired
-}
+};
 
 export default NameFilter;

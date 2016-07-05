@@ -16,6 +16,6 @@ const PriceFilter = ({onChange}) =>
 
 PriceFilter.propTypes = {
 	onChange: React.PropTypes.func.isRequired
-}
+};
 
 export default PriceFilter;
