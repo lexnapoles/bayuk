@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import CSSModules from "react-css-modules";
+import styles from "./categoryFilter.css";
 
 import Filter from "./Filter";
 
@@ -10,8 +12,8 @@ class CategoryFilter extends Component {
 			const isChecked = this.props.categories[name];
 
 			return (
-				<div key={name}>
-					<label htmlFor={name}>{name}</label>
+				<div key={name} styleName="categoryFilter">
+					<label styleName="description" htmlFor={name}>{name}</label>
 					<input id={name} type="checkbox" checked={isChecked} onChange={this.props.onChange}/>
 				</div>
 			)}
@@ -32,4 +34,4 @@ CategoryFilter.propTypes = {
 	categories: React.PropTypes.object.isRequired
 };
 
-export default CategoryFilter;
+export default CSSModules(CategoryFilter, styles);

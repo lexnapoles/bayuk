@@ -2,7 +2,7 @@ import React from "react";
 import {shallow, mount} from "enzyme";
 import Header from "../../../src/components/header/Header";
 
-describe("<SearchHeader />", function () {
+describe("<Header />", function () {
 	it("hides the sidebar by default", function () {
 		const header = shallow(<Header />);
 

@@ -25,7 +25,7 @@ class Header extends Component {
 					<SidebarMenu visible={this.state.sidebarVisible} onOverlayClicked={this.toggleSidebarVisibility}>
 						Menu
 					</SidebarMenu>
-					<Icon name="bars" size="lg"  onClick={this.toggleSidebarVisibility}/>
+					<Icon className="menuIcon" name="bars" size="lg"  onClick={this.toggleSidebarVisibility}/>
 					<div styleName="logo">Bayuk</div>
 					<Link to={"/search"} >
 						<Icon name="search" size="lg" styleName="searchIcon"/>
