@@ -33,8 +33,7 @@ describe("<SidebarMenu />", function () {
 	it("calculates the sidebar width dynamically when mounted", function () {
 		const sidebarMenu     = mountSidebarMenu(),
 					sidebar         = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
-					style           = window.getComputedStyle(sidebar),
-					sidebarDOMWidth = Math.round(parseFloat(style.getPropertyValue("width")));
+					sidebarDOMWidth = sidebar.getBoundingClientRect().width;
 
 		unmountSidebarMenu();
 
@@ -68,9 +67,10 @@ describe("<SidebarMenu />", function () {
 			const sidebar               = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
 						sidebarTopRightCorner = sidebar.getBoundingClientRect().right;
 
+			window.console.log(`sidebar width ${sidebar.getBoundingClientRect().width}`)
 			unmountSidebarMenu();
 
-			assert.isBelow(sidebarTopRightCorner, 0);
+			assert.equal(sidebarTopRightCorner, 0);
 		});
 
 
@@ -124,7 +124,7 @@ describe("<SidebarMenu />", function () {
 			const sidebarMenu      = mountSidebarMenu({visible: true}),
 						sidebarWidth     = sidebarMenu.state.sidebarWidth,
 						overlay          = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0],
-						overlayLeftCoord = Math.round(overlay.getBoundingClientRect().left);
+						overlayLeftCoord = overlay.getBoundingClientRect().left;
 
 			unmountSidebarMenu();
 

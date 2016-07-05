@@ -17,7 +17,7 @@ class SidebarMenu extends Component {
 
 	setSidebarWidth() {
 		this.setState({
-			sidebarWidth: this.refs.sidebar.offsetWidth
+			sidebarWidth: this.refs.sidebar.getBoundingClientRect().width
 		});
 	}
 
