@@ -5,7 +5,7 @@ import {render} from "react-dom";
 import {Router, Route, browserHistory} from "react-router";
 
 import App from "./components/app/App";
-import SearchForm from "./components/searchForm/searchForm";
+import SearchFormContainer from "./components/searchForm/SearchFormContainer";
 
 if (module.hot) {
 	module.hot.accept();
@@ -14,6 +14,6 @@ if (module.hot) {
 render((
 	<Router history={browserHistory}>
 		<Route path="/" component={App} />
-		<Route path="search" component={SearchForm} />
+		<Route path="search" component={SearchFormContainer} />
 	</Router>
 ), document.querySelector(".app"));

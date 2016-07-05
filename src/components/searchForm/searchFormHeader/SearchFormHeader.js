@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import CSSModules from "react-css-modules";
-
 import {header, nav} from "../../layout.css";
-import styles from "./searchHeader.css";
+import styles from "./searchFormHeader.css";
 import {Link} from "react-router";
 import Icon from "react-fa";
 
@@ -11,7 +10,7 @@ class SearchHeader extends Component {
 		return (
 			<header className={header}>
 				<nav className={nav}>
-					<Link to={"/"} >
+					<Link to={"/"}>
 						<Icon name="arrow-left" size="lg" styleName="returnIcon"/>
 					</Link>
 					<div styleName="check">
