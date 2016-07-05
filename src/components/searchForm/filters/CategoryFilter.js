@@ -1,23 +1,18 @@
 import React, {Component} from "react";
-import CSSModules from "react-css-modules";
-import styles from "./categoryFilter.css";
-
 import Filter from "./Filter";
+import CategoryInput  from "../../inputs/CategoryInput";
 
 class CategoryFilter extends Component {
 	renderCategories() {
 		const categories = Object.keys(this.props.categories);
 
-		return categories.map((name) => {
-			const isChecked = this.props.categories[name];
-
-			return (
-				<div key={name} styleName="categoryFilter">
-					<label styleName="description" htmlFor={name}>{name}</label>
-					<input id={name} type="checkbox" checked={isChecked} onChange={this.props.onChange}/>
-				</div>
-			)}
-		)
+		return categories.map((name) =>
+			<CategoryInput 	key={name}
+											id={name}
+											description={name}
+											checked={this.props.categories[name]}
+											onChange={this.props.onChange}/>
+		);
 	}
 
 	render() {
@@ -30,8 +25,8 @@ class CategoryFilter extends Component {
 }
 
 CategoryFilter.propTypes = {
-	onChange: React.PropTypes.func.isRequired,
+	onChange:   React.PropTypes.func.isRequired,
 	categories: React.PropTypes.object.isRequired
 };
 
-export default CSSModules(CategoryFilter, styles);
+export default CategoryFilter;

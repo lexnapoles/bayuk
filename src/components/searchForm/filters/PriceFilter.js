@@ -1,17 +1,11 @@
 import React from "react";
-
 import Filter from "./Filter";
+import PriceInput from "../../inputs/PriceInput";
 
 const PriceFilter = ({onChange}) =>
 	<Filter name="Price">
-		<div >
-			<label htmlFor="min">Min price</label>
-			<input id="min" type="number" min="0" onChange={onChange} required/>
-		</div>
-		<div>
-			<label htmlFor="max">Max price</label>
-			<input id="max" type="number" min="0" onChange={onChange} required/>
-		</div>
+		<PriceInput id="min" description="Min Price" onChange={onChange}/>
+		<PriceInput id="max" description="Max Price" onChange={onChange}/>
 	</Filter>
 
 PriceFilter.propTypes = {
