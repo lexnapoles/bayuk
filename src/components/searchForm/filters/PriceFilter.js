@@ -3,7 +3,7 @@ import Filter from "./filter/Filter";
 import PriceInput from "../../inputs/PriceInput";
 
 const PriceFilter = ({onChange}) =>
-	<Filter name="Price">
+	<Filter title="Price">
 		<PriceInput id="min" description="From" onChange={onChange}/>
 		<PriceInput id="max" description="To" onChange={onChange}/>
 	</Filter>

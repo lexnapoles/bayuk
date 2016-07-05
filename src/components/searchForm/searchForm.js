@@ -3,7 +3,7 @@ import {container, main} from "../layout.css";
 import styles from "./searchForm.css";
 import CSSModules from "react-css-modules";
 import SearchHeader from "./searchFormHeader/SearchFormHeader";
-import NameFilter from "./filters/NameFilter";
+import NameFilter from "./filters/nameFilter/NameFilter";
 import PriceFilter from "./filters/PriceFilter";
 import CategoryFilter from "./filters/CategoryFilter";
 

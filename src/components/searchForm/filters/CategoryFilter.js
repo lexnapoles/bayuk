@@ -17,7 +17,7 @@ class CategoryFilter extends Component {
 
 	render() {
 		return (
-			<Filter name="Category">
+			<Filter title="Category">
 				{this.renderCategories()}
 			</Filter>
 		);

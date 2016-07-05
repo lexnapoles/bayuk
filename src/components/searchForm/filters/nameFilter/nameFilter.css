@@ -1,0 +1,16 @@
+.container {
+	composes: filter from "../filter/filter.css";
+	padding-top: 3em;
+}
+
+.input {
+	width: 100%;
+	border: none;
+}
+
+.input:focus{
+	outline: none;
+}
+
+.underline {
+}

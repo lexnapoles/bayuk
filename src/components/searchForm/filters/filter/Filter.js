@@ -1,9 +1,9 @@
 import React from "react";
-import {filter, title} from "./filter.css";
+import {filter, label} from "./filter.css";
 
-const Filter = ({name, children}) =>
+const Filter = ({title, children}) =>
 	<div className={filter}>
-		<label className={title}>{name}</label>
+		<label className={label}>{title}</label>
 		<hr/>
 		<div>
 			{children}
@@ -11,8 +11,8 @@ const Filter = ({name, children}) =>
 	</div>
 
 Filter.propTypes = {
-	name:     React.PropTypes.string,
-	children: React.PropTypes.node
+	title:    React.PropTypes.string.isRequired,
+	children: React.PropTypes.node.isRequired
 }
 
 export default Filter;
