@@ -1,10 +1,8 @@
 import React, {Component} from "react";
-import {container, header, nav, main} from "../layout.css";
+import {container, main} from "../layout.css";
 import styles from "./searchForm.css";
 import CSSModules from "react-css-modules";
-import {Link} from "react-router";
-import Icon from "react-fa";
-
+import SearchHeader from "./searchHeader/SearchHeader";
 import NameFilter from "./NameFilter";
 import PriceFilter from "./PriceFilter";
 import CategoryFilter from "./CategoryFilter";
@@ -54,22 +52,13 @@ class SearchForm extends Component {
 	}
 
 	render() {
+		const formName = "searchForm";
+
 		return (
 			<div className={container}>
-				<header className={header}>
-					<nav className={nav}>
-						<Link to={"/"} >
-							<Icon name="arrow-left" size="lg" styleName="returnIcon"/>
-						</Link>
-						<div styleName="check">
-							<button styleName="checkButton" form="searchForm">
-								<Icon name="check" size="lg"/>
-							</button>
-						</div>
-					</nav>
-				</header>
+				<SearchHeader formId={formName} />
 				<main className={main}>
-					<form id="searchForm" styleName="searchForm" onSubmit={this.submitForm}>
+					<form id={formName} styleName={formName} onSubmit={this.submitForm}>
 						<NameFilter name={this.state.name} onChange={this.onNameChange} />
 						<CategoryFilter categories={this.state.categories} onChange={this.onCategoryChange} />
 						<PriceFilter onChange={this.onPriceChange} />
