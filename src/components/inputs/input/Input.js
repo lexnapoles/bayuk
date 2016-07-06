@@ -4,7 +4,7 @@ import {container, title} from "./input.css";
 const Input = ({id, description, onChange, inputConf}) =>
 	<div className={container}>
 		<label className={title} htmlFor={id}>{description}</label>
-		<input id={id} {...inputConf} onChange={onChange} required/>
+		<input id={id} {...inputConf} onChange={onChange} />
 	</div>
 
 Input.propTypes = {
