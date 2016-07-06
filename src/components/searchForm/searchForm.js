@@ -16,11 +16,13 @@ class SearchForm extends Component {
 			<div className={container}>
 				<SearchHeader formId={formName}/>
 				<main className={main}>
-					<form id={formName} styleName={formName} onSubmit={submitForm}>
-						<NameFilter name={name} onChange={onNameChange}/>
-						<CategoryFilter categories={categories} onChange={onCategoryChange}/>
-						<PriceFilter onChange={onPriceChange}/>
-					</form>
+					<div styleName="formContainer">
+						<form id={formName} styleName={formName} onSubmit={submitForm}>
+							<NameFilter name={name} onChange={onNameChange}/>
+							<CategoryFilter categories={categories} onChange={onCategoryChange}/>
+							<PriceFilter onChange={onPriceChange}/>
+						</form>
+					</div>
 				</main>
 			</div>
 		);
