@@ -1,15 +1,15 @@
 import React from "react";
-import {container, input} from "./nameFilter.css";
+import {container, input, underline} from "./nameFilter.css";
 
 const NameFilter = ({name, onChange}) =>
 	<div className={container}>
-	<input 	id="name"
-					className={input}
-					type="text"
-					value={name}
-					placeholder="What are you looking for?"
-					onChange={onChange} required/>
-		<hr className="underline"/>
+		<input 	id="name"
+						className={input}
+						type="text"
+						value={name}
+						placeholder="What are you looking for?"
+						onChange={onChange} required/>
+			<hr className={underline}/>
 	</div>
 
 NameFilter.propTypes = {

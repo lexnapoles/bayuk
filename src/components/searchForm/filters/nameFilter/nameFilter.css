@@ -1,6 +1,7 @@
 .container {
 	composes: filter from "../filter/filter.css";
-	padding-top: 3em;
+	width: 100%;
+	padding-top: 2em;
 }
 
 .input {
@@ -13,4 +14,5 @@
 }
 
 .underline {
+	opacity: 0.4;
 }
