@@ -1,0 +1,35 @@
+.flexContainer {
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.formContainer{
+	composes: flexContainer;
+}
+
+.searchForm {
+	composes: flexContainer;
+	padding: 2em;
+}
+
+@media (min-width: 600px) {
+	.searchForm {
+		composes: flexContainer;
+		width: 80%;
+		padding: 2em;
+	}
+
+	.formContainer {
+		composes: flexContainer;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+@media (min-width: 1000px) {
+	.searchForm {
+		composes: flexContainer;
+		width: 50%;
+		padding: 2em;
+	}
+}

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import styles from "./header.css";
 import CSSModules from "react-css-modules";
+import {Link} from "react-router";
 import Icon from "react-fa";
 import SidebarMenu from "../sidebarMenu/SidebarMenu";
 
@@ -24,9 +25,11 @@ class Header extends Component {
 					<SidebarMenu visible={this.state.sidebarVisible} onOverlayClicked={this.toggleSidebarVisibility}>
 						Menu
 					</SidebarMenu>
-					<Icon name="bars" size="lg" className="menuIcon" onClick={this.toggleSidebarVisibility}/>
+					<Icon className="menuIcon" name="bars" size="lg"  onClick={this.toggleSidebarVisibility}/>
 					<div styleName="logo">Bayuk</div>
-					<Icon name="search" size="lg"/>
+					<Link to={"/search"} >
+						<Icon name="search" size="lg" styleName="searchIcon"/>
+					</Link>
 				</nav>
 			</header>
 		)
