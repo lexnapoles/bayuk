@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import CSSModules from "react-css-modules";
-import {header, nav} from "../../layout.css";
+import {header, nav} from "../../header/header.css";
 import styles from "./searchFormHeader.css";
 import {Link} from "react-router";
 import Icon from "react-fa";
