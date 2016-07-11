@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import Header from "../header/Header";
+import HomeHeader from "../header/HomeHeader";
 import ProductTable from "../products/productTable/ProductTable";
 import styles from "../layout.css";
 import CSSModules from "react-css-modules";
@@ -9,7 +9,7 @@ class App extends Component {
 	render() {
 		return (
 			<div styleName="container">
-				<Header />
+				<HomeHeader  />
 				<main styleName="main">
 					<ProductTable products={PRODUCTS}/>
 				</main>
