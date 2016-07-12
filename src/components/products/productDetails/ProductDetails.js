@@ -1,4 +1,7 @@
 import React, {Component} from "react";
+import CSSModules from "react-css-modules";
+import styles from "./productDetails.css";
+
 import ProductDetailsHeader from "./productDetailsHeader/ProductDetailsHeader";
 
 class ProductDetails extends Component {
@@ -6,8 +9,8 @@ class ProductDetails extends Component {
 		return (
 			<div>
 				<ProductDetailsHeader/>
-				<main>
-					<section>
+				<main styleName="container">
+					<section >
 						<img src="http://placehold.it/500x500"/>
 					</section>
 
@@ -43,4 +46,4 @@ class ProductDetails extends Component {
 	}
 }
 
-export default ProductDetails;
+export default CSSModules(ProductDetails, styles);

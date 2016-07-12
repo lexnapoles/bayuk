@@ -1,0 +1,9 @@
+.container {
+	composes: container from "../../layout.css";
+	align-items: center;
+	padding: 2em;
+}
+
+.container section {
+	margin-bottom: 1em;
+}
