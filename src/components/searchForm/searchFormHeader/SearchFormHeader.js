@@ -1,31 +1,21 @@
-import React, {Component} from "react";
-import CSSModules from "react-css-modules";
-import {header, nav} from "../../layout.css";
-import styles from "./searchFormHeader.css";
-import {Link} from "react-router";
+import React from "react";
+import {check, checkButton} from "./searchFormHeader.css";
 import Icon from "react-fa";
+import Header from "../../header/Header";
+import ReturnIcon from "../../icons/returnIcon/ReturnIcon";
 
-class SearchHeader extends Component {
-	render() {
-		return (
-			<header className={header}>
-				<nav className={nav}>
-					<Link to={"/"}>
-						<Icon name="arrow-left" size="lg" styleName="returnIcon"/>
-					</Link>
-					<div styleName="check">
-						<button styleName="checkButton" form={this.props.formId}>
-							<Icon name="check" size="lg"/>
-						</button>
-					</div>
-				</nav>
-			</header>
-		);
-	}
-}
+const SearchHeader = ({formId}) =>
+	<Header>
+		<ReturnIcon url="/"/>
+		<div className={check}>
+			<button className={checkButton} form={formId}>
+				<Icon name="check" size="lg"/>
+			</button>
+		</div>
+	</Header>
 
 SearchHeader.propTypes = {
 	formId: React.PropTypes.string.isRequired
 }
 
-export default CSSModules(SearchHeader, styles);
+export default SearchHeader;

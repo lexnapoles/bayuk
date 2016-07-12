@@ -1,16 +1,16 @@
 import React from "react";
 import {shallow, mount} from "enzyme";
-import Header from "../../../src/components/header/Header";
+import HomeHeader from "../../../src/components/header/homeHeader/HomeHeader";
 
-describe("<Header />", function () {
+describe("<HomeHeader />", function () {
 	it("hides the sidebar by default", function () {
-		const header = shallow(<Header />);
+		const header = shallow(<HomeHeader />);
 
 		assert.isFalse(header.state("sidebarVisible"));
 	});
 
 	it("passes the sidebarVisible state to the sidebar", function () {
-		const header  = mount(<Header />),
+		const header  = mount(<HomeHeader />),
 					sidebar = header.find("SidebarMenu");
 
 		header.setState({sidebarVisible: true});
@@ -19,7 +19,7 @@ describe("<Header />", function () {
 	});
 
 	it("opens the sidebar when the menu icon is clicked", function () {
-		const header   = mount(<Header />),
+		const header   = mount(<HomeHeader />),
 					sidebar  = header.find("SidebarMenu"),
 					menuIcon = header.find(".menuIcon");
 
