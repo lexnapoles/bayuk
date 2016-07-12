@@ -3,8 +3,8 @@ import styles from "./homeHeader.css";
 import CSSModules from "react-css-modules";
 import {Link} from "react-router";
 import Icon from "react-fa";
-import SidebarMenu from "../sidebarMenu/SidebarMenu";
-import Header from "./Header";
+import SidebarMenu from "../../sidebarMenu/SidebarMenu";
+import Header from "../Header";
 
 class HomeHeader extends Component {
 	constructor(props) {

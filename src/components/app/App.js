@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import HomeHeader from "../header/HomeHeader";
+import HomeHeader from "../header/homeHeader/HomeHeader";
 import ProductTable from "../products/productTable/ProductTable";
 import styles from "../layout.css";
 import CSSModules from "react-css-modules";

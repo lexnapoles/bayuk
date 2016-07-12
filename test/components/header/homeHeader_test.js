@@ -1,6 +1,6 @@
 import React from "react";
 import {shallow, mount} from "enzyme";
-import HomeHeader from "../../../src/components/header/HomeHeader";
+import HomeHeader from "../../../src/components/header/homeHeader/HomeHeader";
 
 describe("<HomeHeader />", function () {
 	it("hides the sidebar by default", function () {
