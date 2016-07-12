@@ -1,25 +1,21 @@
 import React, {Component} from "react";
 import CSSModules from "react-css-modules";
-import {header, nav} from "../../layout.css";
 import styles from "./searchFormHeader.css";
-import {Link} from "react-router";
 import Icon from "react-fa";
+import Header from "../../header/Header";
+import ReturnIcon from "../../icons/returnIcon/ReturnIcon";
 
 class SearchHeader extends Component {
 	render() {
 		return (
-			<header className={header}>
-				<nav className={nav}>
-					<Link to={"/"}>
-						<Icon name="arrow-left" size="lg" styleName="returnIcon"/>
-					</Link>
+			<Header>
+					<ReturnIcon url="/"/>
 					<div styleName="check">
 						<button styleName="checkButton" form={this.props.formId}>
 							<Icon name="check" size="lg"/>
 						</button>
 					</div>
-				</nav>
-			</header>
+			</Header>
 		);
 	}
 }
