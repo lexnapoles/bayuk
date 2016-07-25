@@ -4,12 +4,15 @@ import {shallow, mount} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
 import sidebarStyles from "../../../src/components/sidebarMenu/sidebarMenu.css";
 
-const mountSidebarMenu = (props = {}, children = "Test") => {
+const divInBody = () => {
 	const div = document.createElement("div");
 	document.body.appendChild(div);
 
-	return ReactDOM.render(<SidebarMenu {...props}>{children}</SidebarMenu>, div);
+	return div;
 }
+
+const mountSidebarMenu = (props = {}, children = "Test") =>
+	ReactDOM.render(<SidebarMenu {...props}>{children}</SidebarMenu>, divInBody());
 
 const unmountSidebarMenu = () => {
 	const div = document.getElementsByTagName("div")[0];
@@ -51,7 +54,7 @@ describe("<SidebarMenu />", function () {
 
 	it("doesn't warn the parent component that the overlay was clicked if it's hidden", function () {
 		const onClick     = sinon.spy(),
-					sidebarMenu = shallow(<SidebarMenu visible={false} onOverlayClicked={onClick} />),
+					sidebarMenu = shallow(<SidebarMenu visible={false} onOverlayClicked={onClick}/>),
 					overlay     = sidebarMenu.find(`.${sidebarStyles.overlay}`);
 
 		overlay.simulate("click");
@@ -61,7 +64,7 @@ describe("<SidebarMenu />", function () {
 
 	it("warns the parent component that the overlay was clicked if it's visible", function () {
 		const onClick     = sinon.spy(),
-					sidebarMenu = shallow(<SidebarMenu visible={true} onOverlayClicked={onClick} />),
+					sidebarMenu = shallow(<SidebarMenu visible={true} onOverlayClicked={onClick}/>),
 					overlay     = sidebarMenu.find(`.${sidebarStyles.overlay}`);
 
 		overlay.simulate("click");
