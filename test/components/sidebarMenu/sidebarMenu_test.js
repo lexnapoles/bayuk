@@ -4,10 +4,19 @@ import {shallow, mount} from "enzyme";
 import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
 import sidebarStyles from "../../../src/components/sidebarMenu/sidebarMenu.css";
 
-const mountSidebarMenu = (props = {}, children = "Test") =>
-	ReactDOM.render(<SidebarMenu {...props}>{children}</SidebarMenu>, document.body);
+const mountSidebarMenu = (props = {}, children = "Test") => {
+	const div = document.createElement("div");
+	document.body.appendChild(div);
 
-const unmountSidebarMenu = () => ReactDOM.unmountComponentAtNode(document.body);
+	return ReactDOM.render(<SidebarMenu {...props}>{children}</SidebarMenu>, div);
+}
+
+const unmountSidebarMenu = () => {
+	const div = document.getElementsByTagName("div")[0];
+
+	ReactDOM.unmountComponentAtNode(div);
+	document.body.innerHTML = "";
+}
 
 describe("<SidebarMenu />", function () {
 	it("has a sidebar element", function () {
@@ -67,7 +76,6 @@ describe("<SidebarMenu />", function () {
 			const sidebar               = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
 						sidebarTopRightCorner = sidebar.getBoundingClientRect().right;
 
-			window.console.log(`sidebar width ${sidebar.getBoundingClientRect().width}`)
 			unmountSidebarMenu();
 
 			assert.equal(sidebarTopRightCorner, 0);
