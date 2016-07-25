@@ -2,15 +2,17 @@ import React, {Component} from "react";
 
 class Carousel extends Component {
 	render() {
-		const pictureToShow = Array.isArray(this.props.children)
-			? this.props.children[0]
-			: this.props.children;
-
 		return (
 			<div>
-				{pictureToShow}
+				{this.pictureToShow()}
 			</div>
 		);
+	}
+
+	pictureToShow() {
+		return Array.isArray(this.props.children)
+			? this.props.children[0]
+			: this.props.children;
 	}
 }
 

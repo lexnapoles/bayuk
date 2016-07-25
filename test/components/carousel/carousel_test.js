@@ -24,8 +24,7 @@ describe("<Carousel />", function () {
 					carousel = shallow(<Carousel children={[picture1, picture2]}/>);
 
 		assert.isTrue(carousel.contains(picture1));
-	})
-
+	});
 });
 
 
