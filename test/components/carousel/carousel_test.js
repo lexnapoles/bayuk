@@ -25,6 +25,8 @@ describe("<Carousel />", function () {
 
 		assert.isTrue(carousel.contains(picture1));
 	});
+
+
 });
 
 
