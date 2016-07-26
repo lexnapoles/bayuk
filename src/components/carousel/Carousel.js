@@ -22,8 +22,9 @@ class Carousel extends Component {
 						</IconStack>
 					</button>
 				</div>
-				<img styleName="image" src="http://placekitten.com/700/700" alt="kitty"/>
-				{this.pictureToShow()}
+				<div styleName="image" >
+					{this.pictureToShow()}
+				</div>
 			</div>
 		);
 	}

@@ -3,7 +3,7 @@ import CSSModules from "react-css-modules";
 import styles from "./productDetails.css";
 
 import ProductDetailsHeader from "./productDetailsHeader/ProductDetailsHeader";
-
+import Carousel from "../../carousel/Carousel";
 class ProductDetails extends Component {
 	render() {
 		return (
@@ -11,7 +11,10 @@ class ProductDetails extends Component {
 				<ProductDetailsHeader/>
 				<main styleName="container">
 					<section >
-						<img src="http://placehold.it/500x500"/>
+						<Carousel>
+							<img src="http://placehold.it/500x500"/>
+						</Carousel>
+
 					</section>
 
 					<section>
