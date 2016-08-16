@@ -1,0 +1,29 @@
+.container {
+	composes: container from "../../layout.css";
+	align-items: center;
+	padding: 2em;
+}
+
+.container section {
+	margin-bottom: 1em;
+	padding: 1em;
+}
+
+.carousel {
+	width: 100%;
+}
+
+@media (min-width: 800px) {
+	.carousel {
+		width: 55%;
+		min-width: 500px;
+	}
+}
+
+@media (min-width: 1500px) {
+	.carousel {
+		width: 40%;
+		min-width: 500px;
+	}
+}
+
