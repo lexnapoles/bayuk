@@ -18,6 +18,11 @@
     "react"
   ],
 
+  "globals": {
+    "assert": true,
+    "sinon": true
+  },
+
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended"

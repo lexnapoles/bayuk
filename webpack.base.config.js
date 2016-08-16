@@ -1,4 +1,5 @@
-var path = require("path");
+var path         = require("path"),
+		autoprefixer = require('autoprefixer');
 
 var DIST_DIR   = path.join(__dirname, "dist"),
 		CLIENT_DIR = path.join(__dirname, "src");
@@ -16,34 +17,46 @@ module.exports = {
 	module: {
 		preLoaders: [
 			{
-				test:    /\.jsx?$/,
+				test:    /\.js$/,
 				exclude: /node_modules/,
-				loader:  "eslint-loader"
+				loader:  "eslint"
 			}
 		],
 
 		loaders: [
 			{
-				test:    /\.jsx?$/,
+				test:    /\.js$/,
 				exclude: /node_modules/,
-				loader:  "babel-loader"
+				loader:  "babel"
+			},
+
+			{
+				test:    /\.css$/,
+				exclude: /src/,
+				loader:  "style!css!postcss"
 			},
 
 			{
 				test:    /\.css$/,
 				exclude: /node_modules/,
-				loader:  "style-loader!css-loader!autoprefixer-loader"
+				loader:  "style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss"
 			},
 
 			{
-				test:    /\.(png|jpg|ttf|eot)$/,
-				exclude: /node_modules/,
-				loader:  "url-loader?limit=10000"
+				test:   /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				loader: "url?limit=10000&mimetype=application/font-woff"
+			},
+
+			{
+				test:   /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				loader: "file"
 			}
 		]
 	},
 
+	postcss: [autoprefixer({browsers: ['last 2 versions']})],
+
 	resolve: {
-		extensions: ['', '.js', '.jsx']
+		extensions: ['', '.js']
 	}
 };

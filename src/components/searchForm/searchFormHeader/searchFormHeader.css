@@ -1,0 +1,14 @@
+.returnIcon {
+	color: black;
+	text-align: left;
+}
+
+.check {
+	flex: 1;
+	text-align: right;
+}
+
+.checkButton {
+	border: none;
+	background: none;
+}

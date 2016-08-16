@@ -1,18 +1,27 @@
 // Karma configuration
 // Generated on Tue Mar 01 2016 00:50:12 GMT+0100 (Hora estándar romance)
 var webpackConfig = require("./webpack.base.config.js");
+
 webpackConfig.entry = {};
+webpackConfig.devtool = "inline-source-map";
+webpackConfig.externals = {
+	"cheerio":                        "window",
+	"react/addons":                   true,
+	"react/lib/ExecutionEnvironment": true,
+	"react/lib/ReactContext":         true
+
+};
 
 module.exports = function (config) {
 	config.set({
 
 		// base path that will be used to resolve all patterns (eg. files, exclude)
-		basePath: '',
+		basePath: "",
 
 
 		// frameworks to use
 		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-		frameworks: ['mocha'],
+		frameworks: ['mocha', "chai", "sinon"],
 
 
 		// list of files / patterns to load in the browser
@@ -37,7 +46,7 @@ module.exports = function (config) {
 		// test results reporter to use
 		// possible values: 'dots', 'progress'
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
-		reporters: ['progress'],
+		reporters: ["progress"],
 
 
 		// web server port

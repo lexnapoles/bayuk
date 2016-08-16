@@ -1,0 +1,28 @@
+
+.formContainer{
+	composes: container from "../layout.css";
+}
+
+.searchForm {
+	composes: container from "../layout.css";
+	padding: 2em;
+}
+
+@media (min-width: 600px) {
+	.searchForm {
+		width: 80%;
+		padding: 2em;
+	}
+
+	.formContainer {
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+@media (min-width: 1000px) {
+	.searchForm {
+		width: 50%;
+		padding: 2em;
+	}
+}

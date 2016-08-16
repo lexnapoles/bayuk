@@ -1,0 +1,17 @@
+.header {
+	padding: 1em;
+	background: #FFE981;
+}
+
+.nav {
+	display: flex;
+}
+
+.logo {
+	flex: 1;
+	text-align: center;
+}
+
+.searchIcon {
+	color: black;
+}

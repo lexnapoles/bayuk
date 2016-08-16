@@ -1,0 +1,10 @@
+.container {
+	display: flex;
+	flex-flow: row nowrap;
+	margin-bottom: 1em;
+}
+
+.title {
+	flex: 1;
+}
+
