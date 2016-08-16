@@ -6,4 +6,9 @@
 
 .container section {
 	margin-bottom: 1em;
+	padding: 1em;
+}
+
+.carousel {
+	width: 40%;
 }

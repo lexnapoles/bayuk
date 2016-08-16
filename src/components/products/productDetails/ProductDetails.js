@@ -3,18 +3,20 @@ import CSSModules from "react-css-modules";
 import styles from "./productDetails.css";
 
 import ProductDetailsHeader from "./productDetailsHeader/ProductDetailsHeader";
-import Carousel from "../../carousel/Carousel";
+import Carousel from "nuka-carousel";
+
 class ProductDetails extends Component {
 	render() {
 		return (
 			<div>
 				<ProductDetailsHeader/>
 				<main styleName="container">
-					<section >
+					<section styleName="carousel">
 						<Carousel>
-							<img src="http://placehold.it/500x500"/>
+							<img src="http://placehold.it/200x200"/>
+							<img src="http://placekitten.com/500/500"/>
+							<img src="http://placehold.it/200x200"/>
 						</Carousel>
-
 					</section>
 
 					<section>
