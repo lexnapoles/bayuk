@@ -4,18 +4,19 @@
 	padding: 2em;
 }
 
+
 .productLayout {
 	margin: 0 auto 1em auto;
-	padding: 1em;
 }
 
 .productInfo {
-	composes: productLayout;
+	composes: productLayout container;
 	width: 70%;
 }
 
 .carousel {
 	composes:productLayout;
+	padding: 1em;
 	width: 80%;
 }
 
