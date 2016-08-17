@@ -10,7 +10,6 @@
 .productDetails {
 	composes: productDetailsContainer;
 	align-items: center;
-	padding: 2em;
 }
 
 .productLayout {
@@ -19,17 +18,18 @@
 
 .productInfo {
 	composes: productLayout productInfoContainer;
-	padding: 2em;
 	width: 70%;
 }
 
 .productInfo section {
-	margin-bottom: 5em;
+	margin-bottom: 3em;
 }
 
 .carousel {
 	composes:productLayout;
+	align-self: flex-start;
 	padding: 1em;
+	margin: 3em auto 3em auto;
 	width: 80%;
 }
 
@@ -57,6 +57,15 @@
 
 	.productDetailsContainer {
 		flex-flow: row nowrap;
+	}
+
+	.productDetails {
+		padding: 5em;
+	}
+
+	.carousel {
+		margin: 0 1em 0 0;
+		padding: 0;
 	}
 }
 

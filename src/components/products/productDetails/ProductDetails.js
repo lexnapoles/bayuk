@@ -41,7 +41,7 @@ class ProductDetails extends Component {
 
 						<section styleName="geolocation">
 							<img styleName="map"
-									src="http://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x350&sensor=false&markers=51.455041,-0.9690884&scale=2"/>
+									src="http://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x100&sensor=false&markers=51.455041,-0.9690884&scale=2"/>
 						</section>
 
 						<section>
