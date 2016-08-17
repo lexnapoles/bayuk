@@ -19,7 +19,7 @@ class ProductDetails extends Component {
 						</Carousel>
 					</section>
 
-					<section>
+					<section styleName="productInfo">
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum sed ligula sed sollicitudin.
 						Nullam fringilla diam eget lorem auctor hendrerit. Phasellus in nunc at nisi maximus volutpat.
 						Vivamus pellentesque est eu enim tempor dignissim et nec arcu. Proin sed faucibus odio. Maecenas ac euismod
@@ -36,11 +36,11 @@ class ProductDetails extends Component {
 						Suspendisse ac purus sit amet dui varius mattis at eu tortor.
 					</section>
 
-					<section>
+					<section styleName="productInfo">
 						Geolocation
 					</section>
 
-					<section>
+					<section styleName="productInfo">
 						User
 					</section>
 				</main>

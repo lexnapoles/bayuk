@@ -4,23 +4,29 @@
 	padding: 2em;
 }
 
-.container section {
-	margin-bottom: 1em;
+.productLayout {
+	margin: 0 auto 1em auto;
 	padding: 1em;
 }
 
+.productInfo {
+	composes: productLayout;
+	width: 70%;
+}
+
 .carousel {
-	width: 100%;
+	composes:productLayout;
+	width: 80%;
 }
 
 @media (min-width: 800px) {
 	.carousel {
-		width: 55%;
+		width: 50%;
 		min-width: 500px;
 	}
 }
 
-@media (min-width: 1500px) {
+@media (min-width: 1200px) {
 	.carousel {
 		width: 40%;
 		min-width: 500px;
