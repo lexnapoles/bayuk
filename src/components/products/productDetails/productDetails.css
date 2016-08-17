@@ -1,16 +1,24 @@
-.container {
+.productDetailsContainer {
 	composes: container from "../../layout.css";
+}
+
+.productInfoContainer {
+	composes: container from "../../layout.css";
+}
+
+.productDetails {
+	composes: productDetailsContainer;
 	align-items: center;
 	padding: 2em;
 }
-
 
 .productLayout {
 	margin: 0 auto 1em auto;
 }
 
 .productInfo {
-	composes: productLayout container;
+	composes: productLayout productInfoContainer;
+	padding: 2em;
 	width: 70%;
 }
 
@@ -31,6 +39,10 @@
 	.carousel {
 		width: 40%;
 		min-width: 500px;
+	}
+
+	.productDetailsContainer {
+		flex-flow: row nowrap;
 	}
 }
 

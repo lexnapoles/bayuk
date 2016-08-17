@@ -10,7 +10,7 @@ class ProductDetails extends Component {
 		return (
 			<div>
 				<ProductDetailsHeader/>
-				<main styleName="container">
+				<main styleName="productDetails">
 					<section styleName="carousel">
 						<Carousel>
 							<img src="http://placehold.it/200x200"/>
