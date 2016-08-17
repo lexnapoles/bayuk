@@ -39,8 +39,9 @@ class ProductDetails extends Component {
 							Suspendisse ac purus sit amet dui varius mattis at eu tortor.
 						</section>
 
-						<section>
-							Geolocation
+						<section styleName="geolocation">
+							<img styleName="map"
+									src="http://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x350&sensor=false&markers=51.455041,-0.9690884&scale=2"/>
 						</section>
 
 						<section>
@@ -50,8 +51,6 @@ class ProductDetails extends Component {
 				</main>
 			</div>
 		);
-
-
 	}
 }
 
