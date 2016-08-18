@@ -20,49 +20,9 @@
 	composes: productInfoContainer;
 }
 
-.productInfo section {
-	margin-top: 2em;
-}
-
 .carousel {
 	width: 100%;
 	align-self: flex-start;
-}
-
-.description {
-	padding: 1em;
-}
-
-.geolocation {
-	text-align: center;
-}
-
-.map {
-	width: 100%;
-	height: auto;
-}
-
-.user {
-	padding: 1em;
-	text-align: center;
-}
-
-.userImage {
-	width: 100px;
-	height:100px;
-	margin-bottom: 0.5em;
-	border-radius: 50%;
-}
-
-.rating {
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: center;
-	margin-top: 1em;
-}
-
-.rating span  {
-	margin-right: 0.5em;
 }
 
 @media (min-width: 1024px) {
