@@ -4,9 +4,9 @@ import styles from "./productDetails.css";
 
 import ProductDetailsHeader from "./productDetailsHeader/ProductDetailsHeader";
 import Carousel from "nuka-carousel";
-import ProductDescription from "./productDescription/ProductDescription";
-import Geolocation from "./geolocation/Geolocation";
-import Icon from "react-fa";
+import Description from "./productDescription/ProductDescription";
+import GeolocationInfo from "./geolocationInfo/GeolocationInfo";
+import UserInfo from "./userInfo/UserInfo";
 
 class ProductDetails extends Component {
 	render() {
@@ -15,30 +15,18 @@ class ProductDetails extends Component {
 				<ProductDetailsHeader/>
 				<main styleName="productDetails">
 					<section styleName="carousel">
-						<Carousel>
+						<Carousel styleName="carousel">
 							<img src="http://placehold.it/200x200"/>
 							<img src="http://placekitten.com/500/500"/>
 							<img src="http://placehold.it/200x200"/>
 						</Carousel>
 					</section>
 
-					<div styleName="productInfo">
-						<ProductDescription />
-						<Geolocation/>
-
-						<section styleName="user">
-							<img styleName="userImage" width="100" height="100"
-								src="http://www.publicdomainpictures.net/pictures/20000/velka/women-face.jpg" alt="userPic"/>
-							<p>John McStar</p>
-							<div styleName="rating">
-								<Icon name="star" size="lg"/>
-								<Icon name="star" size="lg"/>
-								<Icon name="star" size="lg"/>
-								<Icon name="star-half-empty" size="lg"/>
-								<Icon name="star-o" size="lg"/>
-							</div>
-						</section>
-					</div>
+					<section styleName="productInfo">
+						<Description />
+						<GeolocationInfo/>
+						<UserInfo/>
+					</section>
 				</main>
 			</div>
 		);

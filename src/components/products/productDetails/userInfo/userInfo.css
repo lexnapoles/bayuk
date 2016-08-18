@@ -1,0 +1,22 @@
+.container {
+	padding: 1em;
+	text-align: center;
+}
+
+.userImage {
+	width: 100px;
+	height:100px;
+	margin-bottom: 0.5em;
+	border-radius: 50%;
+}
+
+.rating {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	margin-top: 1em;
+}
+
+.rating span  {
+	margin-right: 0.5em;
+}
