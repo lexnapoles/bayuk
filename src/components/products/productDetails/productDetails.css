@@ -2,30 +2,19 @@
 	composes: container from "../../layout.css";
 }
 
-.productDetailsContainer {
-	composes: container;
-}
-
-.productInfoContainer {
-	composes: container;
-	align-self: flex-start;
-}
-
-.productDetails {
-	composes: productDetailsContainer;
-	align-items: center;
-}
-
-.productInfo {
-	composes: productInfoContainer;
+.info {
+	composes: container from "../../layout.css";
 }
 
 .carousel {
 	width: 100%;
-	align-self: flex-start;
 }
 
 @media (min-width: 1024px) {
+	.container {
+		flex-flow: row nowrap;
+	}
+
 	.carousel {
 		border: 2px solid lightgrey;
 		border-radius: 10px;
@@ -34,8 +23,5 @@
 		margin: 3em auto 3em auto;
 	}
 
-	.productDetailsContainer {
-		flex-flow: row nowrap;
-	}
 }
 
