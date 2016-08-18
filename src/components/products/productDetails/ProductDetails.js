@@ -5,6 +5,7 @@ import styles from "./productDetails.css";
 import ProductDetailsHeader from "./productDetailsHeader/ProductDetailsHeader";
 import Carousel from "nuka-carousel";
 import ProductDescription from "./productDescription/ProductDescription";
+import Geolocation from "./geolocation/Geolocation";
 import Icon from "react-fa";
 
 class ProductDetails extends Component {
@@ -23,12 +24,8 @@ class ProductDetails extends Component {
 
 					<div styleName="productInfo">
 						<ProductDescription />
-						<section styleName="geolocation">
-							<img styleName="map"
-								src="https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap
-&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318
-&markers=color:red%7Clabel:C%7C40.718217,-73.998284"/>
-						</section>
+						<Geolocation/>
+
 						<section styleName="user">
 							<img styleName="userImage" width="100" height="100"
 								src="http://www.publicdomainpictures.net/pictures/20000/velka/women-face.jpg" alt="userPic"/>

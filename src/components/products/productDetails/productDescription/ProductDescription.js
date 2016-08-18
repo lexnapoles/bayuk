@@ -1,9 +1,9 @@
 import React from 'react';
-import {description} from "./productDescription.css";
+import {container} from "./productDescription.css";
 
 const ProductDescription = () => {
 	return (
-		<div className={description}>
+		<div className={container}>
 			Lorem ipsum dolor sit amet, cosectetur adipiscing elit. Aliquam elementum sed ligula sed sollicitudin.
 			Nullam fringilla diam eget lorem auctor hendrerit. Phasellus in nunc at nisi maximus volutpat.
 			Vivamus pellentesque est eu enim tempor dignissim et nec arcu. Proin sed faucibus odio. Maecenas ac
