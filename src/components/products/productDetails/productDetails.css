@@ -20,17 +20,9 @@
 	composes: productInfoContainer;
 }
 
-.productInfo section {
-	margin-top: 2em;
-}
-
 .carousel {
 	width: 100%;
 	align-self: flex-start;
-}
-
-.description {
-	padding: 1em;
 }
 
 .geolocation {
