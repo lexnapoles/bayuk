@@ -4,6 +4,7 @@ import styles from "./productDetails.css";
 
 import ProductDetailsHeader from "./productDetailsHeader/ProductDetailsHeader";
 import Carousel from "nuka-carousel";
+import Icon from "react-fa";
 
 class ProductDetails extends Component {
 	render() {
@@ -20,7 +21,7 @@ class ProductDetails extends Component {
 					</section>
 
 					<div styleName="productInfo">
-						<section>
+						<section styleName="description">
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum sed ligula sed sollicitudin.
 							Nullam fringilla diam eget lorem auctor hendrerit. Phasellus in nunc at nisi maximus volutpat.
 							Vivamus pellentesque est eu enim tempor dignissim et nec arcu. Proin sed faucibus odio. Maecenas ac
@@ -44,8 +45,16 @@ class ProductDetails extends Component {
 									src="http://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x100&sensor=false&markers=51.455041,-0.9690884&scale=2"/>
 						</section>
 
-						<section>
-							User
+						<section styleName="user">
+							<img styleName="userImage" width="100" height="100" src="http://www.publicdomainpictures.net/pictures/20000/velka/women-face.jpg" alt="userPic"/>
+							<p>John McStar</p>
+							<div styleName="rating">
+								<Icon name="star" size="lg"/>
+								<Icon name="star" size="lg"/>
+								<Icon name="star" size="lg"/>
+								<Icon name="star-half-empty" size="lg"/>
+								<Icon name="star-o" size="lg"/>
+							</div>
 						</section>
 					</div>
 				</main>

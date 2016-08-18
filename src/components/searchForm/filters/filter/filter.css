@@ -1,15 +1,14 @@
 .filter {
-	padding: 1em;
+	composes: well from "../../../global.css";
 	margin-bottom: 2em;
-	border: 2px solid lightgrey;
-	border-radius: 10px;
+	padding: 1em;
+}
+
+.filter hr {
+	margin-bottom: 1em;
 }
 
 .label {
 	display: block;
 	margin-bottom: 5px;
-}
-
-.filter hr {
-	margin-bottom: 1em;
 }

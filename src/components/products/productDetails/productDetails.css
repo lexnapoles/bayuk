@@ -1,10 +1,19 @@
+.container {
+	composes: container from "../../layout.css"
+}
+
+.well {
+	composes: well from "../../global.css"
+}
+
 .productDetailsContainer {
-	composes: container from "../../layout.css";
-	height: 100%;
+	composes: container;
 }
 
 .productInfoContainer {
-	composes: container from "../../layout.css";
+	composes: container;
+	align-self: flex-start;
+
 }
 
 .productDetails {
@@ -26,20 +35,50 @@
 }
 
 .carousel {
-	composes:productLayout;
+	composes: well;
 	align-self: flex-start;
 	padding: 1em;
 	margin: 3em auto 3em auto;
 	width: 80%;
 }
 
+.description {
+	composes: well;
+	padding: 1em;
+}
+
 .geolocation {
+	composes: well;
 	text-align: center;
 }
 
 .map {
 	width: 100%;
 	height: auto;
+}
+
+.user {
+	composes: well;
+	padding: 1em;
+	text-align: center;
+}
+
+.userImage {
+	width: 100px;
+	height:100px;
+	margin-bottom: 0.5em;
+	border-radius: 50%;
+}
+
+.rating {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	margin-top: 1em;
+}
+
+.rating  span  {
+	margin-right: 0.5em;
 }
 
 @media (min-width: 800px) {

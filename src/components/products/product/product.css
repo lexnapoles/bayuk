@@ -1,8 +1,7 @@
 .product {
+	composes: well from "../../global.css";
 	text-align: center;
-	padding: 1em;
-	border: 1px solid #8c8c8c;
-	border-radius: 20px;
-	margin-top: 20px;
+	padding-bottom: 1em;
+	margin-left: 0.5em;
+	margin-bottom: 1em;
 }
-
