@@ -2,9 +2,9 @@ import React from 'react';
 import {container, userImage, rating} from "./userInfo.css";
 import Icon from "react-fa";
 
-const UserInfo = () => {
+const UserInfo = ({className, style}) => {
 	return (
-		<div className={container}>
+		<div className={`${container} ${className}`} style={style}>
 			<img className={userImage} width="100" height="100"
 				src="http://www.publicdomainpictures.net/pictures/20000/velka/women-face.jpg" alt="userPic"/>
 			<p>John McStar</p>
@@ -19,7 +19,14 @@ const UserInfo = () => {
 	);
 };
 
-UserInfo.propTypes = {};
-UserInfo.defaultProps = {};
+UserInfo.propTypes = {
+	style:            React.PropTypes.object,
+	className: React.PropTypes.string
+};
+
+UserInfo.defaultProps = {
+	style:            {},
+	className: ""
+};
 
 export default UserInfo;
