@@ -1,9 +1,5 @@
 .container {
-	composes: container from "../../layout.css"
-}
-
-.well {
-	composes: well from "../../global.css"
+	composes: container from "../../layout.css";
 }
 
 .productDetailsContainer {
@@ -13,7 +9,6 @@
 .productInfoContainer {
 	composes: container;
 	align-self: flex-start;
-
 }
 
 .productDetails {
@@ -21,34 +16,24 @@
 	align-items: center;
 }
 
-.productLayout {
-	margin: 0 auto 1em auto;
-}
-
 .productInfo {
-	composes: productLayout productInfoContainer;
-	width: 70%;
+	composes: productInfoContainer;
 }
 
 .productInfo section {
-	margin-bottom: 3em;
+	margin-top: 2em;
 }
 
 .carousel {
-	composes: well;
+	width: 100%;
 	align-self: flex-start;
-	padding: 1em;
-	margin: 3em auto 3em auto;
-	width: 80%;
 }
 
 .description {
-	composes: well;
 	padding: 1em;
 }
 
 .geolocation {
-	composes: well;
 	text-align: center;
 }
 
@@ -58,7 +43,6 @@
 }
 
 .user {
-	composes: well;
 	padding: 1em;
 	text-align: center;
 }
@@ -77,34 +61,26 @@
 	margin-top: 1em;
 }
 
-.rating  span  {
+.rating span  {
 	margin-right: 0.5em;
 }
 
-@media (min-width: 800px) {
-	.carousel {
-		width: 50%;
-		min-width: 500px;
+@media (min-width: 1024px) {
+	.carousel, .description, .geolocation, .user {
+		border: 2px solid lightgrey;
+		border-radius: 10px;
 	}
-}
 
-@media (min-width: 1200px) {
 	.carousel {
 		width: 40%;
 		min-width: 500px;
+		margin: 3em auto 3em auto;
 	}
+
 
 	.productDetailsContainer {
 		flex-flow: row nowrap;
 	}
 
-	.productDetails {
-		padding: 5em;
-	}
-
-	.carousel {
-		margin: 0 1em 0 0;
-		padding: 0;
-	}
 }
 
