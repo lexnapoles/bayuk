@@ -26,21 +26,16 @@
 }
 
 @media (min-width: 1024px) {
-	.carousel, .description, .geolocation, .user {
+	.carousel {
 		border: 2px solid lightgrey;
 		border-radius: 10px;
-	}
-
-	.carousel {
 		width: 40%;
 		min-width: 500px;
 		margin: 3em auto 3em auto;
 	}
 
-
 	.productDetailsContainer {
 		flex-flow: row nowrap;
 	}
-
 }
 

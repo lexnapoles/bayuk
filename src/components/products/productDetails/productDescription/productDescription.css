@@ -1,3 +1,11 @@
 .container {
 	padding: 1em;
 }
+
+@media (min-width: 1024px) {
+	.container {
+		border: 2px solid lightgrey;
+		border-radius: 10px;
+	}
+}
+
