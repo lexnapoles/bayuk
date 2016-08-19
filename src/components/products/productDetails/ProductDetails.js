@@ -23,8 +23,10 @@ class ProductDetails extends Component {
 					</section>
 
 					<section styleName="info">
-						<Description />
+						<Description/>
+						<hr/>
 						<GeolocationInfo/>
+						<hr/>
 						<UserInfo/>
 					</section>
 				</main>
