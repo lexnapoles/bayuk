@@ -11,9 +11,10 @@ import UserInfo from "./userInfo/UserInfo";
 class ProductDetails extends Component {
 	render() {
 		return (
-			<div>
+			<div styleName="container">
 				<ProductDetailsHeader/>
-				<main styleName="container">
+
+				<main styleName="productContainer">
 					<section styleName="carousel">
 						<Carousel styleName="carousel">
 							<img src="http://placehold.it/200x200"/>

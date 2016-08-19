@@ -2,8 +2,12 @@
 	composes: container from "../../layout.css";
 }
 
+.productContainer {
+	composes: container;
+}
+
 .info {
-	composes: container from "../../layout.css";
+	composes: container;
 }
 
 .carousel {
@@ -31,16 +35,17 @@
 }
 
 @media (min-width: 1024px) {
-	.container {
+	.productContainer {
 		flex-flow: row nowrap;
 	}
 
+	.line {
+		display: none;
+	}
+
 	.carousel {
-		border: 2px solid lightgrey;
-		border-radius: 10px;
 		width: 40%;
 		min-width: 500px;
-		margin: 3em auto 3em auto;
 	}
 }
 
