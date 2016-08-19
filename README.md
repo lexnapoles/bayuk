@@ -4,6 +4,7 @@ to make a real SPA using (among other things):
   
   * React
   * Flux/Redux
+  * React-router
   * Responsive design
 
   
