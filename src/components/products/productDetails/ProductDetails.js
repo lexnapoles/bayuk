@@ -13,10 +13,9 @@ class ProductDetails extends Component {
 		return (
 			<div styleName="container">
 				<ProductDetailsHeader/>
-
 				<main styleName="productContainer">
 					<section styleName="carousel">
-						<Carousel styleName="carousel">
+						<Carousel>
 							<img src="http://placehold.it/200x200"/>
 							<img src="http://placekitten.com/500/500"/>
 							<img src="http://placehold.it/200x200"/>

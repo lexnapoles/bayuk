@@ -10,10 +10,6 @@
 	composes: container;
 }
 
-.carousel {
-	width: 100%;
-}
-
 .lineStyle {
 	margin: 5em 0;
 	border: 0;
@@ -27,25 +23,22 @@
 }
 
 
-@media (min-device-width: 768px) {
-	.line {
-		border-top: 1px solid rgba(0, 0, 0, 0.1);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-	}
-}
-
 @media (min-width: 1024px) {
 	.productContainer {
 		flex-flow: row nowrap;
+		padding: 10em 10em;
 	}
 
 	.line {
 		display: none;
 	}
 
+	.info {
+		flex: 1;
+	}
+
 	.carousel {
-		width: 40%;
-		min-width: 500px;
+		width: 50%;
 	}
 }
 
