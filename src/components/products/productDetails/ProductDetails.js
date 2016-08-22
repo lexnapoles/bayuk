@@ -25,7 +25,7 @@ class ProductDetails extends Component {
 					<section styleName="info">
 						<Description/>
 						<hr styleName="line"/>
-						<GeolocationInfo/>
+						<GeolocationInfo styleName="map"/>
 						<hr styleName="line"/>
 						<UserInfo/>
 					</section>

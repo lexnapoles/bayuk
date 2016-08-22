@@ -35,6 +35,11 @@
 
 	.info {
 		flex: 1;
+		margin-left: 1em;
+	}
+
+	.map {
+		margin: 3em 0;
 	}
 
 	.carousel {
