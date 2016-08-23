@@ -26,7 +26,7 @@
 @media (min-width: 1024px) {
 	.productContainer {
 		flex-flow: row nowrap;
-		padding: 10em 10em;
+		padding: 10em;
 	}
 
 	.line {
@@ -35,11 +35,16 @@
 
 	.info {
 		flex: 1;
-		margin-left: 1em;
+		margin-left: 2em;
+	}
+
+	.infoSection {
+		border: 1px black solid;
 	}
 
 	.map {
-		margin: 3em 0;
+		composes: infoSection;
+		margin: 2em 0;
 	}
 
 	.carousel {

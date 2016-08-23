@@ -33,7 +33,7 @@ ProductDescription.propTypes = {
 };
 
 ProductDescription.defaultProps = {
-	style:            {},
+	style:     {},
 	className: ""
 };
 

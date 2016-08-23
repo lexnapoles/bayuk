@@ -17,17 +17,18 @@ class ProductDetails extends Component {
 					<section styleName="carousel">
 						<Carousel>
 							<img src="http://placehold.it/200x200"/>
-							<img src="http://placekitten.com/500/500"/>
+							<img src="http://placekitten.com/500/1000"/>
+							<img src="http://placekitten.com/500/900"/>
 							<img src="http://placehold.it/200x200"/>
 						</Carousel>
 					</section>
 
 					<section styleName="info">
-						<Description/>
+						<Description styleName="infoSection"/>
 						<hr styleName="line"/>
 						<GeolocationInfo styleName="map"/>
 						<hr styleName="line"/>
-						<UserInfo/>
+						<UserInfo styleName="infoSection"/>
 					</section>
 				</main>
 			</div>
