@@ -82,6 +82,7 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-fa": "^4.0.1",
+    "react-image-gallery": "^0.6.10",
     "react-router": "^2.4.1"
   },
   "engines": {
