@@ -1,5 +1,6 @@
 .container{
 	width: fit-content;
+	overflow: hidden;
 }
 
 .map  {

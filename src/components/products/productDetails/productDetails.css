@@ -30,7 +30,9 @@
 @media (min-width: 1024px) {
 	.productContainer {
 		flex-flow: row nowrap;
-		padding: 10em;
+		align-self: center;
+		max-width: 80%;
+		padding: 5em 0;
 	}
 
 	.line {
@@ -43,7 +45,10 @@
 	}
 
 	.infoSection {
-		border: 1px black solid;
+		border: 1px grey solid;
+		border-radius: 3%;
+		box-shadow: 2px 2px 5px grey;
+
 	}
 
 	.map {
@@ -52,8 +57,15 @@
 	}
 
 	.carousel {
+		box-shadow: 3px 3px 5px grey;
 		width: 50%;
 		align-self: center;
+	}
+}
+
+@media (min-width: 1440px) {
+	.productContainer {
+		max-width: 50%;
 	}
 }
 
