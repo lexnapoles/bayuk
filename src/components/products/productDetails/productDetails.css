@@ -10,6 +10,10 @@
 	composes: container;
 }
 
+.carousel {
+	width: 100%;
+}
+
 .lineStyle {
 	margin: 5em 0;
 	border: 0;
