@@ -1,0 +1,10 @@
+.container{
+	width: fit-content;
+	overflow: hidden;
+}
+
+.map  {
+	max-width: 100%;
+	height: auto;
+	vertical-align: bottom;
+}

@@ -2,19 +2,10 @@
 
 .container {
 	display: flex;
-	flex-direction: column;
+	flex-flow: column nowrap;
 }
 
 .main {
 	flex: 1;
 	padding: 2em;
-}
-
-.header {
-	padding: 1em;
-	background: #FFE981;
-}
-
-.nav {
-	display: flex;
 }

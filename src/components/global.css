@@ -7,3 +7,8 @@ html {
 	padding: 0;
 	margin: 0;
 }
+
+.well {
+	border: 2px solid lightgrey;
+	border-radius: 10px;
+}
