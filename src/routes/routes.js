@@ -18,8 +18,8 @@ class Routes extends Component {
 	render() {
 		return (
 			<Provider store={store}>
-			{routes}
-		</Provider>
+				{routes}
+			</Provider>
 		);
 	}
 }

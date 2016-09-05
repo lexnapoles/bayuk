@@ -14,11 +14,11 @@ class ProductDetails extends Component {
 			<div styleName="container">
 				<ProductDetailsHeader/>
 				<main styleName="productContainer">
-						<Carousel styleName="carousel">
-							<img src="http://placehold.it/200x200?text=slide1"/>
-							<img src="http://placehold.it/200x200?text=slide2"/>
-							<img src="http://placehold.it/200x200?text=slide3"/>
-						</Carousel>
+					<Carousel styleName="carousel">
+						<img src="http://placehold.it/200x200?text=slide1"/>
+						<img src="http://placehold.it/200x200?text=slide2"/>
+						<img src="http://placehold.it/200x200?text=slide3"/>
+					</Carousel>
 
 					<section styleName="info">
 						<Description styleName="infoSection"/>
