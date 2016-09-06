@@ -2,10 +2,13 @@ import "file?name=index.html!./index.html";
 import "normalize.css/normalize.css";
 import React from "react";
 import {render} from "react-dom";
-import Routes from "./routes/Routes";
+import configureStore from "./store/configureStore";
+import Root from "./components/Root/Root";
 
 if (module.hot) {
 	module.hot.accept();
 }
 
-render(<Routes/>, document.querySelector(".app"));
+const store = configureStore();
+
+render(<Root store={store}/>, document.querySelector(".app"));
