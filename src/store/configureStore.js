@@ -42,4 +42,8 @@ const initialState = {
 	]
 }
 
-export default createStore(reducer, initialState);
+const configureStore = () => {
+	return createStore(reducer, initialState);
+}
+
+export default configureStore;
