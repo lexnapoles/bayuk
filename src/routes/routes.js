@@ -10,7 +10,7 @@ const routes = (
 	<Router history={browserHistory}>
 		<Route path="/" component={App}/>
 		<Route path="search" component={SearchFormContainer}/>
-		<Route path="product" component={ProductDetails}/>
+		<Route path="product/:productId" component={ProductDetails}/>
 	</Router>
 );
 

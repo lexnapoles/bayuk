@@ -7,7 +7,7 @@ class Product extends Component {
 					{product}            = styles;
 
 		return (
-			<div className={product}>
+			<div className={product} onClick={this.props.onClick}>
 				<img src={photo}/>
 				<h2>{price}</h2>
 				<h3>{name}</h3>
@@ -17,7 +17,8 @@ class Product extends Component {
 }
 
 Product.propTypes = {
-	product: React.PropTypes.object.isRequired
+	product: React.PropTypes.object.isRequired,
+	onClick: React.PropTypes.func
 };
 
 export default Product;   

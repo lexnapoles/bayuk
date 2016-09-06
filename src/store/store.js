@@ -25,7 +25,7 @@ const initialState = {
 		{
 			id:          3,
 			photo:       "http://placehold.it/140x100",
-			name:        "Some man's videogame",
+			name:        "Videogame",
 			description: "Videogame for PS4, never used.",
 			category:    "Videogames",
 			price:       50
