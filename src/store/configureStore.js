@@ -7,7 +7,12 @@ const initialState = {
 	products: [
 		{
 			id:          v4(),
-			photo:       "http://placehold.it/140x100",
+			photos:      [
+				"http://placehold.it/140x100",
+				"http://placehold.it/200x200?text=slide1",
+				"http://placehold.it/200x200?text=slide2",
+				"http://placehold.it/200x200?text=slide3"
+			],
 			name:        "Vetusta Morla",
 			description: "Great album of one of the best groups in Spain.",
 			category:    "Music",
@@ -16,7 +21,12 @@ const initialState = {
 
 		{
 			id:          v4(),
-			photo:       "http://placehold.it/140x100",
+			photos:      [
+				"http://placehold.it/140x100",
+				"http://placehold.it/200x200?text=slide1",
+				"http://placehold.it/200x200?text=slide2",
+				"http://placehold.it/200x200?text=slide3"
+			],
 			name:        "Golding",
 			description: "I'm selling this amazing movie, you'll love it.",
 			category:    "Movies",
@@ -25,7 +35,12 @@ const initialState = {
 
 		{
 			id:          v4(),
-			photo:       "http://placehold.it/140x100",
+			photos:      [
+				"http://placehold.it/140x100",
+				"http://placehold.it/200x200?text=slide1",
+				"http://placehold.it/200x200?text=slide2",
+				"http://placehold.it/200x200?text=slide3"
+			],
 			name:        "Videogame",
 			description: "Videogame for PS4, never used.",
 			category:    "Videogames",
@@ -34,7 +49,12 @@ const initialState = {
 
 		{
 			id:          v4(),
-			photo:       "http://placehold.it/140x100",
+			photos:      [
+				"http://placehold.it/140x100",
+				"http://placehold.it/200x200?text=slide1",
+				"http://placehold.it/200x200?text=slide2",
+				"http://placehold.it/200x200?text=slide3"
+			],
 			name:        "Journey",
 			description: "A journey to the wildest lands, I'm the author. Great book, garanteed",
 			category:    "Literature",
