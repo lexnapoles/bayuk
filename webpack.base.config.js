@@ -10,8 +10,9 @@ module.exports = {
 	entry: "./main",
 
 	output: {
-		path:     DIST_DIR,
-		filename: "bundle.js"
+		path:       DIST_DIR,
+		publicPath: "/",
+		filename:   "bundle.js"
 	},
 
 	module: {

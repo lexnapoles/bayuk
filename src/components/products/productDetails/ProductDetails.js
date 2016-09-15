@@ -10,18 +10,23 @@ import UserInfo from "./userInfo/UserInfo";
 
 class ProductDetails extends Component {
 	render() {
+		const {price, name, description} = this.props;
+
 		return (
 			<div styleName="container">
 				<ProductDetailsHeader/>
 				<main styleName="productContainer">
-						<Carousel styleName="carousel">
-							<img src="http://placehold.it/200x200?text=slide1"/>
-							<img src="http://placehold.it/200x200?text=slide2"/>
-							<img src="http://placehold.it/200x200?text=slide3"/>
-						</Carousel>
+					<Carousel styleName="carousel">
+						{this.props.photos}
+					</Carousel>
 
 					<section styleName="info">
-						<Description styleName="infoSection"/>
+						<Description
+							styleName="infoSection"
+							price={price}
+							name={name}
+							description={description}
+							/>
 						<hr styleName="line"/>
 						<GeolocationInfo styleName="map"/>
 						<hr styleName="line"/>
@@ -32,5 +37,14 @@ class ProductDetails extends Component {
 		);
 	}
 }
+
+ProductDetails.propTypes = {
+	name:        React.PropTypes.string.isRequired,
+	photos:      React.PropTypes.array.isRequired,
+	description: React.PropTypes.string.isRequired,
+	price:       React.PropTypes.number.isRequired,
+	onClick:     React.PropTypes.func
+};
+
 
 export default CSSModules(ProductDetails, styles);

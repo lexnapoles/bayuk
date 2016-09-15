@@ -3,12 +3,12 @@ import styles from "./product.css";
 
 class Product extends Component {
 	render() {
-		const {photo, name, price} = this.props.product,
-					{product} = styles;
+		const {photos, name, price} = this.props.product,
+					{product}             = styles;
 
 		return (
-			<div className={product}>
-				<img src={photo}/>
+			<div className={product} onClick={this.props.onClick}>
+				<img src={photos[0]}/>
 				<h2>{price}</h2>
 				<h3>{name}</h3>
 			</div>
@@ -17,7 +17,8 @@ class Product extends Component {
 }
 
 Product.propTypes = {
-	product: React.PropTypes.object.isRequired
+	product: React.PropTypes.object.isRequired,
+	onClick: React.PropTypes.func
 };
 
 export default Product;   

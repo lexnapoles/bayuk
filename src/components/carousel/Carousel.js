@@ -5,7 +5,7 @@ import "react-image-gallery/build/image-gallery.css";
 const Carousel = ({className, style, children}) => {
 	const items = React.Children.toArray(children).map((image) => {
 			return {
-				original: image.props.src,
+				original: image,
 				originalAlt: "product"
 			}
 	});
