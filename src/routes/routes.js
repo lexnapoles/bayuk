@@ -2,13 +2,13 @@ import React from "react";
 import {Router, Route, browserHistory} from "react-router";
 import App from "../components/app/App";
 import SearchFormContainer from "../components/searchForm/SearchFormContainer";
-import ProductDetails from "../components/products/productDetails/ProductDetails";
+import ProductDetailsContainer from "../components/products/productDetails/ProductDetailsContainer";
 
 const routes = (
 	<Router history={browserHistory}>
 		<Route path="/" component={App}/>
 		<Route path="search" component={SearchFormContainer}/>
-		<Route path="product/:productId" component={ProductDetails}/>
+		<Route path="product/:id" component={ProductDetailsContainer}/>
 	</Router>
 );
 

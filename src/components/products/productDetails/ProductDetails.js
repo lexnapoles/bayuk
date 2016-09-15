@@ -15,9 +15,7 @@ class ProductDetails extends Component {
 				<ProductDetailsHeader/>
 				<main styleName="productContainer">
 					<Carousel styleName="carousel">
-						<img src="http://placehold.it/200x200?text=slide1"/>
-						<img src="http://placehold.it/200x200?text=slide2"/>
-						<img src="http://placehold.it/200x200?text=slide3"/>
+						{this.props.photos}
 					</Carousel>
 
 					<section styleName="info">
@@ -32,5 +30,14 @@ class ProductDetails extends Component {
 		);
 	}
 }
+
+ProductDetails.propTypes = {
+	name:        React.PropTypes.string.isRequired,
+	photos:      React.PropTypes.array.isRequired,
+	description: React.PropTypes.string.isRequired,
+	price:       React.PropTypes.number.isRequired,
+	onClick:     React.PropTypes.func
+};
+
 
 export default CSSModules(ProductDetails, styles);

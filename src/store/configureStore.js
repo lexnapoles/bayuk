@@ -61,7 +61,7 @@ const initialState = {
 			price:       500
 		}
 	]
-}
+};
 
 const configureStore = () => {
 	return createStore(reducer, initialState);
