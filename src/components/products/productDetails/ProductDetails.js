@@ -10,6 +10,8 @@ import UserInfo from "./userInfo/UserInfo";
 
 class ProductDetails extends Component {
 	render() {
+		const {price, name, description} = this.props;
+
 		return (
 			<div styleName="container">
 				<ProductDetailsHeader/>
@@ -19,7 +21,12 @@ class ProductDetails extends Component {
 					</Carousel>
 
 					<section styleName="info">
-						<Description styleName="infoSection"/>
+						<Description
+							styleName="infoSection"
+							price={price}
+							name={name}
+							description={description}
+							/>
 						<hr styleName="line"/>
 						<GeolocationInfo styleName="map"/>
 						<hr styleName="line"/>
