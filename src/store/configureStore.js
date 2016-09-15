@@ -8,7 +8,6 @@ const initialState = {
 		{
 			id:          v4(),
 			photos:      [
-				"http://placehold.it/140x100",
 				"http://placehold.it/200x200?text=slide1",
 				"http://placehold.it/200x200?text=slide2",
 				"http://placehold.it/200x200?text=slide3"
@@ -22,7 +21,6 @@ const initialState = {
 		{
 			id:          v4(),
 			photos:      [
-				"http://placehold.it/140x100",
 				"http://placehold.it/200x200?text=slide1",
 				"http://placehold.it/200x200?text=slide2",
 				"http://placehold.it/200x200?text=slide3"
@@ -36,7 +34,6 @@ const initialState = {
 		{
 			id:          v4(),
 			photos:      [
-				"http://placehold.it/140x100",
 				"http://placehold.it/200x200?text=slide1",
 				"http://placehold.it/200x200?text=slide2",
 				"http://placehold.it/200x200?text=slide3"
@@ -50,7 +47,6 @@ const initialState = {
 		{
 			id:          v4(),
 			photos:      [
-				"http://placehold.it/140x100",
 				"http://placehold.it/200x200?text=slide1",
 				"http://placehold.it/200x200?text=slide2",
 				"http://placehold.it/200x200?text=slide3"

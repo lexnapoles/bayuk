@@ -4,7 +4,7 @@ import styles from "./product.css";
 class Product extends Component {
 	render() {
 		const {photos, name, price} = this.props.product,
-					{product}            = styles;
+					{product}             = styles;
 
 		return (
 			<div className={product} onClick={this.props.onClick}>
