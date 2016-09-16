@@ -3,12 +3,15 @@ import {Router, Route, browserHistory} from "react-router";
 import App from "../components/app/App";
 import SearchFormContainer from "../components/searchForm/SearchFormContainer";
 import ProductDetailsContainer from "../components/products/productDetails/ProductDetailsContainer";
+import AddProduct from "../components/products/addProduct/AddProduct";
 
 const routes = (
 	<Router history={browserHistory}>
 		<Route path="/" component={App}/>
 		<Route path="search" component={SearchFormContainer}/>
 		<Route path="product/:id" component={ProductDetailsContainer}/>
+		<Route path="add" component={AddProduct}/>
+
 	</Router>
 );
 

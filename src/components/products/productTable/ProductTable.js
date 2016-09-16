@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {browserHistory} from "react-router";
+import {Link} from "react-router";
 import CSSModules from "react-css-modules";
 import Product from "../product/Product";
 import styles from "./productTable.css";
@@ -22,7 +23,9 @@ class ProductTable extends Component {
 					{this.renderProducts(products)}
 				</div>
 				<div styleName="addButtonContainer">
-					<Icon styleName="addButton" name="plus-circle" size="4x"/>
+					<Link styleName="addButton" to={"/add"}>
+						<Icon name="plus-circle" size="4x"/>
+					</Link>
 				</div>
 			</div>
 		)

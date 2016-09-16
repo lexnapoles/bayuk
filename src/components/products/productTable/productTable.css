@@ -13,8 +13,11 @@
 }
 
 .addButton {
-	display: flex;
-	justify-content: center;
+	text-decoration: none ;
+	color: black;
+	display: block;
+	width: fit-content;
+	margin: 0 auto;
 }
 
 @media (min-width: 580px) {
