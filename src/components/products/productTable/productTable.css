@@ -1,6 +1,12 @@
 .container {
 	display: flex;
 	flex-flow: row wrap;
-	justify-content: space-between;
+	justify-content: center;
 	padding: 3em;
+}
+
+@media (min-width: 580px) {
+	.container {
+		justify-content: space-between;
+	}
 }
