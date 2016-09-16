@@ -1,6 +1,6 @@
 import React from "react";
 import Filter from "./filter/Filter";
-import PriceInput from "../../inputs/PriceInput";
+import PriceInput from "../inputs/PriceInput";
 
 const PriceFilter = ({onChange}) =>
 	<Filter title="Price">

@@ -1,5 +1,5 @@
 .filter {
-	composes: well from "../../../global.css";
+	composes: well from "../../global.css";
 	margin-bottom: 2em;
 	padding: 1em;
 }

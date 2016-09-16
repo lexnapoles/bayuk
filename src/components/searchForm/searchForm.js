@@ -3,9 +3,9 @@ import {container, main} from "../layout.css";
 import styles from "./searchForm.css";
 import CSSModules from "react-css-modules";
 import FormHeader from "../formHeader/FormHeader";
-import NameFilter from "./filters/nameFilter/NameFilter";
-import PriceFilter from "./filters/PriceFilter";
-import CategoryFilter from "./filters/CategoryFilter";
+import NameFilter from "../filters/nameFilter/NameFilter";
+import PriceFilter from "../filters/PriceFilter";
+import CategoryFilter from "../filters/CategoryFilter";
 
 class SearchForm extends Component {
 	render() {
