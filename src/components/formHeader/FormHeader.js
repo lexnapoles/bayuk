@@ -1,10 +1,10 @@
 import React from "react";
-import {check, checkButton} from "./searchFormHeader.css";
+import {check, checkButton} from "./formHeader.css";
 import Icon from "react-fa";
-import Header from "../../header/Header";
-import ReturnIcon from "../../icons/returnIcon/ReturnIcon";
+import Header from "../header/Header";
+import ReturnIcon from "../icons/returnIcon/ReturnIcon";
 
-const SearchHeader = ({formId}) =>
+const FormHeader = ({formId}) =>
 	<Header>
 		<ReturnIcon url="/"/>
 		<div className={check}>
@@ -14,8 +14,8 @@ const SearchHeader = ({formId}) =>
 		</div>
 	</Header>
 
-SearchHeader.propTypes = {
+FormHeader.propTypes = {
 	formId: React.PropTypes.string.isRequired
 }
 
-export default SearchHeader;
+export default FormHeader;
