@@ -5,6 +5,18 @@
 	padding: 3em;
 }
 
+.addButtonContainer {
+	position: fixed;
+	left: 0;
+	bottom: 5%;
+	width: 100%;
+}
+
+.addButton {
+	display: flex;
+	justify-content: center;
+}
+
 @media (min-width: 580px) {
 	.container {
 		justify-content: space-between;
