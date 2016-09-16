@@ -3,12 +3,14 @@ import FormHeader from "../../formHeader/FormHeader";
 
 class AddProduct extends Component {
 	render() {
+		const formName = "addForm";
+
 		return (
 			<div>
-				<FormHeader/>
+				<FormHeader formId={formName}/>
 				<main>
 					<div>
-						<form>
+						<form id={formName}>
 							Add form
 						</form>
 					</div>

@@ -1,16 +1,14 @@
 import React from "react";
-import {check, checkButton} from "./formHeader.css";
-import Icon from "react-fa";
+import {check} from "./formHeader.css";
 import Header from "../header/Header";
 import ReturnIcon from "../icons/returnIcon/ReturnIcon";
+import CheckIcon from "../icons/checkIcon/CheckIcon";
 
 const FormHeader = ({formId}) =>
 	<Header>
 		<ReturnIcon url="/"/>
 		<div className={check}>
-			<button className={checkButton} form={formId}>
-				<Icon name="check" size="lg"/>
-			</button>
+			<CheckIcon formId={formId}/>
 		</div>
 	</Header>
 
