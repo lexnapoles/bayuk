@@ -1,10 +1,10 @@
 import React from "react";
-import Form from "../form/Form";
-import NameFilter from "../filters/nameFilter/NameFilter";
-import PriceFilter from "../filters/PriceFilter";
-import CategoryFilter from "../filters/CategoryFilter";
+import Form from "../../form/Form";
+import NameFilter from "../../filters/nameFilter/NameFilter";
+import PriceFilter from "../../filters/PriceFilter";
+import CategoryFilter from "../../filters/CategoryFilter";
 
-const SearchForm = ({
+const SearchProduct = ({
 	name,
 	categories,
 	submitForm,
@@ -12,14 +12,14 @@ const SearchForm = ({
 	onCategoryChange,
 	onPriceChange
 }) => (
-	<Form formName="searchForm" onSubmit={submitForm}>
+	<Form formName="searchProduct" onSubmit={submitForm}>
 		<NameFilter name={name} placeholder="What are you looking for?" onChange={onNameChange}/>
 		<CategoryFilter categories={categories} onChange={onCategoryChange}/>
 		<PriceFilter onChange={onPriceChange}/>
 	</Form>
 );
 
-SearchForm.propTypes = {
+SearchProduct.propTypes = {
 	name:             React.PropTypes.string.isRequired,
 	categories:       React.PropTypes.object.isRequired,
 	submitForm:       React.PropTypes.func.isRequired,
@@ -28,4 +28,4 @@ SearchForm.propTypes = {
 	onPriceChange:    React.PropTypes.func.isRequired
 };
 
-export default SearchForm;
+export default SearchProduct;

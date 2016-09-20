@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import SearchForm from "./SearchForm";
+import SearchProduct from "./SearchProduct";
 
-class SearchFormContainer extends Component {
+class SearchProductContainer extends Component {
 	constructor(props) {
 		super(props);
 
@@ -47,15 +47,15 @@ class SearchFormContainer extends Component {
 
 	render() {
 		return (
-			<SearchForm
+			<SearchProduct
 				name={this.state.name}
 				categories={this.state.categories}
 				submitForm={this.submitForm}
 				onNameChange={this.onNameChange}
 				onCategoryChange={this.onCategoryChange}
-				onPriceChange={this.onPriceChange} />
+				onPriceChange={this.onPriceChange}/>
 		);
 	}
 }
 
-export default SearchFormContainer;
+export default SearchProductContainer;
