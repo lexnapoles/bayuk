@@ -1,8 +1,10 @@
 import React, {Component} from "react";
+import styles from "./addProduct.css";
+import CSSModules from "react-css-modules";
 import FormHeader from "../../formHeader/FormHeader";
 import NameFilter from "../../filters/nameFilter/NameFilter";
 import CategoryFilter from "../../filters/CategoryFilter";
-import PriceFilter from "../../filters/PriceFilter"
+import Filter from "../../filters/filter/Filter";
 
 class AddProduct extends Component {
 	render() {
@@ -12,13 +14,14 @@ class AddProduct extends Component {
 		return (
 			<div>
 				<FormHeader formId={formName}/>
-				<main>
-					<div>
-						<form id={formName} onSubmit={submitForm}>
-							<NameFilter name={name} onChange={onNameChange}/>
+				<main styleName="main">
+					<div styleName="formContainer">
+						<form id={formName} styleName="form" onSubmit={submitForm}>
+							<NameFilter name={name} placeholder="Product name" onChange={onNameChange}/>
 							<CategoryFilter categories={categories} onChange={onCategoryChange}/>
-							<PriceFilter onChange={onPriceChange}/>
-
+							<Filter title="Price">
+								<input type="number" min="0" placeholder="0" onChange={onPriceChange}/>
+							</Filter>
 						</form>
 					</div>
 				</main>
@@ -37,4 +40,4 @@ AddProduct.propTypes = {
 };
 AddProduct.defaultProps = {};
 
-export default AddProduct;
+export default CSSModules(AddProduct, styles);

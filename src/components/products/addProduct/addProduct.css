@@ -1,9 +1,9 @@
 .container{
-	composes: container from "../layout.css";
+	composes: container from "../../layout.css";
 }
 
 .main{
-	composes: main from "../layout.css";
+	composes: main from "../../layout.css";
 }
 
 .formContainer {

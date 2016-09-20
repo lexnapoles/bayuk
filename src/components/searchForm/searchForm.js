@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {container, main} from "../layout.css";
 import styles from "./searchForm.css";
 import CSSModules from "react-css-modules";
 import FormHeader from "../formHeader/FormHeader";
@@ -13,12 +12,12 @@ class SearchForm extends Component {
 					formName = "searchForm";
 
 		return (
-			<div className={container}>
+			<div styleName="container">
 				<FormHeader formId={formName}/>
-				<main className={main}>
+				<main styleName="main">
 					<div styleName="formContainer">
-						<form id={formName} styleName={formName} onSubmit={submitForm}>
-							<NameFilter name={name} onChange={onNameChange}/>
+						<form id={formName} styleName="form" onSubmit={submitForm}>
+							<NameFilter name={name} placeholder="What are you looking for?" onChange={onNameChange}/>
 							<CategoryFilter categories={categories} onChange={onCategoryChange}/>
 							<PriceFilter onChange={onPriceChange}/>
 						</form>
