@@ -1,32 +1,23 @@
-import React, {Component} from "react";
-import styles from "./searchForm.css";
-import CSSModules from "react-css-modules";
-import FormHeader from "../formHeader/FormHeader";
+import React from "react";
+import Form from "../form/Form";
 import NameFilter from "../filters/nameFilter/NameFilter";
 import PriceFilter from "../filters/PriceFilter";
 import CategoryFilter from "../filters/CategoryFilter";
 
-class SearchForm extends Component {
-	render() {
-		const {name, categories, submitForm, onNameChange, onCategoryChange, onPriceChange} = this.props,
-					formName = "searchForm";
-
-		return (
-			<div styleName="container">
-				<FormHeader formId={formName}/>
-				<main styleName="main">
-					<div styleName="formContainer">
-						<form id={formName} styleName="form" onSubmit={submitForm}>
-							<NameFilter name={name} placeholder="What are you looking for?" onChange={onNameChange}/>
-							<CategoryFilter categories={categories} onChange={onCategoryChange}/>
-							<PriceFilter onChange={onPriceChange}/>
-						</form>
-					</div>
-				</main>
-			</div>
-		);
-	}
-}
+const SearchForm = ({
+	name,
+	categories,
+	submitForm,
+	onNameChange,
+	onCategoryChange,
+	onPriceChange
+}) => (
+	<Form formName="searchForm" onSubmit={submitForm}>
+		<NameFilter name={name} placeholder="What are you looking for?" onChange={onNameChange}/>
+		<CategoryFilter categories={categories} onChange={onCategoryChange}/>
+		<PriceFilter onChange={onPriceChange}/>
+	</Form>
+);
 
 SearchForm.propTypes = {
 	name:             React.PropTypes.string.isRequired,
@@ -37,4 +28,4 @@ SearchForm.propTypes = {
 	onPriceChange:    React.PropTypes.func.isRequired
 };
 
-export default CSSModules(SearchForm, styles);
+export default SearchForm;

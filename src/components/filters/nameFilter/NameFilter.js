@@ -14,8 +14,12 @@ const NameFilter = ({name, placeholder, onChange}) =>
 
 NameFilter.propTypes = {
 	name:        React.PropTypes.string.isRequired,
-	placeholder: React.PropTypes.string.isRequired,
+	placeholder: React.PropTypes.string,
 	onChange:    React.PropTypes.func.isRequired
 };
+
+NameFilter.defaultProps = {
+	placeholder: ""
+}
 
 export default NameFilter;

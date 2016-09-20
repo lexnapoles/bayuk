@@ -1,8 +1,8 @@
 import React from "react";
 import {check} from "./formHeader.css";
-import Header from "../header/Header";
-import ReturnIcon from "../icons/returnIcon/ReturnIcon";
-import CheckIcon from "../icons/checkIcon/CheckIcon";
+import Header from "../../header/Header";
+import ReturnIcon from "../../icons/returnIcon/ReturnIcon";
+import CheckIcon from "../../icons/checkIcon/CheckIcon";
 
 const FormHeader = ({formId}) =>
 	<Header>

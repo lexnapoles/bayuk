@@ -1,0 +1,33 @@
+.container{
+	composes: container from "../layout.css";
+}
+
+.main{
+	composes: main from "../layout.css";
+}
+
+.formContainer {
+	composes: container;
+}
+
+.form {
+	composes: container;
+	padding: 2em;
+}
+
+@media (min-width: 600px) {
+	.form {
+		width: 80%;
+	}
+
+	.formContainer {
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+@media (min-width: 1000px) {
+	.form {
+		width: 50%;
+	}
+}
