@@ -7,8 +7,7 @@
   "scripts": {
     "postinstall": "npm run build",
     "test": "karma run",
-    "dev": "better-npm-run dev",
-    "start": "node server.js",
+    "start": "babel-node server-es6.js",
     "build:server": "babel server-es6.js -o server.js",
     "build:client": "webpack -p --config webpack.prod.config.js --progress",
     "build": "better-npm-run build",
@@ -16,12 +15,6 @@
     "clean": "rimraf dist/* && rimraf server.js"
   },
   "betterScripts": {
-    "dev": {
-      "command": "babel-node server-es6.js",
-      "env": {
-        "NODE_ENV": "development"
-      }
-    },
     "build": {
       "command": "npm run clean && npm run build:server && npm run build:client",
       "env": {
