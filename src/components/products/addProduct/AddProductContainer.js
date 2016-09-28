@@ -30,15 +30,27 @@ class AddProductContainer extends Component {
 		this.setState({price: event.target.value});
 	}
 
+	getCategoriesObject(category) {
+		const categories = this.state.categories,
+					keys = Object.keys(categories);
+
+		const newCategories = keys.reduce((categoriesObj, key) => {
+			const value = key === category	? !categories[key] : false;
+
+			return Object.assign(categoriesObj, {
+				[key]: value
+			});
+		}, {});
+
+		return newCategories;
+	}
+
 	onCategoryChange(event) {
-		const name       = event.target.id,
-					categories = this.state.categories;
+		const name = event.target.id;
 
-		Object.assign(categories, {
-			[name]: !categories[name]
+		this.setState({
+			categories: this.getCategoriesObject(name)
 		});
-
-		this.setState({categories});
 	}
 
 	render() {
@@ -49,7 +61,7 @@ class AddProductContainer extends Component {
 				submitForm={this.submitForm}
 				onNameChange={this.onNameChange}
 				onCategoryChange={this.onCategoryChange}
-				onPriceChange={this.onPriceChange} />
+				onPriceChange={this.onPriceChange}/>
 		);
 	}
 }
