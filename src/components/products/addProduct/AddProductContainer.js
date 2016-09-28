@@ -6,13 +6,15 @@ class AddProductContainer extends Component {
 		super(props);
 
 		this.state = {
-			name:       "",
-			categories: {"Music": false, "Videgames": false, "Movies": false, "Literature": false},
-			price:      0
+			name:        "",
+			description: "",
+			categories:  {"Music": false, "Videgames": false, "Movies": false, "Literature": false},
+			price:       0
 		};
 
 		this.submitForm = this.submitForm.bind(this);
 		this.onNameChange = this.onNameChange.bind(this);
+		this.onDescriptionChange = this.onDescriptionChange.bind(this);
 		this.onPriceChange = this.onPriceChange.bind(this);
 		this.onCategoryChange = this.onCategoryChange.bind(this);
 	}
@@ -26,16 +28,22 @@ class AddProductContainer extends Component {
 		this.setState({name: event.target.value});
 	}
 
+	onDescriptionChange(event) {
+		this.setState({description: event.target.value});
+	}
+
 	onPriceChange(event) {
 		this.setState({price: event.target.value});
 	}
 
 	getCategoriesObject(category) {
 		const categories = this.state.categories,
-					keys = Object.keys(categories);
+					keys       = Object.keys(categories);
 
 		const newCategories = keys.reduce((categoriesObj, key) => {
-			const value = key === category	? !categories[key] : false;
+			const value = key === category
+				? !categories[key]
+				: false;
 
 			return Object.assign(categoriesObj, {
 				[key]: value
@@ -56,10 +64,10 @@ class AddProductContainer extends Component {
 	render() {
 		return (
 			<AddProduct
-				name={this.state.name}
-				categories={this.state.categories}
+				product={this.state}
 				submitForm={this.submitForm}
 				onNameChange={this.onNameChange}
+				onDescriptionChange={this.onDescriptionChange}
 				onCategoryChange={this.onCategoryChange}
 				onPriceChange={this.onPriceChange}/>
 		);

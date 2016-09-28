@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "../../form/Form";
-import NameFilter from "../../filters/nameFilter/NameFilter";
+import TextFilter from "../../filters/textFilter/TextFilter";
 import PriceFilter from "../../filters/PriceFilter";
 import CategoryFilter from "../../filters/CategoryFilter";
 
@@ -13,7 +13,7 @@ const SearchProduct = ({
 	onPriceChange
 }) => (
 	<Form formName="searchProduct" onSubmit={submitForm}>
-		<NameFilter name={name} placeholder="What are you looking for?" onChange={onNameChange}/>
+		<TextFilter name={name} placeholder="What are you looking for?" onChange={onNameChange}/>
 		<CategoryFilter categories={categories} onChange={onCategoryChange}/>
 		<PriceFilter onChange={onPriceChange}/>
 	</Form>

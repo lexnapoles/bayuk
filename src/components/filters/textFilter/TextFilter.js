@@ -1,7 +1,7 @@
 import React from "react";
-import {container, input, underline} from "./nameFilter.css";
+import {container, input, underline} from "./textFilter.css";
 
-const NameFilter = ({name, placeholder, onChange}) =>
+const TextFilter = ({name, placeholder, onChange}) =>
 	<div className={container}>
 		<input id="name"
 						className={input}
@@ -12,14 +12,14 @@ const NameFilter = ({name, placeholder, onChange}) =>
 		<hr className={underline}/>
 	</div>
 
-NameFilter.propTypes = {
+TextFilter.propTypes = {
 	name:        React.PropTypes.string.isRequired,
 	placeholder: React.PropTypes.string,
 	onChange:    React.PropTypes.func.isRequired
 };
 
-NameFilter.defaultProps = {
+TextFilter.defaultProps = {
 	placeholder: ""
 }
 
-export default NameFilter;
+export default TextFilter;

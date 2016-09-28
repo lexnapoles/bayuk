@@ -9,10 +9,6 @@
 	border: none;
 }
 
-.input:focus{
-	outline: none;
-}
-
 .underline {
 	opacity: 0.4;
 }
