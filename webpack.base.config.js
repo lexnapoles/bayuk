@@ -1,4 +1,5 @@
-var path         = require("path"),
+var webpack      = require("webpack"),
+		path         = require("path"),
 		autoprefixer = require('autoprefixer');
 
 var DIST_DIR   = path.join(__dirname, "dist"),
@@ -55,7 +56,11 @@ module.exports = {
 		]
 	},
 
-	postcss: [autoprefixer({browsers: ['last 2 versions']})],
+	postcss: [autoprefixer({browsers: ["last 2 versions"]})],
+
+	plugins: [
+		new webpack.EnvironmentPlugin(['NODE_ENV'])
+	],
 
 	resolve: {
 		extensions: ['', '.js']
