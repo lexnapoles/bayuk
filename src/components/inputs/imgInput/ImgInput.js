@@ -1,5 +1,7 @@
 import React, {Component} from "react";
+import CSSModules from "react-css-modules";
 import Filter from "../../filters/filter/Filter";
+import styles from "./imgInput.css";
 
 class ImgInput extends Component {
 	constructor(props) {
@@ -42,13 +44,17 @@ class ImgInput extends Component {
 	getImages() {
 		const imgUrls = this.state.urls;
 
-		return imgUrls.map(url => <img id={url} src={url} className="thubmnail"/>);
+		return imgUrls.map(url =>
+			<div key={url} styleName="thumbnailContainer">
+				<img src={url} styleName="thumbnail"/>
+			</div>
+		);
 	}
 
 	render() {
 		return (
 			<Filter title="Pictures">
-				<div className="preview">
+				<div styleName="preview">
 					{this.getImages()}
 				</div>
 				<input type="file" multiple accept="image/*" ref="input" onChange={this.handleFiles}/>
@@ -57,5 +63,4 @@ class ImgInput extends Component {
 	}
 }
 
-
-export default ImgInput;
+export default CSSModules(ImgInput, styles);

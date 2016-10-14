@@ -1,0 +1,20 @@
+.preview {
+	display: flex;
+	max-width: 70%;
+	margin: 0 auto;
+	justify-content: space-around;
+}
+
+.thumbnailContainer {
+	border: 1px solid #FFE981;
+	border-radius: 5%;
+	overflow: hidden;
+	margin: 1em 2em 2em 2em;
+}
+
+.thumbnail {
+	width: 100px;
+	height: 100px;
+
+}
+
