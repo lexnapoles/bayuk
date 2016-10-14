@@ -12,40 +12,46 @@ class ImgInput extends Component {
 			urls:   []
 		};
 
-		this.handleFiles = this.handleFiles.bind(this);
+		this.handleFile = this.handleFile.bind(this);
 	}
 
-	isImage(file) {
+	isAnImage(file) {
 		return /^image\//.test(file.type);
 	}
 
-	readUrlsFromImages(images) {
-		images.forEach(image => {
-			const reader = new FileReader();
+	loadImage(img) {
+		const reader = new FileReader();
 
-			reader.onload = event => this.setState({
-				urls: [...this.state.urls, event.target.result]
-			});
+		reader.onload = event => this.setState({
+			urls: [...this.state.urls, event.target.result]
+		});
 
-			reader.readAsDataURL(image);
-		})
+		reader.readAsDataURL(img);
 	}
 
-	handleFiles() {
-		const selectedFiles = [...this.refs.input.files];
+	imageAlreadyExists(img) {
+		return this.state.images.some(someImg => someImg.name === img.name);
+	}
 
-		const images = selectedFiles.filter(file => this.isImage(file));
+	handleFile() {
+		const selectedFile = this.refs.input.files[0];
 
-		this.setState({images});
+		if (!this.isAnImage(selectedFile) || this.imageAlreadyExists(selectedFile)) {
+			return;
+		}
 
-		this.readUrlsFromImages(images);
+		this.setState({
+			images: [...this.state.images, selectedFile]
+		});
+
+		this.loadImage(selectedFile);
 	}
 
 	getImages() {
 		const imgUrls = this.state.urls;
 
-		return imgUrls.map(url =>
-			<div key={url} styleName="thumbnailContainer">
+		return imgUrls.map((url, index) =>
+			<div key={index} styleName="thumbnailContainer">
 				<img src={url} styleName="thumbnail"/>
 			</div>
 		);
@@ -56,8 +62,9 @@ class ImgInput extends Component {
 			<Filter title="Pictures">
 				<div styleName="preview">
 					{this.getImages()}
+					{window.console.log(this.state.urls)}
 				</div>
-				<input type="file" multiple accept="image/*" ref="input" onChange={this.handleFiles}/>
+				<input type="file" accept="image/*" ref="input" onChange={this.handleFile}/>
 			</Filter>
 		)
 	}
