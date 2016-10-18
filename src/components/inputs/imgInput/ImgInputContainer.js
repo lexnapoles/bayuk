@@ -6,11 +6,21 @@ class ImgInputContainer extends Component {
 		super(props);
 
 		this.state = {
-			images: [],
-			urls:   []
+			urls: []
 		};
 
 		this.handleFile = this.handleFile.bind(this);
+		this.loadImage = this.loadImage.bind(this);
+	}
+
+	componentWillReceiveProps({images}) {
+		if (!images.length) {
+			return;
+		}
+
+		const lastImage = images[images.length - 1];
+
+		this.loadImage(lastImage);
 	}
 
 	isAnImage(file) {
@@ -27,37 +37,24 @@ class ImgInputContainer extends Component {
 		reader.readAsDataURL(img);
 	}
 
-	imageAlreadyExists(img) {
-		return this.state.images.some(someImg => someImg.name === img.name);
-	}
-
 	handleFile(event) {
 		const selectedFile = event.target.files[0];
 
-		if (!this.isAnImage(selectedFile) || this.imageAlreadyExists(selectedFile)) {
+		if (!this.isAnImage(selectedFile)) {
 			return;
 		}
 
-		this.setState({
-			images: [...this.state.images, selectedFile]
-		});
-
-		this.loadImage(selectedFile);
-	}
-
-	getImages() {
-		const imgUrls = this.state.urls;
-
-		return imgUrls.map((url, index) =>
-			<div key={index} styleName="thumbnailContainer">
-				<img src={url} styleName="thumbnail"/>
-			</div>
-		);
+		this.props.onChange(selectedFile);
 	}
 
 	render() {
 		return <ImgInput urls={this.state.urls} onChange={this.handleFile}/>;
 	}
 }
+
+ImgInputContainer.propTypes = {
+	images:   React.PropTypes.array.isRequired,
+	onChange: React.PropTypes.func.isRequired
+};
 
 export default ImgInputContainer;
