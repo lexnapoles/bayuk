@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import ImgInput from "./ImagesFilter";
+import ImagesFilter from "./ImagesFilter";
 
-class ImgInputContainer extends Component {
+class ImagesFilterContainer extends Component {
 	constructor(props) {
 		super(props);
 
@@ -10,17 +10,16 @@ class ImgInputContainer extends Component {
 		};
 
 		this.handleFile = this.handleFile.bind(this);
-		this.loadImage = this.loadImage.bind(this);
 	}
 
-	componentWillReceiveProps({images}) {
-		if (!images.length) {
-			return;
+	componentWillReceiveProps({images: nextImages}) {
+		const prevImages = this.props.images;
+
+		for (let image of nextImages) {
+			if (!prevImages.includes(image)) {
+				this.loadImage(image);
+			}
 		}
-
-		const lastImage = images[images.length - 1];
-
-		this.loadImage(lastImage);
 	}
 
 	isAnImage(file) {
@@ -48,13 +47,13 @@ class ImgInputContainer extends Component {
 	}
 
 	render() {
-		return <ImgInput urls={this.state.urls} onChange={this.handleFile}/>;
+		return <ImagesFilter urls={this.state.urls} onChange={this.handleFile}/>;
 	}
 }
 
-ImgInputContainer.propTypes = {
+ImagesFilterContainer.propTypes = {
 	images:   React.PropTypes.array.isRequired,
 	onChange: React.PropTypes.func.isRequired
 };
 
-export default ImgInputContainer;
+export default ImagesFilterContainer;

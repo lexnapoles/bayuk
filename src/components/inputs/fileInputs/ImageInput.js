@@ -5,7 +5,6 @@ const ImageInput = ({onChange}) =>
 	<FileInput accept="image/*" onChange={onChange}/>
 
 ImageInput.propTypes = {
-	accept: React.PropTypes.string.isRequired,
 	onChange: React.PropTypes.func.isRequired
 };
 
