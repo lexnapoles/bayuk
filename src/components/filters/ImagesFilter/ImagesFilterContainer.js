@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import ImgInput from "./ImgInput";
+import ImgInput from "./ImagesFilter";
 
 class ImgInputContainer extends Component {
 	constructor(props) {

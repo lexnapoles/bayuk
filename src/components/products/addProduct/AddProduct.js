@@ -3,7 +3,7 @@ import Form from "../../form/Form";
 import TextFilter from "../../filters/textFilter/TextFilter";
 import CategoryFilter from "../../filters/CategoryFilter";
 import Filter from "../../filters/filter/Filter";
-import ImgInputContainer from "../../inputs/imgInput/ImgInputContainer";
+import ImgInputContainer from "../../filters/ImagesFilter/ImagesFilterContainer";
 
 const AddProduct = ({
 	product,
