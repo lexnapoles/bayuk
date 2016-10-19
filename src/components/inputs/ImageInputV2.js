@@ -2,8 +2,8 @@ import React from "react";
 import {inputContainer, thumbnailContainer, thumbnail} from "./imageInputV2.css";
 import FileInput from "../inputs/fileInputs/FileInput";
 
-const ImageInputV2 = ({url, onChange}) => {
-	const input = <FileInput className={inputContainer} accept="image/*" onChange={onChange}/>
+const ImageInputV2 = ({id, url, onChange}) => {
+	const input = <FileInput className={inputContainer} id={id} accept="image/*" onChange={onChange}/>
 
 	const preview =
 					<div className={thumbnailContainer}>
@@ -14,6 +14,7 @@ const ImageInputV2 = ({url, onChange}) => {
 };
 
 ImageInputV2.propTypes = {
+	id:      React.PropTypes.number.isRequired,
 	url:      React.PropTypes.string,
 	onChange: React.PropTypes.func.isRequired
 };

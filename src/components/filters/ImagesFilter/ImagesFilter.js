@@ -1,16 +1,28 @@
 import React from "react";
 import Filter from "../filter/Filter";
-//import ImagesPreview from "../../imagesPreview/ImagesPreview";
-//import ImageInput from "../../inputs/fileInputs/ImageInput";
 import ImageInput2 from "../../inputs/ImageInputV2";
+import {imagesContainer} from "./imagesFilter.css";
+
+const MAX_IMAGES = 3;
 
 const ImageFilter = ({urls, onChange}) => {
+	const getImages = (urls) => {
+		const images = [];
+
+		for (let i = 0; i < MAX_IMAGES; i++) {
+			images.push(<ImageInput2  key={i} id={i} url={urls[i]} onChange={onChange}/>)
+		}
+
+		return images;
+	};
+
 	return (
 		<Filter title="Pictures">
-			<ImageInput2 url={urls[0]} onChange={onChange}/>
-			{/*<ImagesPreview urls={urls}/>*/}
-			{/*<ImageInput onChange={onChange}/>*/}
-		</Filter>)
+			<div className={imagesContainer}>
+			{getImages(urls)}
+			</div>
+		</Filter>
+	)
 };
 
 ImageFilter.propTypes = {
