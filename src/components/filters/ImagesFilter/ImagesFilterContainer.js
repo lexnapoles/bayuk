@@ -6,7 +6,10 @@ class ImagesFilterContainer extends Component {
 	constructor(props) {
 		super(props);
 
-		this.handleFile = this.handleFile.bind(this);
+		this.state = {};
+
+		this.onAddImage = this.onAddImage.bind(this);
+		this.onDeleteImage = this.onDeleteImage.bind(this);
 	}
 
 	getImagesFrom(obj) {
@@ -15,7 +18,7 @@ class ImagesFilterContainer extends Component {
 		return keys.map(key => obj[key]);
 	}
 
-	handleFile(position, image) {
+	onAddImage(position, image) {
 		const newState = Object.assign({}, this.state, {[position]: image}),
 					images   = this.getImagesFrom(newState);
 
@@ -24,14 +27,26 @@ class ImagesFilterContainer extends Component {
 		this.props.onChange(images);
 	}
 
+	onDeleteImage(position) {
+		const state = Object.assign({}, this.state);
+
+		delete state[position];
+
+		this.setState(state);
+
+		const images = this.getImagesFrom(state);
+
+		this.props.onChange(images);
+	}
+
 	render() {
-		return <ImagesFilter maxImages={this.props.maxImages} onChange={this.handleFile}/>;
+		return <ImagesFilter maxImages={this.props.maxImages} onAdd={this.onAddImage} onDelete={this.onDeleteImage}/>;
 	}
 }
 
 ImagesFilterContainer.propTypes = {
 	maxImages: React.PropTypes.number.isRequired,
-	onChange: React.PropTypes.func.isRequired
+	onChange:  React.PropTypes.func.isRequired
 };
 
 export default ImagesFilterContainer;

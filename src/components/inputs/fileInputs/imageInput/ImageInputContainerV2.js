@@ -10,6 +10,7 @@ class ImageInputContainerV2 extends Component {
 		};
 
 		this.onAdd = this.onAdd.bind(this);
+		this.onDelete = this.onDelete.bind(this);
 	}
 
 	isAnImage(file) {
@@ -35,17 +36,26 @@ class ImageInputContainerV2 extends Component {
 
 		this.loadImage(selectedFile);
 
-		this.props.onChange(selectedFile);
+		this.props.onAdd(selectedFile);
+	}
+
+	onDelete() {
+		this.setState({
+			url: ""
+		});
+
+		this.props.onDelete();
 	}
 
 	render() {
-		return <ImageInputV2 url={this.state.url} onChange={this.onAdd} id={this.props.id}/>
+		return <ImageInputV2 url={this.state.url} onAdd={this.onAdd} onDelete={this.onDelete} id={this.props.id}/>
 	}
 }
 
 ImageInputContainerV2.propTypes = {
 	id:       React.PropTypes.number.isRequired,
-	onChange: React.PropTypes.func.isRequired
+	onAdd: React.PropTypes.func.isRequired,
+	onDelete: React.PropTypes.func.isRequired
 };
 
 export default ImageInputContainerV2;
