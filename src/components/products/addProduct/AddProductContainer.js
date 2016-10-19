@@ -15,7 +15,7 @@ class AddProductContainer extends Component {
 
 		this.submitForm = this.submitForm.bind(this);
 		this.onNameChange = this.onNameChange.bind(this);
-		this.onImageChange = this.onImageChange.bind(this);
+		this.onImagesChange = this.onImagesChange.bind(this);
 		this.onDescriptionChange = this.onDescriptionChange.bind(this);
 		this.onPriceChange = this.onPriceChange.bind(this);
 		this.onCategoryChange = this.onCategoryChange.bind(this);
@@ -30,17 +30,9 @@ class AddProductContainer extends Component {
 		this.setState({name: event.target.value});
 	}
 
-	imageAlreadyExists(img) {
-		return this.state.images.some(someImg => someImg.name === img.name);
-	}
-
-	onImageChange(image) {
-		if (this.imageAlreadyExists(image)) {
-			return;
-		}
-
+	onImagesChange(images) {
 		this.setState({
-			images: [...this.state.images, image]
+			images
 		});
 	}
 
@@ -83,7 +75,7 @@ class AddProductContainer extends Component {
 				product={this.state}
 				submitForm={this.submitForm}
 				onNameChange={this.onNameChange}
-				onImageChange={this.onImageChange}
+				onImagesChange={this.onImagesChange}
 				onDescriptionChange={this.onDescriptionChange}
 				onCategoryChange={this.onCategoryChange}
 				onPriceChange={this.onPriceChange}/>

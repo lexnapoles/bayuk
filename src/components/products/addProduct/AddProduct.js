@@ -9,13 +9,13 @@ const AddProduct = ({
 	product,
 	submitForm,
 	onNameChange,
-	onImageChange,
+	onImagesChange,
 	onDescriptionChange,
 	onCategoryChange,
 	onPriceChange
 }) => (
 	<Form formName="addForm" onSubmit={submitForm}>
-		<ImgInputContainer images={product.images} onChange={onImageChange}/>
+		<ImgInputContainer images={product.images} onChange={onImagesChange}/>
 		<TextFilter name={product.name} placeholder="Product name" onChange={onNameChange}/>
 		<TextFilter name={product.description} placeholder="Product description" onChange={onDescriptionChange}/>
 		<CategoryFilter categories={product.categories} onChange={onCategoryChange}/>
@@ -29,7 +29,7 @@ AddProduct.propTypes = {
 	product:             React.PropTypes.object.isRequired,
 	submitForm:          React.PropTypes.func.isRequired,
 	onNameChange:        React.PropTypes.func.isRequired,
-	onImageChange:       React.PropTypes.func.isRequired,
+	onImagesChange:       React.PropTypes.func.isRequired,
 	onDescriptionChange: React.PropTypes.func.isRequired,
 	onCategoryChange:    React.PropTypes.func.isRequired,
 	onPriceChange:       React.PropTypes.func.isRequired

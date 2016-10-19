@@ -35,7 +35,7 @@ class ImageInputContainerV2 extends Component {
 
 		this.loadImage(selectedFile);
 
-		this.props.onChange(event);
+		this.props.onChange(selectedFile);
 	}
 
 	render() {

@@ -8,10 +8,19 @@ class ImagesFilterContainer extends Component {
 		this.handleFile = this.handleFile.bind(this);
 	}
 
-	handleFile(event) {
-		const selectedFile = event.target.files[0];
+	getImagesFrom(obj) {
+		const keys = Object.keys(obj);
 
-		this.props.onChange(selectedFile);
+		return keys.map(key => obj[key]);
+	}
+
+	handleFile(position, image) {
+		const newState = Object.assign({}, this.state, {[position]: image}),
+					images   = this.getImagesFrom(newState);
+
+		this.setState(newState);
+
+		this.props.onChange(images);
 	}
 
 	render() {

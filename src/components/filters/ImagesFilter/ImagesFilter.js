@@ -10,7 +10,7 @@ const ImageFilter = ({onChange}) => {
 		const images = [];
 
 		for (let i = 0; i < MAX_IMAGES; i++) {
-			images.push(<ImageInputContainerV2 key={i} id={i} onChange={onChange}/>)
+			images.push(<ImageInputContainerV2 key={i} id={i} onChange={onChange.bind(null, i)}/>)
 		}
 
 		return images;
