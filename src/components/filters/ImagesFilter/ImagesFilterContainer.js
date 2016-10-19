@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import ImagesFilter from "./ImagesFilter";
 
+
 class ImagesFilterContainer extends Component {
 	constructor(props) {
 		super(props);
@@ -24,11 +25,12 @@ class ImagesFilterContainer extends Component {
 	}
 
 	render() {
-		return <ImagesFilter onChange={this.handleFile}/>;
+		return <ImagesFilter maxImages={this.props.maxImages} onChange={this.handleFile}/>;
 	}
 }
 
 ImagesFilterContainer.propTypes = {
+	maxImages: React.PropTypes.number.isRequired,
 	onChange: React.PropTypes.func.isRequired
 };
 

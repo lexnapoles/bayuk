@@ -7,6 +7,7 @@ import ImgInputContainer from "../../filters/ImagesFilter/ImagesFilterContainer"
 
 const AddProduct = ({
 	product,
+	maxImages,
 	submitForm,
 	onNameChange,
 	onImagesChange,
@@ -15,7 +16,7 @@ const AddProduct = ({
 	onPriceChange
 }) => (
 	<Form formName="addForm" onSubmit={submitForm}>
-		<ImgInputContainer images={product.images} onChange={onImagesChange}/>
+		<ImgInputContainer maxImages={maxImages} onChange={onImagesChange}/>
 		<TextFilter name={product.name} placeholder="Product name" onChange={onNameChange}/>
 		<TextFilter name={product.description} placeholder="Product description" onChange={onDescriptionChange}/>
 		<CategoryFilter categories={product.categories} onChange={onCategoryChange}/>
@@ -27,9 +28,10 @@ const AddProduct = ({
 
 AddProduct.propTypes = {
 	product:             React.PropTypes.object.isRequired,
+	maxImages:           React.PropTypes.number.isRequired,
 	submitForm:          React.PropTypes.func.isRequired,
 	onNameChange:        React.PropTypes.func.isRequired,
-	onImagesChange:       React.PropTypes.func.isRequired,
+	onImagesChange:      React.PropTypes.func.isRequired,
 	onDescriptionChange: React.PropTypes.func.isRequired,
 	onCategoryChange:    React.PropTypes.func.isRequired,
 	onPriceChange:       React.PropTypes.func.isRequired

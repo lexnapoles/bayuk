@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import AddProduct from "./AddProduct";
 
+const MAX_IMAGES = 3;
+
 class AddProductContainer extends Component {
 	constructor(props) {
 		super(props);
@@ -73,6 +75,7 @@ class AddProductContainer extends Component {
 		return (
 			<AddProduct
 				product={this.state}
+				maxImages={MAX_IMAGES}
 				submitForm={this.submitForm}
 				onNameChange={this.onNameChange}
 				onImagesChange={this.onImagesChange}

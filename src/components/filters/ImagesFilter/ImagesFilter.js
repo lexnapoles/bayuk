@@ -3,13 +3,15 @@ import Filter from "../filter/Filter";
 import ImageInputContainerV2 from "../../inputs/fileInputs/imageInput/ImageInputContainerV2";
 import {imagesContainer} from "./imagesFilter.css";
 
-const MAX_IMAGES = 3;
-
-const ImageFilter = ({onChange}) => {
+const ImageFilter = ({maxImages, onChange}) => {
 	const getImages = () => {
+		if (maxImages <= 0) {
+			return;
+		}
+
 		const images = [];
 
-		for (let i = 0; i < MAX_IMAGES; i++) {
+		for (let i = 0; i < maxImages; i++) {
 			images.push(<ImageInputContainerV2 key={i} id={i} onChange={onChange.bind(null, i)}/>)
 		}
 
@@ -26,6 +28,7 @@ const ImageFilter = ({onChange}) => {
 };
 
 ImageFilter.propTypes = {
+	maxImages: React.PropTypes.number.isRequired,
 	onChange: React.PropTypes.func.isRequired
 };
 
