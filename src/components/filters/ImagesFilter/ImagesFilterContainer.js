@@ -6,7 +6,9 @@ class ImagesFilterContainer extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+			images: {}
+		};
 
 		this.onAddImage = this.onAddImage.bind(this);
 		this.onDeleteImage = this.onDeleteImage.bind(this);
@@ -19,20 +21,20 @@ class ImagesFilterContainer extends Component {
 	}
 
 	onAddImage(position, image) {
-		const newState = Object.assign({}, this.state, {[position]: image}),
+		const newState = Object.assign({}, this.state.images, {[position]: image}),
 					images   = this.getImagesFrom(newState);
 
-		this.setState(newState);
+		this.setState({images: newState});
 
 		this.props.onChange(images);
 	}
 
 	onDeleteImage(position) {
-		const state = Object.assign({}, this.state);
+		const state = Object.assign({}, this.state.images);
 
-		delete state[position];
+		Reflect.deleteProperty(state, position);
 
-		this.setState(state);
+		this.setState({images: state});
 
 		const images = this.getImagesFrom(state);
 

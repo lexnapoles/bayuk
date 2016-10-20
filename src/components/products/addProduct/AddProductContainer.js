@@ -33,9 +33,7 @@ class AddProductContainer extends Component {
 	}
 
 	onImagesChange(images) {
-		this.setState({
-			images
-		});
+		this.setState({images});
 	}
 
 	onDescriptionChange(event) {

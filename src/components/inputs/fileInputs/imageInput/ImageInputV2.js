@@ -1,12 +1,14 @@
 import React from "react";
 import {inputContainer, thumbnailContainer, thumbnail} from "./imageInputV2.css";
 import FileInput from "../FileInput";
+import Icon from "react-fa";
 
-const ImageInputV2 = ({id, url, onAdd}) => {
+const ImageInputV2 = ({id, url, onAdd, onDelete}) => {
 	const input = <FileInput className={inputContainer} id={id} accept="image/*" onChange={onAdd}/>
 
 	const preview =
 					<div className={thumbnailContainer}>
+						<Icon name="minus-circle" onClick={onDelete}/>
 						<img src={url} className={thumbnail}/>
 					</div>
 
