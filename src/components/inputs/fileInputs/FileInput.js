@@ -3,7 +3,7 @@ import Icon from "react-fa";
 import {inputFile} from "./fileInput.css";
 
 const FileInput = ({className, style, id, accept, onChange, children}) => {
-  const inputId = `file${id}`;
+	const inputId = `file${id}`;
 
 	return (
 		<div className={className} style={style}>

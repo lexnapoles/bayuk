@@ -8,8 +8,24 @@
 	width: 20%;
 	height: 20%;
 	margin: auto;
-	top: 0; left: 0; bottom: 0; right: 0;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 	color: red;
+	cursor: pointer;
+}
+
+.deleteBtn:hover {
+	opacity: 0.8;
+}
+
+.deleteBtn:active {
+	opacity: 0.5;
+}
+
+.deleteBtn:focus {
+	outline: 1px dotted #000;
 }
 
 .imageContainer {
