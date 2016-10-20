@@ -30,7 +30,7 @@ class ImageInputContainerV2 extends Component {
 	onAdd(event) {
 		const selectedFile = event.target.files[0];
 
-		if(!this.isAnImage(selectedFile)) {
+		if (!this.isAnImage(selectedFile)) {
 			return;
 		}
 
@@ -54,7 +54,7 @@ class ImageInputContainerV2 extends Component {
 
 ImageInputContainerV2.propTypes = {
 	id:       React.PropTypes.number.isRequired,
-	onAdd: React.PropTypes.func.isRequired,
+	onAdd:    React.PropTypes.func.isRequired,
 	onDelete: React.PropTypes.func.isRequired
 };
 

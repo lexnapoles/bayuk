@@ -9,3 +9,9 @@
 	flex: 1;
 	padding: 2em;
 }
+
+.alignCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

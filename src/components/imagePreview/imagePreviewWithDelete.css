@@ -1,0 +1,17 @@
+.container {
+	position: relative;
+}
+
+.deleteBtn {
+	composes: alignCenter from "../layout.css";
+	position: absolute;
+	width: 20%;
+	height: 20%;
+	margin: auto;
+	top: 0; left: 0; bottom: 0; right: 0;
+	color: red;
+}
+
+.imageContainer {
+	opacity: 0.3;
+}

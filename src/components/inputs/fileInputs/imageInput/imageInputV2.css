@@ -8,18 +8,14 @@
 	border-radius: 5%;
 	overflow: hidden;
 	background: whitesmoke;
-	border: 1px solid #FFE981;
 }
 
-.thumbnail {
-	composes: thumbnailSize;
+.alignCenter {
+	composes: alignCenter from "../../../layout.css";
 }
 
 .inputContainer {
-	composes: thumbnailContainer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	composes: thumbnailContainer alignCenter;
 }
 
 
