@@ -1,7 +1,6 @@
 import {createStore} from "redux";
 import {v4} from "node-uuid";
-
-const reducer = (state) => state;
+import rootReducer from "../reducers/root";
 
 const initialState = {
 	products: [
@@ -60,7 +59,7 @@ const initialState = {
 };
 
 const configureStore = () => {
-	return createStore(reducer, initialState);
+	return createStore(rootReducer, initialState);
 }
 
 export default configureStore;
