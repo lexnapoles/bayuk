@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import ImagesFilter from "./ImagesFilter";
 
-
 class ImagesFilterContainer extends Component {
 	constructor(props) {
 		super(props);
@@ -42,7 +41,7 @@ class ImagesFilterContainer extends Component {
 	}
 
 	render() {
-		return <ImagesFilter maxImages={this.props.maxImages} onAdd={this.onAddImage} onDelete={this.onDeleteImage}/>;
+		return <ImagesFilter urls={this.state.images} maxImages={this.props.maxImages} onAdd={this.onAddImage} onDelete={this.onDeleteImage}/>;
 	}
 }
 

@@ -5,10 +5,6 @@ class ImageInputContainerV2 extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			url: ""
-		};
-
 		this.onAdd = this.onAdd.bind(this);
 		this.onDelete = this.onDelete.bind(this);
 	}
@@ -37,28 +33,28 @@ class ImageInputContainerV2 extends Component {
 
 		this.loadImage(selectedFile)
 				.then(url => {
-					this.setState({url});
 					this.props.onAdd(url);
 				});
 	}
 
 	onDelete() {
-		this.setState({
-			url: ""
-		});
-
 		this.props.onDelete();
 	}
 
 	render() {
-		return <ImageInputV2 url={this.state.url} onAdd={this.onAdd} onDelete={this.onDelete} id={this.props.id}/>
+		return <ImageInputV2 url={this.props.url} onAdd={this.onAdd} onDelete={this.onDelete} id={this.props.id}/>
 	}
 }
 
 ImageInputContainerV2.propTypes = {
+	url:      React.PropTypes.string,
 	id:       React.PropTypes.number.isRequired,
 	onAdd:    React.PropTypes.func.isRequired,
 	onDelete: React.PropTypes.func.isRequired
+};
+
+ImageInputContainerV2.defaultProps = {
+	url: ""
 };
 
 export default ImageInputContainerV2;
