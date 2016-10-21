@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import ImageInputV2 from "./ImageInputV2";
+import ImageInput from "./ImageInput";
 
-class ImageInputContainerV2 extends Component {
+class ImageInputContainer extends Component {
 	constructor(props) {
 		super(props);
 
@@ -42,19 +42,19 @@ class ImageInputContainerV2 extends Component {
 	}
 
 	render() {
-		return <ImageInputV2 url={this.props.url} onAdd={this.onAdd} onDelete={this.onDelete} id={this.props.id}/>
+		return <ImageInput url={this.props.url} onAdd={this.onAdd} onDelete={this.onDelete} id={this.props.id}/>
 	}
 }
 
-ImageInputContainerV2.propTypes = {
+ImageInputContainer.propTypes = {
 	url:      React.PropTypes.string,
 	id:       React.PropTypes.number.isRequired,
 	onAdd:    React.PropTypes.func.isRequired,
 	onDelete: React.PropTypes.func.isRequired
 };
 
-ImageInputContainerV2.defaultProps = {
+ImageInputContainer.defaultProps = {
 	url: ""
 };
 
-export default ImageInputContainerV2;
+export default ImageInputContainer;

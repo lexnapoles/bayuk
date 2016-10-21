@@ -22,6 +22,7 @@ const productsReducer = (state = [], action) => {
 			};
 
 			return [...state, product];
+
 		}
 		default:
 			return state;

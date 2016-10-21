@@ -1,6 +1,6 @@
 import React from "react";
 import Filter from "../filter/Filter";
-import ImageInputContainerV2 from "../../inputs/fileInputs/imageInput/ImageInputContainerV2";
+import ImageInput from "../../inputs/fileInputs/imageInput/ImageInputContainer";
 import {imagesContainer} from "./imagesFilter.css";
 
 const ImageFilter = ({urls, maxImages, onAdd, onDelete}) => {
@@ -13,7 +13,7 @@ const ImageFilter = ({urls, maxImages, onAdd, onDelete}) => {
 
 		for (let i = 0; i < maxImages; i++) {
 			images.push(
-				<ImageInputContainerV2
+				<ImageInput
 					key={i}
 					url={urls[i] ? urls[i] : ""}
 					id={i}

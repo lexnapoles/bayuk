@@ -44,7 +44,7 @@ class AddProductContainer extends Component {
 	}
 
 	onPriceChange(event) {
-		this.setState({price: event.target.value});
+		this.setState({price: parseInt(event.target.value)});
 	}
 
 	getCategoriesObject(category) {

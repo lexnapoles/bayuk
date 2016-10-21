@@ -1,5 +1,5 @@
 import React from "react";
-import {thumbnailContainer, inputContainer} from "./imageInputV2.css";
+import {thumbnailContainer, inputContainer} from "./imageInput.css";
 import FileInput from "../FileInput";
 import ImagePreview from "../../../imagePreview/ImagePreviewWithDeleteAndHover";
 
