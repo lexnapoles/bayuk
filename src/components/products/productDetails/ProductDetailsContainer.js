@@ -3,11 +3,11 @@ import ProductDetails from "./ProductDetails";
 import {getProductById} from "../../../reducers/root";
 
 const mapStateToProps = (state, {params}) => {
-	const {name, photos, description, price} = getProductById(state, params.id);
+	const {name, images, description, price} = getProductById(state, params.id);
 
 	return {
 		name,
-		photos,
+		images,
 		description,
 		price
 	}

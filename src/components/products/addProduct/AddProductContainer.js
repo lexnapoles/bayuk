@@ -1,3 +1,5 @@
+import {connect} from "react-redux";
+import {addProduct} from "../../../actions/products";
 import React, {Component} from "react";
 import AddProduct from "./AddProduct";
 
@@ -26,6 +28,7 @@ class AddProductContainer extends Component {
 	submitForm(event) {
 		event.preventDefault();
 
+		this.props.onSubmit(this.state);
 	}
 
 	onNameChange(event) {
@@ -50,6 +53,7 @@ class AddProductContainer extends Component {
 
 		const newCategories = keys.reduce((categoriesObj, key) => {
 			const value = key === category
+
 				? !categories[key]
 				: false;
 
@@ -84,4 +88,10 @@ class AddProductContainer extends Component {
 	}
 }
 
-export default AddProductContainer;
+AddProductContainer.propTypes = {
+	onSubmit: React.PropTypes.func.isRequired
+}
+
+export default connect(void 0, {
+	onSubmit: addProduct
+})(AddProductContainer);

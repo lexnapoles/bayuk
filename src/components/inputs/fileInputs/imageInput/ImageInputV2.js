@@ -10,7 +10,7 @@ const ImageInputV2 = ({id, url, onAdd, onDelete}) =>
 
 ImageInputV2.propTypes = {
 	id:       React.PropTypes.number.isRequired,
-	url:      React.PropTypes.string.isRequired,
+	url:      React.PropTypes.string,
 	onAdd:    React.PropTypes.func.isRequired,
 	onDelete: React.PropTypes.func.isRequired
 };

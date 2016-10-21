@@ -18,13 +18,14 @@ class ImageInputContainerV2 extends Component {
 	}
 
 	loadImage(img) {
-		const reader = new FileReader();
+		return new Promise(function (resolve, reject) {
+			const reader = new FileReader();
 
-		reader.onload = event => this.setState({
-			url: event.target.result
-		});
+			reader.onload = event => resolve(event.target.result);
+			reader.onerror = event => reject(event.target.error);
 
-		reader.readAsDataURL(img);
+			reader.readAsDataURL(img);
+		})
 	}
 
 	onAdd(event) {
@@ -34,9 +35,11 @@ class ImageInputContainerV2 extends Component {
 			return;
 		}
 
-		this.loadImage(selectedFile);
-
-		this.props.onAdd(selectedFile);
+		this.loadImage(selectedFile)
+				.then(url => {
+					this.setState({url});
+					this.props.onAdd(url);
+				});
 	}
 
 	onDelete() {

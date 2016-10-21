@@ -10,14 +10,14 @@ import UserInfo from "./userInfo/UserInfo";
 
 class ProductDetails extends Component {
 	render() {
-		const {price, name, description} = this.props;
+		const {price, name, description, images} = this.props;
 
 		return (
 			<div styleName="container">
 				<ProductDetailsHeader/>
 				<main styleName="productContainer">
 					<Carousel styleName="carousel">
-						{this.props.photos}
+						{images}
 					</Carousel>
 
 					<section styleName="info">
@@ -40,7 +40,7 @@ class ProductDetails extends Component {
 
 ProductDetails.propTypes = {
 	name:        React.PropTypes.string.isRequired,
-	photos:      React.PropTypes.array.isRequired,
+	images:      React.PropTypes.array.isRequired,
 	description: React.PropTypes.string.isRequired,
 	price:       React.PropTypes.number.isRequired,
 	onClick:     React.PropTypes.func
