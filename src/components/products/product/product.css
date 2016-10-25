@@ -4,3 +4,8 @@
 	padding-bottom: 1em;
 	margin-bottom: 1em;
 }
+
+.product img {
+	width: 200px;
+	height: 200px;
+}

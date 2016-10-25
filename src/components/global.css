@@ -11,4 +11,5 @@ html {
 .well {
 	border: 2px solid lightgrey;
 	border-radius: 10px;
+	overflow: hidden;
 }
