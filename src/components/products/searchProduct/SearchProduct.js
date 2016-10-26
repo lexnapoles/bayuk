@@ -13,7 +13,7 @@ const SearchProduct = ({
 	onPriceChange
 }) => (
 	<Form formName="searchProduct" onSubmit={submitForm}>
-		<TextFilter name={name} placeholder="What are you looking for?" onChange={onNameChange}/>
+		<TextFilter name={name} placeholder="What are you looking for?" onChange={onNameChange} required={true}/>
 		<CategoryFilter categories={categories} onChange={onCategoryChange}/>
 		<PriceFilter onChange={onPriceChange}/>
 	</Form>

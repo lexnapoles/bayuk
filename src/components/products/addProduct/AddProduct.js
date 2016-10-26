@@ -3,7 +3,7 @@ import Form from "../../form/Form";
 import TextFilter from "../../filters/textFilter/TextFilter";
 import CategoryFilter from "../../filters/CategoryFilter";
 import Filter from "../../filters/filter/Filter";
-import ImagesFilterContainer from "../../filters/ImagesFilter/ImagesFilterContainer";
+import ImagesFilter from "../../filters/ImagesFilter/ImagesFilterContainer";
 
 const AddProduct = ({
 	product,
@@ -16,9 +16,9 @@ const AddProduct = ({
 	onPriceChange
 }) => (
 	<Form formName="addForm" onSubmit={submitForm}>
-		<ImagesFilterContainer maxImages={maxImages} onChange={onImagesChange}/>
-		<TextFilter name={product.name} placeholder="Product name" onChange={onNameChange}/>
-		<TextFilter name={product.description} placeholder="Product description" onChange={onDescriptionChange}/>
+		<ImagesFilter maxImages={maxImages} onChange={onImagesChange}/>
+		<TextFilter name={product.name} placeholder="Product name" onChange={onNameChange} required={true}/>
+		<TextFilter name={product.description} placeholder="Product description" onChange={onDescriptionChange} required={true}/>
 		<CategoryFilter categories={product.categories} onChange={onCategoryChange}/>
 		<Filter title="Price">
 			<input type="number" min="0" placeholder="0" onChange={onPriceChange}/>

@@ -1,6 +1,6 @@
+import React, {Component} from "react";
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/products";
-import React, {Component} from "react";
 import AddProduct from "./AddProduct";
 
 const MAX_IMAGES = 3;
@@ -10,11 +10,14 @@ class AddProductContainer extends Component {
 		super(props);
 
 		this.state = {
-			name:        "",
-			description: "",
-			categories:  {"Music": false, "Videgames": false, "Movies": false, "Literature": false},
-			price:       0,
-			images:      []
+			product: {
+				name:        "",
+				description: "",
+				categories:  {"Music": false, "Videgames": false, "Movies": false, "Literature": false},
+				price:       0,
+				images:      []
+			},
+			error:   ""
 		};
 
 		this.submitForm = this.submitForm.bind(this);
@@ -28,28 +31,74 @@ class AddProductContainer extends Component {
 	submitForm(event) {
 		event.preventDefault();
 
-		this.props.onSubmit(this.state);
+		const {name, description, categories, price, images} = this.state.product;
+
+		const product = {
+								name,
+								description,
+			category: this.getCategory(categories),
+								price,
+								images
+		};
+
+		this.props.onSubmit(product);
+	}
+
+	getCategory(categories) {
+		const keys = Object.keys(categories);
+
+		return keys.find(key => categories[key]);
+	}
+
+	getUpdatedProductWith(newProperty) {
+		return Object.assign({}, this.state.product, newProperty);
+	}
+
+	isProductIncomplete({name, description, category, price, images}) {
+		return !name.length || !description.length || price <= 0 || !images.length || !category;
+	}
+
+	validate(product) {
+		if (this.isProductIncomplete(product)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	onNameChange(event) {
-		this.setState({name: event.target.value});
+		const product = this.getUpdatedProductWith({
+			name: event.target.value
+		});
+
+		this.setState({product});
 	}
 
 	onImagesChange(images) {
-		this.setState({images});
+		const product = this.getUpdatedProductWith({images});
+
+		this.setState({product});
 	}
 
 	onDescriptionChange(event) {
-		this.setState({description: event.target.value});
+		const product = this.getUpdatedProductWith({
+			description: event.target.value
+		})
+
+		this.setState({product});
 	}
 
 	onPriceChange(event) {
-		this.setState({price: parseInt(event.target.value)});
+		const product = this.getUpdatedProductWith({
+			price: parseInt(event.target.value)
+		});
+
+		this.setState({product});
 	}
 
 	getCategoriesObject(category) {
-		const categories = this.state.categories,
-					keys       = Object.keys(categories);
+		const {categories} = this.state.product,
+					keys         = Object.keys(categories);
 
 		const newCategories = keys.reduce((categoriesObj, key) => {
 			const value = key === category
@@ -66,24 +115,26 @@ class AddProductContainer extends Component {
 	}
 
 	onCategoryChange(event) {
-		const name = event.target.id;
+		const name    = event.target.id,
+					product = this.getUpdatedProductWith({
+						categories: this.getCategoriesObject(name)
+					});
 
-		this.setState({
-			categories: this.getCategoriesObject(name)
-		});
+		this.setState({product});
 	}
 
 	render() {
 		return (
 			<AddProduct
-				product={this.state}
+				product={this.state.product}
 				maxImages={MAX_IMAGES}
 				submitForm={this.submitForm}
 				onNameChange={this.onNameChange}
 				onImagesChange={this.onImagesChange}
 				onDescriptionChange={this.onDescriptionChange}
 				onCategoryChange={this.onCategoryChange}
-				onPriceChange={this.onPriceChange}/>
+				onPriceChange={this.onPriceChange}
+				error={this.state.error}/>
 		);
 	}
 }
@@ -95,3 +146,5 @@ AddProductContainer.propTypes = {
 export default connect(void 0, {
 	onSubmit: addProduct
 })(AddProductContainer);
+
+export const component = AddProductContainer;
