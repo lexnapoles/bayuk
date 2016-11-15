@@ -103,7 +103,7 @@ class AddProductContainer extends Component {
 
 	validate({name, description, categories, price, images}) {
 		let valid  = true,
-				errors = {};
+				errors = this.state.errors;
 
 		if (!name.length) {
 			errors = Object.assign({}, errors, this.getNameError());

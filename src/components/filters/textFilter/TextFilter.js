@@ -1,8 +1,9 @@
 import React from "react";
-import {container, input, underline} from "./textFilter.css";
+import {input, underline} from "./textFilter.css";
+import Filter from "../filter/Filter";
 
-const TextFilter = ({name, error, placeholder, required, onChange}) =>
-	<div className={container}>
+const TextFilter = ({name, error, placeholder, onChange}) =>
+	<Filter title="" error={error}>
 		<input id="name"
 						className={input}
 						type="text"
@@ -10,20 +11,17 @@ const TextFilter = ({name, error, placeholder, required, onChange}) =>
 						placeholder={placeholder}
 						onChange={onChange}/>
 		<hr className={underline}/>
-		{required && error.length ? <p>{error}</p>: ""}
-	</div>
+	</Filter>
 
 TextFilter.propTypes = {
 	name:        React.PropTypes.string.isRequired,
-	error:       React.PropTypes.string.isRequired,
+	error:       React.PropTypes.string,
 	placeholder: React.PropTypes.string,
-	required:    React.PropTypes.bool,
 	onChange:    React.PropTypes.func.isRequired
 };
 
 TextFilter.defaultProps = {
-	placeholder: "",
-	required:    false
+	placeholder: ""
 }
 
 export default TextFilter;

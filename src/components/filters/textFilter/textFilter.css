@@ -1,16 +1,6 @@
-.container {
-	composes: filter from "../filter/filter.css";
-	width: 100%;
-	padding-top: 2em;
-}
-
 .input {
 	width: 100%;
 	border: none;
-}
-
-.invalidContainer {
-	composes: container
 }
 
 
