@@ -1,0 +1,1 @@
+export const NO_NAME_FILLED = Symbol("NO_NAME_FILLED");

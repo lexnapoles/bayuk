@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/products";
 import AddProduct from "./AddProduct";
-
+import {NO_NAME_FILLED} from "./errorConstants";
+import errorMsgs from "./errorsMsgs";
 const MAX_IMAGES = 3;
 
 class AddProductContainer extends Component {
@@ -17,7 +18,13 @@ class AddProductContainer extends Component {
 				price:       0,
 				images:      []
 			},
-			error:   ""
+			errors:  {
+				name:        "",
+				description: "",
+				categories:  "",
+				price:       "",
+				images:      ""
+			}
 		};
 
 		this.submitForm = this.submitForm.bind(this);
@@ -54,10 +61,23 @@ class AddProductContainer extends Component {
 		return Object.assign({}, this.state.product, newProperty);
 	}
 
-	isProductIncomplete({name, description, categories, price, images}) {
-		const isCategorySelected = this.getCategory(categories);
+	setNameError() {
+		this.setState({
+			errors: {
+				name: errorMsgs[NO_NAME_FILLED]
+			}
+		});
+	}
 
-		return !name.length || !description.length || !isCategorySelected || price <= 0 || !images.length;
+	isProductIncomplete({name, description, categories, price, images}) {
+		const isCategorySelected = this.getCategory(categories),
+					incomplete         = !name.length || !description.length || !isCategorySelected || price <= 0 || !images.length;
+
+		if (!name.length) {
+			this.setNameError();
+		}
+
+		return incomplete;
 	}
 
 	validate(product) {
