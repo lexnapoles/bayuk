@@ -1,7 +1,7 @@
 import React from "react";
 import {shallow, mount} from "enzyme";
 import {component as AddProductContainer} from "../../../src/components/products/addProduct/AddProductContainer";
-import {NO_NAME_FILLED} from "../../../src/components/products/addProduct/errorConstants";
+import {NO_NAME_FILLED, NO_DESCRIPTION_FILLED} from "../../../src/components/products/addProduct/errorConstants";
 import errorMsgs from "../../../src/components/products/addProduct/errorsMsgs";
 
 const generateProduct = (product = {}) => {
@@ -23,7 +23,7 @@ describe("<AddProductContainer/>", function () {
 						name: ""
 					});
 
-		const validation = Reflect.apply(AddProductContainer.prototype.validate, wrapper.instance(), [product]);
+		const validation = wrapper.instance().validate(product);
 
 		assert.isFalse(validation);
 	});
@@ -34,7 +34,7 @@ describe("<AddProductContainer/>", function () {
 						description: ""
 					});
 
-		const validation = Reflect.apply(AddProductContainer.prototype.validate, wrapper.instance(), [product]);
+		const validation = wrapper.instance().validate(product);
 
 		assert.isFalse(validation);
 	});
@@ -45,7 +45,7 @@ describe("<AddProductContainer/>", function () {
 						categories: {"Music": false, "Videgames": false, "Movies": false, "Literature": false}
 					});
 
-		const validation = Reflect.apply(AddProductContainer.prototype.validate, wrapper.instance(), [product]);
+		const validation = wrapper.instance().validate(product);
 
 		assert.isFalse(validation);
 	});
@@ -56,7 +56,7 @@ describe("<AddProductContainer/>", function () {
 						price: 0
 					});
 
-		const validation = Reflect.apply(AddProductContainer.prototype.validate, wrapper.instance(), [product]);
+		const validation = wrapper.instance().validate(product);
 
 		assert.isFalse(validation);
 	});
@@ -67,7 +67,7 @@ describe("<AddProductContainer/>", function () {
 						price: -100
 					});
 
-		const validation = Reflect.apply(AddProductContainer.prototype.validate, wrapper.instance(), [product]);
+		const validation = wrapper.instance().validate(product);
 
 		assert.isFalse(validation);
 	});
@@ -78,20 +78,31 @@ describe("<AddProductContainer/>", function () {
 						images: []
 					});
 
-		const validation = Reflect.apply(AddProductContainer.prototype.validate, wrapper.instance(), [product]);
+		const validation = wrapper.instance().validate(product);
 
 		assert.isFalse(validation);
 	});
 
 	it("produces an error message when name isn't filled", function () {
-		const wrapper = mount(<AddProductContainer onSubmit={() => void 0}/>),
+		const wrapper = shallow(<AddProductContainer onSubmit={() => void 0}/>),
 					product = generateProduct({
 						name: ""
 					});
 
-		Reflect.apply(AddProductContainer.prototype.validate, wrapper.instance(), [product]);
+		wrapper.instance().validate(product)
 
 		assert.equal(wrapper.state().errors.name, errorMsgs[NO_NAME_FILLED]);
+	});
+
+	it("produces an error message when description isn't filled", function () {
+		const wrapper = shallow(<AddProductContainer onSubmit={() => void 0}/>),
+					product = generateProduct({
+						description: ""
+					});
+
+		wrapper.instance().validate(product);
+
+		assert.equal(wrapper.state().errors.description, errorMsgs[NO_DESCRIPTION_FILLED]);
 	});
 });
 

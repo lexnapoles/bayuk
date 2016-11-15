@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/products";
 import AddProduct from "./AddProduct";
-import {NO_NAME_FILLED} from "./errorConstants";
+import {NO_NAME_FILLED, NO_DESCRIPTION_FILLED} from "./errorConstants";
 import errorMsgs from "./errorsMsgs";
 const MAX_IMAGES = 3;
 
@@ -69,23 +69,40 @@ class AddProductContainer extends Component {
 		});
 	}
 
-	isProductIncomplete({name, description, categories, price, images}) {
-		const isCategorySelected = this.getCategory(categories),
-					incomplete         = !name.length || !description.length || !isCategorySelected || price <= 0 || !images.length;
+	setDescriptionError() {
+		this.setState({
+			errors: {
+				description: errorMsgs[NO_DESCRIPTION_FILLED]
+			}
+		});
+	}
+
+	validate({name, description, categories, price, images}) {
+		let valid = true;
 
 		if (!name.length) {
 			this.setNameError();
+			valid = false;
 		}
 
-		return incomplete;
-	}
-
-	validate(product) {
-		if (this.isProductIncomplete(product)) {
-			return false;
+		if (!description.length) {
+			this.setDescriptionError();
+			valid = false;
 		}
 
-		return true;
+		if (!this.getCategory(categories)) {
+			valid = false;
+		}
+
+		if (price <= 0) {
+			valid = false;
+		}
+
+		if (!images.length) {
+			valid = false;
+		}
+
+		return valid;
 	}
 
 	onNameChange(event) {

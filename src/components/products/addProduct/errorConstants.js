@@ -1,1 +1,2 @@
 export const NO_NAME_FILLED = Symbol("NO_NAME_FILLED");
+export const NO_DESCRIPTION_FILLED = Symbol("NO_DESCRIPTION_FILLED");
