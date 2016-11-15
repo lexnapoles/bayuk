@@ -34,11 +34,11 @@ class AddProductContainer extends Component {
 		const {name, description, categories, price, images} = this.state.product;
 
 		const product = {
-								name,
-								description,
+			name,
+			description,
 			category: this.getCategory(categories),
-								price,
-								images
+			price,
+			images
 		};
 
 		this.props.onSubmit(product);
@@ -54,8 +54,10 @@ class AddProductContainer extends Component {
 		return Object.assign({}, this.state.product, newProperty);
 	}
 
-	isProductIncomplete({name, description, category, price, images}) {
-		return !name.length || !description.length || price <= 0 || !images.length || !category;
+	isProductIncomplete({name, description, categories, price, images}) {
+		const isCategorySelected = this.getCategory(categories);
+
+		return !name.length || !description.length || !isCategorySelected || price <= 0 || !images.length;
 	}
 
 	validate(product) {
