@@ -8,6 +8,18 @@
 	margin-bottom: 1em;
 }
 
+.invalid {
+	composes: invalidWell from "../../global.css";
+}
+
+.errorText {
+	composes: errorText from "../../global.css";
+}
+
+.invalidFilter {
+	composes: filter invalid;
+}
+
 .label {
 	display: block;
 	margin-bottom: 5px;

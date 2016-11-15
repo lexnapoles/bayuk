@@ -3,7 +3,7 @@ import Filter from "../filter/Filter";
 import ImageInput from "../../inputs/fileInputs/imageInput/ImageInputContainer";
 import {imagesContainer} from "./imagesFilter.css";
 
-const ImageFilter = ({urls, maxImages, onAdd, onDelete}) => {
+const ImageFilter = ({urls, error, maxImages, onAdd, onDelete}) => {
 	const getImages = (urls) => {
 		if (maxImages <= 0) {
 			return;
@@ -26,7 +26,7 @@ const ImageFilter = ({urls, maxImages, onAdd, onDelete}) => {
 	};
 
 	return (
-		<Filter title="Pictures">
+		<Filter title="Pictures" error={error}>
 			<div className={imagesContainer}>
 				{getImages(urls)}
 			</div>
@@ -36,6 +36,7 @@ const ImageFilter = ({urls, maxImages, onAdd, onDelete}) => {
 
 ImageFilter.propTypes = {
 	urls:      React.PropTypes.object,
+	error:      React.PropTypes.string.isRequired,
 	maxImages: React.PropTypes.number.isRequired,
 	onAdd:     React.PropTypes.func.isRequired,
 	onDelete:  React.PropTypes.func.isRequired

@@ -41,13 +41,14 @@ class ImagesFilterContainer extends Component {
 	}
 
 	render() {
-		return <ImagesFilter urls={this.state.images} maxImages={this.props.maxImages} onAdd={this.onAddImage} onDelete={this.onDeleteImage}/>;
+		return <ImagesFilter urls={this.state.images} error={this.props.error} maxImages={this.props.maxImages} onAdd={this.onAddImage} onDelete={this.onDeleteImage}/>;
 	}
 }
 
 ImagesFilterContainer.propTypes = {
 	maxImages: React.PropTypes.number.isRequired,
-	onChange:  React.PropTypes.func.isRequired
+	onChange:  React.PropTypes.func.isRequired,
+	error:      React.PropTypes.string.isRequired
 };
 
 export default ImagesFilterContainer;

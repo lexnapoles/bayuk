@@ -9,6 +9,11 @@
 	border: none;
 }
 
+.invalidContainer {
+	composes: container
+}
+
+
 .underline {
 	opacity: 0.4;
 }

@@ -7,7 +7,7 @@ class CategoryFilter extends Component {
 		const categories = Object.keys(this.props.categories);
 
 		return categories.map((name) =>
-			<CategoryInput 	key={name}
+			<CategoryInput key={name}
 											id={name}
 											description={name}
 											checked={this.props.categories[name]}
@@ -17,7 +17,7 @@ class CategoryFilter extends Component {
 
 	render() {
 		return (
-			<Filter title="Category">
+			<Filter title="Category" error={this.props.error}>
 				{this.renderCategories()}
 			</Filter>
 		);
@@ -26,7 +26,8 @@ class CategoryFilter extends Component {
 
 CategoryFilter.propTypes = {
 	onChange:   React.PropTypes.func.isRequired,
-	categories: React.PropTypes.object.isRequired
+	categories: React.PropTypes.object.isRequired,
+	error:      React.PropTypes.string.isRequired
 };
 
 export default CategoryFilter;

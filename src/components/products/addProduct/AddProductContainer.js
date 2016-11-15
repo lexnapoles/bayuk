@@ -130,7 +130,7 @@ class AddProductContainer extends Component {
 			valid = false;
 		}
 
-		if(!valid) {
+		if (!valid) {
 			this.setState({
 				errors
 			})
@@ -200,6 +200,7 @@ class AddProductContainer extends Component {
 		return (
 			<AddProduct
 				product={this.state.product}
+				errors={this.state.errors}
 				maxImages={MAX_IMAGES}
 				submitForm={this.submitForm}
 				onNameChange={this.onNameChange}

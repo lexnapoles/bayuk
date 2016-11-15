@@ -1,17 +1,18 @@
 import React from "react";
-import {filter, label} from "./filter.css";
+import {filter, errorText, label, invalidFilter} from "./filter.css";
 
-const Filter = ({title, children}) =>
-	<div className={filter}>
-		<label className={label}>{title}</label>
-		<hr/>
+const Filter = ({title, error, children}) =>
+	<div className={error.length ? invalidFilter : filter}>
+		{title.length ? <div><label className={label}>{title}</label><hr/></div>	: ""}
 		<div>
 			{children}
 		</div>
+		{error.length ? <p className={errorText}>{error}</p> : ""}
 	</div>
 
 Filter.propTypes = {
 	title:    React.PropTypes.string.isRequired,
+	error:    React.PropTypes.string.isRequired,
 	children: React.PropTypes.node.isRequired
 }
 
