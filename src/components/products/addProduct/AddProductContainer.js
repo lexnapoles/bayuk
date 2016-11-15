@@ -20,7 +20,7 @@ class AddProductContainer extends Component {
 			product: {
 				name:        "",
 				description: "",
-				categories:  {"Music": false, "Videgames": false, "Movies": false, "Literature": false},
+				categories:  {"Music": false, "Videogames": false, "Movies": false, "Literature": false},
 				price:       0,
 				images:      []
 			},
@@ -43,6 +43,10 @@ class AddProductContainer extends Component {
 
 	submitForm(event) {
 		event.preventDefault();
+
+		if (!this.validate(this.state.product)) {
+			return;
+		}
 
 		const {name, description, categories, price, images} = this.state.product;
 
@@ -109,6 +113,7 @@ class AddProductContainer extends Component {
 
 	validate({name, description, categories, price, images}) {
 		let valid = true;
+
 
 		if (!name.length) {
 			this.setNameError();
