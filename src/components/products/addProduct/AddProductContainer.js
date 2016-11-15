@@ -71,73 +71,69 @@ class AddProductContainer extends Component {
 		return Object.assign({}, this.state.product, newProperty);
 	}
 
-	setNameError() {
-		this.setState({
-			errors: {
-				name: errorMsgs[NO_NAME_FILLED]
-			}
-		});
+	getNameError() {
+		return {
+			name: errorMsgs[NO_NAME_FILLED]
+		}
 	}
 
-	setDescriptionError() {
-		this.setState({
-			errors: {
-				description: errorMsgs[NO_DESCRIPTION_FILLED]
-			}
-		});
+	getDescriptionError() {
+		return {
+			description: errorMsgs[NO_DESCRIPTION_FILLED]
+		}
 	}
 
-	setCategoryError() {
-		this.setState({
-			errors: {
-				categories: errorMsgs[NO_CATEGORY_FILLED]
-			}
-		});
+	getCategoryError() {
+		return {
+			categories: errorMsgs[NO_CATEGORY_FILLED]
+		}
 	}
 
-	setPriceError() {
-		this.setState({
-			errors: {
-				price: errorMsgs[NO_PRICE_FILLED]
-			}
-		});
+	getPriceError() {
+		return {
+			price: errorMsgs[NO_PRICE_FILLED]
+		}
 	}
 
-	setImagesError() {
-		this.setState({
-			errors: {
-				images: errorMsgs[NO_IMAGES_FILLED]
-			}
-		});
+	getImagesError() {
+		return {
+			images: errorMsgs[NO_IMAGES_FILLED]
+		}
 	}
 
 	validate({name, description, categories, price, images}) {
-		let valid = true;
-
+		let valid  = true,
+				errors = {};
 
 		if (!name.length) {
-			this.setNameError();
+			errors = Object.assign({}, errors, this.getNameError());
 			valid = false;
 		}
 
 		if (!description.length) {
-			this.setDescriptionError();
+			errors = Object.assign({}, errors, this.getDescriptionError());
 			valid = false;
 		}
 
 		if (!this.getCategory(categories)) {
-			this.setCategoryError();
+			errors = Object.assign({}, errors, this.getCategoryError());
 			valid = false;
 		}
 
 		if (price <= 0) {
-			this.setPriceError();
+			errors = Object.assign({}, errors, this.getPriceError());
 			valid = false;
 		}
 
 		if (!images.length) {
-			this.setImagesError();
+			errors = Object.assign({}, errors, this.getImagesError());
 			valid = false;
+		}
+
+		if(!valid) {
+			this.setState({
+				errors
+			})
 		}
 
 		return valid;
