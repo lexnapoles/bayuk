@@ -1,16 +1,22 @@
 import React from "react";
-import {shallow, mount} from "enzyme";
+import {shallow} from "enzyme";
 import {component as AddProductContainer} from "../../../src/components/products/addProduct/AddProductContainer";
-import {NO_NAME_FILLED, NO_DESCRIPTION_FILLED} from "../../../src/components/products/addProduct/errorConstants";
+import {
+	NO_NAME_FILLED,
+	NO_DESCRIPTION_FILLED,
+	NO_CATEGORY_FILLED,
+	NO_PRICE_FILLED,
+	NO_IMAGES_FILLED
+} from "../../../src/components/products/addProduct/errorConstants";
 import errorMsgs from "../../../src/components/products/addProduct/errorsMsgs";
 
 const generateProduct = (product = {}) => {
 	const filledProduct = {
-		name:        "Product",
+		name: "Product",
 		description: "A Product",
-		categories:  {"Music": false, "Videgames": false, "Movies": false, "Literature": true},
-		price:       5,
-		images:      ["image"]
+		categories: {"Music": false, "Videgames": false, "Movies": false, "Literature": true},
+		price: 5,
+		images: ["image"]
 	};
 
 	return Object.assign({}, filledProduct, product);
@@ -103,6 +109,39 @@ describe("<AddProductContainer/>", function () {
 		wrapper.instance().validate(product);
 
 		assert.equal(wrapper.state().errors.description, errorMsgs[NO_DESCRIPTION_FILLED]);
+	});
+
+	it("produces an error message when price isn't filled", function () {
+		const wrapper = shallow(<AddProductContainer onSubmit={() => void 0}/>),
+					product = generateProduct({
+						price: ""
+					});
+
+		wrapper.instance().validate(product);
+
+		assert.equal(wrapper.state().errors.price, errorMsgs[NO_PRICE_FILLED]);
+	});
+
+	it("produces an error message when category isn't filled", function () {
+		const wrapper = shallow(<AddProductContainer onSubmit={() => void 0}/>),
+					product = generateProduct({
+						categories: {"Music": false, "Videgames": false, "Movies": false, "Literature": false}
+					});
+
+		wrapper.instance().validate(product);
+
+		assert.equal(wrapper.state().errors.categories, errorMsgs[NO_CATEGORY_FILLED]);
+	});
+
+	it("produces an error message when category isn't filled", function () {
+		const wrapper = shallow(<AddProductContainer onSubmit={() => void 0}/>),
+					product = generateProduct({
+						images: []
+					});
+
+		wrapper.instance().validate(product);
+
+		assert.equal(wrapper.state().errors.images, errorMsgs[NO_IMAGES_FILLED]);
 	});
 });
 

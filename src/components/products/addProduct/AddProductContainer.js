@@ -2,7 +2,13 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/products";
 import AddProduct from "./AddProduct";
-import {NO_NAME_FILLED, NO_DESCRIPTION_FILLED} from "./errorConstants";
+import {
+	NO_NAME_FILLED,
+	NO_DESCRIPTION_FILLED,
+	NO_CATEGORY_FILLED,
+	NO_PRICE_FILLED,
+	NO_IMAGES_FILLED
+} from "./errorConstants";
 import errorMsgs from "./errorsMsgs";
 const MAX_IMAGES = 3;
 
@@ -77,6 +83,30 @@ class AddProductContainer extends Component {
 		});
 	}
 
+	setCategoryError() {
+		this.setState({
+			errors: {
+				categories: errorMsgs[NO_CATEGORY_FILLED]
+			}
+		});
+	}
+
+	setPriceError() {
+		this.setState({
+			errors: {
+				price: errorMsgs[NO_PRICE_FILLED]
+			}
+		});
+	}
+
+	setImagesError() {
+		this.setState({
+			errors: {
+				images: errorMsgs[NO_IMAGES_FILLED]
+			}
+		});
+	}
+
 	validate({name, description, categories, price, images}) {
 		let valid = true;
 
@@ -91,14 +121,17 @@ class AddProductContainer extends Component {
 		}
 
 		if (!this.getCategory(categories)) {
+			this.setCategoryError();
 			valid = false;
 		}
 
 		if (price <= 0) {
+			this.setPriceError();
 			valid = false;
 		}
 
 		if (!images.length) {
+			this.setImagesError();
 			valid = false;
 		}
 
