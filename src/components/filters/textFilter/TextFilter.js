@@ -24,6 +24,6 @@ TextFilter.propTypes = {
 
 TextFilter.defaultProps = {
 	placeholder: ""
-}
+};
 
 export default TextFilter;
