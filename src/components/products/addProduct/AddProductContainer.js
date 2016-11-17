@@ -61,6 +61,15 @@ class AddProductContainer extends Component {
 		this.props.onSubmit(product);
 	}
 
+	generateErrors() {
+		const errorsKeys = Object.keys(this.state.errors);
+
+		return errorsKeys.reduce((obj, key) =>
+			Object.assign(obj, {
+				[key]: ""
+			}), {});
+	}
+
 	getCategory(categories) {
 		const keys = Object.keys(categories);
 
@@ -103,17 +112,19 @@ class AddProductContainer extends Component {
 
 	validate({name, description, categories, price, images}) {
 		let valid  = true,
-				errors = this.state.errors;
+				errors = this.generateErrors();
 
 		if (!name.length) {
 			errors = Object.assign({}, errors, this.getNameError());
 			valid = false;
 		}
 
+
 		if (!description.length) {
 			errors = Object.assign({}, errors, this.getDescriptionError());
 			valid = false;
 		}
+
 
 		if (!this.getCategory(categories)) {
 			errors = Object.assign({}, errors, this.getCategoryError());
