@@ -118,7 +118,6 @@ class AddProductContainer extends Component {
 			valid = false;
 		}
 
-
 		if (!this.getCategory(categories)) {
 			errors = Object.assign({}, errors, this.getCategoryError());
 			valid = false;
@@ -173,28 +172,20 @@ class AddProductContainer extends Component {
 		this.setState({product});
 	}
 
-	getCategoriesObject(category) {
+	getUpdatedCategories(category) {
 		const {categories} = this.state.product,
-					keys         = Object.keys(categories);
+					DEFAULT_CATEGORY_VALUE = false,
+					newCategories = createDefaultObjectFrom(categories, DEFAULT_CATEGORY_VALUE);
 
-		const newCategories = keys.reduce((categoriesObj, key) => {
-			const value = key === category
-
-				? !categories[key]
-				: false;
-
-			return Object.assign(categoriesObj, {
-				[key]: value
-			});
-		}, {});
+		newCategories[category] = !categories[category];
 
 		return newCategories;
 	}
 
 	onCategoryChange(event) {
-		const name    = event.target.id,
-					product = this.getUpdatedProductWith({
-						categories: this.getCategoriesObject(name)
+		const category = event.target.id,
+					product  = this.getUpdatedProductWith({
+						categories: this.getUpdatedCategories(category)
 					});
 
 		this.setState({product});
