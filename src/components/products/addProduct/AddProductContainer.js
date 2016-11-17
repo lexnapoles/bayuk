@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/products";
 import AddProduct from "./AddProduct";
+import {createDefaultObjectFrom} from "../../../utils/objectUtils";
 import {
 	NO_NAME_FILLED,
 	NO_DESCRIPTION_FILLED,
@@ -61,15 +62,6 @@ class AddProductContainer extends Component {
 		this.props.onSubmit(product);
 	}
 
-	generateErrors() {
-		const errorsKeys = Object.keys(this.state.errors);
-
-		return errorsKeys.reduce((obj, key) =>
-			Object.assign(obj, {
-				[key]: ""
-			}), {});
-	}
-
 	getCategory(categories) {
 		const keys = Object.keys(categories);
 
@@ -111,14 +103,15 @@ class AddProductContainer extends Component {
 	}
 
 	validate({name, description, categories, price, images}) {
+		const DEFAULT_VALUE = "";
+
 		let valid  = true,
-				errors = this.generateErrors();
+				errors = createDefaultObjectFrom(this.state.errors, DEFAULT_VALUE);
 
 		if (!name.length) {
 			errors = Object.assign({}, errors, this.getNameError());
 			valid = false;
 		}
-
 
 		if (!description.length) {
 			errors = Object.assign({}, errors, this.getDescriptionError());
