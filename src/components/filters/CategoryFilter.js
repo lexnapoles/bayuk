@@ -27,7 +27,7 @@ class CategoryFilter extends Component {
 CategoryFilter.propTypes = {
 	onChange:   React.PropTypes.func.isRequired,
 	categories: React.PropTypes.object.isRequired,
-	error:      React.PropTypes.string.isRequired
+	error:      React.PropTypes.string
 };
 
 export default CategoryFilter;

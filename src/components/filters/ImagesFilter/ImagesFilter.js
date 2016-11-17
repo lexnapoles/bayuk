@@ -36,7 +36,7 @@ const ImageFilter = ({urls, error, maxImages, onAdd, onDelete}) => {
 
 ImageFilter.propTypes = {
 	urls:      React.PropTypes.object,
-	error:      React.PropTypes.string.isRequired,
+	error:      React.PropTypes.string,
 	maxImages: React.PropTypes.number.isRequired,
 	onAdd:     React.PropTypes.func.isRequired,
 	onDelete:  React.PropTypes.func.isRequired
