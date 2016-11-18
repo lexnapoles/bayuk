@@ -1,0 +1,12 @@
+.container {
+	padding-top: 1em;
+}
+
+.input {
+	width: 100%;
+	border: none;
+}
+
+.underline {
+	opacity: 0.4;
+}

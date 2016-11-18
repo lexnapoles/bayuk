@@ -2,6 +2,10 @@
 	composes: well from "../../global.css";
 	text-align: center;
 	padding-bottom: 1em;
-	margin-left: 0.5em;
 	margin-bottom: 1em;
+}
+
+.product img {
+	width: 200px;
+	height: 200px;
 }

@@ -1,13 +1,13 @@
-import {createStore} from "redux";
+import {createStore, applyMiddleware} from "redux";
 import {v4} from "node-uuid";
-
-const reducer = (state) => state;
+import addProductMiddleware from "../middlewares/addProductMiddleware";
+import rootReducer from "../reducers/root";
 
 const initialState = {
 	products: [
 		{
 			id:          v4(),
-			photos:      [
+			images:      [
 				"http://placehold.it/200x200?text=slide1",
 				"http://placehold.it/200x200?text=slide2",
 				"http://placehold.it/200x200?text=slide3"
@@ -20,7 +20,7 @@ const initialState = {
 
 		{
 			id:          v4(),
-			photos:      [
+			images:      [
 				"http://placehold.it/200x200?text=slide1",
 				"http://placehold.it/200x200?text=slide2",
 				"http://placehold.it/200x200?text=slide3"
@@ -33,7 +33,7 @@ const initialState = {
 
 		{
 			id:          v4(),
-			photos:      [
+			images:      [
 				"http://placehold.it/200x200?text=slide1",
 				"http://placehold.it/200x200?text=slide2",
 				"http://placehold.it/200x200?text=slide3"
@@ -46,7 +46,7 @@ const initialState = {
 
 		{
 			id:          v4(),
-			photos:      [
+			images:      [
 				"http://placehold.it/200x200?text=slide1",
 				"http://placehold.it/200x200?text=slide2",
 				"http://placehold.it/200x200?text=slide3"
@@ -60,7 +60,11 @@ const initialState = {
 };
 
 const configureStore = () => {
-	return createStore(reducer, initialState);
-}
+	return createStore(
+		rootReducer,
+		initialState,
+		applyMiddleware(addProductMiddleware)
+	);
+};
 
 export default configureStore;

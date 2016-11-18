@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "./input/Input";
+import Input from "./labeledInput/LabeledInput";
 
 const CategoryInput = ({id, description, onChange, checked}) => {
 	const inputConf = {

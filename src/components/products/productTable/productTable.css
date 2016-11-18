@@ -1,6 +1,27 @@
 .container {
 	display: flex;
 	flex-flow: row wrap;
-	justify-content: space-between;
+	justify-content: center;
 	padding: 3em;
+}
+
+.addButtonContainer {
+	position: fixed;
+	left: 0;
+	bottom: 5%;
+	width: 100%;
+}
+
+.addButton {
+	text-decoration: none ;
+	color: black;
+	display: block;
+	width: fit-content;
+	margin: 0 auto;
+}
+
+@media (min-width: 580px) {
+	.container {
+		justify-content: space-between;
+	}
 }

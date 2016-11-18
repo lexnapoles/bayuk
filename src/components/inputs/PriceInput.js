@@ -1,6 +1,6 @@
 import React from "react";
 import {input} from "./priceInput.css";
-import Input from "./input/Input";
+import Input from "./labeledInput/LabeledInput";
 
 const PriceInput = ({id, description, onChange}) => {
 	const inputConf = {

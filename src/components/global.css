@@ -11,4 +11,15 @@ html {
 .well {
 	border: 2px solid lightgrey;
 	border-radius: 10px;
+	overflow: hidden;
+}
+
+.invalidWell {
+	composes: well;
+	border: 1px solid red;
+}
+
+.errorText {
+	color: red;
+	margin-top: 2em;
 }
