@@ -13,7 +13,7 @@ const TextFilter = ({name, error, placeholder, onChange}) =>
 							onChange={onChange}/>
 			<hr className={underline}/>
 		</div>
-	</Filter>
+	</Filter>;
 
 TextFilter.propTypes = {
 	name:        React.PropTypes.string.isRequired,

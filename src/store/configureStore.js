@@ -1,5 +1,6 @@
-import {createStore} from "redux";
+import {createStore, applyMiddleware} from "redux";
 import {v4} from "node-uuid";
+import addProductMiddleware from "../middlewares/addProductMiddleware";
 import rootReducer from "../reducers/root";
 
 const initialState = {
@@ -59,7 +60,11 @@ const initialState = {
 };
 
 const configureStore = () => {
-	return createStore(rootReducer, initialState);
-}
+	return createStore(
+		rootReducer,
+		initialState,
+		applyMiddleware(addProductMiddleware)
+	);
+};
 
 export default configureStore;

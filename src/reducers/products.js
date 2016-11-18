@@ -12,11 +12,11 @@ const productsReducer = (state = [], action) => {
 		default:
 			return state;
 	}
-}
+};
 
 export const getProductById = (state, id) => {
 	return state.find(product => product.id === id);
-}
+};
 
 export default productsReducer;
 
