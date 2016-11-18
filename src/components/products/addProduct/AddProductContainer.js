@@ -63,83 +63,53 @@ class AddProductContainer extends Component {
 	}
 
 	getCategory(categories) {
-		const keys = Object.keys(categories);
-
-		return keys.find(key => categories[key]);
+		return Object.keys(categories).find(key => categories[key]);
 	}
 
 	getUpdatedProductWith(newProperty) {
 		return Object.assign({}, this.state.product, newProperty);
 	}
 
-	getNameError() {
-		return {
-			name: errorMsgs[NO_NAME_FILLED]
-		}
+	validateName(name) {
+		return name.length ? "" : errorMsgs[NO_NAME_FILLED];
 	}
 
-	getDescriptionError() {
-		return {
-			description: errorMsgs[NO_DESCRIPTION_FILLED]
-		}
+	validateDescription(description) {
+		return description.length ? "" : errorMsgs[NO_DESCRIPTION_FILLED];
 	}
 
-	getCategoryError() {
-		return {
-			categories: errorMsgs[NO_CATEGORY_FILLED]
-		}
+	validateCategories(categories) {
+		return this.getCategory(categories) ?  "" : errorMsgs[NO_CATEGORY_FILLED];
 	}
 
-	getPriceError() {
-		return {
-			price: errorMsgs[NO_PRICE_FILLED]
-		}
+	validatePrice(price) {
+		return price > 0 ? "" : errorMsgs[NO_PRICE_FILLED];
 	}
 
-	getImagesError() {
-		return {
-			images: errorMsgs[NO_IMAGES_FILLED]
-		}
+	validateImages(images) {
+		return images.length ? "" : errorMsgs[NO_IMAGES_FILLED];
+	}
+
+	errorExists(errors) {
+		return Object.keys(errors).some(key => errors[key].length);
 	}
 
 	validate({name, description, categories, price, images}) {
-		const DEFAULT_VALUE = "";
+		const errors = {
+			name:        this.validateName(name),
+			description: this.validateDescription(description),
+			categories:  this.validateCategories(categories),
+			price:       this.validatePrice(price),
+			images:      this.validateImages(images)
+		};
 
-		let valid  = true,
-				errors = createDefaultObjectFrom(this.state.errors, DEFAULT_VALUE);
+		if (this.errorExists(errors)) {
+			this.setState({errors});
 
-		if (!name.length) {
-			errors = Object.assign({}, errors, this.getNameError());
-			valid = false;
+			return false;
 		}
 
-		if (!description.length) {
-			errors = Object.assign({}, errors, this.getDescriptionError());
-			valid = false;
-		}
-
-		if (!this.getCategory(categories)) {
-			errors = Object.assign({}, errors, this.getCategoryError());
-			valid = false;
-		}
-
-		if (price <= 0) {
-			errors = Object.assign({}, errors, this.getPriceError());
-			valid = false;
-		}
-
-		if (!images.length) {
-			errors = Object.assign({}, errors, this.getImagesError());
-			valid = false;
-		}
-
-		if (!valid) {
-			this.setState({
-				errors
-			})
-		}
-
-		return valid;
+		return true;
 	}
 
 	onNameChange(event) {
