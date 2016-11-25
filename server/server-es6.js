@@ -3,10 +3,11 @@ import express from "express";
 import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
-import * as config from "./webpack.dev.config.js";
+import * as config from "../webpack.dev.config.js";
+import "./db";
 
 const app           = express(),
-			DIST_DIR      = path.join(__dirname, "dist"),
+			DIST_DIR      = path.join(__dirname, "/../dist"),
 			HTML_FILE     = path.join(DIST_DIR, "index.html"),
 			isDevelopment = process.env.NODE_ENV !== "production",
 			DEFAULT_PORT  = 3000,
