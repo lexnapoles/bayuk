@@ -9,7 +9,7 @@ let app = express();
 
 app.set("port", process.env.PORT || DEFAULT_PORT);
 
-app.get("/api", apiRoutes);
+app.use("/api", apiRoutes);
 
 configureServer(app);
 

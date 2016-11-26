@@ -1,19 +1,26 @@
-export const readProducts = () => {
+import {sendJsonResponse} from "../utils/utils";
+
+export const readProducts = (req, res) => {
+	sendJsonResponse(res, 200, {"status": "success"});
 
 };
 
-export const readOneProduct = () => {
+export const readOneProduct = (req, res) => {
+	sendJsonResponse(res, 200, {"status": "success"});
 
 };
 
-export const createProducts = () => {
+export const createProducts = (req, res) => {
+	sendJsonResponse(res, 200, {"status": "success"});
 
 };
 
-export const updateOneProduct = () => {
+export const updateOneProduct = (req, res) => {
+	sendJsonResponse(res, 200, {"status": "success"});
 
 };
 
-export const deleteOneProduct = () => {
+export const deleteOneProduct = (req, res) => {
+	sendJsonResponse(res, 200, {"status": "success"});
 
 };
