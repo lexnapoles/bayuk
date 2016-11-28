@@ -36,5 +36,4 @@ export const updateOneProduct = (req, res) => {
 
 export const deleteOneProduct = (req, res) => {
 	sendJsonResponse(res, 200, {"status": "success"});
-
 };
