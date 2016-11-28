@@ -1,5 +1,5 @@
 import {sendJsonResponse} from "../utils/utils";
-import {getProducts, getProductById} from "../services/products";
+import {getProducts, getProductById, addProduct} from "../services/products";
 
 const paramExists = (req, param) => req.params && req.params[param];
 
@@ -24,10 +24,10 @@ export const readOneProduct = (req, res) => {
 		.catch(error => sendJsonResponse(res, 404, {"message": error}));
 };
 
-export const createProducts = (req, res) => {
-	sendJsonResponse(res, 200, {"status": "success"});
-
-};
+export const createProduct = (req, res) =>
+	addProduct(req.body)
+		.then(msg => sendJsonResponse(res, 201, msg))
+		.catch(error => sendJsonResponse(res, 404, error));
 
 export const updateOneProduct = (req, res) => {
 	sendJsonResponse(res, 200, {"status": "success"});

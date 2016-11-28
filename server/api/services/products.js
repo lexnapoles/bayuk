@@ -1,22 +1,17 @@
-import pool from "../../db";
-
-const isValidResponse     = response => response.rowCount,
-			getDataFromResponse = response => response.rows;
+import db from "../../db";
 
 export const getProducts = () =>
-	pool.query("SELECT * FROM products")
-			.then(products => isValidResponse(products)
-				? getDataFromResponse(products)
-				: Promise.reject("Products not found"))
-			.catch(error => Promise.reject(error));
+	db.any("SELECT * FROM products")
+		.then(products => products)
+		.catch(error => Promise.reject(error));
 
 export const getProductById = productId =>
-	pool.query("SELECT * FROM products WHERE uuid = $1::uuid", [productId])
-			.then(products => isValidResponse(products)
-				? getDataFromResponse(products)[0]
-				: Promise.reject("Product id not found"))
-			.catch(error => Promise.reject(error));
+	db.one("SELECT * FROM products where uuid=$1", productId)
+		.then(product => product)
+		.catch(() => Promise.reject("Product could not be found"));
 
-// export const addProduct = product => {
-// 	pool.query("INSERT INTO products (uuid, name, description, category, price) VALUES")
-// }
+export const addProduct = product =>
+	db.none("INSERT INTO products (uuid, name, description, category, price) " +
+		"values(${uuid}, ${name}, ${description},${category}, ${price})", product)
+		.then(() => product)
+		.catch(() => Promise.reject("Product could not be created"));
