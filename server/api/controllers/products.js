@@ -24,11 +24,15 @@ export const readOneProduct = (req, res) => {
 		.catch(error => sendJsonResponse(res, 404, {"message": error}));
 };
 
-export const createProduct = (req, res) =>
+export const createProduct = (req, res) => {
+	if (!req || !req.body) {
+		sendJsonResponse(res, 404, "No product data")
+	}
+
 	addProduct(req.body)
 		.then(msg => sendJsonResponse(res, 201, msg))
 		.catch(error => sendJsonResponse(res, 404, error));
-
+};
 export const updateOneProduct = (req, res) => {
 	sendJsonResponse(res, 200, {"status": "success"});
 

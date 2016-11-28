@@ -72,6 +72,7 @@
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.13.4",
     "font-awesome": "^4.6.1",
     "history": "^2.0.0",
