@@ -1,11 +1,12 @@
 import {sendJsonResponse} from "../utils/utils";
-import {getProductById} from "../services/products";
+import {getProducts, getProductById} from "../services/products";
 
 const paramExists = (req, param) => req.params && req.params[param];
 
-export const readProducts = (req, res) => {
-	sendJsonResponse(res, 200, {"status": "success"});
-};
+export const readProducts = (req, res) =>
+	getProducts()
+		.then(products => sendJsonResponse(res, 200, products))
+		.catch(error => sendJsonResponse(res, 404, {"message": error}));
 
 export const readOneProduct = (req, res) => {
 	if (!paramExists(req, "productId")) {

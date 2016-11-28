@@ -3,6 +3,12 @@ import pool from "../../db";
 const isValidResponse     = response => response.rowCount,
 			getDataFromResponse = response => response.rows;
 
+export const getProducts = () =>
+	pool.query("SELECT * FROM products")
+			.then(products => isValidResponse(products)
+				? getDataFromResponse(products)
+				: Promise.reject("Products not found"));
+
 export const getProductById = productId =>
 	pool.query("SELECT * FROM products WHERE uuid = $1::uuid", [productId])
 			.then(products => isValidResponse(products)
