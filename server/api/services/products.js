@@ -10,8 +10,11 @@ export const getProductById = productId =>
 		.then(product => product)
 		.catch(() => Promise.reject("Product could not be found"));
 
-export const addProduct = product =>
-	db.none("INSERT INTO products (uuid, name, description, category, price) " +
+export const addProduct = product => {
+	return db.none("INSERT INTO products (uuid, name, description, category, price) " +
 		"values(${uuid}, ${name}, ${description},${category}, ${price})", product)
 		.then(() => product)
 		.catch(() => Promise.reject("Product could not be created"));
+};
+
+
