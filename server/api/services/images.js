@@ -8,12 +8,14 @@ const getDecodedImage = data => {
 	return new Buffer(img, "base64");
 };
 
-const addImageToDB = productId => {
+const addOneImage = productId => {
 	if (!productId) {
 		return Promise.reject("Product id is not defined");
 	}
 
-	return db.one("INSERT into images (product_id) VALUES ($1) RETURNING image_id", productId);
+	return db.one("INSERT into images (product_id) VALUES ($1) RETURNING image_id", productId)
+		.then(({image_id}) => image_id)
+		.catch(Promise.reject("Can't insert image"));
 };
 
 const writeImageToDisk = (data, id) => {
@@ -21,12 +23,6 @@ const writeImageToDisk = (data, id) => {
 
 	return fs.writeFile(imagePath, getDecodedImage(data));
 };
-
-const addOneImage = (image, productId) =>
-	addImageToDB(productId)
-		.then(({image_id}) => writeImageToDisk(image, image_id))
-		.catch(Promise.reject);
-
 
 const addImages = (images = [], productId) => {
 	if (!images.length) {
@@ -41,7 +37,7 @@ const addImages = (images = [], productId) => {
 	);
 
 	return Promise.all(wrappedImagesInPromises)
-								.then(() => productId);
+		.then(() => productId);
 };
 
 export default addImages;
