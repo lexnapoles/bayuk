@@ -1,5 +1,8 @@
 import db from "../../db";
-import addImages from "./images";
+import {addImages, writeImagesToDisk} from "./images";
+import {mapArraysSequentially} from "../utils/utils";
+
+const generateImagesObjs =  (imagesIds, product) => mapArraysSequentially(imagesIds, product.images)((id, data) => Object.assign({}, {id, data}));
 
 const addProductToDB = product =>
 	db.one("INSERT INTO products (name, description, category, price) " +
@@ -7,8 +10,7 @@ const addProductToDB = product =>
 
 export const getProducts = () =>
 	db.any("SELECT * FROM products")
-		.then(products => products)
-		.catch(Promise.reject);
+		.then(products => products);
 
 export const getProductById = productId =>
 	db.one("SELECT * FROM products where uuid=$1", productId)
@@ -17,8 +19,7 @@ export const getProductById = productId =>
 
 export const addProduct = product =>
 	addProductToDB(product)
-		.then(({uuid}) => addImages(product.images, uuid))
-		.then(uuid => Object.assign({}, product, {uuid}))
-		.catch(Promise.reject);
-
+		.then(({uuid}) => addImages(product.images.length, uuid))
+		.then(imagesIds => writeImagesToDisk(generateImagesObjs(imagesIds, product)))
+		.then(uuid => Object.assign({}, product, {uuid}));
 

@@ -14,14 +14,14 @@ const addOneImage = productId => {
 	}
 
 	return db.one("INSERT into images (product_id) VALUES ($1) RETURNING image_id", productId)
-		.then(({image_id}) => image_id)
-		.catch(Promise.reject);
+		.then(({image_id}) => image_id);
 };
 
 const writeOneImageToDisk = ({id, data}) => {
 	const imagePath = `${path.join(process.env.IMAGESDIR, "/products", id)}.jpg`;
 
-	return fs.writeFile(imagePath, getDecodedImage(data));
+	return fs.writeFile(imagePath, getDecodedImage(data))
+		.then(() => id)
 };
 
 export const writeImagesToDisk = (images = []) => {
@@ -38,7 +38,6 @@ export const writeImagesToDisk = (images = []) => {
 
 	return Promise.all(wrappedImagesInPromises);
 };
-
 
 export const addImages = (imagesCount, productId) => {
 	if (!imagesCount) {
