@@ -15,23 +15,39 @@ const addOneImage = productId => {
 
 	return db.one("INSERT into images (product_id) VALUES ($1) RETURNING image_id", productId)
 		.then(({image_id}) => image_id)
-		.catch(Promise.reject("Can't insert image"));
+		.catch(Promise.reject);
 };
 
-const writeImageToDisk = (data, id) => {
+const writeOneImageToDisk = ({id, data}) => {
 	const imagePath = `${path.join(process.env.IMAGESDIR, "/products", id)}.jpg`;
 
 	return fs.writeFile(imagePath, getDecodedImage(data));
 };
 
-const addImages = (images = [], productId) => {
+export const writeImagesToDisk = (images = []) => {
 	if (!images.length) {
 		return Promise.reject("No images has been passed");
 	}
 
-	const wrappedImagesInPromises = images.map(img =>
+	const wrappedImagesInPromises = images.map(img=>
 		new Promise((resolve, reject) =>
-			addOneImage(img, productId)
+			writeOneImageToDisk(img)
+				.then(resolve)
+				.catch(reject))
+	);
+
+	return Promise.all(wrappedImagesInPromises);
+};
+
+
+export const addImages = (imagesCount, productId) => {
+	if (!imagesCount) {
+		return Promise.reject("No images has been defined");
+	}
+
+	const wrappedImagesInPromises = (new Array(imagesCount)).map(() =>
+		new Promise((resolve, reject) =>
+			addOneImage(productId)
 				.then(resolve)
 				.catch(reject))
 	);
@@ -40,4 +56,3 @@ const addImages = (images = [], productId) => {
 		.then(() => productId);
 };
 
-export default addImages;
