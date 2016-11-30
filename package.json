@@ -75,6 +75,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.13.4",
     "font-awesome": "^4.6.1",
+    "fs-promise": "^1.0.0",
     "history": "^2.0.0",
     "karma-chai": "^0.1.0",
     "nuka-carousel": "^2.0.2",

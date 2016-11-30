@@ -1,7 +1,8 @@
 import {sendJsonResponse} from "../utils/utils";
 import {getProducts, getProductById, addProduct} from "../services/products";
 
-const paramExists = (req, param) => req.params && req.params[param];
+const paramExists       = (req, param) => req.params && req.params[param],
+			productDataExists = req => req && req.body;
 
 export const readProducts = (req, res) =>
 	getProducts()
@@ -25,7 +26,7 @@ export const readOneProduct = (req, res) => {
 };
 
 export const createProduct = (req, res) => {
-	if (!req || !req.body) {
+	if (!productDataExists(req)) {
 		sendJsonResponse(res, 404, "No product data")
 	}
 
