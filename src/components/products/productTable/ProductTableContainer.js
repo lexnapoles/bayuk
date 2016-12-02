@@ -5,7 +5,4 @@ const mapStateToProps = (state) => ({
 	products: state.products
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-// });
-
 export default connect(mapStateToProps)(ProductTable);
