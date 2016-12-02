@@ -8,11 +8,14 @@ const addProductToDB = product =>
 	db.one("INSERT INTO products (name, description, category, price) " +
 		"VALUES(${name}, ${description}, ${category}, ${price}) RETURNING uuid", product);
 
+
 export const addProduct = product =>
 	addProductToDB(product)
 		.then(({uuid}) => addImages(product.images.length, uuid))
 		.then(imagesIds => writeImagesToDisk(generateImagesObjs(imagesIds, product)))
 		.then(uuid => Object.assign({}, product, {uuid}));
+
+export const deleteProduct = productId => db.proc("delete_product", productId);
 
 export const getProducts = () => db.any("SELECT * FROM products_with_images");
 

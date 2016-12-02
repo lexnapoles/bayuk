@@ -1,5 +1,5 @@
 import {sendJsonResponse} from "../utils/utils";
-import {getProducts, getProductById, addProduct} from "../services/products";
+import {getProducts, getProductById, addProduct, deleteProduct} from "../services/products";
 
 const paramExists       = (req, param) => req.params && req.params[param],
 			productDataExists = req => req && req.body;
@@ -41,5 +41,16 @@ export const updateOneProduct = (req, res) => {
 };
 
 export const deleteOneProduct = (req, res) => {
-	sendJsonResponse(res, 200, {"status": "success"});
+	if (!paramExists(req, "productId")) {
+		sendJsonResponse(res, 404, {
+			"message": "No productId in request"
+		});
+	}
+
+	const {productId} = req.params;
+
+	return deleteProduct(productId)
+		.then(() => sendJsonResponse(res, 200, {"status": "success"}))
+		.catch(error => sendJsonResponse(res, 404, error));
+
 };

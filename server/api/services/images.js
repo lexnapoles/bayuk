@@ -43,4 +43,3 @@ export const addImages = (imagesCount, productId) => {
 	return Promise.all(wrappedImagesInPromises)
 		.then(imagesIds => imagesIds);
 };
-
