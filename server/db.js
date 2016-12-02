@@ -1,5 +1,3 @@
-import pg from "pg";
+const pgp = require("pg-promise")();
 
-const pool = new pg.Pool();
-
-export default pool;
+export default pgp({});
