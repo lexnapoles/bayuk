@@ -1,4 +1,3 @@
-import db from "../../db";
 import fs from "fs-promise";
 import path from "path";
 
@@ -23,23 +22,4 @@ export const writeImagesToDisk = (images = []) => {
 	const wrappedImagesInPromises = images.map(img => Promise.resolve(writeOneImageToDisk(img)));
 
 	return Promise.all(wrappedImagesInPromises);
-};
-
-const addOneImage = productId => {
-	if (!productId) {
-		return Promise.reject("Product id is not defined");
-	}
-
-	return db.one("INSERT into images (product_id) VALUES ($1) RETURNING image_id", productId)
-		.then(({image_id}) => image_id);
-};
-export const addImages = (imagesCount, productId) => {
-	if (!imagesCount) {
-		return Promise.reject("No images has been defined");
-	}
-
-	const wrappedImagesInPromises = (new Array(imagesCount)).fill(Promise.resolve(addOneImage(productId)));
-
-	return Promise.all(wrappedImagesInPromises)
-		.then(imagesIds => imagesIds);
 };
