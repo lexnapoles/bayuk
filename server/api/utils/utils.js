@@ -10,3 +10,11 @@ export const mapArraysSequentially = (arr1 = [], arr2 = []) => {
 
 	return func => arr1.map((val, index) => func(val, arr2[index]));
 };
+
+export const wrapDataInPromise = (dataArr, func) => {
+	if (!dataArr.length) {
+		return Promise.reject("No data has been passed");
+	}
+
+	return dataArr.map(data => Promise.resolve(func(data)));
+} ;

@@ -63,7 +63,6 @@ export const deleteOneProduct = (req, res) => {
 	const {productId} = req.params;
 
 	return deleteProduct(productId)
-		.then(() => sendJsonResponse(res, 200, {"status": "success"}))
+		.then(() => sendJsonResponse(res, 204, null))
 		.catch(error => sendJsonResponse(res, 404, error));
-
 };

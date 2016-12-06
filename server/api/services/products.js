@@ -1,5 +1,5 @@
 import db, {queryResult} from "../../db";
-import {writeImagesToDisk} from "./images";
+import {writeImagesToDisk, deleteImagesFromDisk, getImagesOfProduct} from "./images";
 import {mapArraysSequentially} from "../utils/utils";
 const generateImagesObjs = (ids, data) => mapArraysSequentially(ids, data)((id, data) => Object.assign({}, {id, data}));
 
@@ -39,4 +39,9 @@ export const updateProduct = (productId, {name, description, category, price}) =
 		price
 	], queryResult.one);
 
-export const deleteProduct = productId => db.proc("delete_product", productId);
+const deleteProductFromDB = productId => db.proc("delete_product", productId);
+
+export const deleteProduct = productId =>
+	getImagesOfProduct(productId)
+		.then(deleteImagesFromDisk)
+		.then(deleteProductFromDB.bind(void 0, productId));
