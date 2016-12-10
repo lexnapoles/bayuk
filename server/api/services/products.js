@@ -1,25 +1,55 @@
-import db from "../../db";
-import {addImages, writeImagesToDisk} from "./images";
-import {mapArraysSequentially} from "../utils/utils";
+import db, {queryResult} from "../../db";
+import {
+	writeImagesToDisk,
+	deleteImagesFromDisk,
+	updateImages,
+	getImagesOfProduct
+} from "./images";
+import {generateImagesObjs} from "../utils/utils";
 
-const generateImagesObjs =  (imagesIds, product) => mapArraysSequentially(imagesIds, product.images)((id, data) => Object.assign({}, {id, data}));
-
-const addProductToDB = product =>
-	db.one("INSERT INTO products (name, description, category, price) " +
-		"VALUES(${name}, ${description}, ${category}, ${price}) RETURNING uuid", product);
-
-export const getProducts = () =>
-	db.any("SELECT * FROM products")
-		.then(products => products);
+export const getProducts = () => db.any("SELECT * FROM products_with_images");
 
 export const getProductById = productId =>
-	db.one("SELECT * FROM products where uuid=$1", productId)
-		.then(product => product)
+	db.one("SELECT * FROM products_with_images WHERE id=$1", productId)
 		.catch(() => Promise.reject("Product could not be found"));
+
+const addProductToDB = ({name, description, category, price, images}) =>
+	db.func("add_product", [
+		name,
+		description,
+		category,
+		price,
+		images.length
+	], queryResult.one);
 
 export const addProduct = product =>
 	addProductToDB(product)
-		.then(({uuid}) => addImages(product.images.length, uuid))
-		.then(imagesIds => writeImagesToDisk(generateImagesObjs(imagesIds, product)))
-		.then(uuid => Object.assign({}, product, {uuid}));
+		.then(createdProduct => {
+			const imagesIds  = createdProduct.images,
+						imagesData = product.images,
+						images     = generateImagesObjs(imagesIds, imagesData);
 
+			writeImagesToDisk(images);
+
+			return createdProduct;
+		});
+
+const updateProductFromDB = (productId, {name, description, category, price}) =>
+	db.func("update_product", [
+		productId,
+		name,
+		description,
+		category,
+		price
+	], queryResult.one);
+
+export const updateProduct = (productId, product) =>
+	updateImages(productId, product.images)
+		.then(updateProductFromDB.bind(void 0, productId, product));
+
+const deleteProductFromDB = productId => db.proc("delete_product", productId);
+
+export const deleteProduct = productId =>
+	getImagesOfProduct(productId)
+		.then(deleteImagesFromDisk)
+		.then(deleteProductFromDB.bind(void 0, productId));

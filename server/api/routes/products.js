@@ -15,7 +15,7 @@ export default router => {
 
 	router.post("/products", jsonParser, createProduct);
 
-	router.put("/products/:productId", updateOneProduct);
+	router.put("/products/:productId", jsonParser, updateOneProduct);
 
 	router.delete("/products/:productId", deleteOneProduct);
 
