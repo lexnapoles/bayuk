@@ -1,7 +1,11 @@
 import db, {queryResult} from "../../db";
-import {writeImagesToDisk, deleteImagesFromDisk, getImagesOfProduct} from "./images";
-import {mapArraysSequentially} from "../utils/utils";
-const generateImagesObjs = (ids, data) => mapArraysSequentially(ids, data)((id, data) => Object.assign({}, {id, data}));
+import {
+	writeImagesToDisk,
+	deleteImagesFromDisk,
+	updateImages,
+	getImagesOfProduct
+} from "./images";
+import {generateImagesObjs} from "../utils/utils";
 
 export const getProducts = () => db.any("SELECT * FROM products_with_images");
 
@@ -30,7 +34,7 @@ export const addProduct = product =>
 			return createdProduct;
 		});
 
-export const updateProduct = (productId, {name, description, category, price}) =>
+const updateProductFromDB = (productId, {name, description, category, price}) =>
 	db.func("update_product", [
 		productId,
 		name,
@@ -38,6 +42,10 @@ export const updateProduct = (productId, {name, description, category, price}) =
 		category,
 		price
 	], queryResult.one);
+
+export const updateProduct = (productId, product) =>
+	updateImages(productId, product.images)
+		.then(updateProductFromDB.bind(void 0, productId, product));
 
 const deleteProductFromDB = productId => db.proc("delete_product", productId);
 

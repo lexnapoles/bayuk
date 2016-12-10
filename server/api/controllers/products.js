@@ -50,7 +50,9 @@ export const updateOneProduct = (req, res) => {
 
 	return updateProduct(productId, product)
 		.then(product => sendJsonResponse(res, 200, product))
-		.catch(() => sendJsonResponse(res, 404, "Product could not be updated"))
+		.catch(() => sendJsonResponse(res, 404, {
+			"message": "Product could not be updated"
+		}));
 };
 
 export const deleteOneProduct = (req, res) => {
