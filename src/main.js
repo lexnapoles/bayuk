@@ -4,8 +4,7 @@ import React from "react";
 import {render} from "react-dom";
 import configureStore from "./store/configureStore";
 import Root from "./components/Root/Root";
-import {fetchProducts} from "./actions/products";
-import {fetchCategories} from "./actions/categories";
+import {fetchProducts, fetchCategories} from "./actions/api";
 
 if (module.hot) {
 	module.hot.accept();
