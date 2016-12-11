@@ -15,12 +15,10 @@ class ProductTable extends Component {
 	}
 
 	render() {
-		const {products} = this.props;
-
 		return (
 			<div>
 				<div styleName="container">
-					{this.renderProducts(products)}
+					{this.renderProducts(this.props.products)}
 				</div>
 				<div styleName="addButtonContainer">
 					<Link styleName="addButton" to={"/add"}>

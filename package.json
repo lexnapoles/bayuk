@@ -79,6 +79,7 @@
     "fs-promise": "^1.0.0",
     "history": "^2.0.0",
     "karma-chai": "^0.1.0",
+    "normalizr": "^2.3.0",
     "nuka-carousel": "^2.0.2",
     "pg": "^6.1.0",
     "pg-promise": "^5.4.4",
