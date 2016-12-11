@@ -1,8 +1,8 @@
-export const createDefaultObjectFrom = (obj = {}, defaultValue = "") => {
-	const keys = Object.keys(obj);
+export const createDefaultObjectFrom = (base = {}, defaultValue = "") => {
+	const keys = Array.isArray(base) ? base : Object.keys(base);
 
-	return keys.reduce((obj, key) =>
-		Object.assign(obj, {
-			[key]: defaultValue
-		}), {});
-}
+	return keys.reduce((obj, key) => ({
+		...obj,
+		[key]: defaultValue
+	}),	{});
+};

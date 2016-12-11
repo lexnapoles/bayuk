@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "../../form/Form";
 import TextFilter from "../../filters/textFilter/TextFilter";
-import CategoryFilter from "../../filters/CategoryFilter";
+import CategoryFilter from "../../filters/categoryFilter/CategoryFilterContainer";
 import Filter from "../../filters/filter/Filter";
 import ImagesFilter from "../../filters/ImagesFilter/ImagesFilterContainer";
 
@@ -20,7 +20,7 @@ const AddProduct = ({
 		<ImagesFilter error={errors.images} maxImages={maxImages} onChange={onImagesChange}/>
 		<TextFilter name={product.name} error={errors.name} placeholder="Product name" onChange={onNameChange} required={true}/>
 		<TextFilter name={product.description} error={errors.description} placeholder="Product description" onChange={onDescriptionChange}	required={true}/>
-		<CategoryFilter categories={product.categories} error={errors.categories} onChange={onCategoryChange}/>
+		<CategoryFilter error={errors.categories} onChange={onCategoryChange}/>
 		<Filter title="Price" error={errors.price}>
 			<input type="number" min="0" placeholder="0" onChange={onPriceChange}/>
 		</Filter>

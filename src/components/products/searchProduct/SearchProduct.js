@@ -2,7 +2,7 @@ import React from "react";
 import Form from "../../form/Form";
 import TextFilter from "../../filters/textFilter/TextFilter";
 import PriceFilter from "../../filters/PriceFilter";
-import CategoryFilter from "../../filters/CategoryFilter";
+import CategoryFilter from "../../filters/categoryFilter/CategoryFilterContainer";
 
 const SearchProduct = ({
 	name,
