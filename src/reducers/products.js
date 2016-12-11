@@ -1,14 +1,11 @@
-import {v4} from "node-uuid";
 import {ADD_PRODUCT} from "../constants/actionTypes";
+import product from "./product";
 
-const productsReducer = (state = [], action) => {
+const products = (state = [], action) => {
 	switch (action.type) {
-		case ADD_PRODUCT: {
-			const product = Object.assign({}, {id: v4()}, action.payload.product);
+		case ADD_PRODUCT:
+			return [...state, product(void 0, action)];
 
-			return [...state, product];
-
-		}
 		default:
 			return state;
 	}
@@ -18,6 +15,6 @@ export const getProductById = (state, id) => {
 	return state.find(product => product.id === id);
 };
 
-export default productsReducer;
+export default products;
 
 
