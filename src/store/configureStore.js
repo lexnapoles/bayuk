@@ -56,7 +56,9 @@ const initialState = {
 			category:    "Literature",
 			price:       500
 		}
-	]
+	],
+
+	categories: ["Literature", "Videogames", "Movies", "Music", "TV"]
 };
 
 const configureStore = () => {
