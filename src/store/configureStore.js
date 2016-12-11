@@ -57,8 +57,9 @@ import rootReducer from "../reducers/root";
 // 			category:    "Literature",
 // 			price:       500
 // 		}
-// 	]
-// };
+// 	],
+//  categories: ["Literature", "Videogames", "Movies", "Music", "TV"]
+//	};
 
 const configureStore = () => {
 	return createStore(

@@ -1,5 +1,9 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 import SearchProduct from "./SearchProduct";
+import {createDefaultObjectFrom} from "../../../utils/objectUtils";
+
+const mapStateToProps = ({categories}) => ({categories});
 
 class SearchProductContainer extends Component {
 	constructor(props) {
@@ -7,7 +11,7 @@ class SearchProductContainer extends Component {
 
 		this.state = {
 			name:       "",
-			categories: {"Music": false, "Videgames": false, "Movies": false, "Literature": false},
+			categories: createDefaultObjectFrom(this.props.categories, false),
 			price:      {min: 0, max: 0}
 		};
 
@@ -58,4 +62,8 @@ class SearchProductContainer extends Component {
 	}
 }
 
-export default SearchProductContainer;
+SearchProductContainer.propTypes = {
+	categories: React.PropTypes.array.isRequired
+};
+
+export default connect(mapStateToProps)(SearchProductContainer);

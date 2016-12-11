@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/products";
 import AddProduct from "./AddProduct";
-import {createDefaultObjectFrom} from "../../../utils/objectUtils";
 import {
 	NO_NAME_FILLED,
 	NO_DESCRIPTION_FILLED,
@@ -21,7 +20,7 @@ class AddProductContainer extends Component {
 			product: {
 				name:        "",
 				description: "",
-				categories:  {"Music": false, "Videogames": false, "Movies": false, "Literature": false},
+				category:    "",
 				price:       0,
 				images:      []
 			},
@@ -45,60 +44,58 @@ class AddProductContainer extends Component {
 	submitForm(event) {
 		event.preventDefault();
 
-		if (!this.validate(this.state.product)) {
+		const product = this.state.product;
+
+		if (!this.validate(product)) {
 			return;
 		}
-
-		const {name, description, categories, price, images} = this.state.product;
-
-		const product = {
-			name,
-			description,
-			category: this.getCategory(categories),
-			price,
-			images
-		};
 
 		this.props.onSubmit(product);
 	}
 
-	getCategory(categories) {
-		return Object.keys(categories).find(key => categories[key]);
-	}
-
-	getUpdatedProductWith(newProperty) {
+	getUpdatedProduct(newProperty) {
 		return Object.assign({}, this.state.product, newProperty);
 	}
 
 	validateName(name) {
-		return name.length ? "" : errorMsgs[NO_NAME_FILLED];
+		return name.length
+			? ""
+			: errorMsgs[NO_NAME_FILLED];
 	}
 
 	validateDescription(description) {
-		return description.length ? "" : errorMsgs[NO_DESCRIPTION_FILLED];
+		return description.length
+			? ""
+			: errorMsgs[NO_DESCRIPTION_FILLED];
 	}
 
-	validateCategories(categories) {
-		return this.getCategory(categories) ?  "" : errorMsgs[NO_CATEGORY_FILLED];
+	validateCategories(category) {
+		return category.length
+			? ""
+			: errorMsgs[NO_CATEGORY_FILLED];
 	}
 
 	validatePrice(price) {
-		return price > 0 ? "" : errorMsgs[NO_PRICE_FILLED];
+		return price > 0
+			? ""
+			: errorMsgs[NO_PRICE_FILLED];
 	}
 
 	validateImages(images) {
-		return images.length ? "" : errorMsgs[NO_IMAGES_FILLED];
+		return images.length
+			? ""
+			: errorMsgs[NO_IMAGES_FILLED];
 	}
 
 	errorExists(errors) {
 		return Object.keys(errors).some(key => errors[key].length);
 	}
 
-	validate({name, description, categories, price, images}) {
+	validate({name, description, category, price, images}) {
 		const errors = {
 			name:        this.validateName(name),
 			description: this.validateDescription(description),
-			categories:  this.validateCategories(categories),
+			categories:  this.validateCategories(category),
 			price:       this.validatePrice(price),
 			images:      this.validateImages(images)
 		};
@@ -113,7 +110,7 @@ class AddProductContainer extends Component {
 	}
 
 	onNameChange(event) {
-		const product = this.getUpdatedProductWith({
+		const product = this.getUpdatedProduct({
 			name: event.target.value
 		});
 
@@ -121,44 +118,30 @@ class AddProductContainer extends Component {
 	}
 
 	onImagesChange(images) {
-		const product = this.getUpdatedProductWith({images});
-
-		this.setState({product});
+		this.setState({
+			product: this.getUpdatedProduct({images})
+		});
 	}
 
 	onDescriptionChange(event) {
-		const product = this.getUpdatedProductWith({
+		const product = this.getUpdatedProduct({
 			description: event.target.value
-		})
+		});
 
 		this.setState({product});
 	}
 
 	onPriceChange(event) {
-		const product = this.getUpdatedProductWith({
+		const product = this.getUpdatedProduct({
 			price: parseInt(event.target.value)
 		});
 
 		this.setState({product});
 	}
 
-	getUpdatedCategories(category) {
-		const {categories} = this.state.product,
-					DEFAULT_CATEGORY_VALUE = false,
-					newCategories = createDefaultObjectFrom(categories, DEFAULT_CATEGORY_VALUE);
-
-		newCategories[category] = !categories[category];
-
-		return newCategories;
-	}
-
-	onCategoryChange(event) {
-		const category = event.target.id,
-					product  = this.getUpdatedProductWith({
-						categories: this.getUpdatedCategories(category)
-					});
-
-		this.setState({product});
+	onCategoryChange(category) {
+		this.setState({
+			product: this.getUpdatedProduct({category})});
 	}
 
 	render() {

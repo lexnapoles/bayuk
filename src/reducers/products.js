@@ -1,12 +1,10 @@
 import {SET_PRODUCTS, ADD_PRODUCT} from "../constants/actionTypes";
+import product from "./product";
 
-const productsReducer = (state = [], action) => {
+const products = (state = [], action) => {
 	switch (action.type) {
-		case ADD_PRODUCT: {
-			const product = Object.assign({}, action.payload.product);
-
-			return [...state, product];
-		}
+		case ADD_PRODUCT:
+			return [...state, product(void 0, action)];
 
 		case SET_PRODUCTS:
 			return action.payload.products;
@@ -20,6 +18,6 @@ export const getProductById = (state, id) => {
 	return state.find(product => product.uuid === id);
 };
 
-export default productsReducer;
+export default products;
 
 
