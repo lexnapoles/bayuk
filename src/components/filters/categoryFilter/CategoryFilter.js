@@ -4,7 +4,9 @@ import CategoryInput  from "../../inputs/CategoryInput";
 
 const CategoryFilter = ({onChange, categories, error}) => {
 	const renderCategories = () => {
-		return categories.map(name =>
+		const categoryNames = Object.keys(categories);
+
+		return categoryNames.map(name =>
 			<CategoryInput key={name}
 											id={name}
 											description={name}

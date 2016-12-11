@@ -38,7 +38,7 @@ class AddProductContainer extends Component {
 		this.onImagesChange = this.onImagesChange.bind(this);
 		this.onDescriptionChange = this.onDescriptionChange.bind(this);
 		this.onPriceChange = this.onPriceChange.bind(this);
-		this.onCategoryChange = this.onCategoryChange.bind(this);
+		this.onCategoriesChange = this.onCategoriesChange.bind(this);
 	}
 
 	submitForm(event) {
@@ -139,7 +139,13 @@ class AddProductContainer extends Component {
 		this.setState({product});
 	}
 
-	onCategoryChange(category) {
+	getCategory(categories) {
+		return Object.keys(categories).find(key => categories[key]);
+	}
+
+	onCategoriesChange(categories) {
+		const category = this.getCategory(categories);
+
 		this.setState({
 			product: this.getUpdatedProduct({category})});
 	}
@@ -154,7 +160,7 @@ class AddProductContainer extends Component {
 				onNameChange={this.onNameChange}
 				onImagesChange={this.onImagesChange}
 				onDescriptionChange={this.onDescriptionChange}
-				onCategoryChange={this.onCategoryChange}
+				onCategoryChange={this.onCategoriesChange}
 				onPriceChange={this.onPriceChange}
 				error={this.state.error}/>
 		);

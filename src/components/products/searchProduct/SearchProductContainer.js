@@ -1,9 +1,5 @@
 import React, {Component} from "react";
-import {connect} from "react-redux";
 import SearchProduct from "./SearchProduct";
-import {createDefaultObjectFrom} from "../../../utils/objectUtils";
-
-const mapStateToProps = ({categories}) => ({categories});
 
 class SearchProductContainer extends Component {
 	constructor(props) {
@@ -11,7 +7,7 @@ class SearchProductContainer extends Component {
 
 		this.state = {
 			name:       "",
-			categories: createDefaultObjectFrom(this.props.categories, false),
+			categories: {},
 			price:      {min: 0, max: 0}
 		};
 
@@ -38,14 +34,7 @@ class SearchProductContainer extends Component {
 		this.setState({price: this.state.price});
 	}
 
-	onCategoryChange(event) {
-		const name       = event.target.id,
-					categories = this.state.categories;
-
-		Object.assign(categories, {
-			[name]: !categories[name]
-		});
-
+	onCategoryChange(categories) {
 		this.setState({categories});
 	}
 
@@ -53,7 +42,6 @@ class SearchProductContainer extends Component {
 		return (
 			<SearchProduct
 				name={this.state.name}
-				categories={this.state.categories}
 				submitForm={this.submitForm}
 				onNameChange={this.onNameChange}
 				onCategoryChange={this.onCategoryChange}
@@ -62,8 +50,4 @@ class SearchProductContainer extends Component {
 	}
 }
 
-SearchProductContainer.propTypes = {
-	categories: React.PropTypes.array.isRequired
-};
-
-export default connect(mapStateToProps)(SearchProductContainer);
+export default SearchProductContainer;
