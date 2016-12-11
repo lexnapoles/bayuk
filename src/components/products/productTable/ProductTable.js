@@ -9,18 +9,16 @@ import Icon from "react-fa";
 class ProductTable extends Component {
 	renderProducts(products) {
 		return products.map((product) =>
-			<Product key={product.uuid} product={product}
-								onClick={() => browserHistory.push(`/product/${product.uuid}`)}/>
+			<Product key={product.id} product={product}
+								onClick={() => browserHistory.push(`/product/${product.id}`)}/>
 		);
 	}
 
 	render() {
-		const {products} = this.props;
-
 		return (
 			<div>
 				<div styleName="container">
-					{this.renderProducts(products)}
+					{this.renderProducts(this.props.products)}
 				</div>
 				<div styleName="addButtonContainer">
 					<Link styleName="addButton" to={"/add"}>

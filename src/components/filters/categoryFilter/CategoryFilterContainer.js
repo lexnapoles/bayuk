@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import CategoryFilter  from "./CategoryFilter";
-import {createDefaultObjectFrom} from "../../../utils/objectUtils";
+import {createDefaultObjectFrom} from "../../../utils/utils";
 
 const mapStateToProps = ({categories}) => ({
 	categories

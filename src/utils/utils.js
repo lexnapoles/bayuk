@@ -6,3 +6,5 @@ export const createDefaultObjectFrom = (base = {}, defaultValue = "") => {
 		[key]: defaultValue
 	}),	{});
 };
+
+export const getImagePath = imageId => `/image/${imageId}.jpg`;

@@ -1,8 +1,9 @@
 import {connect} from "react-redux";
 import ProductTable from  "./ProductTable";
+import {getAllProducts} from "../../../reducers/root";
 
 const mapStateToProps = (state) => ({
-	products: state.products
+	products: getAllProducts(state)
 });
 
 export default connect(mapStateToProps)(ProductTable);
