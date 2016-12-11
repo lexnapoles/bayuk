@@ -2,10 +2,9 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import CategoryFilter  from "./CategoryFilter";
 import {createDefaultObjectFrom} from "../../../utils/objectUtils";
-import {getAllCategories} from "../../../reducers/root";
 
-const mapStateToProps = state => ({
-	categories: getAllCategories(state)
+const mapStateToProps = ({categories}) => ({
+	categories
 });
 
 class CategoryFilterContainer extends Component {
