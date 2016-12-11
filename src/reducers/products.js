@@ -7,7 +7,7 @@ const products = (state = [], action) => {
 			return [...state, product(void 0, action)];
 
 		case SET_PRODUCTS:
-			return action.payload.products;
+			return action.payload;
 
 		default:
 			return state;
