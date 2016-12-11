@@ -6,5 +6,6 @@ export const getProductById = ({products}, id) =>
 	fromProducts.getProductById(products, id);
 
 export default combineReducers({
-	products
+	products,
+	categories: (state = []) => state
 });
