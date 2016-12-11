@@ -10,7 +10,10 @@ const apiMiddleware = ({dispatch}) => next => action => {
 
 	fetch(`${BASE_URL}${url}`)
 		.then(response => response.json())
-		.then(response =>dispatch({type: success, payload: {products: response}}));
+		.then(response => dispatch({
+			type: success,
+			payload: response
+		}));
 };
 
 export default apiMiddleware;
