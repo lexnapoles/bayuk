@@ -1,26 +1,21 @@
-import {API, ADD_PRODUCT, SET_PRODUCTS, SET_CATEGORIES} from "../constants/actionTypes";
+import {CALL_API} from "redux-api-middleware";
+import {SET_PRODUCTS, SET_CATEGORIES} from "../constants/actionTypes";
+
+const apiBaseUrl = `http://localhost:3000/api`;
 
 export const fetchCategories = () => ({
-	type: API,
-	payload: {
-		url:     '/categories',
-		success: SET_CATEGORIES
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/categories`,
+		method: "GET",
+		types: ["REQUEST", SET_CATEGORIES, "FAILURE"]
+
 	}
 });
 
 export const fetchProducts = () => ({
-	type: API,
-	payload: {
-		url: '/products',
-		success: SET_PRODUCTS
-	}
-});
-
-export const addProduct = (product) => ({
-	type: API,
-	payload: {
-		url: '/product',
-		product,
-		success: ADD_PRODUCT
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/products`,
+		method: "GET",
+		types: ["REQUEST", SET_PRODUCTS, "FAILURE"]
 	}
 });

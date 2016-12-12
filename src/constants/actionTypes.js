@@ -1,4 +1,3 @@
-export const API = "API";
-export const SET_CATEGORIES = "SET_CATEGORIES";
-export const ADD_PRODUCT = "ADD_PRODUCT";
-export const SET_PRODUCTS = "SET_PRODUCTS";
+export const SET_CATEGORIES = Symbol("SET_CATEGORIES");
+export const ADD_PRODUCT = Symbol("ADD_PRODUCT");
+export const SET_PRODUCTS = Symbol("SET_PRODUCTS");
