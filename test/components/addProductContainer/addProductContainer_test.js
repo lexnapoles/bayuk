@@ -11,16 +11,19 @@ import {
 import errorMsgs from "../../../src/components/products/addProduct/errorsMsgs";
 
 const generateProduct = (product = {}) => {
-	const filledProduct = {
+	const genericProduct = {
 		name:        "Product",
 		description: "A Product",
-		categories:  {"Music": false, "Videogames": false, "Movies": false, "Literature": true},
+		category:    "Music",
 		price:       5,
 		images:      ["image"]
 	};
 
-	return Object.assign({}, filledProduct, product);
-}
+	return {
+		...genericProduct,
+		...product
+	};
+};
 
 describe("<AddProductContainer/>", function () {
 	describe("validation fails when one of the fields is not filled", function () {
@@ -49,7 +52,7 @@ describe("<AddProductContainer/>", function () {
 		it("fails when there is no selected category", function () {
 			const wrapper = shallow(<AddProductContainer onSubmit={() => void 0}/>),
 						product = generateProduct({
-							categories: {"Music": false, "Videogames": false, "Movies": false, "Literature": false}
+							category: ""
 						});
 
 			const validation = wrapper.instance().validate(product);
@@ -98,7 +101,7 @@ describe("<AddProductContainer/>", function () {
 							name: ""
 						});
 
-			wrapper.instance().validate(product)
+			wrapper.instance().validate(product);
 
 			assert.equal(wrapper.state().errors.name, errorMsgs[NO_NAME_FILLED]);
 		});
@@ -128,7 +131,7 @@ describe("<AddProductContainer/>", function () {
 		it("produces an error message when category isn't filled", function () {
 			const wrapper = shallow(<AddProductContainer onSubmit={() => void 0}/>),
 						product = generateProduct({
-							categories: {"Music": false, "Videogames": false, "Movies": false, "Literature": false}
+							category: ""
 						});
 
 			wrapper.instance().validate(product);

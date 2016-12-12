@@ -27,11 +27,12 @@ class SearchProductContainer extends Component {
 	}
 
 	onPriceChange(event) {
-		Object.assign(this.state.price, {
+		const price = {
+			...this.state.price,
 			[event.target.id]: event.target.value
-		});
+		};
 
-		this.setState({price: this.state.price});
+		this.setState({price});
 	}
 
 	onCategoryChange(categories) {

@@ -20,7 +20,7 @@ class ImagesFilterContainer extends Component {
 	}
 
 	onAddImage(position, image) {
-		const newState = Object.assign({}, this.state.images, {[position]: image}),
+		const newState = {...this.state.images, [position]: image},
 					images   = this.getImagesFrom(newState);
 
 		this.setState({images: newState});
@@ -29,7 +29,7 @@ class ImagesFilterContainer extends Component {
 	}
 
 	onDeleteImage(position) {
-		const state = Object.assign({}, this.state.images);
+		const state = {...this.state.images};
 
 		Reflect.deleteProperty(state, position);
 

@@ -54,7 +54,7 @@ class AddProductContainer extends Component {
 	}
 
 	getUpdatedProduct(newProperty) {
-		return Object.assign({}, this.state.product, newProperty);
+		return {...this.state.product, ...newProperty};
 	}
 
 	validateName(name) {
@@ -69,7 +69,7 @@ class AddProductContainer extends Component {
 			: errorMsgs[NO_DESCRIPTION_FILLED];
 	}
 
-	validateCategories(category) {
+	validateCategory(category) {
 		return category.length
 			? ""
 			: errorMsgs[NO_CATEGORY_FILLED];
@@ -95,7 +95,7 @@ class AddProductContainer extends Component {
 		const errors = {
 			name:        this.validateName(name),
 			description: this.validateDescription(description),
-			categories:  this.validateCategories(category),
+			categories:  this.validateCategory(category),
 			price:       this.validatePrice(price),
 			images:      this.validateImages(images)
 		};
