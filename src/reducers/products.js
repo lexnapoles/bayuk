@@ -1,28 +1,20 @@
-import {normalize} from "normalizr";
 import {combineReducers} from "redux";
 import {SET_PRODUCTS, ADD_PRODUCT} from "../constants/actionTypes";
-import * as schema from "../actions/schema";
 import product from "./product";
 
 const byId = (state = {}, action) => {
 	switch (action.type) {
-		case ADD_PRODUCT: {
-			const id = action.payload.product.id;
-
+		case ADD_PRODUCT:
 			return {
 				...state,
-				[id]: product(void 0, product)
+				[action.payload.id]: product(void 0, action)
 			};
-		}
 
-		case SET_PRODUCTS: {
-			const normalizedProducts = normalize(action.payload, schema.arrayOfProducts);
-
+		case SET_PRODUCTS:
 			return {
 				...state,
-				...normalizedProducts.entities.products
-			}
-		}
+				...action.payload.entities.products
+			};
 
 		default:
 			return state;
@@ -31,17 +23,11 @@ const byId = (state = {}, action) => {
 
 const allIds = (state = [], action) => {
 	switch (action.type) {
-		case ADD_PRODUCT: {
-			const {product} =  action.payload;
+		case ADD_PRODUCT:
+			return [...state, action.payload.id];
 
-			return [...state, product.id];
-		}
-
-		case SET_PRODUCTS: {
-			const normalizedProducts = normalize(action.payload, schema.arrayOfProducts);
-
-			return [...state, ...normalizedProducts.result];
-		}
+		case SET_PRODUCTS:
+			return [...state, ...action.payload.result];
 
 		default:
 			return state;

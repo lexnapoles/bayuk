@@ -1,70 +1,28 @@
 import {createStore, applyMiddleware} from "redux";
-// import {v4} from "node-uuid";
-import apiMiddleware from "../middlewares/apiMiddleware";
+import {apiMiddleware} from "redux-api-middleware";
 import addProductMiddleware from "../middlewares/addProductMiddleware";
 import rootReducer from "../reducers/root";
 
-// const initialState = {
-// 	products: [
-// 		{
-// 			id:          v4(),
-// 			images:      [
-// 				"http://placehold.it/200x200?text=slide1",
-// 				"http://placehold.it/200x200?text=slide2",
-// 				"http://placehold.it/200x200?text=slide3"
-// 			],
-// 			name:        "Vetusta Morla",
-// 			description: "Great album of one of the best groups in Spain.",
-// 			category:    "Music",
-// 			price:       10
-// 		},
-//
-// 		{
-// 			id:          v4(),
-// 			images:      [
-// 				"http://placehold.it/200x200?text=slide1",
-// 				"http://placehold.it/200x200?text=slide2",
-// 				"http://placehold.it/200x200?text=slide3"
-// 			],
-// 			name:        "Golding",
-// 			description: "I'm selling this amazing movie, you'll love it.",
-// 			category:    "Movies",
-// 			price:       20
-// 		},
-//
-// 		{
-// 			id:          v4(),
-// 			images:      [
-// 				"http://placehold.it/200x200?text=slide1",
-// 				"http://placehold.it/200x200?text=slide2",
-// 				"http://placehold.it/200x200?text=slide3"
-// 			],
-// 			name:        "Videogame",
-// 			description: "Videogame for PS4, never used.",
-// 			category:    "Videogames",
-// 			price:       50
-// 		},
-//
-// 		{
-// 			id:          v4(),
-// 			images:      [
-// 				"http://placehold.it/200x200?text=slide1",
-// 				"http://placehold.it/200x200?text=slide2",
-// 				"http://placehold.it/200x200?text=slide3"
-// 			],
-// 			name:        "Journey",
-// 			description: "A journey to the wildest lands, I'm the author. Great book, garanteed",
-// 			category:    "Literature",
-// 			price:       500
-// 		}
-// 	],
-//  categories: ["Literature", "Videogames", "Movies", "Music", "TV"]
-//	};
+
+const middlewares = [apiMiddleware, addProductMiddleware];
+
+if (process.env.NODE_ENV !== "production") {
+	const createLogger = require("redux-logger");
+
+	const logger = createLogger({
+		actionTransformer: (action) => ({
+			...action,
+			type: String(action.type)
+		})
+	});
+
+	middlewares.push(logger);
+}
 
 const configureStore = () => {
 	return createStore(
 		rootReducer,
-		applyMiddleware(apiMiddleware, addProductMiddleware)
+		applyMiddleware(...middlewares)
 	);
 };
 

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {addProduct} from "../../../actions/products";
+import {addProduct} from "../../../actions/api";
 import AddProduct from "./AddProduct";
 import {
 	NO_NAME_FILLED,
