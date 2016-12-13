@@ -1,7 +1,7 @@
 import {normalize} from "normalizr";
 import * as schema from "../actions/schema";
 import {CALL_API, getJSON} from "redux-api-middleware";
-import {SET_PRODUCTS, SET_CATEGORIES, ADD_PRODUCT} from "../constants/actionTypes";
+import {SET_PRODUCTS, SET_CATEGORIES, ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT} from "../constants/actionTypes";
 
 const apiBaseUrl = `http://localhost:3000/api`;
 
@@ -27,13 +27,38 @@ export const fetchProducts = () => ({
 	}
 });
 
+export const fetchOneProduct = productId => ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/products/${productId}`,
+		method:   "GET",
+		types:    ["REQUEST", ADD_PRODUCT, "FAILURE"]
+	}
+});
+
 export const addProduct = product => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/products`,
 		headers:  {"Content-type": "application/json"},
 		method:   "POST",
 		body:     JSON.stringify(product),
-		types:    [
-			"REQUEST", ADD_PRODUCT, "FAILURE"]
+		types:    ["REQUEST", ADD_PRODUCT, "FAILURE"]
+	}
+});
+
+export const deleteProduct = productId => ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/products/${productId}`,
+		method:   "DELETE",
+		types:    ["REQUEST", DELETE_PRODUCT, "FAILURE"]
+	}
+});
+
+export const updateProduct = product => ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/products`,
+		headers:  {"Content-type": "application/json"},
+		method:   "PUT",
+		body:     JSON.stringify(product),
+		types:    ["REQUEST", UPDATE_PRODUCT, "FAILURE"]
 	}
 });
