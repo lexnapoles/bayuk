@@ -4,14 +4,11 @@ import product from "./product";
 
 const byId = (state = {}, action) => {
 	switch (action.type) {
-		case ADD_PRODUCT: {
-			const id = action.payload.product.id;
-
+		case ADD_PRODUCT:
 			return {
 				...state,
-				[id]: product(void 0, action.payload.product)
+				[action.payload.id]: product(void 0, action)
 			};
-		}
 
 		case SET_PRODUCTS:
 			return {

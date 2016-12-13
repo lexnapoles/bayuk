@@ -8,7 +8,7 @@ import Icon from "react-fa";
 
 class ProductTable extends Component {
 	renderProducts(products) {
-		return products.map((product) =>
+		return products.map(product =>
 			<Product key={product.id} product={product}
 								onClick={() => browserHistory.push(`/product/${product.id}`)}/>
 		);
