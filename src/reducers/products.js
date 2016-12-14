@@ -1,6 +1,7 @@
 import {combineReducers} from "redux";
-import {SET_PRODUCTS, ADD_PRODUCT} from "../constants/actionTypes";
+import {FETCH_PRODUCTS, SET_PRODUCTS, ADD_PRODUCT} from "../constants/actionTypes";
 import product from "./product";
+import createFetchingReducer from "./isFetching";
 
 const byId = (state = {}, action) => {
 	switch (action.type) {
@@ -36,7 +37,8 @@ const allIds = (state = [], action) => {
 
 const products = combineReducers({
 	byId,
-	allIds
+	allIds,
+	isFetching: createFetchingReducer(FETCH_PRODUCTS, SET_PRODUCTS)
 });
 
 export default products;

@@ -1,7 +1,7 @@
 import {normalize} from "normalizr";
 import * as schema from "../actions/schema";
 import {CALL_API, getJSON} from "redux-api-middleware";
-import {SET_PRODUCTS, SET_CATEGORIES, ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT} from "../constants/actionTypes";
+import {FETCH_PRODUCTS, SET_PRODUCTS,  FETCH_CATEGORIES, SET_CATEGORIES, ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT} from "../constants/actionTypes";
 
 const apiBaseUrl = `http://localhost:3000/api`;
 
@@ -11,7 +11,7 @@ export const fetchCategories = () => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/categories`,
 		method:   "GET",
-		types:    ["REQUEST", SET_CATEGORIES, "FAILURE"]
+		types:    [FETCH_CATEGORIES, SET_CATEGORIES, "FAILURE"]
 	}
 });
 
@@ -20,7 +20,7 @@ export const fetchProducts = () => ({
 		endpoint: `${apiBaseUrl}/products`,
 		method:   "GET",
 		types:    [
-			"REQUEST", {
+			FETCH_PRODUCTS, {
 				type:    SET_PRODUCTS,
 				payload: normalizeResponse(schema.arrayOfProducts)
 			}, "FAILURE"]
