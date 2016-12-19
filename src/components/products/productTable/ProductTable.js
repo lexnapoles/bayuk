@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {browserHistory} from "react-router";
 import {Link} from "react-router";
+import Spinner from "react-spinkit";
 import CSSModules from "react-css-modules";
 import Product from "../product/Product";
 import styles from "./productTable.css";
@@ -22,6 +23,14 @@ class ProductTable extends Component {
 		);
 	}
 
+	renderSpinner() {
+		return (
+			<main styleName="spinner">
+				<Spinner spinnerName="circle"/>
+			</main>
+		);
+	}
+
 	renderProducts(products) {
 		return products.map(product =>
 			<Product key={product.id} product={product}
@@ -32,7 +41,7 @@ class ProductTable extends Component {
 	render() {
 		const {isFetching, products} = this.props;
 
-		return (isFetching ? <div>Loading products...</div> : this.renderProductsTable(products));
+		return (isFetching ? this.renderSpinner() : this.renderProductsTable(products));
 	}
 }
 
