@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import CSSModules from "react-css-modules";
-import Spinner from "react-spinkit";
+import Spinner from "../../spinner/Spinner";
 import styles from "./productDetails.css";
 import ProductDetailsHeader from "./productDetailsHeader/ProductDetailsHeader";
 import Carousel from "../../carousel/Carousel";
@@ -39,7 +39,7 @@ class ProductDetails extends Component {
 	renderSpinner() {
 		return (
 		<main styleName="productContainer">
-			<Spinner spinnerName="circle"/>
+			<Spinner/>
 		</main>
 		);
 	}

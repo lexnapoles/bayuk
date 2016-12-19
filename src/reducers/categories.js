@@ -13,7 +13,7 @@ const categories = (state = [], action) => {
 };
 
 export default combineReducers({
-	categories,
+	items: categories,
 	isFetching: createFetchingReducer(FETCH_CATEGORIES, SET_CATEGORIES)
 });
 

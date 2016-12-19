@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {browserHistory} from "react-router";
 import {Link} from "react-router";
-import Spinner from "react-spinkit";
+import Spinner from "../../spinner/Spinner";
 import CSSModules from "react-css-modules";
 import Product from "../product/Product";
 import styles from "./productTable.css";
@@ -26,7 +26,7 @@ class ProductTable extends Component {
 	renderSpinner() {
 		return (
 			<main styleName="spinner">
-				<Spinner spinnerName="circle"/>
+				<Spinner/>
 			</main>
 		);
 	}
