@@ -1,17 +1,17 @@
 import {combineReducers} from "redux";
-import {FETCH_PRODUCTS, SET_PRODUCTS, ADD_PRODUCT} from "../constants/actionTypes";
+import {FETCH_PRODUCTS, ADD_PRODUCT} from "../constants/actionTypes";
 import product from "./product";
 import createFetchingReducer from "./isFetching";
 
 const byId = (state = {}, action) => {
 	switch (action.type) {
-		case ADD_PRODUCT:
+		case ADD_PRODUCT.success:
 			return {
 				...state,
 				[action.payload.id]: product(void 0, action)
 			};
 
-		case SET_PRODUCTS:
+		case FETCH_PRODUCTS.success:
 			return {
 				...state,
 				...action.payload.entities.products
@@ -24,10 +24,10 @@ const byId = (state = {}, action) => {
 
 const allIds = (state = [], action) => {
 	switch (action.type) {
-		case ADD_PRODUCT:
+		case ADD_PRODUCT.success:
 			return [...state, action.payload.id];
 
-		case SET_PRODUCTS:
+		case FETCH_PRODUCTS.success:
 			return [...state, ...action.payload.result];
 
 		default:
@@ -38,7 +38,7 @@ const allIds = (state = [], action) => {
 const products = combineReducers({
 	byId,
 	allIds,
-	isFetching: createFetchingReducer(FETCH_PRODUCTS, SET_PRODUCTS)
+	isFetching: createFetchingReducer(FETCH_PRODUCTS.request, FETCH_PRODUCTS.success)
 });
 
 export default products;

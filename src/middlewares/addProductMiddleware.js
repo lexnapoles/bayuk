@@ -3,7 +3,7 @@ import {browserHistory} from 'react-router'
 
 const addProductMiddleware = () => next => action => {
 	switch (action.type) {
-		case ADD_PRODUCT: {
+		case ADD_PRODUCT.success: {
 			next(action);
 
 			browserHistory.push(`/product/${action.payload.id}`);
