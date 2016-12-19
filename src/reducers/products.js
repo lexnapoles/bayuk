@@ -43,6 +43,12 @@ const products = combineReducers({
 
 export default products;
 
-export const getAllProducts = state => state.allIds.map(id => state.byId[id]);
+export const getAllProducts = ({allIds, byId, isFetching}) => ({
+	items: allIds.map(id => byId[id]),
+	isFetching
+});
 
-export const getProductById = (state, id) => state.byId[id];
+export const getProductById = ({byId, isFetching}, id) => ({
+	item: byId[id],
+	isFetching
+});

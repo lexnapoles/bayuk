@@ -7,6 +7,21 @@ import styles from "./productTable.css";
 import Icon from "react-fa";
 
 class ProductTable extends Component {
+	renderProductsTable(products) {
+		return (
+			<div>
+				<div styleName="container">
+					{this.renderProducts(products)}
+				</div>
+				<div styleName="addButtonContainer">
+					<Link styleName="addButton" to={"/add"}>
+						<Icon name="plus-circle" size="4x"/>
+					</Link>
+				</div>
+			</div>
+		);
+	}
+
 	renderProducts(products) {
 		return products.map(product =>
 			<Product key={product.id} product={product}
@@ -15,23 +30,19 @@ class ProductTable extends Component {
 	}
 
 	render() {
-		return (
-			<div>
-				<div styleName="container">
-					{this.renderProducts(this.props.products)}
-				</div>
-				<div styleName="addButtonContainer">
-					<Link styleName="addButton" to={"/add"}>
-						<Icon name="plus-circle" size="4x"/>
-					</Link>
-				</div>
-			</div>
-		)
+		const {isFetching, products} = this.props;
+
+		return (isFetching ? <div>Loading products...</div> : this.renderProductsTable(products));
 	}
 }
 
 ProductTable.propTypes = {
-	products: React.PropTypes.array.isRequired
+	products:   React.PropTypes.array.isRequired,
+	isFetching: React.PropTypes.bool
+};
+
+ProductTable.defaultProps = {
+	isFetching: false
 };
 
 export default CSSModules(ProductTable, styles);
