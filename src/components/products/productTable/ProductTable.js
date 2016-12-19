@@ -1,12 +1,36 @@
 import React, {Component} from "react";
 import {browserHistory} from "react-router";
 import {Link} from "react-router";
+import Spinner from "../../spinner/Spinner";
 import CSSModules from "react-css-modules";
 import Product from "../product/Product";
 import styles from "./productTable.css";
 import Icon from "react-fa";
 
 class ProductTable extends Component {
+	renderProductsTable(products) {
+		return (
+			<div>
+				<div styleName="container">
+					{this.renderProducts(products)}
+				</div>
+				<div styleName="addButtonContainer">
+					<Link styleName="addButton" to={"/add"}>
+						<Icon name="plus-circle" size="4x"/>
+					</Link>
+				</div>
+			</div>
+		);
+	}
+
+	renderSpinner() {
+		return (
+			<main styleName="spinner">
+				<Spinner/>
+			</main>
+		);
+	}
+
 	renderProducts(products) {
 		return products.map(product =>
 			<Product key={product.id} product={product}
@@ -15,23 +39,19 @@ class ProductTable extends Component {
 	}
 
 	render() {
-		return (
-			<div>
-				<div styleName="container">
-					{this.renderProducts(this.props.products)}
-				</div>
-				<div styleName="addButtonContainer">
-					<Link styleName="addButton" to={"/add"}>
-						<Icon name="plus-circle" size="4x"/>
-					</Link>
-				</div>
-			</div>
-		)
+		const {isFetching, products} = this.props;
+
+		return (isFetching ? this.renderSpinner() : this.renderProductsTable(products));
 	}
 }
 
 ProductTable.propTypes = {
-	products: React.PropTypes.array.isRequired
+	products:   React.PropTypes.array.isRequired,
+	isFetching: React.PropTypes.bool
+};
+
+ProductTable.defaultProps = {
+	isFetching: false
 };
 
 export default CSSModules(ProductTable, styles);

@@ -3,15 +3,18 @@ import ProductDetails from "./ProductDetails";
 import {getProductById} from "../../../reducers/root";
 import {getImagePath} from "../../../utils/utils";
 
-const mapStateToProps = (state, {params}) => {
-	const {name, images, description, price} = getProductById(state, params.id);
+const formatProduct = product => ({
+	...product,
+	images: product.images.map(getImagePath),
+	price:  parseInt(product.price)
+});
 
-	return {
-		name,
-		images: images.map(getImagePath),
-		description,
-		price: parseInt(price)
-	}
+const mapStateToProps = (state, {params}) => {
+	let {isFetching, item} = getProductById(state, params.id);
+
+	return item
+		? {isFetching, product: formatProduct(item)}
+		: {isFetching: true, product: {}};
 };
 
 export default connect(mapStateToProps)(ProductDetails);
