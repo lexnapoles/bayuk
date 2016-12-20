@@ -1,7 +1,7 @@
 import {normalize} from "normalizr";
 import * as schema from "../actions/schema";
 import {CALL_API, getJSON} from "redux-api-middleware";
-import {FETCH_PRODUCTS, FETCH_CATEGORIES, ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT} from "../constants/actionTypes";
+import {FETCH_PRODUCTS, FETCH_CATEGORIES, FETCH_ONE_PRODUCT, ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT} from "../constants/actionTypes";
 
 const apiBaseUrl = `http://localhost:3000/api`;
 
@@ -33,7 +33,7 @@ export const fetchOneProduct = productId => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/products/${productId}`,
 		method:   "GET",
-		types:    getTypes(ADD_PRODUCT)
+		types:    getTypes(FETCH_ONE_PRODUCT)
 	}
 });
 

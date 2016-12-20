@@ -1,10 +1,11 @@
 import {combineReducers} from "redux";
-import {FETCH_PRODUCTS, ADD_PRODUCT} from "../constants/actionTypes";
+import {FETCH_PRODUCTS, FETCH_ONE_PRODUCT, ADD_PRODUCT} from "../constants/actionTypes";
 import product from "./product";
 import createFetchingReducer from "./isFetching";
 
 const byId = (state = {}, action) => {
 	switch (action.type) {
+		case FETCH_ONE_PRODUCT.success:
 		case ADD_PRODUCT.success:
 			return {
 				...state,
