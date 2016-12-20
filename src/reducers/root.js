@@ -1,6 +1,7 @@
 import {combineReducers} from "redux";
 import products from "./products";
 import categories from "./categories";
+import errorMessage from "./errorMessage";
 
 import * as fromProducts from "./products";
 
@@ -10,5 +11,6 @@ export const getAllProducts = (({products}) => fromProducts.getAllProducts(produ
 
 export default combineReducers({
 	products,
-	categories
+	categories,
+	errorMessage
 });
