@@ -12,9 +12,9 @@ const formatProduct = product => ({
 const mapStateToProps = (state, {params}) => {
 	const {isFetching, item} = getProductById(state, params.id);
 
-	return item
-		? {isFetching, product: formatProduct(item)}
-		: {isFetching: true, product: {}};
+	return isFetching
+		? {isFetching, product: {}}
+		: {isFetching, product: item ? formatProduct(item) : void 0};
 };
 
 export default connect(mapStateToProps)(ProductDetails);

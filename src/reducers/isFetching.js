@@ -1,4 +1,4 @@
-const createFetchingReducer = (REQUEST, RECEIVE) => (state = false, action) => {
+const createFetchingReducer = (REQUEST, RECEIVE) => (state = true, action) => {
 	switch (action.type) {
 		case REQUEST:
 			return true;

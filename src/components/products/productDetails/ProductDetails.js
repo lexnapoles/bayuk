@@ -13,7 +13,13 @@ class ProductDetails extends Component {
 		super(props);
 	}
 
-	renderProduct({price, name, description, images}) {
+	renderProduct(product) {
+		if (!product) {
+			return <div>Product not found</div>
+		}
+
+		const {price, name, description, images} = product;
+
 		return (
 			<main styleName="productContainer">
 				<Carousel styleName="carousel">
@@ -50,14 +56,14 @@ class ProductDetails extends Component {
 		return (
 			<div styleName="container">
 				<ProductDetailsHeader/>
-				{isFetching ? this.renderSpinner(): this.renderProduct(product)}
+				{isFetching ? this.renderSpinner() : this.renderProduct(product)}
 			</div>
 		);
 	}
 }
 
 ProductDetails.propTypes = {
-	product:    React.PropTypes.object.isRequired,
+	product:    React.PropTypes.object,
 	isFetching: React.PropTypes.bool,
 	onClick:    React.PropTypes.func
 };
