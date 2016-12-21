@@ -7,13 +7,20 @@ import Carousel from "../../carousel/Carousel";
 import Description from "./productDescription/ProductDescription";
 import GeolocationInfo from "./geolocationInfo/GeolocationInfo";
 import UserInfo from "./userInfo/UserInfo";
+import NotFound from "../../notFound/NotFound";
 
 class ProductDetails extends Component {
 	constructor(props) {
 		super(props);
 	}
 
-	renderProduct({price, name, description, images}) {
+	renderProduct(product) {
+		if (!product) {
+			return <NotFound/>
+		}
+
+		const {price, name, description, images} = product;
+
 		return (
 			<main styleName="productContainer">
 				<Carousel styleName="carousel">
@@ -50,14 +57,14 @@ class ProductDetails extends Component {
 		return (
 			<div styleName="container">
 				<ProductDetailsHeader/>
-				{isFetching ? this.renderSpinner(): this.renderProduct(product)}
+				{isFetching ? this.renderSpinner() : this.renderProduct(product)}
 			</div>
 		);
 	}
 }
 
 ProductDetails.propTypes = {
-	product:    React.PropTypes.object.isRequired,
+	product:    React.PropTypes.object,
 	isFetching: React.PropTypes.bool,
 	onClick:    React.PropTypes.func
 };
