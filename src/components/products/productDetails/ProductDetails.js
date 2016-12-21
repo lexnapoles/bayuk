@@ -7,6 +7,7 @@ import Carousel from "../../carousel/Carousel";
 import Description from "./productDescription/ProductDescription";
 import GeolocationInfo from "./geolocationInfo/GeolocationInfo";
 import UserInfo from "./userInfo/UserInfo";
+import NotFound from "../../notFound/NotFound";
 
 class ProductDetails extends Component {
 	constructor(props) {
@@ -15,7 +16,7 @@ class ProductDetails extends Component {
 
 	renderProduct(product) {
 		if (!product) {
-			return <div>Product not found</div>
+			return <NotFound/>
 		}
 
 		const {price, name, description, images} = product;
