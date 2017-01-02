@@ -19,7 +19,10 @@ export const wrapDataInPromise = (dataArr, func) => {
 	}
 
 	return dataArr.map(data => Promise.resolve(func(data)));
-} ;
+};
 
 export const isBase64 = file => file.search(/^data:image\/\w+;base64,/) !== -1;
 
+export const paramExists = (req, param) => req.params && req.params[param];
+
+export const dataExists = req => req && req.body;

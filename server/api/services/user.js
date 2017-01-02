@@ -18,7 +18,7 @@ const setPassword = password =>
 const addUserToDB = (email, name, {hash, salt}) =>
 	db.none("INSERT INTO users (email, name, hash, salt) VALUES ($1, $2, $3, $4)", [email, name, hash, salt]);
 
-export const addUser = (email, name, password) =>
+export const addUser = ({email, name, password}) =>
 	setPassword(password)
 		.then(credentials => addUserToDB(email, name, credentials));
 
