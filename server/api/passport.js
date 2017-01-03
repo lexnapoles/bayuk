@@ -1,16 +1,19 @@
 import passport from "passport";
-import {LocalStrategy} from "passport-local";
+import {Strategy} from "passport-local";
 import {getUser, validPassword} from "./services/user";
 
-passport.use(new LocalStrategy({usernameFiled: "email"}, function(email, password, done) {
+passport.use(new Strategy({usernameField: "email"}, (username, password, done) => {
 	let user = {};
 
-	getUser(email)
+	getUser(username)
 		.then(userData => user = userData, user)
 		.then(({hash, salt}) => ({hash, salt}))
 		.then(validPassword.bind(void 0, password))
+		.then(() => done(null, {
+			email: user.email,
+			name: user.name
+		}))
 		.catch(() => done(null, false, {
 			message: "Incorrect email or password"
 		}))
-		.then(() => done(null, user))
 }));

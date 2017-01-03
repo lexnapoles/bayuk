@@ -1,4 +1,4 @@
-import {paramExists, dataExists, sendJsonResponse} from "../utils/utils";
+import {paramExists, bodyExists, sendJsonResponse} from "../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../services/products";
 
 export const readProducts = (req, res) =>
@@ -23,7 +23,7 @@ export const readOneProduct = (req, res) => {
 };
 
 export const createProduct = (req, res) => {
-	if (!dataExists(req)) {
+	if (!bodyExists(req)) {
 		sendJsonResponse(res, 404, "No product data");
 	}
 
@@ -38,7 +38,7 @@ export const updateOneProduct = (req, res) => {
 			"message": "No productId in request"
 		});
 	}
-	else if (!dataExists(req)) {
+	else if (!bodyExists(req)) {
 		sendJsonResponse(res, 404, "No product data");
 	}
 

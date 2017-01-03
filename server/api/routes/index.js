@@ -1,7 +1,7 @@
 import express from "express";
 import productRoutes from "./products";
 import categoryRoutes from "./categories";
-import userRoutes from "./users";
+import authRoutes from "./authentication";
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ const addRoutes = (router, ...routes) => routes.reduce((updatedRouter, addRoute)
 
 export default addRoutes(
 	router,
-	userRoutes,
+	authRoutes,
 	categoryRoutes,
 	productRoutes
 );
