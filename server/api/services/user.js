@@ -1,4 +1,5 @@
 import db from "../../db";
+import jwt from "jsonwebtoken";
 import {randomBytes, pbkdf2} from "../utils/promisifiedCrypto";
 
 const config = {
@@ -8,7 +9,17 @@ const config = {
 	digest:     "sha512"
 };
 
-const getUser = email =>
+export const createJwt = payload => {
+	const expiry = new Date();
+	expiry.setDate(expiry.getDate() + process.env.JWT_LIFETIME);
+
+	return jwt.sign({
+		...payload,
+		exp: parseInt(expiry.getTime()/1000)
+	}, process.env.JWT_SECRET);
+};
+
+export const getUser = email =>
 	db.any("SELECT name, email, hash, salt from users WHERE email=$1", email);
 
 const setPassword = password =>
@@ -25,12 +36,6 @@ export const addUser = ({email, name, password}) =>
 	setPassword(password)
 		.then(credentials => addUserToDB(email, name, credentials));
 
-const validPassword = (password, credentials) =>
+export const validPassword = (password, credentials) =>
 	pbkdf2(password, credentials.salt.toString("hex"), config.iterations, config.hashBytes, config.digest)
-		.then(hash => credentials.hash === hash);
-
-export const validatePassword = (email, password) =>
-	getUser(email)
-		.then(({hash, salt}) => ({hash, salt}))
-		.then(validPassword.bind(void 0, password));
-
+		.then(hash => credentials.hash === hash ? true : Promise.reject());
