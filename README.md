@@ -20,6 +20,8 @@ to make a real SPA, including both the front and back end and npm as the build t
   * Express
 
   * PostgreSQL
+  
+  * REST API secured with JSON Web Tokens.
    
 ####  Testing:
  
