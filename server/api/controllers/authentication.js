@@ -1,6 +1,7 @@
 import passport from "passport";
 import {bodyExists, propertiesExistInObj, sendJsonResponse} from "../../utils/utils";
-import {createJwt, addUser} from "../services/user";
+import {addUser} from "../services/user";
+import {createJwt} from "../services/authentication";
 
 export const register = (req, res) => {
 	if (!bodyExists(req) || !propertiesExistInObj(req.body, ["email", "name", "password"])) {

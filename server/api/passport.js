@@ -1,6 +1,7 @@
 import passport from "passport";
 import {Strategy} from "passport-local";
-import {getUser, validPassword} from "./services/user";
+import {getUser} from "./services/user";
+import {validPassword} from "./services/authentication";
 
 passport.use(new Strategy({usernameField: "email"}, (username, password, done) => {
 	let user = {};
