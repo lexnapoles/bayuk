@@ -1,5 +1,5 @@
 import passport from "passport";
-import {bodyExists, propertiesExistInObj, sendJsonResponse} from "../utils/utils";
+import {bodyExists, propertiesExistInObj, sendJsonResponse} from "../../utils/utils";
 import {createJwt, addUser} from "../services/user";
 
 export const register = (req, res) => {

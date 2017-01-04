@@ -75,6 +75,7 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.13.4",
+    "express-jwt": "^5.1.0",
     "font-awesome": "^4.6.1",
     "fs-promise": "^1.0.0",
     "history": "^2.0.0",

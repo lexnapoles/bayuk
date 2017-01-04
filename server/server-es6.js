@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import {sendJsonResponse} from "./utils/utils";
 import passport from "passport";
 import configureServer from "./serverConfiguration/configureServer";
 import "./db";
@@ -18,6 +19,14 @@ app.use("/image", express.static(path.join(process.env.IMAGESDIR, "/products")))
 app.use(passport.initialize());
 
 app.use("/api", apiRoutes);
+
+app.use(function(err, req, res, next) {
+	if (err.name === "UnauthorizedError") {
+		sendJsonResponse(res, 401, {
+			"message": `${err.name}: ${err.message}`
+		});
+	}
+});
 
 configureServer(app);
 

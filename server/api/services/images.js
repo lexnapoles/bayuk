@@ -1,8 +1,8 @@
 import db, {queryResult} from "../../db";
-import {wrapDataInPromise} from "../utils/utils";
+import {wrapDataInPromise} from "../../utils/utils";
 import fs from "fs-promise";
 import path from "path";
-import {isBase64, generateImagesObjs} from "../utils/utils";
+import {isBase64, generateImagesObjs} from "../../utils/utils";
 
 const getImagePath = id => `${path.join(process.env.IMAGESDIR, "/products", id)}.jpg`;
 

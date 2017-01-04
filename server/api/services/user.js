@@ -1,6 +1,6 @@
 import db from "../../db";
 import jwt from "jsonwebtoken";
-import {randomBytes, pbkdf2} from "../utils/promisifiedCrypto";
+import {randomBytes, pbkdf2} from "../../utils/promisifiedCrypto";
 
 const config = {
 	hashBytes:  64,
@@ -40,6 +40,6 @@ export const addUser = ({email, name, password}) =>
 		.then(credentials => addUserToDB(email, name, credentials))
 		.then(() => createJwt({email, name, password}));
 
-export const validPassword = (password, credentials) =>
-	pbkdf2(password, credentials.salt, config.iterations, config.hashBytes, config.digest)
-		.then(hash => credentials.hash === hash.toString("hex") ? true : Promise.reject());
+export const validPassword = (password, {hash, salt}) =>
+	pbkdf2(password, salt, config.iterations, config.hashBytes, config.digest)
+		.then(calculatedHash => calculatedHash.toString("hex") === hash ? true : Promise.reject());

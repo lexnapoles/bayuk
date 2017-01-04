@@ -1,4 +1,4 @@
-import {paramExists, bodyExists, sendJsonResponse} from "../utils/utils";
+import {paramExists, bodyExists, sendJsonResponse} from "../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../services/products";
 
 export const readProducts = (req, res) =>
