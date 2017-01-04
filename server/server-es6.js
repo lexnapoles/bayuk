@@ -1,10 +1,11 @@
 import express from "express";
 import path from "path";
-import {sendJsonResponse} from "./utils/utils";
 import passport from "passport";
 import configureServer from "./serverConfiguration/configureServer";
 import "./db";
 import apiRoutes from "./api/routes/index";
+import unauthorizedError from "./middlewares/errors/unauthorizedError";
+import userNotFoundError from "./middlewares/errors/userNotFoundError";
 
 import "./api/passport";
 
@@ -20,14 +21,9 @@ app.use(passport.initialize());
 
 app.use("/api", apiRoutes);
 
-app.use(function(err, req, res, next) {
-	if (err.name === "UnauthorizedError") {
-		sendJsonResponse(res, 401, {
-			"message": `${err.name}: ${err.message}`
-		});
-	}
-});
-
 configureServer(app);
+
+app.use(unauthorizedError);
+app.use(userNotFoundError);
 
 app.listen(app.get("port"));

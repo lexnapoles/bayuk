@@ -22,9 +22,3 @@ export const wrapDataInPromise = (dataArr, func) => {
 };
 
 export const isBase64 = file => file.search(/^data:image\/\w+;base64,/) !== -1;
-
-export const propertiesExistInObj = (obj, params) => params.reduce((prevParamExists, param) => prevParamExists && obj[param], true);
-
-export const paramExists = (req, param) => req.params && req.params[param];
-
-export const bodyExists = req => req && req.body;

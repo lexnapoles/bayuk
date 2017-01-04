@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
-import jwt from "express-jwt";
+import verifyUser from "../../middlewares/verifyUser";
+import auth from "../../middlewares/auth";
 import {
 	readProducts,
 	readOneProduct,
@@ -10,20 +11,15 @@ import {
 
 const jsonParser = bodyParser.json({limit: "50mb"});
 
-const auth =  jwt({
-	secret: process.env.JWT_SECRET,
-	requestProperty: "payload"
-});
-
 export default router => {
 	router.get("/products", readProducts);
 	router.get("/products/:productId", readOneProduct);
 
-	router.post("/products", auth, jsonParser, createProduct);
+	router.post("/products", auth, verifyUser, jsonParser, createProduct);
 
-	router.put("/products/:productId", auth, jsonParser, updateOneProduct);
+	router.put("/products/:productId", auth, verifyUser, jsonParser, updateOneProduct);
 
-	router.delete("/products/:productId", auth, deleteOneProduct);
+	router.delete("/products/:productId", auth, verifyUser, deleteOneProduct);
 
 	return router;
 };

@@ -13,8 +13,9 @@ export const getProductById = productId =>
 	db.one("SELECT * FROM products_with_images WHERE id=$1", productId)
 		.catch(() => Promise.reject("Product could not be found"));
 
-const addProductToDB = ({name, description, category, price, images}) =>
+const addProductToDB = ({owner, name, description, category, price, images}) =>
 	db.func("add_product", [
+		owner,
 		name,
 		description,
 		category,
