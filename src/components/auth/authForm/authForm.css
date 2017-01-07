@@ -1,5 +1,5 @@
 .container {
-	composes: alignCenter from "../layout.css";
+	composes: alignCenter from "../../layout.css";
 	margin-top: 3em;
 
 }
@@ -18,6 +18,6 @@
 }
 
 .formContainer {
-	composes: well from "../global.css";
+	composes: well from "../../global.css";
 	padding: 2em;
 }

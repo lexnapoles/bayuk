@@ -4,8 +4,8 @@ import App from "../components/app/App";
 import SearchProductContainer from "../components/products/searchProduct/SearchProductContainer";
 import ProductDetailsContainer from "../components/products/productDetails/ProductDetailsContainer";
 import AddProductContainer from "../components/products/addProduct/AddProductContainer";
-import CreateAccountContainer from "../components/createAccount/CreateAccountContainer";
-import SignInContainer from "../components/signIn/SignInContainer";
+import CreateAccount from "../components/auth/CreateAccount";
+import SignIn from "../components/auth/SignIn";
 
 const routes = (
 	<Router history={browserHistory}>
@@ -13,8 +13,8 @@ const routes = (
 		<Route path="search" component={SearchProductContainer}/>
 		<Route path="product/:id" component={ProductDetailsContainer}/>
 		<Route path="add" component={AddProductContainer}/>
-		<Route path="register" component={CreateAccountContainer}/>
-		<Route path="signin" component={SignInContainer}/>
+		<Route path="register" component={CreateAccount}/>
+		<Route path="signin" component={SignIn}/>
 
 	</Router>
 );

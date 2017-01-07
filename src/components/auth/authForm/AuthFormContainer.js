@@ -1,21 +1,24 @@
 import React, {Component} from "react";
-import SignIn from "./SignIn";
+import AuthForm from "./authForm";
 
-class SignInContainer extends Component {
+class AuthFormContainer extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			user:  {
+			user:   {
+				name:     "",
 				email:    "",
 				password: ""
 			},
-			error: {
+			errors: {
+				name:     "",
 				email:    "",
 				password: ""
 			}
 		};
 
+		this.onNameChange = this.onNameChange.bind(this);
 		this.onEmailChange = this.onEmailChange.bind(this);
 		this.onPasswordChange = this.onPasswordChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
@@ -23,6 +26,14 @@ class SignInContainer extends Component {
 
 	getUpdatedUser(newProperty) {
 		return {...this.state.user, ...newProperty};
+	}
+
+	onNameChange(event) {
+		const user = this.getUpdatedUser({
+			name: event.target.value
+		});
+
+		this.setState({user});
 	}
 
 	onEmailChange(event) {
@@ -41,21 +52,25 @@ class SignInContainer extends Component {
 		this.setState({user});
 	}
 
-	onSubmit() {
-		const {email, password} = this.state.user;
+	onSubmit(event) {
+		event.preventDefault();
 
-		this.props.onSubmit({email, password})
+		// this.props.onSubmit(this.state.user);
 	}
 
 	render() {
-		const {email, password} = this.state.user,
-					errors            = this.state;
+		const {name, email, password}   = this.state.user,
+					{errors}                  = this.state,
+					{signIn, formName}        = this.props;
 
 		return (
-			<SignIn
+			<AuthForm
+				formName={formName}
+				name={signIn ? name : void 0}
 				email={email}
 				password={password}
 				errors={errors}
+				onNameChange={signIn ? this.onNameChange : void 0}
 				onEmailChange={this.onEmailChange}
 				onPasswordChange={this.onPasswordChange}
 				onSubmit={this.onSubmit}/>
@@ -63,8 +78,14 @@ class SignInContainer extends Component {
 	}
 }
 
-SignInContainer.propTypes = {
+AuthFormContainer.propTypes = {
+	formName: React.PropTypes.string.isRequired,
+	signIn: 	React.PropTypes.bool,
 	onSubmit: React.PropTypes.func.isRequired
 };
 
-export default SignInContainer;
+AuthFormContainer.defaultProps = {
+	signIn: false
+};
+
+export default AuthFormContainer;
