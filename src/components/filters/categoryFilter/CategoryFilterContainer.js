@@ -23,6 +23,7 @@ class CategoryFilterContainer extends Component {
 	constructor(props) {
 		super(props);
 
+
 		this.state = {
 			categories: createDefaultObjectFrom(this.props.categories, false)
 		};

@@ -162,8 +162,7 @@ class AddProductContainer extends Component {
 				onImagesChange={this.onImagesChange}
 				onDescriptionChange={this.onDescriptionChange}
 				onCategoryChange={this.onCategoriesChange}
-				onPriceChange={this.onPriceChange}
-				error={this.state.error}/>
+				onPriceChange={this.onPriceChange}/>
 		);
 	}
 }
