@@ -7,8 +7,8 @@ import {
 	NO_CATEGORY_FILLED,
 	NO_PRICE_FILLED,
 	NO_IMAGES_FILLED
-} from "../../../src/components/products/addProduct/errorConstants";
-import errorMsgs from "../../../src/components/products/addProduct/errorsMsgs";
+} from "../../../src/components/form/errors/errorConstants";
+import errorMsgs from "../../../src/components/form/errors/errorsMsgs";
 
 const generateProduct = (product = {}) => {
 	const genericProduct = {

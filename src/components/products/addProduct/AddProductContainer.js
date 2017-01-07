@@ -2,14 +2,15 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/api";
 import AddProduct from "./AddProduct";
+import errorMsgs from "../../form/errors/errorsMsgs";
 import {
 	NO_NAME_FILLED,
 	NO_DESCRIPTION_FILLED,
 	NO_CATEGORY_FILLED,
 	NO_PRICE_FILLED,
 	NO_IMAGES_FILLED
-} from "./errorConstants";
-import errorMsgs from "./errorsMsgs";
+} from "../../form/errors/errorConstants";
+
 const MAX_IMAGES = 3;
 
 class AddProductContainer extends Component {

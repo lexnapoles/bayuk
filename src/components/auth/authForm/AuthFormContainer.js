@@ -1,5 +1,12 @@
 import React, {Component} from "react";
 import AuthForm from "./authForm";
+import errorMsgs from "../../form/errors/errorsMsgs";
+import {
+	NO_NAME_FILLED,
+	NO_EMAIL_FILLED,
+	NO_PASSWORD_FILLED
+} from "../../form/errors/errorConstants";
+
 
 class AuthFormContainer extends Component {
 	constructor(props) {
@@ -52,10 +59,57 @@ class AuthFormContainer extends Component {
 		this.setState({user});
 	}
 
+	errorExists(errors) {
+		return Object.keys(errors).some(key => errors[key].length);
+	}
+
+	validateName(name) {
+		return name.length
+			? ""
+			: errorMsgs[NO_NAME_FILLED];
+	}
+
+
+	validateEmail(email) {
+		return email.length
+			? ""
+			: errorMsgs[NO_EMAIL_FILLED];
+	}
+
+	validatePassword(password) {
+		return password.length
+			? ""
+			: errorMsgs[NO_PASSWORD_FILLED];
+	}
+
+	validate({name, email, password}) {
+		const errors = {
+			name:     this.props.signIn ? "" : this.validateName(name),
+			email:    this.validateEmail(email),
+			password: this.validatePassword(password)
+		};
+
+
+		if (this.errorExists(errors)) {
+			this.setState({errors});
+
+			return false;
+		}
+
+		return true;
+	}
+
+
 	onSubmit(event) {
 		event.preventDefault();
 
-		// this.props.onSubmit(this.state.user);
+		const user = this.state.user;
+
+		if (!this.validate(user)) {
+			return;
+		}
+
+		this.props.onSubmit(user);
 	}
 
 	render() {
