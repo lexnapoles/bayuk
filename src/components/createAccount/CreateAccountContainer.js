@@ -7,12 +7,12 @@ class CreateAccountContainer extends Component {
 
 		this.state = {
 			user:  {
-				name:             "",
-				email:            "",
-				password:         "",
-				repeatedPassword: ""
+				name:     "",
+				email:    "",
+				password: ""
 			},
-			error: {
+			errors: {
+				name: 		"",
 				email:    "",
 				password: ""
 			}
@@ -21,7 +21,6 @@ class CreateAccountContainer extends Component {
 		this.onNameChange = this.onNameChange.bind(this);
 		this.onEmailChange = this.onEmailChange.bind(this);
 		this.onPasswordChange = this.onPasswordChange.bind(this);
-		this.onRepeatedPasswordChange = this.onRepeatedPasswordChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
@@ -53,35 +52,25 @@ class CreateAccountContainer extends Component {
 		this.setState({user});
 	}
 
-	onRepeatedPasswordChange(event) {
-		const user = this.getUpdatedUser({
-			repeatedPassword: event.target.value
-		});
+	onSubmit(event) {
+		event.preventDefault();
 
-		this.setState({user});
-	}
-
-	onSubmit() {
-		const {name, email, password} = this.state.user;
-
-		this.props.onSubmit({name, email, password})
+		// this.props.onSubmit(this.state.user);
 	}
 
 	render() {
-		const {name, email, password, repeatedPassword} = this.state.user,
-					errors                                    = this.state;
+		const {name, email, password} = this.state.user,
+					{errors}                  = this.state;
 
 		return (
 			<CreateAccount
 				name={name}
 				email={email}
 				password={password}
-				repeatedPassword={repeatedPassword}
 				errors={errors}
 				onNameChange={this.onNameChange}
 				onEmailChange={this.onEmailChange}
 				onPasswordChange={this.onPasswordChange}
-				onRepeatedPasswordChange={this.onRepeatedPasswordChange}
 				onSubmit={this.onSubmit}/>
 		);
 	}

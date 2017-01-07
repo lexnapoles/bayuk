@@ -1,0 +1,23 @@
+.container {
+	composes: alignCenter from "../layout.css";
+	margin-top: 3em;
+
+}
+
+.title {
+	margin: -0.2em;
+}
+
+.inputs {
+	padding-top: 2em;
+}
+
+.submitButton {
+	width: 100%;
+	margin-top: 2em;
+}
+
+.formContainer {
+	composes: well from "../global.css";
+	padding: 2em;
+}
