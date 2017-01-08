@@ -76,6 +76,24 @@ describe("<FormWrapper/>", function () {
 		assert.equal(wrapper.state("form").email, customMessage);
 	});
 
+	it("makes the form state available to the custom handler", function () {
+		const handlers = {
+			onEmailChange: (data, state) => state.email
+		};
+
+		const wrapper       = renderForm({elements: ["email"], handlers}),
+					onEmailChange = wrapper.state("handlers")["onEmailChange"],
+					email         = "email@email.com";
+
+		wrapper.setState({
+			form: {email}
+		});
+
+		Reflect.apply(onEmailChange, wrapper, []);
+
+		assert.equal(wrapper.state("form").email,  email);
+	});
+
 	it("passes the form state to the children", function () {
 		const Children = () => <div></div>,
 					wrapper  = renderForm({elements: ["name", "email"]}, Children);

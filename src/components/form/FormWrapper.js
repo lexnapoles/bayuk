@@ -28,7 +28,7 @@ const FormWrapper = WrappedComponent => {
 		handlerWrapper(elemName, func, data) {
 			const form = {
 				...this.state.form,
-				[elemName]: func(data)
+				[elemName]: func(data, this.state.form)
 			};
 
 			this.setState({form});
