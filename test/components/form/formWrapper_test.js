@@ -43,7 +43,9 @@ const FormWrapper = WrappedComponent => {
 
 		getHandler(handlerName, elementName) {
 			const customHandler = this.props.handlers[handlerName],
-						handler       = customHandler	? customHandler	: this.defaultHandler;
+						handler       = customHandler
+							? customHandler
+							: this.defaultHandler;
 
 			return data => this.handlerWrapper(elementName, handler, data);
 		}
@@ -59,7 +61,7 @@ const FormWrapper = WrappedComponent => {
 
 		render() {
 			const {form, errors, handlers} = this.state,
-						props                    = omit(this.props, ["elements"]);
+						props                    = omit(this.props, ["elements", "handlers"]);
 
 			return <WrappedComponent form={form} errors={errors} {...handlers} {...props}/>;
 		}
@@ -79,8 +81,8 @@ const FormWrapper = WrappedComponent => {
 
 const getFormComponent = (children = React.Component) => FormWrapper(children);
 
-const renderForm = props => {
-	const Form = getFormComponent();
+const renderForm = (props, children) => {
+	const Form = getFormComponent(children);
 
 	return shallow(<Form {...props}/>);
 };
@@ -144,6 +146,27 @@ describe("<FormWrapper/>", function () {
 		Reflect.apply(onEmailChange, wrapper, []);
 
 		assert.equal(wrapper.state().form.email, customMessage);
+	});
+
+	it("passes the form state to the children", function () {
+		const Children = () => <div></div>,
+					wrapper  = renderForm({elements: ["name", "email"]}, Children);
+
+		assert.deepEqual(wrapper.find("Children").prop("form"), {name: "", email: ""})
+	});
+
+	it("passes the errors state to the children", function () {
+		const Children = () => <div></div>,
+					wrapper  = renderForm({elements: ["name"]}, Children);
+
+		assert.deepEqual(wrapper.find("Children").prop("errors"), {name: "", email: ""})
+	});
+
+	it("passes the handlers to the children", function () {
+		const Children = () => <div></div>,
+					wrapper  = renderForm({elements: ["name"]}, Children);
+
+		assert.isFunction(wrapper.find("Children").prop("onNameChange"));
 	});
 });
 
