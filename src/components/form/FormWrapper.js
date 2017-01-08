@@ -108,7 +108,7 @@ const FormWrapper = WrappedComponent => {
 						props                    = omit(this.props, ownProps),
 						{form, errors, handlers} = this.state;
 
-			return <WrappedComponent form={form} errors={errors} onSubmit={this.submitForm}{...handlers} {...props} />;
+			return <WrappedComponent form={form} errors={errors} onSubmit={this.submitForm} {...handlers} {...props} />;
 		}
 	};
 
@@ -123,6 +123,9 @@ const FormWrapper = WrappedComponent => {
 	FormContainer.defaultProps = {
 		handlers:      {}
 	};
+
+	window.console.log("Inside FormWrapper");
+	window.console.log("FormContainer: propTypes", FormContainer.propTypes);
 
 	return FormContainer;
 };

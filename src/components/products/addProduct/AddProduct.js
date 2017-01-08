@@ -6,21 +6,21 @@ import Filter from "../../filters/filter/Filter";
 import ImagesFilter from "../../filters/ImagesFilter/ImagesFilterContainer";
 
 const AddProduct = ({
-	product,
+	form,
 	errors,
 	maxImages,
-	submitForm,
+	onSubmit,
 	onNameChange,
 	onImagesChange,
 	onDescriptionChange,
 	onCategoryChange,
 	onPriceChange
 }) => (
-	<Form formName="addForm" onSubmit={submitForm}>
+	<Form formName="addForm" onSubmit={onSubmit}>
 		<ImagesFilter error={errors.images} maxImages={maxImages} onChange={onImagesChange}/>
-		<TextFilter name={product.name} error={errors.name} placeholder="Product name" onChange={onNameChange} required={true}/>
-		<TextFilter name={product.description} error={errors.description} placeholder="Product description" onChange={onDescriptionChange}	required={true}/>
-		<CategoryFilter error={errors.categories} onChange={onCategoryChange}/>
+		<TextFilter name={form.name} error={errors.name} placeholder="Product name" onChange={onNameChange} required={true}/>
+		<TextFilter name={form.description} error={errors.description} placeholder="Product description" onChange={onDescriptionChange}	required={true}/>
+		<CategoryFilter error={errors.category} onChange={onCategoryChange}/>
 		<Filter title="Price" error={errors.price}>
 			<input type="number" min="0" placeholder="0" onChange={onPriceChange}/>
 		</Filter>
@@ -28,10 +28,10 @@ const AddProduct = ({
 );
 
 AddProduct.propTypes = {
-	product:             React.PropTypes.object.isRequired,
+	form:                React.PropTypes.object.isRequired,
 	errors:              React.PropTypes.object.isRequired,
 	maxImages:           React.PropTypes.number.isRequired,
-	submitForm:          React.PropTypes.func.isRequired,
+	onSubmit:         	 React.PropTypes.func.isRequired,
 	onNameChange:        React.PropTypes.func.isRequired,
 	onImagesChange:      React.PropTypes.func.isRequired,
 	onDescriptionChange: React.PropTypes.func.isRequired,
