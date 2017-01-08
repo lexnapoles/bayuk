@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {createDefaultObjectFrom} from "../../utils/utils";
 import {omit} from "lodash/object";
 import {some} from "lodash/collection";
+import {getDisplayName} from "../../utils/utils";
 
 const FormWrapper = WrappedComponent => {
 	const FormContainer = class FormContainer extends Component {
@@ -124,8 +125,7 @@ const FormWrapper = WrappedComponent => {
 		handlers:      {}
 	};
 
-	window.console.log("Inside FormWrapper");
-	window.console.log("FormContainer: propTypes", FormContainer.propTypes);
+	FormContainer.displayName = `FormWrapper(${getDisplayName(WrappedComponent)})`;
 
 	return FormContainer;
 };
