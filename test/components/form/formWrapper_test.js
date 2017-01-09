@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {shallow} from "enzyme";
-import FormWrapper from "../../../src/components/form/FormWrapper";
+import FormWrapper from "../../../src/components/form/connectForm/FormWrapper";
 
 const getEvent = value => ({
 	target: {

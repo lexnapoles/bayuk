@@ -1,11 +1,9 @@
 import React, {Component} from "react";
-import {createDefaultObjectFrom} from "../../utils/utils";
+import {createDefaultObjectFrom} from "../../../utils/utils";
 import {omit} from "lodash/object";
 import {some} from "lodash/collection";
-import {getDisplayName} from "../../utils/utils";
 
-
-const FormWrapper = WrappedComponent => {
+const FormWrapper = (WrappedComponent, options = {}) => {
 	class FormContainer extends Component {
 		constructor(props) {
 			super(props);
@@ -126,7 +124,7 @@ const FormWrapper = WrappedComponent => {
 		handlers:      {}
 	};
 
-	FormContainer.displayName = `ConnectForm(${getDisplayName(WrappedComponent)})`;
+	FormContainer.displayName = options.displayName;
 
 	return FormContainer;
 };

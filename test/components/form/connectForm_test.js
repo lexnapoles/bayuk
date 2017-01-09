@@ -1,41 +1,15 @@
-import React, {Component, createElement} from "react";
+import React, {Component} from "react";
 import {shallow} from "enzyme";
-import FormWrapper from "../../../src/components/form/FormWrapper";
-import {getDisplayName} from "../../../src/utils/utils";
-
-const defaultProps = {
-	elements:      [],
-	handlers:      {},
-	validation:    {},
-	errorMessages: {},
-	onSubmit:      () => void 0
-};
-
-const connectForm = (props = defaultProps) => WrappedComponent => {
-	class ConnectForm extends Component {
-		constructor(props) {
-			super(props);
-		}
-
-		render() {
-			return createElement(FormWrapper(WrappedComponent), props);
-		}
-	}
-
-	ConnectForm.displayName = `ConnectForm${getDisplayName(WrappedComponent)}`;
-
-	return ConnectForm;
-};
+import {pick} from "lodash/object";
+import connectForm, {defaultProps} from "../../../src/components/form/connectForm/connectForm";
 
 class SomeComponent extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		return <div>A Component</div>;
 	}
 }
+
+const getProps = wrapper => pick(wrapper.props(), ["elements", "handlers", "validation", "errorMessages"]);
 
 describe("connectForm", function () {
 	it("returns a React.Component wrapping FormWrapper(WrappedComponent)", function () {
@@ -48,7 +22,7 @@ describe("connectForm", function () {
 		const Form    = connectForm()(SomeComponent),
 					wrapper = shallow(<Form onSubmit={() => void 0}/>);
 
-		assert.deepEqual(wrapper.props(), defaultProps);
+		assert.deepEqual(getProps(wrapper), defaultProps);
 	});
 
 	it("uses custom props if a props object has been passed", function () {
@@ -56,21 +30,18 @@ describe("connectForm", function () {
 			elements:      ["name", "email"],
 			handlers:      {},
 			validation:    {},
-			errorMessages: {},
-			onSubmit:      () => "onSubmit"
+			errorMessages: {}
 		};
 
 		const Form    = connectForm(customProps)(SomeComponent),
 					wrapper = shallow(<Form onSubmit={() => void 0}/>);
 
-		assert.deepEqual(wrapper.props(), customProps);
+		assert.deepEqual(getProps(wrapper), customProps);
 	});
 
 	it("shows the displayName ConnectForm([WrappedComponent])", function () {
 		const Form    = connectForm()(SomeComponent),
 					wrapper = shallow(<Form onSubmit={() => void 0}/>);
-
-		window.console.log("WRAPPER DEBUG: ", wrapper.debug());
 
 		assert.equal(wrapper.name(), "ConnectForm(SomeComponent)");
 	})

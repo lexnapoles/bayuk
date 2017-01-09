@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/api";
 import {findKey} from "lodash/object";
-import FormWrapper from "../../form/FormWrapper";
+import FormWrapper from "../../form/connectForm/FormWrapper";
 import AddProduct from "./AddProduct";
 import errorMsgs from "../../form/errors/errorsMsgs";
 import {

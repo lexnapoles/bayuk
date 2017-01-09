@@ -11,4 +11,4 @@ export const getErrorMessage = payload => payload.response.message;
 
 export const getImagePath = imageId => `/image/${imageId}.jpg`;
 
-export const getDisplayName = WrappedComponent => WrappedComponent.displayName || WrappedComponent.name || 'Component';
+
