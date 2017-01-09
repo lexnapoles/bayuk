@@ -4,8 +4,9 @@ import {omit} from "lodash/object";
 import {some} from "lodash/collection";
 import {getDisplayName} from "../../utils/utils";
 
+
 const FormWrapper = WrappedComponent => {
-	const FormContainer = class FormContainer extends Component {
+	class FormContainer extends Component {
 		constructor(props) {
 			super(props);
 
@@ -111,7 +112,7 @@ const FormWrapper = WrappedComponent => {
 
 			return <WrappedComponent form={form} errors={errors} onSubmit={this.submitForm} {...handlers} {...props} />;
 		}
-	};
+	}
 
 	FormContainer.propTypes = {
 		elements:      React.PropTypes.array.isRequired,
@@ -125,7 +126,7 @@ const FormWrapper = WrappedComponent => {
 		handlers:      {}
 	};
 
-	FormContainer.displayName = `FormWrapper(${getDisplayName(WrappedComponent)})`;
+	FormContainer.displayName = `ConnectForm(${getDisplayName(WrappedComponent)})`;
 
 	return FormContainer;
 };
