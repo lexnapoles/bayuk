@@ -91,7 +91,7 @@ describe("<FormWrapper/>", function () {
 
 		Reflect.apply(onEmailChange, wrapper, []);
 
-		assert.equal(wrapper.state("form").email,  email);
+		assert.equal(wrapper.state("form").email, email);
 	});
 
 	it("passes the form state to the children", function () {
@@ -137,7 +137,7 @@ describe("<FormWrapper/>", function () {
 
 		const errors = createErrors(formData, validation, errorMessages);
 
-	assert.equal(errors.name, errorMessages.name);
+		assert.equal(errors.name, errorMessages.name);
 	});
 
 	it("submits the form if it doesn't find an error message after validating", function () {

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {shallow} from "enzyme";
 import {pick} from "lodash/object";
-import connectForm, {defaultProps} from "../../../src/components/form/connectForm/connectForm";
+import connectForm from "../../../src/components/form/connectForm/connectForm";
 
 class SomeComponent extends Component {
 	render() {
@@ -11,39 +11,58 @@ class SomeComponent extends Component {
 
 const getProps = wrapper => pick(wrapper.props(), ["elements", "handlers", "validation", "errorMessages"]);
 
+const requiredProps = {
+	elements:      ["first"],
+	validation:    {first: () => void 0},
+	errorMessages: {first: "First Error"}
+};
+
+const getForm = (props = requiredProps, children = SomeComponent) => {
+	const Form = 	connectForm(props)(children);
+
+	return shallow(<Form onSubmit={() => void 0}/>)
+};
+
 describe("connectForm", function () {
 	it("returns a React.Component wrapping FormWrapper(WrappedComponent)", function () {
-		const component = connectForm()(SomeComponent);
+		const component = connectForm(requiredProps)(SomeComponent);
 
 		assert.isTrue(Boolean(component.prototype.isReactComponent));
 	});
 
-	it("uses default props if no props object has been passed", function () {
-		const Form    = connectForm()(SomeComponent),
-					wrapper = shallow(<Form onSubmit={() => void 0}/>);
-
-		assert.deepEqual(getProps(wrapper), defaultProps);
+	it("throws an exception if there are no elements, validation or errorMessages variables", function () {
+		assert.throws(connectForm(), /Elements, validation and errorMessages are required/);
 	});
 
-	it("uses custom props if a props object has been passed", function () {
+	it("uses a default handlers object if no custom one has been passed", function () {
+		const requiredProps = {
+			elements:      ["first"],
+			validation:    {first: () => void 0},
+			errorMessages: {first: "First Error"}
+		};
+
+		const Form    = connectForm(requiredProps)(SomeComponent),
+					wrapper = shallow(<Form onSubmit={() => void 0}/>);
+
+		assert.property(getProps(wrapper), "handlers");
+	});
+
+	it("uses a custom handler object if one has been passed", function () {
+		const customMessage = "Custom name handler";
 		const customProps = {
-			elements:      ["name", "email"],
-			handlers:      {},
+			elements:      ["name"],
+			handlers:      {onNameChange: () => customMessage},
 			validation:    {},
 			errorMessages: {}
 		};
 
-		const Form    = connectForm(customProps)(SomeComponent),
-					wrapper = shallow(<Form onSubmit={() => void 0}/>);
+		const onNameChange = getForm(customProps).prop("handlers").onNameChange;
 
-		assert.deepEqual(getProps(wrapper), customProps);
+		assert.equal(onNameChange(), customMessage);
 	});
 
 	it("shows the displayName ConnectForm([WrappedComponent])", function () {
-		const Form    = connectForm()(SomeComponent),
-					wrapper = shallow(<Form onSubmit={() => void 0}/>);
-
-		assert.equal(wrapper.name(), "ConnectForm(SomeComponent)");
+		assert.equal(getForm().name(), "ConnectForm(SomeComponent)");
 	})
 });
 
