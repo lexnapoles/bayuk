@@ -10,7 +10,7 @@ const getEvent = value => ({
 
 const getFormComponent = (children = Component) => FormWrapper(children);
 
-const renderForm = (props, children) => {
+const getForm = (props, children) => {
 	const Form          = getFormComponent(children),
 				validation    = {},
 				errorMessages = {},
@@ -23,13 +23,13 @@ const renderForm = (props, children) => {
 
 describe("<FormWrapper/>", function () {
 	it("creates the form state using the elements array", function () {
-		const wrapper = renderForm({elements: ["name", "email"]});
+		const wrapper = getForm({elements: ["name", "email"]});
 
 		assert.deepEqual(wrapper.state("form"), {name: "", email: ""});
 	});
 
 	it("creates the error state using the elements array", function () {
-		const wrapper = renderForm({elements: ["name", "email"]});
+		const wrapper = getForm({elements: ["name", "email"]});
 
 		assert.deepEqual(wrapper.state("errors"), {name: "", email: ""});
 	});
@@ -56,7 +56,7 @@ describe("<FormWrapper/>", function () {
 	});
 
 	it("assigns, by default, a default behaviour to the handlers in the state", function () {
-		const wrapper        = renderForm({elements: ["name"]}),
+		const wrapper        = getForm({elements: ["name"]}),
 					defaultHandler = wrapper.state().handlers["onNameChange"],
 					value          = "George";
 
@@ -65,10 +65,10 @@ describe("<FormWrapper/>", function () {
 		assert.equal(wrapper.state("form").name, value);
 	});
 
-	it("adds a custom handler instead of the default if it finds one", function () {
+	it("adds a custom handler instead of the default one if it is supplied", function () {
 		const customMessage = " a custom handler",
 					handlers      = {onEmailChange: () => customMessage},
-					wrapper       = renderForm({elements: ["email"], handlers}),
+					wrapper       = getForm({elements: ["email"], handlers}),
 					onEmailChange = wrapper.state("handlers")["onEmailChange"];
 
 		Reflect.apply(onEmailChange, wrapper, []);
@@ -81,7 +81,7 @@ describe("<FormWrapper/>", function () {
 			onEmailChange: (data, state) => state.email
 		};
 
-		const wrapper       = renderForm({elements: ["email"], handlers}),
+		const wrapper       = getForm({elements: ["email"], handlers}),
 					onEmailChange = wrapper.state("handlers")["onEmailChange"],
 					email         = "email@email.com";
 
@@ -96,35 +96,35 @@ describe("<FormWrapper/>", function () {
 
 	it("passes the form state to the children", function () {
 		const Children = () => <div></div>,
-					wrapper  = renderForm({elements: ["name", "email"]}, Children);
+					wrapper  = getForm({elements: ["name", "email"]}, Children);
 
 		assert.deepEqual(wrapper.find("Children").prop("form"), {name: "", email: ""})
 	});
 
 	it("passes the errors state to the children", function () {
 		const Children = () => <div></div>,
-					wrapper  = renderForm({elements: ["name", "email"]}, Children);
+					wrapper  = getForm({elements: ["name", "email"]}, Children);
 
 		assert.deepEqual(wrapper.find("Children").prop("errors"), {name: "", email: ""})
 	});
 
 	it("passes the handlers to the children", function () {
 		const Children = () => <div></div>,
-					wrapper  = renderForm({elements: ["name"]}, Children);
+					wrapper  = getForm({elements: ["name"]}, Children);
 
 		assert.isFunction(wrapper.find("Children").prop("onNameChange"));
 	});
 
 	it("passes all the properties it doesn't need to children", function () {
 		const Children = () => <div></div>,
-					wrapper  = renderForm({elements: ["name"], unnecessaryProp: "unnecessary"}, Children);
+					wrapper  = getForm({elements: ["name"], unnecessaryProp: "unnecessary"}, Children);
 
 		assert.isDefined(wrapper.find("Children").prop("unnecessaryProp"));
 	});
 
 	it("doesn't pass own properties to children", function () {
 		const Children = () => <div></div>,
-					wrapper  = renderForm({elements: ["name"], validation: {prop: "unnecessary"}}, Children);
+					wrapper  = getForm({elements: ["name"], validation: {prop: "unnecessary"}}, Children);
 
 		assert.isUndefined(wrapper.find("Children").prop("validation"));
 	});
@@ -140,16 +140,27 @@ describe("<FormWrapper/>", function () {
 		assert.equal(errors.name, errorMessages.name);
 	});
 
+	it("only validates a field if there's a validator for it", function () {
+		const createErrors  = getFormComponent().prototype.createErrors,
+					formData      = {name: "Steven", email: "steven@steven.com"},
+					validation    = {name: value => value === "George"},
+					errorMessages = {name: "Invalid name"};
+
+		const errors = createErrors(formData, validation, errorMessages);
+
+		assert.deepEqual(errors, {name: "Invalid name", email: ""});
+	});
+
 	it("submits the form if it doesn't find an error message after validating", function () {
 		const onSubmit      = sinon.spy(),
 					validation    = {name: value => value === "George"},
 					errorMessages = {name: "Invalid name"},
-					wrapper       = renderForm({elements: ["name"], validation, errorMessages, onSubmit}),
+					wrapper       = getForm({elements: ["name"], validation, errorMessages, onSubmit}),
 					onNameChange  = wrapper.state("handlers")["onNameChange"];
 
 		Reflect.apply(onNameChange, wrapper, [getEvent("George")]);
 
-		wrapper.instance().submitForm(new Event("submit"));
+		wrapper.instance().onSubmit(new Event("submit"));
 
 		assert.isTrue(onSubmit.called);
 	});

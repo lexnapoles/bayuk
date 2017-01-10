@@ -6,12 +6,12 @@ import CategoryFilter from "../../filters/categoryFilter/CategoryFilterContainer
 
 const SearchProduct = ({
 	name,
-	submitForm,
+	onSubmit,
 	onNameChange,
 	onCategoryChange,
 	onPriceChange
 }) => (
-	<Form formName="searchProduct" onSubmit={submitForm}>
+	<Form formName="searchProduct" onSubmit={onSubmit}>
 		<TextFilter name={name} placeholder="What are you looking for?" onChange={onNameChange} required={true}/>
 		<CategoryFilter exclusive={false} onChange={onCategoryChange}/>
 		<PriceFilter onChange={onPriceChange}/>
@@ -20,7 +20,7 @@ const SearchProduct = ({
 
 SearchProduct.propTypes = {
 	name:             React.PropTypes.string.isRequired,
-	submitForm:       React.PropTypes.func.isRequired,
+	onSubmit:         React.PropTypes.func.isRequired,
 	onNameChange:     React.PropTypes.func.isRequired,
 	onCategoryChange: React.PropTypes.func.isRequired,
 	onPriceChange:    React.PropTypes.func.isRequired

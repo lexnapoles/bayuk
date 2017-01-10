@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, createElement} from "react";
 import {createDefaultObjectFrom} from "../../../utils/utils";
 import {omit} from "lodash/object";
 import {some} from "lodash/collection";
@@ -18,7 +18,7 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 			});
 
 			this.handlerWrapper = this.handlerWrapper.bind(this);
-			this.submitForm = this.submitForm.bind(this);
+			this.onSubmit = this.onSubmit.bind(this);
 		}
 
 		defaultHandler(event) {
@@ -63,11 +63,11 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 
 			const errors = elements.reduce((obj, name) => {
 				const value   = formData[name],
-							isValid = validation[name];
+							isValid = validation[name] ? validation[name](value) : true;
 
 				return {
 					...obj,
-					[name]: isValid(value) ? "" : errMsg[name]
+					[name]: isValid ? "" : errMsg[name]
 				};
 			}, {});
 
@@ -91,7 +91,7 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 			return true;
 		}
 
-		submitForm(event) {
+		onSubmit(event) {
 			event.preventDefault();
 
 			const {form} = this.state;
@@ -105,16 +105,23 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 
 		render() {
 			const ownProps                 = ["elements", "onSubmit", "errorMessages", "validation", "handlers"],
-						props                    = omit(this.props, ownProps),
 						{form, errors, handlers} = this.state;
 
-			return <WrappedComponent form={form} errors={errors} onSubmit={this.submitForm} {...handlers} {...props} />;
+			const props = {
+				form,
+				errors,
+				onSubmit: this.onSubmit,
+				...handlers,
+				...omit(this.props, ownProps)
+			};
+
+			return createElement(WrappedComponent, props);
 		}
 	}
 
 	FormContainer.propTypes = {
 		elements:      React.PropTypes.array.isRequired,
-		onSubmit: 		 React.PropTypes.func.isRequired,
+		onSubmit:      React.PropTypes.func.isRequired,
 		errorMessages: React.PropTypes.object.isRequired,
 		validation:    React.PropTypes.object.isRequired,
 		handlers:      React.PropTypes.object
