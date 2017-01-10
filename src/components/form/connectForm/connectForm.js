@@ -27,11 +27,6 @@ const connectForm = (props = defaultProps) => WrappedComponent => {
 		handlers: React.PropTypes.object
 	};
 
-	ConnectForm.defaultProps = {
-		handlers: {},
-		onSubmit: () => void 0
-	};
-
 	return ConnectForm;
 };
 

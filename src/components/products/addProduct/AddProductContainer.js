@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/api";
 import {findKey} from "lodash/object";
-import FormWrapper from "../../form/connectForm/FormWrapper";
+import connectForm from "../../form/connectForm/connectForm";
 import AddProduct from "./AddProduct";
 import errorMsgs from "../../form/errors/errorsMsgs";
 import {
@@ -28,8 +28,12 @@ const validation = {
 
 const handlers = {
 	onPriceChange:    event => parseInt(event.target.value),
-	onImagesChange:    images => images,
-	onCategoryChange: categories => findKey(categories, category => category)
+	onImagesChange:   images => images,
+	onCategoryChange: categories => {
+		const category = findKey(categories, category => category);
+
+		return category ? category : ""
+	}
 };
 
 const errorMessages = {
@@ -40,14 +44,15 @@ const errorMessages = {
 	price:       errorMsgs[NO_PRICE_FILLED]
 };
 
-const mapStateToProps = () => ({
+const props = {
 	elements,
 	validation,
 	handlers,
 	errorMessages,
 	maxImages: MAX_IMAGES
-});
+};
 
-export default connect(mapStateToProps, {
+
+export default connect(void 0, {
 	onSubmit: addProduct
-})(FormWrapper(AddProduct));
+})(connectForm(props)(AddProduct));
