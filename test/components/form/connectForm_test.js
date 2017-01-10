@@ -18,7 +18,7 @@ const requiredProps = {
 };
 
 const getForm = (props = requiredProps, children = SomeComponent) => {
-	const Form = 	connectForm(props)(children);
+	const Form = connectForm(props)(children);
 
 	return shallow(<Form onSubmit={() => void 0}/>)
 };
@@ -32,6 +32,15 @@ describe("connectForm", function () {
 
 	it("throws an exception if there are no elements, validation or errorMessages variables", function () {
 		assert.throws(connectForm(), /Elements, validation and errorMessages are required/);
+	});
+
+	it("throws an exception if elements, validation or errorMessages variables are empty", function () {
+		const props = {
+			...requiredProps,
+			elements: []
+		};
+
+		assert.throws(connectForm(props), /Elements, validation and errorMessages cannot be empty/);
 	});
 
 	it("uses a default handlers object if no custom one has been passed", function () {
@@ -48,13 +57,12 @@ describe("connectForm", function () {
 	});
 
 	it("uses a custom handler object if one has been passed", function () {
-		const customMessage = "Custom name handler";
-		const customProps = {
-			elements:      ["name"],
-			handlers:      {onNameChange: () => customMessage},
-			validation:    {},
-			errorMessages: {}
-		};
+		const customMessage = "Custom name handler",
+					customProps   = {
+						...requiredProps,
+						elements: ["name"],
+						handlers: {onNameChange: () => customMessage}
+					};
 
 		const onNameChange = getForm(customProps).prop("handlers").onNameChange;
 
