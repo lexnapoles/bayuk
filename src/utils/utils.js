@@ -1,3 +1,5 @@
+import {isEmpty} from "lodash/lang";
+
 export const createDefaultObjectFrom = (base = {}, defaultValue = "") => {
 	const keys = Array.isArray(base) ? base : Object.keys(base);
 
@@ -11,4 +13,4 @@ export const getErrorMessage = payload => payload.response.message;
 
 export const getImagePath = imageId => `/image/${imageId}.jpg`;
 
-
+export const isNotEmpty = value => !isEmpty(value);

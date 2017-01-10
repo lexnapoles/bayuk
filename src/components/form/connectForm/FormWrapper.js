@@ -26,6 +26,7 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 
 			this.handlerWrapper = this.handlerWrapper.bind(this);
 			this.onSubmit = this.onSubmit.bind(this);
+			this.getValidator = this.getValidator.bind(this);
 		}
 
 		defaultHandler(event) {
@@ -35,7 +36,7 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 		handlerWrapper(elemName, func, data) {
 			const form = {
 				...this.state.form,
-				[elemName]: func(data, this.state.form)
+				[elemName]: func(data, this.state.form, getChildrenProps(this.props))
 			};
 
 			this.setState({form});
@@ -65,12 +66,16 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 			}), {});
 		}
 
+		getValidator(validation, prop) {
+			return value => validation[prop](value, this.state.form, getChildrenProps(this.props));
+		}
+
 		createErrors(formData, validation, errMsg) {
 			const elements = Object.keys(formData);
 
 			const errors = elements.reduce((obj, name) => {
 				const value   = formData[name],
-							isValid = validation[name] ? validation[name](value) : true;
+							isValid = validation[name] ? this.getValidator(validation, name)(value) : true;
 
 				return {
 					...obj,

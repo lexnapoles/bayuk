@@ -1,6 +1,7 @@
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/api";
 import {findKey} from "lodash/object";
+import {isNotEmpty} from "../../../utils/utils";
 import connectForm from "../../form/connectForm/connectForm";
 import AddProduct from "./AddProduct";
 import errorMsgs from "../../form/errors/errorsMsgs";
@@ -16,13 +17,11 @@ const MAX_IMAGES = 3;
 
 const elements = ["name", "description", "category", "price", "images"];
 
-const validateStringOrArray = data => data.length;
-
 const validation = {
-	name:        validateStringOrArray,
-	description: validateStringOrArray,
-	category:    validateStringOrArray,
-	images:      validateStringOrArray,
+	name:        isNotEmpty,
+	description: isNotEmpty,
+	category:    isNotEmpty,
+	images:      isNotEmpty,
 	price:       price => price > 0
 };
 
@@ -51,7 +50,6 @@ const props = {
 	errorMessages,
 	maxImages: MAX_IMAGES
 };
-
 
 export default connect(void 0, {
 	onSubmit: addProduct

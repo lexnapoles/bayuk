@@ -110,6 +110,20 @@ describe("<FormWrapper/>", function () {
 		assert.equal(wrapper.state("form").email, email);
 	});
 
+	it("makes the props available to the custom handler", function () {
+		const handlers = {
+			onEmailChange: (data, state, props) => props.customProp
+		};
+
+		const email         = "email@email.com",
+					wrapper       = getForm({elements: ["email"], handlers, customProp: email}),
+					onEmailChange = wrapper.state("handlers")["onEmailChange"];
+
+		Reflect.apply(onEmailChange, wrapper, []);
+
+		assert.equal(wrapper.state("form").email, email);
+	});
+
 	it("passes the form state to the children", function () {
 		const Children = () => <div></div>,
 					wrapper  = getForm({elements: ["name", "email"]}, Children);
