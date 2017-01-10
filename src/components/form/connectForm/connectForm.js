@@ -1,21 +1,21 @@
 import React, {Component, createElement} from "react";
-		import FormWrapper from "./FormWrapper";
-		import {has} from "lodash/object";
-		import {isEmpty} from "lodash/lang";
+import FormWrapper from "./FormWrapper";
+import {has} from "lodash/object";
+import {isEmpty} from "lodash/lang";
 
-		const getDisplayName = WrappedComponent => WrappedComponent.displayName || WrappedComponent.name || 'Component';
+const getDisplayName = WrappedComponent => WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
-		const checkRequiredProps = props => {
-			if (!has(props, "elements")) {
-				throw new Error("Elements variable is required");
-			}
-		};
+const checkRequiredProps = props => {
+	if (!has(props, "elements")) {
+		throw new Error("Elements variable is required");
+	}
+};
 
-		const checkEmptyProps = props => {
-			if (isEmpty(props.elements)) {
-				throw new Error("Elements variable cannot be empty");
-			}
-		};
+const checkEmptyProps = props => {
+	if (isEmpty(props.elements)) {
+		throw new Error("Elements variable cannot be empty");
+	}
+};
 
 const checkValidatorsHaveErrorMessage = (props) => {
 	if (!isEmpty(props.validation) && !isEmpty(props.errorMessages)) {
@@ -56,8 +56,7 @@ const connectForm = (props = {}) => WrappedComponent => {
 	}
 
 	ConnectForm.propTypes = {
-		onSubmit: React.PropTypes.func,
-		handlers: React.PropTypes.object
+		onSubmit: React.PropTypes.func
 	};
 
 	return ConnectForm;

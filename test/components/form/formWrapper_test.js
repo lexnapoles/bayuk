@@ -28,6 +28,18 @@ describe("<FormWrapper/>", function () {
 		assert.deepEqual(wrapper.state("form"), {name: "", email: ""});
 	});
 
+	it("assigns custom default values if a defaultFormState prop is passed.", function () {
+		const customName = "A custom name";
+		const wrapper = getForm({
+			elements: ["name", "email"],
+			defaultFormState: {
+				name: customName
+			}
+		});
+
+		assert.equal(wrapper.state("form").name, customName);
+	});
+
 	it("creates the error state using the elements array", function () {
 		const wrapper = getForm({elements: ["name", "email"]});
 

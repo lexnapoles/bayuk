@@ -8,12 +8,13 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 		constructor(props) {
 			super(props);
 
-			const elements    = props.elements,
-						elementsObj = createDefaultObjectFrom(elements, "");
+			const elements  = props.elements,
+						defaultElements = createDefaultObjectFrom(elements, ""),
+						formState = {...defaultElements, ...this.props.defaultFormState};
 
 			this.state = ({
-				form:     elementsObj,
-				errors:   elementsObj,
+				form:     formState,
+				errors:   defaultElements,
 				handlers: this.getHandlersObj(elements)
 			});
 
@@ -120,11 +121,12 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 	}
 
 	FormContainer.propTypes = {
-		elements:      React.PropTypes.array.isRequired,
-		onSubmit:      React.PropTypes.func.isRequired,
-		errorMessages: React.PropTypes.object.isRequired,
-		validation:    React.PropTypes.object.isRequired,
-		handlers:      React.PropTypes.object
+		elements:         React.PropTypes.array.isRequired,
+		onSubmit:         React.PropTypes.func.isRequired,
+		errorMessages:    React.PropTypes.object.isRequired,
+		validation:       React.PropTypes.object.isRequired,
+		defaultFormState: React.PropTypes.object,
+		handlers:         React.PropTypes.object
 	};
 
 	FormContainer.defaultProps = {
