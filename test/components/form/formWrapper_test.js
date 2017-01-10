@@ -22,7 +22,7 @@ const getForm = (props, children) => {
 };
 
 describe("<FormWrapper/>", function () {
-	it("creates the form state using the elements array", function () {
+	it("creates the form state using the elements prop", function () {
 		const wrapper = getForm({elements: ["name", "email"]});
 
 		assert.deepEqual(wrapper.state("form"), {name: "", email: ""});
@@ -40,7 +40,7 @@ describe("<FormWrapper/>", function () {
 		assert.equal(wrapper.state("form").name, customName);
 	});
 
-	it("creates the error state using the elements array", function () {
+	it("creates the error state using the elements prop", function () {
 		const wrapper = getForm({elements: ["name", "email"]});
 
 		assert.deepEqual(wrapper.state("errors"), {name: "", email: ""});

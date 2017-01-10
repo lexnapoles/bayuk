@@ -3,6 +3,12 @@ import {createDefaultObjectFrom} from "../../../utils/utils";
 import {omit} from "lodash/object";
 import {some} from "lodash/collection";
 
+const getChildrenProps = props => {
+	const ownProps = ["elements", "onSubmit", "errorMessages", "validation", "handlers", "defaultFormState"];
+
+	return omit(props, ownProps);
+};
+
 const FormWrapper = (WrappedComponent, options = {}) => {
 	class FormContainer extends Component {
 		constructor(props) {
@@ -105,15 +111,14 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 		}
 
 		render() {
-			const ownProps                 = ["elements", "onSubmit", "errorMessages", "validation", "handlers"],
-						{form, errors, handlers} = this.state;
+			const {form, errors, handlers} = this.state;
 
 			const props = {
 				form,
 				errors,
 				onSubmit: this.onSubmit,
 				...handlers,
-				...omit(this.props, ownProps)
+				...getChildrenProps(this.props)
 			};
 
 			return createElement(WrappedComponent, props);

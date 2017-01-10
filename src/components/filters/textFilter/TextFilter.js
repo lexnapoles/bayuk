@@ -12,9 +12,9 @@ const TextFilter = ({name, error, placeholder, onChange}) =>
 
 TextFilter.propTypes = {
 	name:        React.PropTypes.string.isRequired,
+	onChange:    React.PropTypes.func.isRequired,
 	error:       React.PropTypes.string,
-	placeholder: React.PropTypes.string,
-	onChange:    React.PropTypes.func.isRequired
+	placeholder: React.PropTypes.string
 };
 
 export default TextFilter;
