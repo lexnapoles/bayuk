@@ -11,12 +11,16 @@ const getEvent = value => ({
 const getFormComponent = (children = Component) => FormWrapper(children);
 
 const getForm = (props, children) => {
-	const Form          = getFormComponent(children),
-				validation    = {},
-				errorMessages = {},
-				onSubmit      = () => void 0;
+	const Form = getFormComponent(children);
 
-	const formProps = {validation, errorMessages, onSubmit, ...props};
+	const defaultProps = {
+		elements:      ["name"],
+		validation:    {},
+		errorMessages: {},
+		onSubmit:      () => void 0
+	};
+
+	const formProps = {...defaultProps, ...props};
 
 	return shallow(<Form {...formProps}/>);
 };
@@ -31,7 +35,7 @@ describe("<FormWrapper/>", function () {
 	it("assigns custom default values if a defaultFormState prop is passed.", function () {
 		const customName = "A custom name";
 		const wrapper = getForm({
-			elements: ["name", "email"],
+			elements:         ["name", "email"],
 			defaultFormState: {
 				name: customName
 			}
@@ -129,36 +133,36 @@ describe("<FormWrapper/>", function () {
 
 	it("passes all the properties it doesn't need to children", function () {
 		const Children = () => <div></div>,
-					wrapper  = getForm({elements: ["name"], unnecessaryProp: "unnecessary"}, Children);
+					wrapper  = getForm({unnecessaryProp: "unnecessary"}, Children);
 
 		assert.isDefined(wrapper.find("Children").prop("unnecessaryProp"));
 	});
 
 	it("doesn't pass own properties to children", function () {
 		const Children = () => <div></div>,
-					wrapper  = getForm({elements: ["name"], validation: {prop: "unnecessary"}}, Children);
+					wrapper  = getForm({validation: {prop: "unnecessary"}}, Children);
 
 		assert.isUndefined(wrapper.find("Children").prop("validation"));
 	});
 
 	it("creates the errors validating the form data with a validation and errorMessages object", function () {
-		const createErrors  = getFormComponent().prototype.createErrors,
+		const wrapper       = getForm(),
 					formData      = {name: "Steven"},
 					validation    = {name: value => value === "George"},
 					errorMessages = {name: "Invalid name"};
 
-		const errors = createErrors(formData, validation, errorMessages);
+		const errors = wrapper.instance().createErrors(formData, validation, errorMessages);
 
 		assert.equal(errors.name, errorMessages.name);
 	});
 
 	it("only validates a field if there's a validator for it", function () {
-		const createErrors  = getFormComponent().prototype.createErrors,
+		const wrapper       = getForm(),
 					formData      = {name: "Steven", email: "steven@steven.com"},
 					validation    = {name: value => value === "George"},
 					errorMessages = {name: "Invalid name"};
 
-		const errors = createErrors(formData, validation, errorMessages);
+		const errors = wrapper.instance().createErrors(formData, validation, errorMessages);
 
 		assert.deepEqual(errors, {name: "Invalid name", email: ""});
 	});
