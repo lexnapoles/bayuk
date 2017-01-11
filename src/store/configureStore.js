@@ -1,8 +1,8 @@
 import {createStore, applyMiddleware} from "redux";
+import {persistStore, autoRehydrate} from 'redux-persist'
 import {apiMiddleware} from "redux-api-middleware";
 import addProductMiddleware from "../middlewares/addProductMiddleware";
 import rootReducer from "../reducers/root";
-
 
 const middlewares = [apiMiddleware, addProductMiddleware];
 
@@ -20,10 +20,17 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const configureStore = () => {
-	return createStore(
+	const store = createStore(
 		rootReducer,
-		applyMiddleware(...middlewares)
+		applyMiddleware(...middlewares),
+		autoRehydrate()
 	);
+
+	persistStore(store, {
+		whitelist: ["user"]
+	});
+
+	return store;
 };
 
 export default configureStore;
