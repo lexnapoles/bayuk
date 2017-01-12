@@ -1,4 +1,4 @@
-import {sendJsonResponse} from "../../utils/utils";
+import {sendJsonResponse} from "../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../services/products";
 import {has} from "lodash/object";
 

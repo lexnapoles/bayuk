@@ -1,7 +1,7 @@
 import {normalize} from "normalizr";
 import * as schema from "../actions/schema";
 import {CALL_API, getJSON} from "redux-api-middleware";
-import {FETCH_PRODUCTS, FETCH_CATEGORIES, FETCH_ONE_PRODUCT, ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT} from "../constants/actionTypes";
+import {FETCH_PRODUCTS, FETCH_CATEGORIES, FETCH_ONE_PRODUCT, ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT, REGISTER_USER, LOGIN_USER} from "../constants/actionTypes";
 
 const apiBaseUrl = `http://localhost:3000/api`;
 
@@ -62,5 +62,25 @@ export const updateProduct = product => ({
 		method:   "PUT",
 		body:     JSON.stringify(product),
 		types:    getTypes(UPDATE_PRODUCT)
+	}
+});
+
+export const registerUser = user => ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/register`,
+		headers:  {"Content-type": "application/json"},
+		method:   "POST",
+		body:     JSON.stringify(user),
+		types:    getTypes(REGISTER_USER)
+	}
+});
+
+export const loginUser = user => ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/login`,
+		headers:  {"Content-type": "application/json"},
+		method:   "POST",
+		body:     JSON.stringify(user),
+		types:    getTypes(LOGIN_USER)
 	}
 });

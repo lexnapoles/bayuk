@@ -5,7 +5,7 @@ import {
 	updateImages,
 	getImagesOfProduct
 } from "./images";
-import {generateImagesObjs} from "../../utils/utils";
+import {generateImagesObjs} from "../../../utils/utils";
 
 export const getProducts = () => db.any("SELECT * FROM products_with_images");
 

@@ -10,3 +10,5 @@ export const FETCH_ONE_PRODUCT = asyncActionTypes("FETCH_PRODUCT");
 export const DELETE_PRODUCT = asyncActionTypes("DELETE_PRODUCT");
 export const UPDATE_PRODUCT = asyncActionTypes("UPDATE_PRODUCT");
 export const FETCH_CATEGORIES = asyncActionTypes("FETCH_CATEGORIES");
+export const REGISTER_USER = asyncActionTypes("REGISTER_USER");
+export const LOGIN_USER = asyncActionTypes("LOGIN_USER");

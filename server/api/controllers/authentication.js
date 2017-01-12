@@ -1,11 +1,12 @@
 import passport from "passport";
-import {sendJsonResponse} from "../../utils/utils";
+import {sendJsonResponse} from "../../../utils/utils";
 import {addUser} from "../services/user";
 import {createJwt} from "../services/authentication";
 import {has} from "lodash/object";
+import {hasProperties} from "../../../utils/utils";
 
 export const register = (req, res) => {
-	if (!has(req, "body") && !has(req.body, ["email", "name", "password"])) {
+	if (!has(req, "body") && !hasProperties(req.body, ["email", "name", "password"])) {
 		sendJsonResponse(res, 400, {
 			"message": "All fields required"
 		});
@@ -18,7 +19,7 @@ export const register = (req, res) => {
 };
 
 export const login = (req, res) => {
-	if (!has(req, "body") && !has(req.body, ["email", "password"])) {
+	if (!has(req, "body") && !hasProperties(req.body, ["email", "password"])) {
 		sendJsonResponse(res, 400, {
 			"message": "All fields required"
 		});

@@ -2,11 +2,11 @@ import React from "react";
 import TextInput from "../../inputs/textInput/TextInput";
 import {container, formContainer, title, inputs, submitButton} from "./authForm.css";
 
-const AuthForm = ({form, formName, onNameChange, onEmailChange, onPasswordChange, onSubmit, errors, signIn}) =>
+const AuthForm = ({form, formName, onNameChange, onEmailChange, onPasswordChange, onSubmit, errors, logIn}) =>
 	<div className={container}>
 		<form className={formContainer} onSubmit={onSubmit}>
 			<h1 className={title}>{formName}</h1>
-			{ signIn
+			{ logIn
 				? void 0
 				:	<TextInput value={form.name} placeholder="Name" onChange={onNameChange} className={inputs} error={errors.name}/>
 			}
@@ -25,11 +25,11 @@ AuthForm.propTypes = {
 	errors:           React.PropTypes.object.isRequired,
 	form:             React.PropTypes.object.isRequired,
 	onNameChange:     React.PropTypes.func,
-	signIn:           React.PropTypes.bool
+	logIn:            React.PropTypes.bool
 };
 
 AuthForm.defaultProps = {
-	signIn: false
+	logIn: false
 };
 
 export default AuthForm;

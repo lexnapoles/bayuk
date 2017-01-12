@@ -6,7 +6,7 @@ import {
 	NO_PASSWORD_FILLED
 } from "../../form/errors/errorConstants";
 import connectForm from "../../form/connectForm/connectForm";
-import {isNotEmpty} from "../../../utils/utils";
+import {isNotEmpty} from "../../../../utils/utils";
 const elements = ["name", "email", "password"];
 
 const validation = {

@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import ProductDetails from "./ProductDetails";
 import {getProductById} from "../../../reducers/root";
-import {getImagePath} from "../../../utils/utils";
+import {getImagePath} from "../../../../utils/utils";
 
 const formatProduct = product => ({
 	...product,
