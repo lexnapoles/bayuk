@@ -4,7 +4,7 @@ import App from "../components/app/App";
 import SearchProductContainer from "../components/products/searchProduct/SearchProductContainer";
 import ProductDetailsContainer from "../components/products/productDetails/ProductDetailsContainer";
 import AddProductContainer from "../components/products/addProduct/AddProductContainer";
-import CreateAccount from "../components/auth/CreateAccount";
+import CreateAccount from "../components/auth/Register";
 import LogIn from "../components/auth/LogIn";
 
 const routes = (

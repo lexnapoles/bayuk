@@ -75,7 +75,7 @@ export const registerUser = user => ({
 	}
 });
 
-export const loginUser = user => ({
+export const logInUser = user => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/login`,
 		headers:  {"Content-type": "application/json"},

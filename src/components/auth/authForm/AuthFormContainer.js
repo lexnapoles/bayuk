@@ -7,10 +7,11 @@ import {
 } from "../../form/errors/errorConstants";
 import connectForm from "../../form/connectForm/connectForm";
 import {isNotEmpty} from "../../../../utils/utils";
+
 const elements = ["name", "email", "password"];
 
 const validation = {
-	name:     (value, state, {signIn}) => signIn ? true : isNotEmpty(value),
+	name:     (value, state, {logIn}) => logIn ? true : isNotEmpty(value),
 	email:    isNotEmpty,
 	password: isNotEmpty
 };
@@ -24,8 +25,7 @@ const errorMessages = {
 const props = {
 	elements,
 	validation,
-	errorMessages,
-	onSubmit: () => void 0
+	errorMessages
 };
 
 export default connectForm(props)(AuthForm);

@@ -38,7 +38,8 @@ const checkInput = props => {
 const defaultProps = {
 	handlers:      {},
 	validation:    {},
-	errorMessages: {}
+	errorMessages: {},
+	onSubmit:      () => void 0
 };
 
 const connectForm = (props = {}) => WrappedComponent => {

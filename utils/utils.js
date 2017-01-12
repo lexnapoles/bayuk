@@ -49,3 +49,9 @@ export const getErrorMessage = payload => payload.response.message;
 export const getImagePath = imageId => `/image/${imageId}.jpg`;
 
 export const isNotEmpty = value => !isEmpty(value);
+
+export const getJwtPayload = jwt => {
+	const sections = jwt.split(".");
+
+	return JSON.parse(atob(sections[1]));
+};
