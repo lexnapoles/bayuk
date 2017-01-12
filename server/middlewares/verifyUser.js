@@ -11,7 +11,7 @@ export default (req, res, next) => {
 		return next(UserNotFoundError());
 	}
 
-	getUser(req.user)
+	getUser(req.user.email)
 		.then(() => next())
 		.catch(() => next(UserNotFoundError()));
 };

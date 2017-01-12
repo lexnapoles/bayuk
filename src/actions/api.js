@@ -1,7 +1,16 @@
 import {normalize} from "normalizr";
 import * as schema from "../actions/schema";
 import {CALL_API, getJSON} from "redux-api-middleware";
-import {FETCH_PRODUCTS, FETCH_CATEGORIES, FETCH_ONE_PRODUCT, ADD_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT, REGISTER_USER, LOGIN_USER} from "../constants/actionTypes";
+import {
+	FETCH_PRODUCTS,
+	FETCH_CATEGORIES,
+	FETCH_ONE_PRODUCT,
+	ADD_PRODUCT,
+	UPDATE_PRODUCT,
+	DELETE_PRODUCT,
+	REGISTER_USER,
+	LOGIN_USER
+} from "../constants/actionTypes";
 
 const apiBaseUrl = `http://localhost:3000/api`;
 
@@ -40,7 +49,10 @@ export const fetchOneProduct = productId => ({
 export const addProduct = product => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/products`,
-		headers:  {"Content-type": "application/json"},
+		headers:  ({user}) => ({
+			"Content-type":  "application/json",
+			"Authorization": `Bearer ${user.token}`
+		}),
 		method:   "POST",
 		body:     JSON.stringify(product),
 		types:    getTypes(ADD_PRODUCT)
@@ -50,6 +62,7 @@ export const addProduct = product => ({
 export const deleteProduct = productId => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/products/${productId}`,
+		headers:  ({user}) => ({"Authorization": `Bearer ${user.token}`}),
 		method:   "DELETE",
 		types:    getTypes(DELETE_PRODUCT)
 	}
@@ -58,7 +71,10 @@ export const deleteProduct = productId => ({
 export const updateProduct = product => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/products`,
-		headers:  {"Content-type": "application/json"},
+		headers:  ({user}) => ({
+			"Content-type":  "application/json",
+			"Authorization": `Bearer ${user.token}`
+		}),
 		method:   "PUT",
 		body:     JSON.stringify(product),
 		types:    getTypes(UPDATE_PRODUCT)
