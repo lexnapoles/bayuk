@@ -4,16 +4,21 @@ import Header from "../../header/Header";
 import ReturnIcon from "../../icons/returnIcon/ReturnIcon";
 import CheckIcon from "../../icons/checkIcon/CheckIcon";
 
-const FormHeader = ({formId}) =>
+const FormHeader = ({redirect, formId}) =>
 	<Header>
-		<ReturnIcon url="/"/>
+		<ReturnIcon url={redirect}/>
 		<div className={check}>
 			<CheckIcon formId={formId}/>
 		</div>
 	</Header>
 
 FormHeader.propTypes = {
-	formId: React.PropTypes.string.isRequired
+	formId:   React.PropTypes.string.isRequired,
+	redirect: React.PropTypes.string
 }
+
+FormHeader.defaultProps = {
+	redirect: "/"
+};
 
 export default FormHeader;

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import styles from "./product.css";
-import {getImagePath} from "../../../utils/utils";
+import {getImagePath} from "../../../../utils/utils";
 
 class Product extends Component {
 	render() {

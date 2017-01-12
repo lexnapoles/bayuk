@@ -1,4 +1,4 @@
-import {sendJsonResponse} from "../utils/utils";
+import {sendJsonResponse} from "../../../utils/utils";
 import {getCategories} from "../services/categories";
 
 export const readCategories = (req, res) =>

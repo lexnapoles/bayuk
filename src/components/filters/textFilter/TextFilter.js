@@ -1,29 +1,20 @@
 import React from "react";
-import {container, input, underline} from "./textFilter.css";
+import {container} from "./textFilter.css";
 import Filter from "../filter/Filter";
+import TextInput from "../../inputs/textInput/TextInput";
 
 const TextFilter = ({name, error, placeholder, onChange}) =>
-	<Filter title="" error={error}>
+	<Filter error={error}>
 		<div className={container}>
-			<input id="name"
-							className={input}
-							type="text"
-							value={name}
-							placeholder={placeholder}
-							onChange={onChange}/>
-			<hr className={underline}/>
+			<TextInput value={name} placeholder={placeholder} onChange={onChange}/>
 		</div>
 	</Filter>;
 
 TextFilter.propTypes = {
 	name:        React.PropTypes.string.isRequired,
+	onChange:    React.PropTypes.func.isRequired,
 	error:       React.PropTypes.string,
-	placeholder: React.PropTypes.string,
-	onChange:    React.PropTypes.func.isRequired
-};
-
-TextFilter.defaultProps = {
-	placeholder: ""
+	placeholder: React.PropTypes.string
 };
 
 export default TextFilter;

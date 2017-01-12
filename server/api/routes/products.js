@@ -1,4 +1,6 @@
 import bodyParser from "body-parser";
+import verifyUser from "../../middlewares/verifyUser";
+import auth from "../../middlewares/auth";
 import {
 	readProducts,
 	readOneProduct,
@@ -13,11 +15,11 @@ export default router => {
 	router.get("/products", readProducts);
 	router.get("/products/:productId", readOneProduct);
 
-	router.post("/products", jsonParser, createProduct);
+	router.post("/products", auth, verifyUser, jsonParser, createProduct);
 
-	router.put("/products/:productId", jsonParser, updateOneProduct);
+	router.put("/products/:productId", auth, verifyUser, jsonParser, updateOneProduct);
 
-	router.delete("/products/:productId", deleteOneProduct);
+	router.delete("/products/:productId", auth, verifyUser, deleteOneProduct);
 
 	return router;
 };

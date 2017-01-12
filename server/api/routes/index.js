@@ -1,8 +1,15 @@
 import express from "express";
-import addProductRoutes from "./products";
-import addCategoryRoutes from "./categories";
+import productRoutes from "./products";
+import categoryRoutes from "./categories";
+import authRoutes from "./authentication";
 
 const router = express.Router();
 
-export default addCategoryRoutes(addProductRoutes(router));
+const addRoutes = (router, ...routes) => routes.reduce((updatedRouter, addRoute) => addRoute(updatedRouter), router);
 
+export default addRoutes(
+	router,
+	authRoutes,
+	categoryRoutes,
+	productRoutes
+);

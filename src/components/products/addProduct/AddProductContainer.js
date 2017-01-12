@@ -1,178 +1,56 @@
-import React, {Component} from "react";
 import {connect} from "react-redux";
 import {addProduct} from "../../../actions/api";
+import {findKey} from "lodash/object";
+import {isNotEmpty} from "../../../../utils/utils";
+import connectForm from "../../form/connectForm/connectForm";
 import AddProduct from "./AddProduct";
+import errorMsgs from "../../form/errors/errorsMsgs";
 import {
 	NO_NAME_FILLED,
 	NO_DESCRIPTION_FILLED,
 	NO_CATEGORY_FILLED,
 	NO_PRICE_FILLED,
 	NO_IMAGES_FILLED
-} from "./errorConstants";
-import errorMsgs from "./errorsMsgs";
+} from "../../form/errors/errorConstants";
+
 const MAX_IMAGES = 3;
 
-class AddProductContainer extends Component {
-	constructor(props) {
-		super(props);
+const elements = ["name", "description", "category", "price", "images"];
 
-		this.state = {
-			product: {
-				name:        "",
-				description: "",
-				category:    "",
-				price:       0,
-				images:      []
-			},
-			errors:  {
-				name:        "",
-				description: "",
-				categories:  "",
-				price:       "",
-				images:      ""
-			}
-		};
+const validation = {
+	name:        isNotEmpty,
+	description: isNotEmpty,
+	category:    isNotEmpty,
+	images:      isNotEmpty,
+	price:       price => price > 0
+};
 
-		this.submitForm = this.submitForm.bind(this);
-		this.onNameChange = this.onNameChange.bind(this);
-		this.onImagesChange = this.onImagesChange.bind(this);
-		this.onDescriptionChange = this.onDescriptionChange.bind(this);
-		this.onPriceChange = this.onPriceChange.bind(this);
-		this.onCategoriesChange = this.onCategoriesChange.bind(this);
+const handlers = {
+	onPriceChange:    event => parseInt(event.target.value),
+	onImagesChange:   images => images,
+	onCategoryChange: categories => {
+		const category = findKey(categories, category => category);
+
+		return category ? category : ""
 	}
+};
 
-	submitForm(event) {
-		event.preventDefault();
+const errorMessages = {
+	name:        errorMsgs[NO_NAME_FILLED],
+	description: errorMsgs[NO_DESCRIPTION_FILLED],
+	category:    errorMsgs[NO_CATEGORY_FILLED],
+	images:      errorMsgs[NO_IMAGES_FILLED],
+	price:       errorMsgs[NO_PRICE_FILLED]
+};
 
-		const product = this.state.product;
-
-		if (!this.validate(product)) {
-			return;
-		}
-
-		this.props.onSubmit(product);
-	}
-
-	getUpdatedProduct(newProperty) {
-		return {...this.state.product, ...newProperty};
-	}
-
-	validateName(name) {
-		return name.length
-			? ""
-			: errorMsgs[NO_NAME_FILLED];
-	}
-
-	validateDescription(description) {
-		return description.length
-			? ""
-			: errorMsgs[NO_DESCRIPTION_FILLED];
-	}
-
-	validateCategory(category) {
-		return category.length
-			? ""
-			: errorMsgs[NO_CATEGORY_FILLED];
-	}
-
-	validatePrice(price) {
-		return price > 0
-			? ""
-			: errorMsgs[NO_PRICE_FILLED];
-	}
-
-	validateImages(images) {
-		return images.length
-			? ""
-			: errorMsgs[NO_IMAGES_FILLED];
-	}
-
-	errorExists(errors) {
-		return Object.keys(errors).some(key => errors[key].length);
-	}
-
-	validate({name, description, category, price, images}) {
-		const errors = {
-			name:        this.validateName(name),
-			description: this.validateDescription(description),
-			categories:  this.validateCategory(category),
-			price:       this.validatePrice(price),
-			images:      this.validateImages(images)
-		};
-
-		if (this.errorExists(errors)) {
-			this.setState({errors});
-
-			return false;
-		}
-
-		return true;
-	}
-
-	onNameChange(event) {
-		const product = this.getUpdatedProduct({
-			name: event.target.value
-		});
-
-		this.setState({product});
-	}
-
-	onImagesChange(images) {
-		this.setState({
-			product: this.getUpdatedProduct({images})
-		});
-	}
-
-	onDescriptionChange(event) {
-		const product = this.getUpdatedProduct({
-			description: event.target.value
-		});
-
-		this.setState({product});
-	}
-
-	onPriceChange(event) {
-		const product = this.getUpdatedProduct({
-			price: parseInt(event.target.value)
-		});
-
-		this.setState({product});
-	}
-
-	getCategory(categories) {
-		return Object.keys(categories).find(key => categories[key]);
-	}
-
-	onCategoriesChange(categories) {
-		const category = this.getCategory(categories);
-
-		this.setState({
-			product: this.getUpdatedProduct({category})});
-	}
-
-	render() {
-		return (
-			<AddProduct
-				product={this.state.product}
-				errors={this.state.errors}
-				maxImages={MAX_IMAGES}
-				submitForm={this.submitForm}
-				onNameChange={this.onNameChange}
-				onImagesChange={this.onImagesChange}
-				onDescriptionChange={this.onDescriptionChange}
-				onCategoryChange={this.onCategoriesChange}
-				onPriceChange={this.onPriceChange}
-				error={this.state.error}/>
-		);
-	}
-}
-
-AddProductContainer.propTypes = {
-	onSubmit: React.PropTypes.func.isRequired
-}
+const props = {
+	elements,
+	validation,
+	handlers,
+	errorMessages,
+	maxImages: MAX_IMAGES
+};
 
 export default connect(void 0, {
 	onSubmit: addProduct
-})(AddProductContainer);
-
-export const component = AddProductContainer;
+})(connectForm(props)(AddProduct));

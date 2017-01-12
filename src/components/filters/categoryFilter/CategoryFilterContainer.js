@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import CategoryFilter  from "./CategoryFilter";
-import {createDefaultObjectFrom} from "../../../utils/utils";
+import {createDefaultObjectFrom} from "../../../../utils/utils";
 
 const mapStateToProps = ({categories}) => {
 	const {isFetching, items} = categories;
@@ -22,6 +22,7 @@ class CategoryFilterContainer extends Component {
 
 	constructor(props) {
 		super(props);
+
 
 		this.state = {
 			categories: createDefaultObjectFrom(this.props.categories, false)

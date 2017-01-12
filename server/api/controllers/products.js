@@ -1,8 +1,6 @@
-import {sendJsonResponse} from "../utils/utils";
+import {sendJsonResponse} from "../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../services/products";
-
-const paramExists       = (req, param) => req.params && req.params[param],
-			productDataExists = req => req && req.body;
+import {has} from "lodash/object";
 
 export const readProducts = (req, res) =>
 	getProducts()
@@ -10,11 +8,10 @@ export const readProducts = (req, res) =>
 		.catch(error => sendJsonResponse(res, 404, {"message": error}));
 
 export const readOneProduct = (req, res) => {
-	if (!paramExists(req, "productId")) {
+	if (!has(req, "params") && !has(req.params, "productId")) {
 		sendJsonResponse(res, 404, {
 			"message": "No productId in request"
 		});
-
 		return;
 	}
 
@@ -26,23 +23,31 @@ export const readOneProduct = (req, res) => {
 };
 
 export const createProduct = (req, res) => {
-	if (!productDataExists(req)) {
+	if (!has(req, "body")) {
 		sendJsonResponse(res, 404, "No product data");
+		return;
 	}
 
-	addProduct(req.body)
+	const product = {
+		...req.body,
+		owner: req.user
+	};
+
+	addProduct(product)
 		.then(msg => sendJsonResponse(res, 201, msg))
 		.catch(error => sendJsonResponse(res, 404, error));
 };
 
 export const updateOneProduct = (req, res) => {
-	if (!paramExists(req, "productId")) {
+	if (!has(req, "params") && !has(req.params, "productId")) {
 		sendJsonResponse(res, 404, {
 			"message": "No productId in request"
 		});
+		return;
 	}
-	else if (!productDataExists(req)) {
+	else if (!has(req, "body")) {
 		sendJsonResponse(res, 404, "No product data");
+		return;
 	}
 
 	const {productId} = req.params,
@@ -56,10 +61,11 @@ export const updateOneProduct = (req, res) => {
 };
 
 export const deleteOneProduct = (req, res) => {
-	if (!paramExists(req, "productId")) {
+	if (!has(req, "params") && !has(req.params, "productId")) {
 		sendJsonResponse(res, 404, {
 			"message": "No productId in request"
 		});
+		return;
 	}
 
 	const {productId} = req.params;
