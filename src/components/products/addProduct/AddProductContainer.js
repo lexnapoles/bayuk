@@ -3,6 +3,9 @@ import {addProduct} from "../../../actions/api";
 import {findKey} from "lodash/object";
 import {isNotEmpty} from "../../../../utils/utils";
 import connectForm from "../../form/connectForm/connectForm";
+import {isLoggedIn} from "../../../reducers/root";
+import {getCurrentUser} from "../../../reducers/root";
+import addAuthenticationTo from "../../auth/addAuthenticationTo/addAuthenticationTo";
 import AddProduct from "./AddProduct";
 import errorMsgs from "../../form/errors/errorsMsgs";
 import {
@@ -51,6 +54,15 @@ const props = {
 	maxImages: MAX_IMAGES
 };
 
-export default connect(void 0, {
+const mapStateToProps = (state) => {
+	const {rehydrated} = getCurrentUser(state);
+
+	return {
+		isLoggedIn: isLoggedIn(state),
+		rehydrated
+	};
+}
+
+export default connect(mapStateToProps, {
 	onSubmit: addProduct
-})(connectForm(props)(AddProduct));
+})(addAuthenticationTo(connectForm(props)(AddProduct)));
