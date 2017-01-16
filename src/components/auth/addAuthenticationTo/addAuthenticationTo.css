@@ -1,15 +1,11 @@
-.authContainer {
+.alignCenter {
 	composes: alignCenter from "../../layout.css";
+}
+
+.authContainer {
+	composes: alignCenter;
 	width: 100vw;
 	height: 100vh;
-}
-
-.formContainer {
-	padding: 1em;
-}
-
-.inputsContainer {
-	padding: 2em 0;
 }
 
 .auth {
@@ -17,22 +13,18 @@
 	padding: 1em;
 }
 
-.title {
-	margin: -0.5em;
-}
-
-.inputs {
-	padding-top: 3em;
-}
-
-h1 {
+.message {
 	text-align: center;
+	margin-bottom: 4em;
 }
 
-.submitButton {
-	width: 100%;
+.buttonsContainer {
+	composes: container from "../../layout.css";
+}
+
+.button {
 	height: 50px;
-	margin-top: 2em;
+	margin-bottom: 1em;
 }
 
 @media (min-width: 600px) {
@@ -49,8 +41,8 @@ h1 {
 
 @media (min-width: 800px) {
 	.auth {
-		width: 50%;
-		padding: 2em;
+		width: 80%;
+		padding: 4em 1em 5em 1em;
 		border: 2px solid lightgrey;
 		border-radius: 10px;
 		overflow: hidden;
@@ -59,7 +51,6 @@ h1 {
 
 @media (min-width: 1200px) {
 	.auth {
-		padding: 6em;
-		width: 30%;
+		width: 50%;
 	}
 }
