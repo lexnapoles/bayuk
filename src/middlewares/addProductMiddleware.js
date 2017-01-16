@@ -5,9 +5,7 @@ const addProductMiddleware = () => next => action => {
 	switch (action.type) {
 		case ADD_PRODUCT.success: {
 			next(action);
-
 			browserHistory.push(`/product/${action.payload.id}`);
-
 			break;
 		}
 

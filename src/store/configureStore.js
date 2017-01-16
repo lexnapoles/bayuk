@@ -2,9 +2,10 @@ import {createStore, applyMiddleware} from "redux";
 import {persistStore, autoRehydrate} from 'redux-persist'
 import {apiMiddleware} from "redux-api-middleware";
 import addProductMiddleware from "../middlewares/addProductMiddleware";
+import authMiddleware from "../middlewares/authMiddleware";
 import rootReducer from "../reducers/root";
 
-const middlewares = [apiMiddleware, addProductMiddleware];
+const middlewares = [apiMiddleware, addProductMiddleware, authMiddleware];
 
 if (process.env.NODE_ENV !== "production") {
 	const createLogger = require("redux-logger");
