@@ -5,8 +5,6 @@ import {REHYDRATE} from 'redux-persist/constants'
 const user = (state = {name: "", token: "", rehydrated: false}, action) => {
 	switch (action.type) {
 		case REHYDRATE:
-			window.console.log("REHYDREATE DOINGGGDSASD");
-			window.console.log(action);
 			return {
 				...state,
 				...action.payload.user,

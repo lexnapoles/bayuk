@@ -1,15 +1,27 @@
 import React, {Component} from "react";
+import {browserHistory} from "react-router";
 import Spinner from "../../spinner/Spinner";
+import {authContainer, auth, message, buttonsContainer, button} from "./addAuthenticationTo.css";
 
-const addAuthenticationTo = WrappedComponent => {
+const addAuthenticationTo = (register, login) => WrappedComponent => {
 	class AuthenticatedComponent extends Component {
 		renderAuthenticationMessage() {
+			const goToRegister = () => browserHistory.push(register),
+						goToLogIn    = () => browserHistory.push(login);
+
 			return (
-				<div>
-					<h1>Hello! It seems you're not logged in</h1>
-					<button>I have an account</button>
-					<button>I'm a new user</button>
-				</div>
+				<main className={authContainer}>
+					<div className={auth}>
+						<div className={message}>
+							<h1>Hello!</h1>
+							<h2>Register to enjoy all the possibilities</h2>
+						</div>
+						<div className={buttonsContainer}>
+							<button className={button} onClick={goToLogIn}>I have an account</button>
+							<button className={button} onClick={goToRegister}>I'm a new user</button>
+						</div>
+					</div>
+				</main>
 			);
 		}
 
@@ -44,4 +56,4 @@ const addAuthenticationTo = WrappedComponent => {
 	return AuthenticatedComponent;
 };
 
-export default addAuthenticationTo;
+export default addAuthenticationTo("/register", "/login");
