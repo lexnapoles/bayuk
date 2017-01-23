@@ -12,3 +12,4 @@ export const UPDATE_PRODUCT = asyncActionTypes("UPDATE_PRODUCT");
 export const FETCH_CATEGORIES = asyncActionTypes("FETCH_CATEGORIES");
 export const REGISTER_USER = asyncActionTypes("REGISTER_USER");
 export const LOGIN_USER = asyncActionTypes("LOGIN_USER");
+export const FETCH_USERS = asyncActionTypes("FETCH_USERS");

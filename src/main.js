@@ -4,7 +4,7 @@ import React from "react";
 import {render} from "react-dom";
 import configureStore from "./store/configureStore";
 import Root from "./components/Root/Root";
-import {fetchProducts, fetchCategories} from "./actions/api";
+import {fetchProducts, fetchCategories, fetchUsers} from "./actions/api";
 
 if (module.hot) {
 	module.hot.accept();
@@ -14,5 +14,6 @@ const store = configureStore();
 
 store.dispatch(fetchCategories());
 store.dispatch(fetchProducts());
+store.dispatch(fetchUsers());
 
 render(<Root store={store}/>, document.querySelector(".app"));

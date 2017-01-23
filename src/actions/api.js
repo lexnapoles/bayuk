@@ -3,6 +3,7 @@ import * as schema from "../actions/schema";
 import {CALL_API, getJSON} from "redux-api-middleware";
 import {
 	FETCH_PRODUCTS,
+	FETCH_USERS,
 	FETCH_CATEGORIES,
 	FETCH_ONE_PRODUCT,
 	ADD_PRODUCT,
@@ -31,10 +32,13 @@ export const fetchProducts = () => ({
 		endpoint: `${apiBaseUrl}/products`,
 		method:   "GET",
 		types:    [
-			FETCH_PRODUCTS.request, {
+			FETCH_PRODUCTS.request,
+			{
 				type:    FETCH_PRODUCTS.success,
 				payload: normalizeResponse(schema.arrayOfProducts)
-			}, FETCH_PRODUCTS.failure]
+			},
+			FETCH_PRODUCTS.failure
+		]
 	}
 });
 
@@ -98,5 +102,20 @@ export const logInUser = user => ({
 		method:   "POST",
 		body:     JSON.stringify(user),
 		types:    getTypes(LOGIN_USER)
+	}
+});
+
+export const fetchUsers = () => ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/users`,
+		method:   "GET",
+		types:    [
+			FETCH_USERS.request,
+			{
+				type:    FETCH_USERS.success,
+				payload: normalizeResponse(schema.arrayOfUsers)
+			},
+			FETCH_USERS.failure
+		]
 	}
 });
