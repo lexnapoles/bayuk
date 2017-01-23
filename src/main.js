@@ -4,7 +4,7 @@ import React from "react";
 import {render} from "react-dom";
 import configureStore from "./store/configureStore";
 import Root from "./components/Root/Root";
-import {fetchProducts, fetchCategories, fetchUsers} from "./actions/api";
+import initApp from "./actions/initApp";
 
 if (module.hot) {
 	module.hot.accept();
@@ -12,8 +12,6 @@ if (module.hot) {
 
 const store = configureStore();
 
-store.dispatch(fetchCategories());
-store.dispatch(fetchProducts());
-store.dispatch(fetchUsers());
+initApp(store);
 
 render(<Root store={store}/>, document.querySelector(".app"));

@@ -26,13 +26,11 @@ const allIds = (state = [], action) => {
 	}
 };
 
-const users = combineReducers({
+export default combineReducers({
 	byId,
 	allIds,
 	isFetching: createFetchingReducer(FETCH_USERS.request, FETCH_USERS.success)
 });
-
-export default users;
 
 export const getAllUsers = ({allIds, byId, isFetching}) => ({
 	items: allIds.map(id => byId[id]),

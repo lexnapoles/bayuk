@@ -2,9 +2,10 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import CategoryFilter  from "./CategoryFilter";
 import {createDefaultObjectFrom} from "../../../../utils/utils";
+import {getAllCategories} from "../../../reducers/root";
 
-const mapStateToProps = ({categories}) => {
-	const {isFetching, items} = categories;
+const mapStateToProps = state => {
+	const {isFetching, items} = getAllCategories(state);
 
 	return items.length ? {isFetching,	categories: items} : {isFetching: true, categories: []};
 };
