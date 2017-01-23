@@ -13,8 +13,8 @@ const currentUser = (state = {name: "", token: "", rehydrated: false}, action) =
 
 		case REGISTER_USER.success:
 		case LOGIN_USER.success: {
-			const {token}                        = action.payload,
-						{uuid, email, name, rating}    = getJwtPayload(token);
+			const {token}                                         = action.payload,
+						{uuid, email, name, rating, image, products}    = getJwtPayload(token);
 
 			return {
 				...state,
@@ -22,6 +22,8 @@ const currentUser = (state = {name: "", token: "", rehydrated: false}, action) =
 				email,
 				name,
 				rating,
+				image,
+				products,
 				token
 			};
 		}

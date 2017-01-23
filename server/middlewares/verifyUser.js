@@ -1,5 +1,5 @@
 import {has} from "lodash/object";
-import {getUser} from "../api/services/user";
+import {getUserByEmail} from "../api/services/users";
 
 const UserNotFoundError = () => ({
 	name: "UserNotFoundError",
@@ -11,7 +11,7 @@ export default (req, res, next) => {
 		return next(UserNotFoundError());
 	}
 
-	getUser(req.user.email)
+	getUserByEmail(req.user.email)
 		.then(() => next())
 		.catch(() => next(UserNotFoundError()));
 };
