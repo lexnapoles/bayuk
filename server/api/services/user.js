@@ -2,7 +2,11 @@ import db from "../../db";
 import {createJwt, setPassword} from "./authentication";
 
 export const getUser = email =>
-	db.any("SELECT name, email, hash, salt from users WHERE email=$1", email)
+	db.any("SELECT id, name, email, rating from users WHERE email=$1", email)
+		.then(result => result[0]);
+
+export const getCredentials = email =>
+	db.any("SELECT hash, salt from users WHERE email=$1", email)
 		.then(result => result[0]);
 
 const addUserToDB = (email, name, {hash, salt}) =>
