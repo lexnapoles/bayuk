@@ -2,23 +2,26 @@ import {REGISTER_USER, LOGIN_USER} from "../constants/actionTypes";
 import {getJwtPayload} from "../../utils/utils";
 import {REHYDRATE} from 'redux-persist/constants'
 
-const user = (state = {name: "", token: "", rehydrated: false}, action) => {
+const currentUser = (state = {name: "", token: "", rehydrated: false}, action) => {
 	switch (action.type) {
 		case REHYDRATE:
 			return {
 				...state,
-				...action.payload.user,
+				...action.payload.currentUser,
 				rehydrated: true
 			};
 
 		case REGISTER_USER.success:
 		case LOGIN_USER.success: {
-			const {token} = action.payload,
-						{name}  = getJwtPayload(token);
+			const {token}                        = action.payload,
+						{uuid, email, name, rating}    = getJwtPayload(token);
 
 			return {
 				...state,
+				uuid,
+				email,
 				name,
+				rating,
 				token
 			};
 		}
@@ -30,7 +33,9 @@ const user = (state = {name: "", token: "", rehydrated: false}, action) => {
 export const getCurrentUser = (user) => ({...user});
 
 export const isLoggedIn = ({token, rehydrated}) => {
-	return rehydrated ? Boolean(token.length) : false;
+	return rehydrated
+		? Boolean(token.length)
+		: false;
 };
 
-export default user;
+export default currentUser;

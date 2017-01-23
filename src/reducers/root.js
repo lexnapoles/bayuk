@@ -2,18 +2,18 @@ import {combineReducers} from "redux";
 import products from "./products";
 import categories from "./categories";
 import errorMessage from "./errorMessage";
-import user from "./user";
+import currentUser from "./currentUser";
 import * as fromProducts from "./products";
-import * as fromUser from "./user";
+import * as fromUser from "./currentUser";
 
 export const getProductById = ({products}, id) => fromProducts.getProductById(products, id);
 export const getAllProducts = ({products}) => fromProducts.getAllProducts(products);
 
-export  const getCurrentUser = ({user}) => fromUser.getCurrentUser(user);
-export const isLoggedIn = ({user}) => fromUser.isLoggedIn(user);
+export  const getCurrentUser = ({currentUser}) => fromUser.getCurrentUser(currentUser);
+export const isLoggedIn = ({currentUser}) => fromUser.isLoggedIn(currentUser);
 
 export default combineReducers({
-	user,
+	currentUser,
 	products,
 	categories,
 	errorMessage
