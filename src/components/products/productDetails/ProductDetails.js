@@ -6,7 +6,7 @@ import ProductDetailsHeader from "./productDetailsHeader/ProductDetailsHeader";
 import Carousel from "../../carousel/Carousel";
 import Description from "./productDescription/ProductDescription";
 import GeolocationInfo from "./geolocationInfo/GeolocationInfo";
-import UserInfo from "./userInfo/UserInfo";
+import UserOverviewContainer from "./userOverview/UserOverviewContainer";
 import NotFound from "../../notFound/NotFound";
 
 class ProductDetails extends Component {
@@ -19,7 +19,7 @@ class ProductDetails extends Component {
 			return <NotFound/>
 		}
 
-		const {price, name, description, images} = product;
+		const {price, name, description, images, user_id} = product;
 
 		return (
 			<main styleName="productContainer">
@@ -37,7 +37,7 @@ class ProductDetails extends Component {
 					<hr styleName="line"/>
 					<GeolocationInfo styleName="map"/>
 					<hr styleName="line"/>
-					<UserInfo styleName="infoSection"/>
+					<UserOverviewContainer styleName="infoSection" user={user_id}/>
 				</section>
 			</main>
 		);

@@ -15,7 +15,8 @@ let app = express();
 
 app.set("port", process.env.PORT || DEFAULT_PORT);
 
-app.use("/image", express.static(path.join(process.env.IMAGESDIR, "/products")));
+app.use("/image/product", express.static(path.join(process.env.IMAGESDIR, "/products")));
+app.use("/image/user", express.static(path.join(process.env.IMAGESDIR, "/users")));
 
 app.use(passport.initialize());
 

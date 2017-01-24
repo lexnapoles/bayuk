@@ -48,7 +48,7 @@ export const createDefaultObjectFrom = (base = {}, defaultValue = "") => {
 
 export const getErrorMessage = payload => payload.response.message;
 
-export const getImagePath = imageId => `/image/${imageId}.jpg`;
+export const getImagePath = (entity, imageId) => `/image/${entity}/${imageId}.jpg`;
 
 export const isNotEmpty = value => !isEmpty(value);
 

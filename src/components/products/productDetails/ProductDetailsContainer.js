@@ -5,7 +5,7 @@ import {getImagePath} from "../../../../utils/utils";
 
 const formatProduct = product => ({
 	...product,
-	images: product.images.map(getImagePath),
+	images: product.images.map(getImagePath.bind(void 0, "product")),
 	price:  parseInt(product.price)
 });
 
