@@ -2,14 +2,13 @@ import {combineReducers} from "redux";
 import users from "./users";
 import products from "./products"
 import categories from "./categories";
-import * as fromProducts from "./products";
-import * as fromUsers from "./users";
+import {getAllItems, getItemById} from "./normalizedSelectors";
 
-export const getProductById = ({products}, id) => fromProducts.getProductById(products, id);
-export const getAllProducts = ({products}) => fromProducts.getAllProducts(products);
+export const getProductById = ({products}, id) => getItemById(products, id);
+export const getAllProducts = ({products}) => getAllItems(products);
 
-export const getUserById = ({users}, id) => fromUsers.getUserById(users, id);
-export const getAllUsers = ({users}) => fromUsers.getAllUsers(users);
+export const getUserById = ({users}, id) => getItemById(users, id);
+export const getAllUsers = ({users}) => getAllItems(users);
 
 export const getAllCategories = ({categories}) => categories;
 
