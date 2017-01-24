@@ -1,15 +1,14 @@
 import React, {Component} from "react";
-import styles from "./product.css";
+import {product} from "./productOverview.css";
 import {getImagePath} from "../../../../utils/utils";
 
-class Product extends Component {
+class ProductOverview extends Component {
 	render() {
-		const {images, name, price} = this.props.product,
-					{product}             = styles;
+		const {images, name, price} = this.props.product;
 
 		return (
 			<div className={product} onClick={this.props.onClick}>
-				<img src={getImagePath(images[0])}/>
+				<img src={getImagePath("product", images[0])}/>
 				<h2>{parseInt(price)}</h2>
 				<h3>{name}</h3>
 			</div>
@@ -17,9 +16,9 @@ class Product extends Component {
 	}
 }
 
-Product.propTypes = {
+ProductOverview.propTypes = {
 	product: React.PropTypes.object.isRequired,
 	onClick: React.PropTypes.func
 };
 
-export default Product;   
+export default ProductOverview;

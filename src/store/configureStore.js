@@ -28,7 +28,7 @@ const configureStore = () => {
 	);
 
 	persistStore(store, {
-		whitelist: ["user"]
+		whitelist: ["currentUser"]
 	});
 
 	return store;

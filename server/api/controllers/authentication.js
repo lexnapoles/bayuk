@@ -1,6 +1,6 @@
 import passport from "passport";
 import {sendJsonResponse} from "../../../utils/utils";
-import {addUser} from "../services/user";
+import {addUser} from "../services/users";
 import {createJwt} from "../services/authentication";
 import {has} from "lodash/object";
 import {hasProperties} from "../../../utils/utils";

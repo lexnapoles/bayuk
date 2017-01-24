@@ -36,20 +36,8 @@ const allIds = (state = [], action) => {
 	}
 };
 
-const products = combineReducers({
+export default combineReducers({
 	byId,
 	allIds,
 	isFetching: createFetchingReducer(FETCH_PRODUCTS.request, FETCH_PRODUCTS.success)
-});
-
-export default products;
-
-export const getAllProducts = ({allIds, byId, isFetching}) => ({
-	items: allIds.map(id => byId[id]),
-	isFetching
-});
-
-export const getProductById = ({byId, isFetching}, id) => ({
-	item: byId[id],
-	isFetching
 });

@@ -2,20 +2,25 @@ import React, {Component} from "react";
 import {browserHistory} from "react-router";
 import {Link} from "react-router";
 import Spinner from "../../spinner/Spinner";
-import CSSModules from "react-css-modules";
-import Product from "../product/Product";
-import styles from "./productTable.css";
+import ProductOverview from "../productOverview/ProductOverview";
 import Icon from "react-fa";
+import {container, addButtonContainer, addButton, spinner} from "./productTable.css";
 
 class ProductTable extends Component {
+	renderProducts(products) {
+		return products.map(product =>
+			<ProductOverview key={product.id} product={product}	onClick={() => browserHistory.push(`/product/${product.id}`)}/>
+		);
+	}
+
 	renderProductsTable(products) {
 		return (
 			<div>
-				<div styleName="container">
+				<div className={container}>
 					{this.renderProducts(products)}
 				</div>
-				<div styleName="addButtonContainer">
-					<Link styleName="addButton" to={"/add"}>
+				<div className={addButtonContainer}>
+					<Link className={addButton} to={"/add"}>
 						<Icon name="plus-circle" size="4x"/>
 					</Link>
 				</div>
@@ -25,16 +30,9 @@ class ProductTable extends Component {
 
 	renderSpinner() {
 		return (
-			<main styleName="spinner">
+			<main className={spinner}>
 				<Spinner/>
 			</main>
-		);
-	}
-
-	renderProducts(products) {
-		return products.map(product =>
-			<Product key={product.id} product={product}
-								onClick={() => browserHistory.push(`/product/${product.id}`)}/>
 		);
 	}
 
@@ -54,4 +52,4 @@ ProductTable.defaultProps = {
 	isFetching: false
 };
 
-export default CSSModules(ProductTable, styles);
+export default ProductTable;
