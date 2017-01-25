@@ -4,7 +4,7 @@ const UserMenuThumbnail = ({isLoggedIn, name, image}) => {
 	const renderUser = (name, image) => {
 		return (
 			<div>
-				<img src={image}/>
+				<img width={20} height={20} src={image}/>
 				<p>{name}</p>
 			</div>
 		)
@@ -13,7 +13,7 @@ const UserMenuThumbnail = ({isLoggedIn, name, image}) => {
 	const renderNotLoggedInThumbnail = () => {
 		return (
 			<div>
-				<img src={image}/>
+				<img width={20} height={20} src={image}/>
 				<p>Register or Log In</p>
 			</div>
 		)

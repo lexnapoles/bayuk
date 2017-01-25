@@ -3,7 +3,7 @@ import {getJwtPayload} from "../../utils/utils";
 import {REHYDRATE} from 'redux-persist/constants'
 import {omit} from "lodash/object";
 
-const currentUser = (state = {id: "", token: "", rehydrated: false}, action) => {
+const currentUser = (state = {rehydrated: false}, action) => {
 	switch (action.type) {
 		case REHYDRATE:
 			return {
@@ -32,7 +32,7 @@ export const getCurrentUser = user => ({...user});
 
 export const isUserLoggedIn = ({token, rehydrated}) => {
 	return rehydrated
-		? Boolean(token.length)
+		? Boolean(token)
 		: false;
 };
 

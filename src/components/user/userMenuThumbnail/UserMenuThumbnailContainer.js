@@ -18,7 +18,7 @@ const mapStateToProps = state => {
 
 	return {
 		isLoggedIn,
-		image: getImagePath("user", image),
+		image,
 		name
 	}
 };
