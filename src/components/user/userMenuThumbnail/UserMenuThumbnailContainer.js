@@ -12,13 +12,13 @@ const mapStateToProps = state => {
 	if (isLoggedIn) {
 		const {name: userName, image: userImage} = getCurrentUser(state);
 
-		image = getImagePath("user", userImage);
+		image = userImage;
 		name = userName;
 	}
 
 	return {
 		isLoggedIn,
-		image,
+		image: getImagePath("user", image),
 		name
 	}
 };

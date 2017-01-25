@@ -6,6 +6,7 @@ import ProductDetailsContainer from "../components/products/productDetails/Produ
 import AddProductContainer from "../components/products/addProduct/AddProductContainer";
 import CreateAccount from "../components/auth/Register";
 import LogIn from "../components/auth/LogIn";
+import AuthPage from "../components/auth/authPage/AuthPage";
 
 const routes = (
 	<Router history={browserHistory}>
@@ -15,7 +16,7 @@ const routes = (
 		<Route path="add" component={AddProductContainer}/>
 		<Route path="register" component={CreateAccount}/>
 		<Route path="login" component={LogIn}/>
-
+		<Route path="auth" component={AuthPage}/>
 	</Router>
 );
 
