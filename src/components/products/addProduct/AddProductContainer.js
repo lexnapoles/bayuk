@@ -3,7 +3,7 @@ import {addProduct} from "../../../actions/api";
 import {findKey} from "lodash/object";
 import {isNotEmpty} from "../../../../utils/utils";
 import connectForm from "../../form/connectForm/connectForm";
-import {isLoggedIn} from "../../../reducers/root";
+import {isUserLoggedIn} from "../../../reducers/root";
 import {getCurrentUser} from "../../../reducers/root";
 import addAuthenticationTo from "../../auth/addAuthenticationTo/addAuthenticationTo";
 import AddProduct from "./AddProduct";
@@ -58,7 +58,7 @@ const mapStateToProps = (state) => {
 	const {rehydrated} = getCurrentUser(state);
 
 	return {
-		isLoggedIn: isLoggedIn(state),
+		isLoggedIn: isUserLoggedIn(state),
 		rehydrated
 	};
 }

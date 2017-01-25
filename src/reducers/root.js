@@ -14,7 +14,7 @@ export const getUserById = ({entities}, id) => fromEntities.getUserById(entities
 export const getAllUsers = ({entities}) => fromEntities.getAllUsers(entities);
 
 export const getCurrentUser = ({currentUser}) => fromUser.getCurrentUser(currentUser);
-export const isLoggedIn = ({currentUser}) => fromUser.isLoggedIn(currentUser);
+export const isUserLoggedIn = ({currentUser}) => fromUser.isUserLoggedIn(currentUser);
 
 
 export default combineReducers({

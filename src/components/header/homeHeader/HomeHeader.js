@@ -5,6 +5,7 @@ import {Link} from "react-router";
 import Icon from "react-fa";
 import SidebarMenu from "../../sidebarMenu/SidebarMenu";
 import Header from "../Header";
+import UserMenuThumbnailContainer from "../../user/userMenuThumbnail/UserMenuThumbnailContainer";
 
 class HomeHeader extends Component {
 	constructor(props) {
@@ -23,7 +24,7 @@ class HomeHeader extends Component {
 		return (
 			<Header>
 				<SidebarMenu visible={this.state.sidebarVisible} onOverlayClicked={this.toggleSidebarVisibility}>
-					Menu
+					<UserMenuThumbnailContainer/>
 				</SidebarMenu>
 				<Icon className="menuIcon" name="bars" size="lg" onClick={this.toggleSidebarVisibility}/>
 				<div styleName="logo">Bayuk</div>
