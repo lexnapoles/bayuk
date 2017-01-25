@@ -9,11 +9,11 @@ const formatUser = user => ({
 });
 
 const mapStateToProps = (state, {user}) => {
-	const {item} = getUserById(state, user);
+	const {isFetching, item} = getUserById(state, user);
 
-	return {
-		user: formatUser(item)
-	};
+	return isFetching
+		? {isFetching, user: {}}
+		: {isFetching, user: item ? formatUser(item) : {}};
 };
 
 export default connect(mapStateToProps)(UserOverview);

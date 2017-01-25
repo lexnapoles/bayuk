@@ -15,3 +15,12 @@
 	justify-content: center;
 	align-items: center;
 }
+
+.userImage {
+	background: whitesmoke;
+	margin-bottom: 0.5em;
+	border: double 5px lightgray;
+	padding: 0.1em;
+	border-radius: 50%;
+
+}

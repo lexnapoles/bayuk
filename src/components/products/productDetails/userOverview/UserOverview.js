@@ -2,8 +2,9 @@ import React from 'react';
 import {container, userImage, rating} from "./userOverview.css";
 import Icon from "react-fa";
 import {times} from "lodash/util";
+import Spinner from "../../../spinner/Spinner";
 
-const UserOverview = ({user, className, style}) => {
+const UserOverview = ({isFetching, user, className, style}) => {
 	const renderRating = rating => {
 		const MAX_RATING = 5,
 					onStars    = times(parseInt(rating), times => <Icon key={`${MAX_RATING}-${times}`} name="star" size="lg"/>),
@@ -12,26 +13,33 @@ const UserOverview = ({user, className, style}) => {
 		return [...onStars, ...offStars];
 	};
 
-	const {name, image, rating} = user;
+	const renderUser = user =>
+		<div className={`${container} ${className}`} style={style}>
+			<img className={userImage} width="100" height="100" src={user.image} alt="userPic"/>
+			<p>{user.name}</p>
+			<div className={rating}>
+				{renderRating(user.rating)}
+			</div>
+		</div>;
 
 	return (
-		<div className={`${container} ${className}`} style={style}>
-			<img className={userImage} width="100" height="100" src={image} alt="userPic"/>
-			<p>{name}</p>
-			<div className={rating}>
-				{renderRating(rating)}
-			</div>
+		<div>
+			{!isFetching
+				? renderUser(user)
+				: <main className={`${container} ${className}`}><Spinner/></main>}
 		</div>
 	);
 };
 
 UserOverview.propTypes = {
-	user:      React.PropTypes.object.isRequired,
-	style:     React.PropTypes.object,
-	className: React.PropTypes.string
+	user:       React.PropTypes.object.isRequired,
+	isFetching: React.PropTypes.bool,
+	style:      React.PropTypes.object,
+	className:  React.PropTypes.string
 };
 
 UserOverview.defaultProps = {
+	isFetching: false,
 	style:     {},
 	className: ""
 };

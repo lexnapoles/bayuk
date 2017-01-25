@@ -5,10 +5,9 @@
 }
 
 .userImage {
+	composes: userImage from "../../../layout.css";
 	width: 75px;
 	height:75px;
-	margin-bottom: 0.5em;
-	border-radius: 50%;
 }
 
 .rating {
