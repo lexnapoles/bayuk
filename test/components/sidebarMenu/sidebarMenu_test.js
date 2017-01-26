@@ -54,7 +54,7 @@ describe("<SidebarMenu />", function () {
 		assert.equal(sidebarMenu.state.sidebarWidth, sidebarDOMWidth);
 	});
 
-	it("doesn't warn the parent component that the overlay was clicked if it's hidden", function () {
+	it("doesn't tell the parent component that the overlay was clicked if it's hidden", function () {
 		const onClick     = sinon.spy(),
 					sidebarMenu = getSidebarMenu({visible: false, onOverlayClicked: onClick}),
 					overlay     = sidebarMenu.find(`.${sidebarStyles.overlay}`);
@@ -64,7 +64,7 @@ describe("<SidebarMenu />", function () {
 		assert.isFalse(onClick.called);
 	});
 
-	it("warns the parent component that the overlay was clicked if it's visible", function () {
+	it("tells the parent component that the overlay was clicked if it's visible", function () {
 		const onClick     = sinon.spy(),
 					sidebarMenu = getSidebarMenu({visible: true, onOverlayClicked: onClick}),
 					overlay     = sidebarMenu.find(`.${sidebarStyles.overlay}`);

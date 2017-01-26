@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import styles from "./homeHeader.css";
-import CSSModules from "react-css-modules";
+import {logo, searchIcon} from "./homeHeader.css";
 import {Link} from "react-router";
 import Icon from "react-fa";
 import SidebarMenu from "../../sidebarMenu/SidebarMenu";
@@ -26,14 +25,14 @@ class HomeHeader extends Component {
 				<SidebarMenu visible={this.state.sidebarVisible} onOverlayClicked={this.toggleSidebarVisibility}>
 					<UserMenuThumbnailContainer/>
 				</SidebarMenu>
-				<Icon className="menuIcon" name="bars" size="lg" onClick={this.toggleSidebarVisibility}/>
-				<div styleName="logo">Bayuk</div>
+				<Icon name="bars" size="lg" onClick={this.toggleSidebarVisibility}/>
+				<div className={logo}>Bayuk</div>
 				<Link to={"/search"}>
-					<Icon name="search" size="lg" styleName="searchIcon"/>
+					<Icon name="search" size="lg" className={searchIcon}/>
 				</Link>
 			</Header>
 		);
 	}
 }
 
-export default CSSModules(HomeHeader, styles);
+export default HomeHeader;

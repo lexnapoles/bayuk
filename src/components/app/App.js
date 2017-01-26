@@ -8,7 +8,7 @@ class App extends Component {
 	render() {
 		return (
 			<div styleName="container">
-				<HomeHeader  />
+				<HomeHeader/>
 				<main styleName="main">
 					<ProductTableContainer/>
 				</main>

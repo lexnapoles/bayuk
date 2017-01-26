@@ -94,12 +94,12 @@ describe("<FormWrapper/>", function () {
 
 	it("makes the form state available to the custom handler", function () {
 		const handlers = {
-			onEmailChange: (data, state) => state.email
+			onEmailChange: (data, state) => `Accessed ${state.email}`
 		};
 
 		const wrapper       = getForm({elements: ["email"], handlers}),
 					onEmailChange = wrapper.state("handlers")["onEmailChange"],
-					email         = "email@email.com";
+					email         = "an@email.com";
 
 		wrapper.setState({
 			form: {email}
@@ -107,7 +107,7 @@ describe("<FormWrapper/>", function () {
 
 		Reflect.apply(onEmailChange, wrapper, []);
 
-		assert.equal(wrapper.state("form").email, email);
+		assert.equal(wrapper.state("form").email, `Accessed ${email}`);
 	});
 
 	it("makes the props available to the custom handler", function () {
@@ -115,7 +115,7 @@ describe("<FormWrapper/>", function () {
 			onEmailChange: (data, state, props) => props.customProp
 		};
 
-		const email         = "email@email.com",
+		const email         = "an@email.com",
 					wrapper       = getForm({elements: ["email"], handlers, customProp: email}),
 					onEmailChange = wrapper.state("handlers")["onEmailChange"];
 
@@ -185,15 +185,16 @@ describe("<FormWrapper/>", function () {
 		const onSubmit      = sinon.spy(),
 					validation    = {name: value => value === "George"},
 					errorMessages = {name: "Invalid name"},
-					wrapper       = getForm({elements: ["name"], validation, errorMessages, onSubmit}),
-					onNameChange  = wrapper.state("handlers")["onNameChange"];
+					wrapper       = getForm({elements: ["name"], validation, errorMessages, onSubmit});
 
-		Reflect.apply(onNameChange, wrapper, [getEvent("George")]);
+		wrapper.setState({
+			form: {
+				name: "George"
+			}
+		});
 
 		wrapper.instance().onSubmit(new Event("submit"));
 
 		assert.isTrue(onSubmit.called);
 	});
 });
-
-

@@ -2,6 +2,21 @@ import React from "react";
 import {shallow, mount} from "enzyme";
 import HomeHeader from "../../../src/components/header/homeHeader/HomeHeader";
 
+const store = {
+	subscribe: () => void 0,
+	dispatch:  () => void 0,
+	getState:  () => ({
+		currentUser: {token: ""}
+	})
+};
+
+const options = {
+	context: {store},
+	childContextTypes: {
+		store: React.PropTypes.object.isRequired
+	}
+};
+
 describe("<HomeHeader />", function () {
 	it("hides the sidebar by default", function () {
 		const header = shallow(<HomeHeader />);
@@ -10,7 +25,7 @@ describe("<HomeHeader />", function () {
 	});
 
 	it("passes the sidebarVisible state to the sidebar", function () {
-		const header  = mount(<HomeHeader />),
+		const header  = mount(<HomeHeader />, options),
 					sidebar = header.find("SidebarMenu");
 
 		header.setState({sidebarVisible: true});
@@ -19,9 +34,9 @@ describe("<HomeHeader />", function () {
 	});
 
 	it("opens the sidebar when the menu icon is clicked", function () {
-		const header   = mount(<HomeHeader />),
+		const header   = mount(<HomeHeader />, options),
 					sidebar  = header.find("SidebarMenu"),
-					menuIcon = header.find(".menuIcon");
+					menuIcon = header.find(".fa-bars");
 
 		menuIcon.simulate("click");
 

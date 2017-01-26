@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import CSSModules from "react-css-modules";
-import styles from "./sidebarMenu.css";
+import {overlay, sidebar} from "./sidebarMenu.css";
 
 class SidebarMenu extends Component {
 	constructor(props) {
@@ -17,13 +16,13 @@ class SidebarMenu extends Component {
 
 	setSidebarWidth() {
 		this.setState({
-			sidebarWidth: this.refs.sidebar.getBoundingClientRect().width
+			sidebarWidth: this.sidebar.getBoundingClientRect().width
 		});
 	}
 
 	getSidebarStyle() {
 		return this.state.sidebarWidth
-			? {left: this.props.visible	? 0 : -this.state.sidebarWidth}
+			? {left: this.props.visible ? 0 : -this.state.sidebarWidth}
 			: {}
 	}
 
@@ -32,9 +31,9 @@ class SidebarMenu extends Component {
 			const visible = this.props.visible;
 
 			return {
-				left:       visible ? this.state.sidebarWidth: 0,
-				visibility: visible ? "visible" : "hidden",
-				opacity: 		visible ? 0.5 : 0
+				left: 			visible	? this.state.sidebarWidth	: 0,
+				visibility: visible	? "visible"	: "hidden",
+				opacity:    visible	? 0.5	: 0
 			};
 		}
 
@@ -50,10 +49,10 @@ class SidebarMenu extends Component {
 	render() {
 		return (
 			<div>
-				<div styleName="sidebar" style={this.getSidebarStyle()} ref="sidebar">
+				<div className={sidebar} style={this.getSidebarStyle()} ref={div => this.sidebar = div}>
 					{this.props.children}
 				</div>
-				<div styleName="overlay" style={this.getOverlayStyle()} onClick={this.onOverlayClicked}>
+				<div className={overlay} style={this.getOverlayStyle()} onClick={this.onOverlayClicked}>
 				</div>
 			</div>
 
@@ -71,4 +70,5 @@ SidebarMenu.defaultProps = {
 	visible: false
 };
 
-export default CSSModules(SidebarMenu, styles);
+export default SidebarMenu;
+
