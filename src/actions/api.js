@@ -53,9 +53,9 @@ export const fetchOneProduct = productId => ({
 export const addProduct = product => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/products`,
-		headers:  ({user}) => ({
+		headers:  ({currentUser}) => ({
 			"Content-type":  "application/json",
-			"Authorization": `Bearer ${user.token}`
+			"Authorization": `Bearer ${currentUser.token}`
 		}),
 		method:   "POST",
 		body:     JSON.stringify(product),
@@ -66,7 +66,7 @@ export const addProduct = product => ({
 export const deleteProduct = productId => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/products/${productId}`,
-		headers:  ({user}) => ({"Authorization": `Bearer ${user.token}`}),
+		headers:  ({currentUser}) => ({"Authorization": `Bearer ${currentUser.token}`}),
 		method:   "DELETE",
 		types:    getTypes(DELETE_PRODUCT)
 	}
@@ -75,9 +75,9 @@ export const deleteProduct = productId => ({
 export const updateProduct = product => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/products`,
-		headers:  ({user}) => ({
+		headers:  ({currentUser}) => ({
 			"Content-type":  "application/json",
-			"Authorization": `Bearer ${user.token}`
+			"Authorization": `Bearer ${currentUser.token}`
 		}),
 		method:   "PUT",
 		body:     JSON.stringify(product),

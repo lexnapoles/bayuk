@@ -30,7 +30,7 @@ export const createProduct = (req, res) => {
 
 	const product = {
 		...req.body,
-		owner: req.user
+		owner: req.user.id
 	};
 
 	addProduct(product)
