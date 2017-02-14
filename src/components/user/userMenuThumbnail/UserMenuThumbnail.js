@@ -1,21 +1,23 @@
 import React from "react";
-import NotLoggedInThumbnail from "./notLoggedInThumbnail/NotLoggedInThumbnail";
-import UserThumbnail from "./userThumbnail/UserThumbnail";
+import {browserHistory} from "react-router";
+import {container, userImage, text} from "./thumbnail.css";
 
-const UserMenuThumbnail = ({isLoggedIn, name, image}) => {
+const UserMenuThumbnail = ({isLoggedIn, id, name, image}) => {
+	const onClick = () => browserHistory.push(`${isLoggedIn ? `/user/${id}` : "/auth"}`);
+
 	return (
-		<div>
-			{isLoggedIn
-				? <UserThumbnail name={name} image={image}/>
-				: <NotLoggedInThumbnail image={image}/>}
+		<div className={container} onClick={onClick}>
+			<img className={userImage} width={20} height={20} src={image}/>
+			<p className={text}>{isLoggedIn ? name : "Register or Log In"}</p>
 		</div>
-	)
+	);
 };
 
 UserMenuThumbnail.propTypes = {
 	isLoggedIn: React.PropTypes.bool.isRequired,
-	image:      React.PropTypes.string.isRequired,
-	name:       React.PropTypes.string
+	id: React.PropTypes.string,
+	name: React.PropTypes.string,
+	image: React.PropTypes.string
 };
 
 export default UserMenuThumbnail;
