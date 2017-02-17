@@ -7,7 +7,7 @@ const UserMenuThumbnail = ({isLoggedIn, id, name, image}) => {
 
 	return (
 		<div className={container} onClick={onClick}>
-			<img className={userImage} width={20} height={20} src={image}/>
+			<img className={userImage} src={image}/>
 			<p className={text}>{isLoggedIn ? name : "Register or Log In"}</p>
 		</div>
 	);
