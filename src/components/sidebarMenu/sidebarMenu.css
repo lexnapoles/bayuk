@@ -1,16 +1,17 @@
 .sidebar {
 	position: absolute;
 	top: 0;
-	height: 100%;
+	bottom: 0;
 	background: #00d4b4;
+	z-index: 1;
 	transition: left 0.5s;
 }
 
 .overlay {
 	position: absolute;
 	top: 0;
-	height: 100%;
-	width: 100%;
+	bottom: 0;
 	background: dimgray;
+	z-index: 1;
 	transition: left 0.5s, opacity linear 0.5s;
 }

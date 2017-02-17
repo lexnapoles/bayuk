@@ -5,7 +5,9 @@ class SidebarMenu extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {sidebarWidth: 0};
+		this.state = {
+			sidebarWidth: 0
+		};
 
 		this.onOverlayClicked = this.onOverlayClicked.bind(this);
 	}
@@ -21,8 +23,11 @@ class SidebarMenu extends Component {
 	}
 
 	getSidebarStyle() {
-		return this.state.sidebarWidth
-			? {left: this.props.visible ? 0 : -this.state.sidebarWidth}
+		const width 	= this.state.sidebarWidth,
+					left 		= this.props.visible ? 0 : -width;
+
+		return width
+			? {left, width}
 			: {}
 	}
 
@@ -32,8 +37,9 @@ class SidebarMenu extends Component {
 
 			return {
 				left: 			visible	? this.state.sidebarWidth	: 0,
+				right: 			visible ? 0 : null,
 				visibility: visible	? "visible"	: "hidden",
-				opacity:    visible	? 0.5	: 0
+				opacity:    visible	? 0.8	: 0
 			};
 		}
 

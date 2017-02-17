@@ -6,22 +6,36 @@ import sidebarStyles from "../../../src/components/sidebarMenu/sidebarMenu.css";
 
 const divInBody = () => {
 	const div = document.createElement("div");
+
 	document.body.appendChild(div);
 
 	return div;
-}
+};
 
 const getSidebarMenu = (props = {}) => shallow(<SidebarMenu onOverlayClicked={() => void 0} {...props}/>);
 
-const renderSidebarMenu = (props = {}, children = "Test") =>
-	ReactDOM.render(<SidebarMenu onOverlayClicked={() => void 0} {...props}>{children}</SidebarMenu>, divInBody());
+const disableTransitions = () => {
+	const sidebar = document.getElementsByClassName(`${sidebarStyles.sidebar}`)[0],
+				overlay = document.getElementsByClassName(`${sidebarStyles.overlay}`)[0];
+
+	sidebar.style.transition = "none";
+	overlay.style.transition = "none";
+};
+
+const renderSidebarMenu = (props = {}, children = "Test") => {
+	const sidebarMenu = ReactDOM.render(<SidebarMenu onOverlayClicked={() => void 0} {...props}>{children}</SidebarMenu>, divInBody());
+
+	disableTransitions();
+
+	return sidebarMenu;
+};
 
 const unmountSidebarMenu = () => {
 	const div = document.getElementsByTagName("div")[0];
 
 	ReactDOM.unmountComponentAtNode(div);
 	document.body.innerHTML = "";
-}
+};
 
 describe("<SidebarMenu />", function () {
 	it("has a sidebar element", function () {
@@ -151,7 +165,7 @@ describe("<SidebarMenu />", function () {
 
 			unmountSidebarMenu();
 
-			assert.isAtMost(opacity, 0.5);
+			assert.isAtLeast(opacity, 0.5);
 		});
 	})
 });
