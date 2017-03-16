@@ -2,6 +2,10 @@ import {sendJsonResponse} from "../../../utils/utils";
 import {getUsers, getUserById} from "../services/users";
 import {has} from "lodash/object";
 
+export const createUser = (req, res) => {
+	return;
+};
+
 export const readUsers = (req, res) =>
 	getUsers()
 		.then(users => sendJsonResponse(res, 200, users))
@@ -22,11 +26,15 @@ export const readOneUser = (req, res) => {
 		.catch(error => sendJsonResponse(res, 404, {"message": error}));
 };
 
-//
-// export const updateOneUser = (req, res) => {
-//
-// };
-//
-// export const deleteOneUser = (req, res) => {
-//
-// };
+export const updateOneUser = (req, res) => {
+	return;
+};
+
+export const createUserImage = (req, res) => {
+	return;
+};
+
+export const deleteOneUser = (req, res) => {
+	return;
+};
+
