@@ -63,3 +63,19 @@ export const getJwtPayload = jwt => {
 
 	return JSON.parse(atob(sections[1]));
 };
+
+export const loadImage = img => {
+	return new Promise(function (resolve, reject) {
+		const reader = new FileReader();
+
+		reader.onload = event => resolve(event.target.result);
+		reader.onerror = event => reject(event.target.error);
+
+		reader.readAsDataURL(img);
+	})
+};
+
+export const isAnImage = file => {
+	return /^image\//.test(file.type);
+};
+

@@ -47,6 +47,7 @@
     ],
     "prefer-const": 1,
     "prefer-reflect": 1,
-    "no-var": 1
+    "no-var": 1,
+    "no-console": "off"
   }
 }

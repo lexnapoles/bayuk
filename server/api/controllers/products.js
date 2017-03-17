@@ -88,3 +88,7 @@ export const deleteOneProduct = (req, res) => {
 			message: error
 		}));
 };
+
+export const addProductImages = (req, res) => {
+	return;
+};

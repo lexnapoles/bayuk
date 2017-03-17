@@ -2,8 +2,11 @@ import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import * as config from "../../webpack.dev.config.js";
+import seedDB from "../seeder/databaseSeeder";
 
 export default (server, fileToServe) => {
+	seedDB();
+
 	const compiler = webpack(config);
 
 	server.use(webpackDevMiddleware(compiler, {

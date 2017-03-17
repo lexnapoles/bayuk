@@ -2,10 +2,6 @@ import {sendJsonResponse} from "../../../utils/utils";
 import {getUsers, getUserById} from "../services/users";
 import {has} from "lodash/object";
 
-export const createUser = (req, res) => {
-	return;
-};
-
 export const readUsers = (req, res) =>
 	getUsers()
 		.then(users => sendJsonResponse(res, 200, users))
