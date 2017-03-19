@@ -15,7 +15,7 @@ export const mapArraysSequentially = (arr1 = [], arr2 = []) => {
 
 export const generateImagesObjs = (ids, data) => mapArraysSequentially(ids, data)((id, data) => ({id, data}));
 
-export const wrapDataInPromise = (dataArr, func) => {
+export const wrapDataInPromise = (dataArr = [], func) => {
 	if (!dataArr.length) {
 		return Promise.reject("No data has been passed");
 	}
@@ -29,7 +29,7 @@ export const hasProperties = (obj = {}, props) => {
 	const f = (props = []) => props.every(key => key in obj);
 
 	if (props && Array.isArray(props)) {
-		return f(props, obj);
+		return f(props);
 	}
 
 	return f;
@@ -78,4 +78,3 @@ export const loadImage = img => {
 export const isAnImage = file => {
 	return /^image\//.test(file.type);
 };
-
