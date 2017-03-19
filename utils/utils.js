@@ -15,6 +15,17 @@ export const mapArraysSequentially = (arr1 = [], arr2 = []) => {
 
 export const generateImagesObjs = (ids, data) => mapArraysSequentially(ids, data)((id, data) => ({id, data}));
 
+// export const generateImagesObjs = (ids, data) => generateObjFromMappedArrays(ids, data)("id", "data");
+//
+// export const generateObjFromMappedArrays = (arr1, arr2) => (firstPropName, secondPropName) =>	{
+// 	const createObj = (firstProp, secondProp) => ({
+// 		[firstPropName]: firstProp,
+// 		[secondPropName]: secondProp
+// 	});
+//
+// 	return mapArraysSequentially(arr1, arr2)(createObj);
+// };
+
 export const wrapDataInPromise = (dataArr = [], func) => {
 	if (!dataArr.length) {
 		return Promise.reject("No data has been passed");
