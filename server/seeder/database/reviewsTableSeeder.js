@@ -2,9 +2,9 @@ import faker from "faker"
 import {sample} from "lodash/collection";
 import {times} from "lodash/util";
 import {random} from "lodash/number";
-import db from "../db";
-import {MAX_REVIEWS, MAX_USER_RATING} from "./config";
-import {wrapDataInPromise} from "../../utils/utils";
+import db from "../../db";
+import {MAX_REVIEWS, MAX_USER_RATING} from "../config";
+import {wrapDataInPromise} from "../../../utils/utils";
 
 const pickUsersForReview = ids => {
 	const source = sample(ids);

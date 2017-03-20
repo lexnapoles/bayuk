@@ -1,9 +1,9 @@
 import faker from "faker";
 import {sample} from "lodash/collection";
 import {times} from "lodash/util";
-import db from "../db";
-import {MAX_PRODUCTS, categories} from "./config";
-import {wrapDataInPromise} from "../../utils/utils";
+import db from "../../db";
+import {MAX_PRODUCTS, categories} from "../config";
+import {wrapDataInPromise} from "../../../utils/utils";
 
 const getProduct = userId => ({
 	uuid:        faker.random.uuid(),
@@ -25,5 +25,5 @@ export default users => {
 				products = times(MAX_PRODUCTS, getProduct.bind(void 0, sample(userIds)));
 
 	return Promise.all(wrapDataInPromise(products, addProduct))
-					.then(() => products);
+		.then(() => products);
 };

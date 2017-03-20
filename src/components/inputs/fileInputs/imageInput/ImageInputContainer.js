@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import ImageInput from "./ImageInput";
-import {isAnImage, loadImage} from "../../../../../utils/utils";
 
 class ImageInputContainer extends Component {
 	constructor(props) {
@@ -10,18 +9,33 @@ class ImageInputContainer extends Component {
 		this.onDelete = this.onDelete.bind(this);
 	}
 
+	isAnImage(file) {
+		return /^image\//.test(file.type);
+	}
+
+	loadImage(img) {
+		return new Promise(function (resolve, reject) {
+			const reader = new FileReader();
+
+			reader.onload = event => resolve(event.target.result);
+			reader.onerror = event => reject(event.target.error);
+
+			reader.readAsDataURL(img);
+		})
+	}
+
 	onAdd(event) {
 		const selectedFile = event.target.files[0];
 
-		if (!isAnImage(selectedFile)) {
+		if (!this.isAnImage(selectedFile)) {
 			return;
 		}
 
-		loadImage(selectedFile)
+		this.loadImage(selectedFile)
 			.then(url => {
 				this.props.onAdd(url);
 			});
-}
+	}
 
 	onDelete() {
 		this.props.onDelete();

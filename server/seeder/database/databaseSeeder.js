@@ -1,4 +1,4 @@
-import db from "../db";
+import db from "../../db";
 import seedCategoriesTable from "./categoriesTableSeeder";
 import seedUsersTable from "./usersTableSeeder";
 import seedProductsTable from "./productsTableSeeder";
@@ -10,7 +10,7 @@ export default () => {
 		return;
 	}
 
-	db.none("TRUNCATE users, products, categories RESTART IDENTITY CASCADE");
+	db.none("TRUNCATE users, products, product_images, categories RESTART IDENTITY CASCADE");
 
 	let users = [];
 
@@ -19,9 +19,5 @@ export default () => {
 		.then(createdUsers => users = createdUsers)
 		.then(() => seedReviewsTable(users))
 		.then(() => seedProductsTable(users))
-		.then(seedProductImagesTable)
-		.catch(error => {
-			console.error(error);
-			process.exit(1);
-		});
+		.then(seedProductImagesTable);
 };

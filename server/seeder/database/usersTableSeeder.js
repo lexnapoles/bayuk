@@ -1,9 +1,9 @@
 import faker from "faker";
 import {times} from "lodash/util";
-import {setPassword} from "../api/services/authentication";
-import db from "../db";
-import {MAX_USERS} from "./config";
-import {wrapDataInPromise} from "../../utils/utils";
+import {setPassword} from "../../api/services/authentication";
+import db from "../../db";
+import {MAX_USERS} from "../config";
+import {wrapDataInPromise} from "../../../utils/utils";
 
 const predefinedUsers = [
 	{

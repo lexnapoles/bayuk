@@ -17,6 +17,7 @@ export const generateImagesObjs = (ids, data) => mapArraysSequentially(ids, data
 
 // export const generateImagesObjs = (ids, data) => generateObjFromMappedArrays(ids, data)("id", "data");
 //
+//
 // export const generateObjFromMappedArrays = (arr1, arr2) => (firstPropName, secondPropName) =>	{
 // 	const createObj = (firstProp, secondProp) => ({
 // 		[firstPropName]: firstProp,
@@ -73,19 +74,4 @@ export const getJwtPayload = jwt => {
 	const sections = jwt.split(".");
 
 	return JSON.parse(atob(sections[1]));
-};
-
-export const loadImage = img => {
-	return new Promise(function (resolve, reject) {
-		const reader = new FileReader();
-
-		reader.onload = event => resolve(event.target.result);
-		reader.onerror = event => reject(event.target.error);
-
-		reader.readAsDataURL(img);
-	})
-};
-
-export const isAnImage = file => {
-	return /^image\//.test(file.type);
 };

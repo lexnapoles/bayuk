@@ -1,6 +1,6 @@
-import db from "../db";
-import {categories} from "./config";
-import {wrapDataInPromise} from "../../utils/utils";
+import db from "../../db";
+import {categories} from "../config";
+import {wrapDataInPromise} from "../../../utils/utils";
 
 const addCategory = category => db.none("INSERT INTO categories (category) VALUES ($1)", category);
 
