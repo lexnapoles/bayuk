@@ -10,7 +10,7 @@ export default () => {
 		return;
 	}
 
-	db.none("TRUNCATE users, products, product_images, categories RESTART IDENTITY CASCADE");
+	db.none("TRUNCATE users, products, product_images, reviews, categories RESTART IDENTITY CASCADE");
 
 	let users = [];
 
