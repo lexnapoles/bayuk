@@ -37,7 +37,7 @@ const addUserToDB = ({uuid, email, name, hash, salt, location: {latitude, longit
 
 const addAllUsersToDB = users => Promise.all(wrapDataInPromise(users, addUserToDB));
 
-const generateUsers = maxUsers => Promise.all(times(maxUsers, getUser));
+const generateUsers = maxUsers => Promise.all(times(maxUsers, () => getUser()));
 
 export default () => {
 	let users = [];

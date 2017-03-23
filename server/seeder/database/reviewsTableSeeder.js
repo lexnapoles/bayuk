@@ -19,20 +19,23 @@ const pickUsersForReview = ids => {
 	return {source, target}
 };
 
-const createReview = ids => ({
+const getReview = (ids, users = {}) => ({
 	rating: random(MAX_USER_RATING),
 	...pickUsersForReview(ids),
-	review: faker.lorem.sentence()
+	review: faker.lorem.sentence(),
+	...users
 });
 
-const addReview = review =>
+const addReviewToDB = review =>
 	db.none("INSERT INTO reviews (rating, user_source, user_target, review) " +
 		"VALUES (${rating}, ${source}, ${target}, ${review})", review);
 
+const addAllReviewsToDB = reviews => Promise.all(wrapDataInPromise(reviews, addReviewToDB));
+
 export default users => {
 	const ids     = Array.from(users, ({uuid}) => uuid),
-				reviews = times(MAX_REVIEWS, createReview.bind(void 0, ids));
+				reviews = times(MAX_REVIEWS, getReview.bind(void 0, ids));
 
-	return Promise.all(wrapDataInPromise(reviews, addReview))
+	return addAllReviewsToDB(reviews)
 					.then(reviews);
 };

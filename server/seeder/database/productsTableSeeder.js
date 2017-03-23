@@ -5,7 +5,7 @@ import db from "../../db";
 import {MAX_PRODUCTS, categories} from "../config";
 import {wrapDataInPromise} from "../../../utils/utils";
 
-const getProduct = userId => ({
+export const getProduct = userId => ({
 	uuid:        faker.random.uuid(),
 	owner:       userId,
 	name:        faker.random.words(),
@@ -16,14 +16,16 @@ const getProduct = userId => ({
 	sold:        faker.random.boolean()
 });
 
-const addProduct = product =>
+const addProductToDB = product =>
 	db.none("INSERT INTO products (owner, uuid, name, description, category, price, created_at, sold) " +
 		"VALUES (${owner}, ${uuid}, ${name}, ${description}, ${category}, ${price}, ${createdAt}, ${sold})", product);
+
+const addAllProductsToDB = products => Promise.all(wrapDataInPromise(products, addProductToDB));
 
 export default users => {
 	const userIds  = Array.from(users, ({uuid}) => uuid),
 				products = times(MAX_PRODUCTS, getProduct.bind(void 0, sample(userIds)));
 
-	return Promise.all(wrapDataInPromise(products, addProduct))
+	return addAllProductsToDB(products)
 		.then(() => products);
 };
