@@ -1,30 +1,22 @@
 import faker from "faker";
 import {times} from "lodash/util";
+import {omit} from "lodash/object";
 import {setPassword} from "../../api/services/authentication";
 import db from "../../db";
 import {MAX_USERS} from "../config";
-import {wrapDataInPromise} from "../../../utils/utils";
+import {wrapDataInPromise, hasProperties} from "../../../utils/utils";
 
-const predefinedUsers = [
-	{
-		name:     "Irene Adler",
-		email:    "thewoman@holmes.com",
-		password: "thewoman123"
-	},
-	{
-		name:     "Sun Wu Kung",
-		email:    "monkeyking@journeytowest.com",
-		password: "monkey123"
-	}
-];
-
-const getUser = (user = {}) => {
+export const getUser = (user = {}) => {
 	const location = {
 		latitude:  faker.address.latitude(),
 		longitude: faker.address.longitude()
 	};
 
-	return setPassword(faker.internet.password())
+	const password = hasProperties(user, ["password"])
+		? user.password
+		: faker.internet.password();
+
+	return setPassword(password)
 		.then(({hash, salt}) => ({
 			uuid:  faker.random.uuid(),
 			email: faker.internet.email(),
@@ -32,7 +24,7 @@ const getUser = (user = {}) => {
 			location,
 			hash,
 			salt,
-			...user
+			...omit(user, "password")
 		}));
 };
 
@@ -43,19 +35,17 @@ const addUserToDB = ({uuid, email, name, hash, salt, location: {latitude, longit
 		[uuid, email, name, hash, salt, latitude, longitude]);
 };
 
-const generateUsers = (maxUsers, staticUsers = []) => {
-	const createAllUsers = [...staticUsers.map(getUser), ...times(MAX_USERS, getUser)];
+const addAllUsersToDB = users => Promise.all(wrapDataInPromise(users, addUserToDB));
 
-	return Promise.all(createAllUsers);
-};
+const generateUsers = maxUsers => Promise.all(times(maxUsers, getUser));
 
 export default () => {
 	let users = [];
 
-	return generateUsers(MAX_USERS, predefinedUsers)
+	return generateUsers(MAX_USERS)
 		.then(result => {
 			users = result;
-			return Promise.all(wrapDataInPromise(result, addUserToDB))
+			return addAllUsersToDB(users);
 		})
 		.then(() => users);
 };
