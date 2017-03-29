@@ -9,8 +9,6 @@ import userNotFoundError from "./middlewares/errors/userNotFoundError";
 
 import "./api/passport";
 
-
-
 const DEFAULT_PORT = 3000;
 
 let app = express();

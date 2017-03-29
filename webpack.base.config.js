@@ -1,68 +1,88 @@
-var webpack      = require("webpack"),
-		path         = require("path"),
-		autoprefixer = require('autoprefixer');
+const webpack = require("webpack"),
+			path    = require("path");
 
-var DIST_DIR   = path.join(__dirname, "dist"),
-		CLIENT_DIR = path.join(__dirname, "src");
+const DIST_DIR   = path.resolve(__dirname, "dist"),
+			CLIENT_DIR = path.resolve(__dirname, "src");
 
 module.exports = {
 	context: CLIENT_DIR,
 
-	entry: "./main",
+	entry: ["./main"],
 
 	output: {
 		path:       DIST_DIR,
-		publicPath: "/",
-		filename:   "bundle.js"
+		filename:   "bundle.js",
+		publicPath: "/"
 	},
 
 	module: {
-		preLoaders: [
+		rules: [
 			{
+				enforce: "pre",
 				test:    /\.js$/,
 				exclude: /node_modules/,
-				loader:  "eslint"
-			}
-		],
+				loader:  "eslint-loader"
+			},
 
-		loaders: [
 			{
 				test:    /\.js$/,
 				exclude: /node_modules/,
-				loader:  "babel"
+				loader:  "babel-loader"
 			},
 
 			{
 				test:    /\.css$/,
 				exclude: /src/,
-				loader:  "style!css!postcss"
+				use:     [
+					{loader: "style-loader"},
+					{
+						loader:  "css-loader",
+						options: {
+							importLoaders:  1,
+							modules:        true,
+							localIdentName: "[name]__[local]___[hash:base64:5]"
+						}
+					},
+					{loader: "postcss-loader"}
+				]
 			},
 
 			{
 				test:    /\.css$/,
 				exclude: /node_modules/,
-				loader:  "style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss"
+				use:     [
+					{loader: "style-loader"},
+					{
+						loader:  "css-loader",
+						options: {
+							importLoaders: 1
+						}
+					},
+					{loader: "postcss-loader"}
+				]
 			},
 
 			{
-				test:   /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: "url?limit=10000&mimetype=application/font-woff"
+				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				use:  {
+					loader:  "url-loader",
+					options: {
+						limit:    10000,
+						mimetype: "application/font-woff"
+					}
+				}
 			},
 
 			{
 				test:   /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: "file"
+				loader: "file-loader"
 			}
 		]
 	},
 
-	postcss: [autoprefixer({browsers: ["last 2 versions"]})],
-
 	plugins: [
 		new webpack.EnvironmentPlugin(['NODE_ENV'])
-	],
-
-	resolve: {
-		extensions: ['', '.js']
-	}
+	]
 };
+
+

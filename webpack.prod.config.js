@@ -1,5 +1,8 @@
-var baseConfig = require("./webpack.base.config.js");
+const merge      = require("webpack-merge"),
+			baseConfig = require("./webpack.base.config.js");
 
-baseConfig.devtool = "cheap-module-source-map";
+const prodConfig = merge({
+	devtool: "cheap-module-source-map"
+}, baseConfig);
 
-module.exports = baseConfig;
+module.exports = prodConfig;

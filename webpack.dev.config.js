@@ -1,16 +1,18 @@
-var webpack    = require("webpack"),
-		baseConfig = require("./webpack.base.config.js");
+const webpack    = require("webpack"),
+			merge      = require("webpack-merge"),
+			baseConfig = require("./webpack.base.config.js");
 
-baseConfig.entry = ["webpack-hot-middleware/client", "./main"];
+const devConfig = merge({
+	entry: ["webpack-hot-middleware/client"],
 
-baseConfig.output.publicPath = "/";
+	devtool: "eval-source-map",
 
-baseConfig.devtool = "eval";
+	plugins: [
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NoErrorsPlugin()
+	]
+}, baseConfig);
 
-baseConfig.plugins = [
-	new webpack.optimize.OccurenceOrderPlugin(),
-	new webpack.HotModuleReplacementPlugin(),
-	new webpack.NoErrorsPlugin()
-];
 
-module.exports = baseConfig;
+
+module.exports = devConfig;
