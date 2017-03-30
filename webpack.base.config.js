@@ -36,11 +36,9 @@ module.exports = {
 				use:     [
 					{loader: "style-loader"},
 					{
-						loader:  "css-loader",
+						loader: "css-loader",
 						options: {
 							importLoaders:  1,
-							modules:        true,
-							localIdentName: "[name]__[local]___[hash:base64:5]"
 						}
 					},
 					{loader: "postcss-loader"}
@@ -55,7 +53,9 @@ module.exports = {
 					{
 						loader:  "css-loader",
 						options: {
-							importLoaders: 1
+							importLoaders:  1,
+							modules:        true,
+							localIdentName: "[name]__[local]___[hash:base64:5]"
 						}
 					},
 					{loader: "postcss-loader"}
@@ -81,8 +81,9 @@ module.exports = {
 	},
 
 	plugins: [
-		new webpack.EnvironmentPlugin(['NODE_ENV'])
+		new webpack.EnvironmentPlugin({
+			NODE_ENV: 'development',
+			DEBUG: false
+		})
 	]
 };
-
-

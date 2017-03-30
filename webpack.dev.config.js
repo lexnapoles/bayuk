@@ -1,6 +1,6 @@
-const webpack    = require("webpack"),
-			merge      = require("webpack-merge"),
-			baseConfig = require("./webpack.base.config.js");
+import webpack from "webpack";
+import merge from "webpack-merge";
+import baseConfig from "./webpack.base.config"
 
 const devConfig = merge({
 	entry: ["webpack-hot-middleware/client"],
@@ -9,10 +9,9 @@ const devConfig = merge({
 
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NoErrorsPlugin()
+		new webpack.NoEmitOnErrorsPlugin()
 	]
 }, baseConfig);
-
 
 
 module.exports = devConfig;
