@@ -23,7 +23,9 @@ const disableTransitions = () => {
 };
 
 const renderSidebarMenu = (props = {}, children = "Test") => {
-	const sidebarMenu = ReactDOM.render(<SidebarMenu onOverlayClicked={() => void 0} {...props}>{children}</SidebarMenu>, divInBody());
+	let sidebarMenu = {};
+
+	ReactDOM.render(<SidebarMenu ref={component => sidebarMenu = component} onOverlayClicked={() => void 0} {...props}>{children}</SidebarMenu>, divInBody());
 
 	disableTransitions();
 
