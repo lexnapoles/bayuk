@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {shallow, mount} from "enzyme";
-import SidebarMenu from "../../../src/components/sidebarMenu/SidebarMenu";
-import sidebarStyles from "../../../src/components/sidebarMenu/sidebarMenu.css";
+import SidebarMenu from "Components/sidebarMenu/SidebarMenu";
+import sidebarStyles from "Components/sidebarMenu/sidebarMenu.css";
 
 const divInBody = () => {
 	const div = document.createElement("div");
