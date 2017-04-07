@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "postinstall": "npm run build",
-    "test": "karma run",
+    "test:app": "karma run",
+    "test:api": "better-npm-run test:api",
     "start": "better-npm-run start",
     "build:server": "babel server/main-es6.js -o server/main.js",
     "build:client": "webpack -p --config webpack.prod.config.js --progress",
@@ -22,6 +23,12 @@
       "command": "npm run clean && npm run build:server && npm run build:client",
       "env": {
         "NODE_ENV": "production"
+      }
+    },
+    "test:api": {
+      "command": "mocha \"test/api/**.js\" --compilers js:babel-core/register",
+      "env": {
+        "NODE_ENV": "test"
       }
     }
   },

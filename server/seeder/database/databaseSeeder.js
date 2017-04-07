@@ -10,11 +10,11 @@ export default () => {
 		return;
 	}
 
-	db.none("TRUNCATE users, products, product_images, reviews, categories RESTART IDENTITY CASCADE");
 
 	let users = [];
 
-	return seedCategoriesTable()
+	return db.none("TRUNCATE users, products, product_images, reviews, categories RESTART IDENTITY CASCADE")
+		.then(seedCategoriesTable)
 		.then(seedUsersTable)
 		.then(createdUsers => users = createdUsers)
 		.then(() => seedReviewsTable(users))
