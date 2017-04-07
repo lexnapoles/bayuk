@@ -8,7 +8,7 @@
     "postinstall": "npm run build",
     "test": "karma run",
     "start": "better-npm-run start",
-    "build:server": "babel server/server-es6.js -o server/server.js",
+    "build:server": "babel server/main-es6.js -o server/main.js",
     "build:client": "webpack -p --config webpack.prod.config.js --progress",
     "build": "better-npm-run build",
     "karma": "karma start",
@@ -16,7 +16,7 @@
   },
   "betterScripts": {
     "start": {
-      "command": "babel-watch server/server-es6.js"
+      "command": "babel-watch server/main-es6.js"
     },
     "build": {
       "command": "npm run clean && npm run build:server && npm run build:client",
