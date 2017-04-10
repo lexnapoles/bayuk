@@ -1,8 +1,8 @@
-const path       = require("path"),
-			merge      = require("webpack-merge"),
-			baseConfig = require("./webpack.base.config.js");
+import path     from "path";
+import merge from "webpack-merge";
+import baseConfig from "./webpack.base.config.js";
 
-const testConfig = merge(baseConfig, {
+export default merge(baseConfig, {
 	entry: null,
 
 	externals: {
@@ -20,6 +20,4 @@ const testConfig = merge(baseConfig, {
 		}
 	}
 });
-
-module.exports = testConfig;
 

@@ -1,10 +1,10 @@
-const webpack = require("webpack"),
-			path    = require("path");
+import webpack from "webpack";
+import path from "path";
 
 const DIST_DIR   = path.resolve(__dirname, "dist"),
 			CLIENT_DIR = path.resolve(__dirname, "src");
 
-module.exports = {
+export default {
 	context: CLIENT_DIR,
 
 	entry: ["./main"],
@@ -18,30 +18,26 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				enforce: "pre",
 				test:    /\.js$/,
 				exclude: /node_modules/,
-				loader:  "eslint-loader"
-			},
-
-			{
-				test:    /\.js$/,
-				exclude: /node_modules/,
-				loader:  "babel-loader"
+				use:     [
+					"babel-loader",
+					"eslint-loader"
+				]
 			},
 
 			{
 				test:    /\.css$/,
 				exclude: /src/,
 				use:     [
-					{loader: "style-loader"},
+					"style-loader",
 					{
-						loader: "css-loader",
+						loader:  "css-loader",
 						options: {
-							importLoaders:  1,
+							importLoaders: 1,
 						}
 					},
-					{loader: "postcss-loader"}
+					"postcss-loader"
 				]
 			},
 
@@ -49,7 +45,7 @@ module.exports = {
 				test:    /\.css$/,
 				exclude: /node_modules/,
 				use:     [
-					{loader: "style-loader"},
+					"style-loader",
 					{
 						loader:  "css-loader",
 						options: {
@@ -58,18 +54,16 @@ module.exports = {
 							localIdentName: "[name]__[local]___[hash:base64:5]"
 						}
 					},
-					{loader: "postcss-loader"}
+					"postcss-loader"
 				]
 			},
 
 			{
-				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				use:  {
-					loader:  "url-loader",
-					options: {
-						limit:    10000,
-						mimetype: "application/font-woff"
-					}
+				test:    /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				loader:  "url-loader",
+				options: {
+					limit:    10000,
+					mimetype: "application/font-woff"
 				}
 			},
 
@@ -83,7 +77,7 @@ module.exports = {
 	plugins: [
 		new webpack.EnvironmentPlugin({
 			NODE_ENV: 'development',
-			DEBUG: false
+			DEBUG:    false
 		})
 	]
 };
