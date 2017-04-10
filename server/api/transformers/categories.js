@@ -1,0 +1,1 @@
+export default categories => categories.map(data => data.category);

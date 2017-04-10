@@ -1,18 +1,7 @@
 // Karma configuration
 // Generated on Tue Mar 01 2016 00:50:12 GMT+0100 (Hora estándar romance)
 
-const merge = require("webpack-merge");
-
-let webpackConfig = require("./webpack.base.config.js");
-
-webpackConfig = merge(webpackConfig, {
-	externals: {
-		'cheerio':                        'window',
-		'react/addons':                   'react',
-		'react/lib/ExecutionEnvironment': 'react',
-		'react/lib/ReactContext':         'react'
-	}
-});
+const webpackConfig = require("./webpack.test.config.js");
 
 module.exports = function (config) {
 	config.set({
@@ -23,12 +12,11 @@ module.exports = function (config) {
 
 		// frameworks to use
 		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-		frameworks: ['mocha', "chai", "sinon"],
-
+		frameworks: ["mocha", "chai", "sinon"],
 
 		// list of files / patterns to load in the browser
 		files: [
-			"./test/test.bundle.js"
+			"test/app/test.bundle.js"
 		],
 
 
@@ -39,7 +27,7 @@ module.exports = function (config) {
 		// preprocess matching files before serving them to the browser
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
 		preprocessors: {
-			"./test/test.bundle.js": ["webpack", "sourcemap"]
+			"./test/app/test.bundle.js": ["webpack", "sourcemap"]
 		},
 
 		webpack: webpackConfig,

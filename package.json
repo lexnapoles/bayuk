@@ -6,9 +6,10 @@
   "main": "server.js",
   "scripts": {
     "postinstall": "npm run build",
-    "test": "karma run",
+    "test:app": "karma run",
+    "test:api": "better-npm-run test:api",
     "start": "better-npm-run start",
-    "build:server": "babel server/server-es6.js -o server/server.js",
+    "build:server": "babel server/main-es6.js -o server/main.js",
     "build:client": "webpack -p --config webpack.prod.config.js --progress",
     "build": "better-npm-run build",
     "karma": "karma start",
@@ -16,12 +17,18 @@
   },
   "betterScripts": {
     "start": {
-      "command": "babel-watch server/server-es6.js"
+      "command": "babel-watch server/main-es6.js"
     },
     "build": {
       "command": "npm run clean && npm run build:server && npm run build:client",
       "env": {
         "NODE_ENV": "production"
+      }
+    },
+    "test:api": {
+      "command": "mocha \"test/api/**.js\" --compilers js:babel-core/register",
+      "env": {
+        "NODE_ENV": "test"
       }
     }
   },
@@ -50,6 +57,8 @@
     "babel-watch": "^2.0.6",
     "better-npm-run": "^0.0.15",
     "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "chai-http": "^3.0.0",
     "css-loader": "^0.27.3",
     "enzyme": "^2.3.0",
     "eslint": "^3.18.0",
@@ -72,7 +81,6 @@
     "rimraf": "^2.6.1",
     "sinon": "^2.1.0",
     "style-loader": "^0.16.1",
-    "superagent": "^3.5.0",
     "url-loader": "^0.5.8",
     "webpack": "^2.3.2",
     "webpack-dev-middleware": "^1.10.1",
@@ -81,7 +89,7 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
-    "express": "^4.13.4",
+    "express": "^4.15.2",
     "express-jwt": "^5.1.0",
     "font-awesome": "^4.6.1",
     "fs-promise": "^1.0.0",

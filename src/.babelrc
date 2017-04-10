@@ -1,11 +1,10 @@
 {
   "presets": [
+    "react",
     [
       "env",
       {
-        "targets": {
-          "node": "current"
-        },
+        "modules": false,
         "debug": true
       }
     ]

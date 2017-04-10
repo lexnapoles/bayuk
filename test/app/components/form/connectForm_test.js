@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {shallow} from "enzyme";
 import {pick} from "lodash/object";
-import connectForm from "../../../src/components/form/connectForm/connectForm";
+import connectForm from "Components/form/connectForm/connectForm";
 
 class SomeComponent extends Component {
 	render() {
