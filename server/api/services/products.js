@@ -7,7 +7,7 @@ import {
 } from "./images";
 import {generateImagesObjs} from "../../../utils/utils";
 
-export const getProducts = () => Promise.resolve([]);
+export const getProducts = () => db.any("SELECT * from products");
 
 export const getProductById = productId =>
 	db.one("SELECT * FROM products_with_images WHERE id=$1", productId)
