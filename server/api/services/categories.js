@@ -7,5 +7,3 @@ const addCategoryToDB = category => db.none(categories.add, category);
 export const getCategories = () => db.any(categories.get);
 
 export const addCategories = categories => Promise.all(wrapDataInPromise(categories, addCategoryToDB));
-
-export const truncateCategories = () => db.none(categories.truncate);

@@ -1,6 +1,8 @@
 import chai from "chai";
 import request from "supertest";
-import {addCategories, truncateCategories} from "../../server/api/services/categories";
+import db from "../../server/db";
+import {global} from "../../server/sql/sql";
+import {addCategories} from "../../server/api/services/categories";
 import createServer from "../../server/server";
 
 chai.should();
@@ -12,7 +14,7 @@ describe("Categories", function () {
 		beforeEach(function () {
 			server = createServer();
 
-			return truncateCategories();
+			return db.none(global.truncateAll);
 		});
 
 		afterEach(function (done) {

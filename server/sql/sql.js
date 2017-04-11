@@ -8,13 +8,14 @@ function sql(file) {
 }
 
 export const categories = {
-	get:      sql("categories/get.sql"),
-	add:      sql("categories/add.sql"),
-	truncate: sql("categories/truncate.sql")
+	get: sql("categories/get.sql"),
+	add: sql("categories/add.sql")
 };
 
 export const products = {
-	getAll:   sql("products/getAll.sql"),
-	truncate: sql("products/truncate.sql")
+	getAll: sql("products/getAll.sql")
 };
 
+export const global = {
+	truncateAll: sql("global/truncateAll.sql")
+};
