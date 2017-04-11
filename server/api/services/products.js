@@ -11,7 +11,7 @@ import {generateImagesObjs} from "../../../utils/utils";
 export const getProducts = () => db.any(products.getAll);
 
 export const getProductById = productId =>
-	db.one("SELECT * FROM products WHERE uuid=$1", productId)
+	db.one(products.getById, {productId})
 		.catch(() => Promise.reject("Product could not be found"));
 
 const addProductToDB = ({owner, name, description, category, price, images}) =>
@@ -55,3 +55,5 @@ export const deleteProduct = productId =>
 	getImagesOfProduct(productId)
 		.then(deleteImagesFromDisk)
 		.then(deleteProductFromDB.bind(void 0, productId));
+
+export const addProductWithAllFields = product => db.none(products.addProductWithAllFields, product);

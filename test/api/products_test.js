@@ -12,6 +12,11 @@ chai.should();
 
 let server = {};
 
+const addRandomProducts = () =>
+	addCategories()
+		.then(addUsers)
+		.then(addProducts);
+
 describe("Products", function () {
 	beforeEach(function () {
 		server = createServer();
@@ -36,13 +41,11 @@ describe("Products", function () {
 		});
 	});
 
-	describe("GET /products/:id", function () {
+	describe("GET /products/:productId", function () {
 		it("should get a product with the given id", function () {
-			let productId  = "";
+			let productId = "";
 
-			return addCategories()
-				.then(addUsers)
-				.then(addProducts)
+			return addRandomProducts()
 				.then(products => productId = sample(products).uuid)
 				.then(() =>
 					request(server)
