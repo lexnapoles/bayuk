@@ -1,4 +1,5 @@
 import db, {queryResult} from "../../db";
+import {products} from "../../sql/sql";
 import {
 	writeImagesToDisk,
 	deleteImagesFromDisk,
@@ -7,7 +8,7 @@ import {
 } from "./images";
 import {generateImagesObjs} from "../../../utils/utils";
 
-export const getProducts = () => db.any("SELECT * from products");
+export const getProducts = () => db.any(products.getAll);
 
 export const getProductById = productId =>
 	db.one("SELECT * FROM products_with_images WHERE id=$1", productId)
@@ -54,3 +55,5 @@ export const deleteProduct = productId =>
 	getImagesOfProduct(productId)
 		.then(deleteImagesFromDisk)
 		.then(deleteProductFromDB.bind(void 0, productId));
+
+export const truncateProducts = () => db.none(products.truncate);

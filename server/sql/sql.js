@@ -8,7 +8,13 @@ function sql(file) {
 }
 
 export const categories = {
-	get:    sql('categories/get.sql'),
-	add:    sql('categories/add.sql'),
-	delete: sql('categories/delete.sql')
+	get:      sql("categories/get.sql"),
+	add:      sql("categories/add.sql"),
+	truncate: sql("categories/truncate.sql")
 };
+
+export const products = {
+	getAll:   sql("products/getAll.sql"),
+	truncate: sql("products/truncate.sql")
+};
+

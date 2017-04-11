@@ -1,6 +1,6 @@
 import chai from "chai";
 import request from "supertest";
-import {addCategories, deleteCategories} from "../../server/api/services/categories";
+import {addCategories, truncateCategories} from "../../server/api/services/categories";
 import createServer from "../../server/server";
 
 chai.should();
@@ -12,7 +12,7 @@ describe("Categories", function () {
 		beforeEach(function () {
 			server = createServer();
 
-			return deleteCategories();
+			return truncateCategories();
 		});
 
 		afterEach(function (done) {

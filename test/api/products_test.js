@@ -1,6 +1,7 @@
 import chai from "chai";
 import request from "supertest";
 import createServer from "../../server/server";
+import {truncateProducts} from "../../server/api/services/products";
 
 chai.should();
 
@@ -9,6 +10,8 @@ let server = {};
 describe("Products", function () {
 	beforeEach(function () {
 		server = createServer();
+
+		truncateProducts();
 	});
 
 	afterEach(function (done) {

@@ -8,4 +8,4 @@ export const getCategories = () => db.any(categories.get);
 
 export const addCategories = categories => Promise.all(wrapDataInPromise(categories, addCategoryToDB));
 
-export const deleteCategories = () => db.none(categories.delete);
+export const truncateCategories = () => db.none(categories.truncate);
