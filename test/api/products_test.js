@@ -12,10 +12,11 @@ chai.should();
 
 let server = {};
 
-const addRandomProducts = () =>
+const addRandomProduct = () =>
 	addCategories()
 		.then(addUsers)
-		.then(addProducts);
+		.then(addProducts)
+		.then(products => sample(products));
 
 describe("Products", function () {
 	beforeEach(function () {
@@ -42,11 +43,11 @@ describe("Products", function () {
 	});
 
 	describe("GET /products/:productId", function () {
-		it("should get a product with the given id", function () {
+		it("should get a product by the given id", function () {
 			let productId = "";
 
-			return addRandomProducts()
-				.then(products => productId = sample(products).uuid)
+			return addRandomProduct()
+				.then(product => productId = product.uuid)
 				.then(() =>
 					request(server)
 						.get(`/api/products/${productId}`)
@@ -54,7 +55,17 @@ describe("Products", function () {
 				.then(response => {
 					response.status.should.equal(200);
 					response.body.should.be.instanceOf(Object);
-					response.body.should.have.property("id", productId);
+					response.body.should.contain.all.keys([
+						"id",
+						"name",
+						"description",
+						"images",
+						"owner",
+						"category",
+						"createdAt",
+						"price"
+					]);
+					response.body.should.have.property("id").equal(productId);
 				});
 		});
 	});
