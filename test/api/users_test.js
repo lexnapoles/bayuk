@@ -50,11 +50,7 @@ describe("users", function () {
 				.then(response => {
 					const tokenPayload = jwt.verify(response.body.data, process.env.JWT_SECRET);
 
-					tokenPayload.should.have.property("id");
-					tokenPayload.should.have.property("name");
-					tokenPayload.should.have.property("email");
-					tokenPayload.should.have.property("location");
-					tokenPayload.should.have.property("image");
+					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
 				})
 		});
 	});
@@ -74,6 +70,25 @@ describe("users", function () {
 						.expect(201)
 						.expect("Location", /\/api\/users\/.+/)
 				);
+		});
+
+		it("should return a valid jwt with user info when successfully login a user", function () {
+			const user = getUser();
+
+			return addUser(user)
+				.then(() =>
+					request(server)
+						.post("/api/login")
+						.send({
+							email:    user.email,
+							password: user.password
+						})
+						.expect(201))
+				.then(response => {
+					const tokenPayload = jwt.verify(response.body.data, process.env.JWT_SECRET);
+
+					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
+				});
 		});
 	});
 });
