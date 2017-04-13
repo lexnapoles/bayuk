@@ -1,11 +1,12 @@
 import {sendJsonResponse} from "../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../services/products";
-import transformProduct from "../transformers/products";
+import {transformProduct} from "../transformers/products";
+import {respondWithArray, respondWithItem} from "../transformers/responses";
 import {has} from "lodash/object";
 
 export const readProducts = (req, res) =>
 	getProducts()
-		.then(products => products.map(transformProduct))
+		.then(products => respondWithArray(products, transformProduct))
 		.then(products => sendJsonResponse(res, 200, products))
 		.catch(error => sendJsonResponse(res, 404, {
 			message: error
@@ -22,7 +23,7 @@ export const readOneProduct = (req, res) => {
 	const {productId} = req.params;
 
 	getProductById(productId)
-		.then(transformProduct)
+		.then(product => respondWithItem(product, transformProduct))
 		.then(product => sendJsonResponse(res, 200, product))
 		.catch(error => sendJsonResponse(res, 404, {
 			message: error

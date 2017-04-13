@@ -35,9 +35,10 @@ describe("Products", function () {
 				.get("/api/products")
 				.expect(200)
 				.then(response => {
-					response.status.should.equal(200);
-					response.body.should.be.instanceOf(Array);
-					response.body.should.have.lengthOf(0);
+					response.body.should.have.property("data");
+
+					response.body.data.should.be.instanceOf(Array);
+					response.body.data.should.have.lengthOf(0);
 				})
 		});
 	});
@@ -53,9 +54,10 @@ describe("Products", function () {
 						.get(`/api/products/${productId}`)
 						.expect(200))
 				.then(response => {
-					response.status.should.equal(200);
-					response.body.should.be.instanceOf(Object);
-					response.body.should.contain.all.keys([
+					response.body.should.have.property("data");
+
+					response.body.data.should.be.instanceOf(Object);
+					response.body.data.should.contain.all.keys([
 						"id",
 						"name",
 						"description",
@@ -65,7 +67,7 @@ describe("Products", function () {
 						"createdAt",
 						"price"
 					]);
-					response.body.should.have.property("id").equal(productId);
+					response.body.data.should.have.property("id").equal(productId);
 				});
 		});
 	});

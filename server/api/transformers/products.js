@@ -1,4 +1,4 @@
-export default product => ({
+export const transformProduct = product => ({
 	id:          product.uuid,
 	name:        product.name,
 	images:      [],
@@ -7,4 +7,4 @@ export default product => ({
 	category:    product.category,
 	createdAt:   product.created_at,
 	price:       product.price
-})
+});

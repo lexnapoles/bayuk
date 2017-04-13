@@ -30,8 +30,9 @@ describe("Categories", function () {
 						.get("/api/categories")
 						.expect(200))
 				.then(response => {
-					response.body.should.be.instanceOf(Array);
-					response.body.should.be.deep.equal(categories)
+					response.body.should.have.property("data");
+					response.body.data.should.be.instanceOf(Array);
+					response.body.data.should.be.deep.equal(categories)
 				});
 		});
 	});
