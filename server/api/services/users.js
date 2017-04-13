@@ -22,5 +22,5 @@ export const addUser = ({email, name, password, location}) =>
 		.then(credentials => addUserToDB({email, name, location, credentials}))
 		.then(user => ({
 			user,
-			token:  createJwt(user)
+			token: createJwt(user)
 		}));

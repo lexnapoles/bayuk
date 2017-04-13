@@ -33,7 +33,7 @@ const addReviewToDB = review =>
 const addAllReviewsToDB = reviews => Promise.all(wrapDataInPromise(reviews, addReviewToDB));
 
 export default users => {
-	const ids     = Array.from(users, ({uuid}) => uuid),
+	const ids     = Array.from(users, ({id}) => id),
 				reviews = times(MAX_REVIEWS, getReview.bind(void 0, ids));
 
 	return addAllReviewsToDB(reviews)

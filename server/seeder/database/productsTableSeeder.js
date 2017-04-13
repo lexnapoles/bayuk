@@ -19,7 +19,7 @@ export const getProduct = userId => ({
 const addAllProductsToDB = products => Promise.all(wrapDataInPromise(products, addProductWithAllFields));
 
 export default users => {
-	const userIds  = Array.from(users, ({uuid}) => uuid),
+	const userIds  = Array.from(users, ({id}) => id),
 				products = times(MAX_PRODUCTS, getProduct.bind(void 0, sample(userIds)));
 
 	return addAllProductsToDB(products)
