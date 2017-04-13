@@ -5,6 +5,7 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import faker from "faker";
 import jwt from "jsonwebtoken";
+import {pick} from "lodash/object";
 
 chai.should();
 
@@ -22,8 +23,7 @@ describe("users", function () {
 	});
 
 	describe("POST /register", function () {
-
-		it("should return a 201 and a location header when sucessful", function () {
+		it("should register a user", function () {
 			const user = {
 				name:     "John Smith",
 				email:    "john@smith.com",
@@ -42,7 +42,7 @@ describe("users", function () {
 				.expect("Location", /\/api\/users\/.+/);
 		});
 
-		it("should return a valid Json Web Token with the user info when sucessful", function () {
+		it("should return a valid jwt with user info when successfully registering a user", function () {
 			const user = {
 				name:     "John Smith",
 				email:    "john@smith.com",
@@ -66,6 +66,35 @@ describe("users", function () {
 					tokenPayload.should.have.property("location");
 					tokenPayload.should.have.property("image");
 				})
+		});
+	});
+
+	describe("POST /login", function () {
+		it("should login a user", function () {
+			const user = {
+				name:     "John Smith",
+				email:    "john@smith.com",
+				password: "john123",
+				location: {
+					latitude:  faker.address.latitude(),
+					longitude: faker.address.longitude()
+				}
+			};
+
+			return request(server)
+				.post("/api/register")
+				.send(user)
+				.expect(201)
+				.then(() =>
+					request(server)
+						.post("/api/login")
+						.send({
+							email:    user.email,
+							password: user.password
+						})
+						.expect(201)
+						.expect("Location", /\/api\/users\/.+/)
+				)
 		});
 	});
 });

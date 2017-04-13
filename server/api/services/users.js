@@ -3,14 +3,14 @@ import {users} from "../../sql/sql";
 import {createJwt, setPassword} from "./authentication";
 
 export const getUsers = () =>
-	db.any("SELECT * FROM users_details")
+	db.any("SELECT * FROM users_with_images")
 		.catch(() => Promise.reject("User could not be found"));
 
 export const getUserByEmail = email =>
-	db.one("SELECT * from users_details WHERE email=$1", email);
+	db.one("SELECT * from users_with_images WHERE email=$1", email);
 
 export const getUserById = id =>
-	db.one("SELECT * from users_details WHERE id=$1", id);
+	db.one("SELECT * from users_with_images WHERE id=$1", id);
 
 export const getCredentials = email =>
 	db.one("SELECT hash, salt from users WHERE email=$1", email);

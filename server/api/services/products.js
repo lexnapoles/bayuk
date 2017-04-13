@@ -56,4 +56,4 @@ export const deleteProduct = productId =>
 		.then(deleteImagesFromDisk)
 		.then(deleteProductFromDB.bind(void 0, productId));
 
-export const addProductWithAllFields = product => db.none(products.addProductWithAllFields, product);
+export const addProductWithAllFields = product => db.none(products.addWithAllFields, product);

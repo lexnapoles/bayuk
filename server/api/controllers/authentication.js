@@ -23,7 +23,7 @@ export const register = (req, res) => {
 };
 
 export const login = (req, res) => {
-	if (!has(req, "body") && !hasProperties(req.body, ["email", "password"])) {
+	if (!has(req, "body") || !hasProperties(req.body, ["email", "password"])) {
 		sendJsonResponse(res, 400, {
 			"message": "All fields required"
 		});
@@ -37,7 +37,8 @@ export const login = (req, res) => {
 		}
 
 		if (user) {
-			sendJsonResponse(res, 200, {token: createJwt(user)});
+			res.location(`/api/users/${user.id}`);
+			sendJsonResponse(res, 201, {data: createJwt(user)});
 		}
 		else {
 			sendJsonResponse(res, 401, info);
