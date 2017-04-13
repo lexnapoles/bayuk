@@ -18,6 +18,10 @@ export const products = {
 	addProductWithAllFields: sql("products/addProductWithAllFields.sql")
 };
 
+export const users = {
+	add: sql("users/add.sql")
+};
+
 export const global = {
 	truncateAll: sql("global/truncateAll.sql")
 };

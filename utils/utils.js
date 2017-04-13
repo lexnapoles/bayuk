@@ -65,7 +65,7 @@ export const getErrorMessage = payload => {
 export const getImagePath = (entity, imageId) => {
 	imageId = imageId ? imageId : "default";
 
-	return	`/image/${entity}/${imageId}.jpg`;
+	return `/image/${entity}/${imageId}.jpg`;
 };
 
 export const isNotEmpty = value => !isEmpty(value);

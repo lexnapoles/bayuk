@@ -15,7 +15,10 @@ export const register = (req, res) => {
 	}
 
 	addUser(req.body)
-		.then(token => sendJsonResponse(res, 201, respondWithItem(token)))
+		.then(({user, token}) => {
+			res.location(`/api/users/${user.id}`);
+			sendJsonResponse(res, 201, respondWithItem(token))
+		})
 		.catch(error => sendJsonResponse(res, 404,  {error}));
 };
 
