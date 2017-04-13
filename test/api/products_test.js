@@ -1,22 +1,24 @@
-import {sample} from "lodash/collection";
 import chai from "chai";
 import request from "supertest";
 import createServer from "../../server/server";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
+import {addUser} from "../../server/api/services/users"
+import {addProductWithAllFields} from "../../server/api/services/products"
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
-import addUsers from "../../server/seeder/database/usersTableSeeder";
-import addProducts from "../../server/seeder/database/productsTableSeeder";
+import {getUser} from "../../server/seeder/database/usersTableSeeder";
+import {getProduct} from "../../server/seeder/database/productsTableSeeder";
 
 chai.should();
 
 let server = {};
 
-const addRandomProduct = () =>
-	addCategories()
-		.then(addUsers)
-		.then(addProducts)
-		.then(products => sample(products));
+
+const addRandomProduct = () => {
+	return addCategories()
+		.then(() => addUser(getUser()))
+		.then(({user}) => addProductWithAllFields(getProduct(user.id)));
+};
 
 describe("Products", function () {
 	beforeEach(function () {
@@ -48,7 +50,7 @@ describe("Products", function () {
 			let productId = "";
 
 			return addRandomProduct()
-				.then(product => productId = product.uuid)
+				.then(product => productId = product.id)
 				.then(() =>
 					request(server)
 						.get(`/api/products/${productId}`)

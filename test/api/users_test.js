@@ -3,6 +3,8 @@ import request from "supertest";
 import createServer from "../../server/server";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
+import {addUser} from "../../server/api/services/users";
+import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import faker from "faker";
 import jwt from "jsonwebtoken";
 
@@ -24,15 +26,14 @@ describe("users", function () {
 	describe("POST /register", function () {
 		it("should register a user", function () {
 			const user = {
-				name:     "John Smith",
-				email:    "john@smith.com",
-				password: "john123",
+				email:    faker.internet.email(),
+				name:     faker.name.findName(),
+				password: faker.internet.password(),
 				location: {
 					latitude:  faker.address.latitude(),
 					longitude: faker.address.longitude()
 				}
 			};
-
 
 			return request(server)
 				.post("/api/register")
@@ -42,19 +43,9 @@ describe("users", function () {
 		});
 
 		it("should return a valid jwt with user info when successfully registering a user", function () {
-			const user = {
-				name:     "John Smith",
-				email:    "john@smith.com",
-				password: "john123",
-				location: {
-					latitude:  faker.address.latitude(),
-					longitude: faker.address.longitude()
-				}
-			};
-
 			return request(server)
 				.post("/api/register")
-				.send(user)
+				.send(getUser())
 				.expect(201)
 				.then(response => {
 					const tokenPayload = jwt.verify(response.body.data, process.env.JWT_SECRET);
@@ -70,20 +61,9 @@ describe("users", function () {
 
 	describe("POST /login", function () {
 		it("should login a user", function () {
-			const user = {
-				name:     "John Smith",
-				email:    "john@smith.com",
-				password: "john123",
-				location: {
-					latitude:  faker.address.latitude(),
-					longitude: faker.address.longitude()
-				}
-			};
+			const user = getUser();
 
-			return request(server)
-				.post("/api/register")
-				.send(user)
-				.expect(201)
+			return addUser(user)
 				.then(() =>
 					request(server)
 						.post("/api/login")
@@ -93,7 +73,7 @@ describe("users", function () {
 						})
 						.expect(201)
 						.expect("Location", /\/api\/users\/.+/)
-				)
+				);
 		});
 	});
 });
