@@ -5,7 +5,6 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import faker from "faker";
 import jwt from "jsonwebtoken";
-import {pick} from "lodash/object";
 
 chai.should();
 

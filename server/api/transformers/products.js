@@ -1,7 +1,7 @@
 export const transformProduct = product => ({
-	id:          product.uuid,
+	id:          product.id,
 	name:        product.name,
-	images:      [],
+	images:      product.images,
 	owner:       product.owner,
 	description: product.description,
 	category:    product.category,

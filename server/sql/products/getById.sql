@@ -1,1 +1,1 @@
-SELECT * FROM products WHERE uuid = ${productId}
+SELECT * FROM products_with_images WHERE id = ${productId};
