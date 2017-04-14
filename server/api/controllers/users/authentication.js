@@ -1,20 +1,10 @@
 import passport from "passport";
-import {sendJsonResponse} from "../../../utils/utils";
-import {addUser} from "../services/users";
-import {createJwt} from "../services/authentication";
-import {fieldNotFound} from "./users/errors";
+import {sendJsonResponse} from "../../../../utils/utils";
+import {addUser} from "../../services/users";
+import {createJwt} from "../../services/authentication";
 import {has} from "lodash/object";
-import {hasProperties} from "../../../utils/utils";
-
-const validateUserBody = (user) => {
-	const fields = ["email", "name", "password"];
-
-	return fields.reduce((errors, field) =>
-			!has(user, field)
-				? [...errors, fieldNotFound(field)]
-				: errors
-		, []);
-};
+import {hasProperties} from "../../../../utils/utils";
+import {validateUserBody} from "./validators";
 
 export const register = (req, res) => {
 	if (!has(req, "body") || !hasProperties(req.body, ["email", "name", "password"])) {
