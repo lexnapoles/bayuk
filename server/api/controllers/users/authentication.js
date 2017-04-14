@@ -5,13 +5,20 @@ import {createJwt} from "../../services/authentication";
 import {has} from "lodash/object";
 import {hasProperties} from "../../../../utils/utils";
 import {validateUserBody} from "./validators";
+import {validateRequest} from "../validators";
 
 export const register = (req, res) => {
-	if (!has(req, "body") || !hasProperties(req.body, ["email", "name", "password"])) {
-		const errors = validateUserBody(req.body);
+	const requestErrors = validateRequest(req, "body");
 
-		sendJsonResponse(res, 400, errors);
+	if (requestErrors.length) {
+		sendJsonResponse(res, 400, requestErrors);
+		return;
+	}
 
+	const userBodyErrors = validateUserBody(req.body);
+
+	if (userBodyErrors.length) {
+		sendJsonResponse(res, 400, userBodyErrors);
 		return;
 	}
 

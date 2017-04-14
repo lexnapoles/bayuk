@@ -6,6 +6,7 @@ import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {fieldNotFound} from "../../server/api/controllers/users/errors";
+import {dataNotFound} from "../../server/api/controllers/errors";
 import faker from "faker";
 import jwt from "jsonwebtoken";
 
@@ -55,7 +56,31 @@ describe("users", function () {
 				})
 		});
 
-		it("should fail if any required field is not found", function () {
+		it("should fail when no data has been sent", function () {
+			return request(server)
+				.post("/api/register")
+				.expect(400)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no data has been sent", function () {
+			return request(server)
+				.post("/api/register")
+				.expect(400)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(dataNotFound("body"));
+				});
+		});
+
+
+		it("should fail when any of the required fields is not sent", function () {
 			const user = {
 				email:    faker.internet.email(),
 				password: faker.internet.password(),
@@ -77,7 +102,7 @@ describe("users", function () {
 				});
 		});
 
-		it("should provide an error for any field that is not found", function () {
+		it("should provide an error for any field that is not sent", function () {
 			const user = {
 				password: faker.internet.password(),
 				location: {
@@ -99,7 +124,7 @@ describe("users", function () {
 				})
 		});
 
-		it("should provide specific errors for each field", function () {
+		it("should provide detailed errors for each field", function () {
 			const user = {
 				password: faker.internet.password(),
 				location: {

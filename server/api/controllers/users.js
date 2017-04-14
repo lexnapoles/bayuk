@@ -8,6 +8,7 @@ export const readUsers = (req, res) =>
 		.catch(error => sendJsonResponse(res, 404, {"message": error}));
 
 export const readOneUser = (req, res) => {
+
 	if (!has(req, "params") && !has(req.params, "userId")) {
 		sendJsonResponse(res, 404, {
 			"message": "No userId in request"
