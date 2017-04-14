@@ -1,5 +1,6 @@
 import chai from "chai";
 import request from "supertest";
+import faker from "faker";
 import createServer from "../../server/server";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
@@ -8,11 +9,11 @@ import {addProductWithAllFields} from "../../server/api/services/products"
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {getProduct} from "../../server/seeder/database/productsTableSeeder";
+import {notFoundError} from "../../server/api/controllers/products/errors";
 
 chai.should();
 
 let server = {};
-
 
 const addRandomProduct = () => {
 	return addCategories()
@@ -37,10 +38,8 @@ describe("Products", function () {
 				.get("/api/products")
 				.expect(200)
 				.then(response => {
-					response.body.should.have.property("data");
-
-					response.body.data.should.be.instanceOf(Array);
-					response.body.data.should.have.lengthOf(0);
+					response.body.should.be.instanceOf(Array);
+					response.body.should.have.lengthOf(0);
 				})
 		});
 	});
@@ -56,10 +55,8 @@ describe("Products", function () {
 						.get(`/api/products/${productId}`)
 						.expect(200))
 				.then(response => {
-					response.body.should.have.property("data");
-
-					response.body.data.should.be.instanceOf(Object);
-					response.body.data.should.contain.all.keys([
+					response.body.should.be.instanceOf(Object);
+					response.body.should.contain.all.keys([
 						"id",
 						"name",
 						"description",
@@ -69,7 +66,36 @@ describe("Products", function () {
 						"createdAt",
 						"price"
 					]);
-					response.body.data.should.have.property("id").equal(productId);
+					response.body.should.have.property("id").equal(productId);
+				});
+		});
+
+		it("should fail if there's no product with the given id", function () {
+			const nonExistentProduct = faker.random.uuid();
+
+			return request(server)
+				.get(`/api/products/${nonExistentProduct}`)
+				.expect(404)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should have a detailed error object when failing to find a product", function () {
+			const nonExistentProduct = faker.random.uuid();
+
+			return request(server)
+				.get(`/api/products/${nonExistentProduct}`)
+				.expect(404)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.contain.all.keys(["code", "title", "details"]);
+
+					error.should.be.deep.equal(notFoundError());
 				});
 		});
 	});

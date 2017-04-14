@@ -48,7 +48,7 @@ describe("users", function () {
 				.send(getUser())
 				.expect(201)
 				.then(response => {
-					const tokenPayload = jwt.verify(response.body.data, process.env.JWT_SECRET);
+					const tokenPayload = jwt.verify(response.body, process.env.JWT_SECRET);
 
 					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
 				})
@@ -85,7 +85,7 @@ describe("users", function () {
 						})
 						.expect(201))
 				.then(response => {
-					const tokenPayload = jwt.verify(response.body.data, process.env.JWT_SECRET);
+					const tokenPayload = jwt.verify(response.body, process.env.JWT_SECRET);
 
 					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
 				});

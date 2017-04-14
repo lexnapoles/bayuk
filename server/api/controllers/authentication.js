@@ -2,7 +2,6 @@ import passport from "passport";
 import {sendJsonResponse} from "../../../utils/utils";
 import {addUser} from "../services/users";
 import {createJwt} from "../services/authentication";
-import {respondWithItem} from "../transformers/responses";
 import {has} from "lodash/object";
 import {hasProperties} from "../../../utils/utils";
 
@@ -17,7 +16,7 @@ export const register = (req, res) => {
 	addUser(req.body)
 		.then(({user, token}) => {
 			res.location(`/api/users/${user.id}`);
-			sendJsonResponse(res, 201, respondWithItem(token))
+			sendJsonResponse(res, 201, token);
 		})
 		.catch(error => sendJsonResponse(res, 404,  {error}));
 };
@@ -38,7 +37,7 @@ export const login = (req, res) => {
 
 		if (user) {
 			res.location(`/api/users/${user.id}`);
-			sendJsonResponse(res, 201, {data: createJwt(user)});
+			sendJsonResponse(res, 201, createJwt(user));
 		}
 		else {
 			sendJsonResponse(res, 401, info);
