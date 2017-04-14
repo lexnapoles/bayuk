@@ -2,14 +2,26 @@ import passport from "passport";
 import {sendJsonResponse} from "../../../utils/utils";
 import {addUser} from "../services/users";
 import {createJwt} from "../services/authentication";
+import {fieldNotFound} from "./users/errors";
 import {has} from "lodash/object";
 import {hasProperties} from "../../../utils/utils";
 
+const validateUserBody = (user) => {
+	const fields = ["email", "name", "password"];
+
+	return fields.reduce((errors, field) =>
+			!has(user, field)
+				? [...errors, fieldNotFound(field)]
+				: errors
+		, []);
+};
+
 export const register = (req, res) => {
 	if (!has(req, "body") || !hasProperties(req.body, ["email", "name", "password"])) {
-		sendJsonResponse(res, 400, {
-			"message": "All fields required"
-		});
+		const errors = validateUserBody(req.body);
+
+		sendJsonResponse(res, 400, errors);
+
 		return;
 	}
 
@@ -18,7 +30,7 @@ export const register = (req, res) => {
 			res.location(`/api/users/${user.id}`);
 			sendJsonResponse(res, 201, token);
 		})
-		.catch(error => sendJsonResponse(res, 404,  {error}));
+		.catch(error => sendJsonResponse(res, 404, {error}));
 };
 
 export const login = (req, res) => {

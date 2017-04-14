@@ -5,6 +5,7 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
+import {fieldNotFound} from "../../server/api/controllers/users/errors";
 import faker from "faker";
 import jwt from "jsonwebtoken";
 
@@ -52,6 +53,73 @@ describe("users", function () {
 
 					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
 				})
+		});
+
+		it("should fail if any required field is not found", function () {
+			const user = {
+				email:    faker.internet.email(),
+				password: faker.internet.password(),
+				location: {
+					latitude:  faker.address.latitude(),
+					longitude: faker.address.longitude()
+				}
+			};
+
+			return request(server)
+				.post("/api/register")
+				.send(user)
+				.expect(400)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide an error for any field that is not found", function () {
+			const user = {
+				password: faker.internet.password(),
+				location: {
+					latitude:  faker.address.latitude(),
+					longitude: faker.address.longitude()
+				}
+			};
+
+			const FIELDS_DELETED = 2;
+
+			return request(server)
+				.post("/api/register")
+				.send(user)
+				.expect(400)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.have.lengthOf(FIELDS_DELETED);
+				})
+		});
+
+		it("should provide specific errors for each field", function () {
+			const user = {
+				password: faker.internet.password(),
+				location: {
+					latitude:  faker.address.latitude(),
+					longitude: faker.address.longitude()
+				}
+			};
+
+			return request(server)
+				.post("/api/register")
+				.send(user)
+				.expect(400)
+				.then(response => {
+					const errors = response.body;
+
+					const emailError = fieldNotFound("email"),
+								nameError  = fieldNotFound("name");
+
+					errors.should.deep.include.members([emailError, nameError]);
+				});
 		});
 	});
 
