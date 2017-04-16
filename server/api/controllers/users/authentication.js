@@ -2,8 +2,6 @@ import passport from "passport";
 import {sendJsonResponse} from "../../../../utils/utils";
 import {addUser} from "../../services/users";
 import {createJwt} from "../../services/authentication";
-import {has} from "lodash/object";
-import {hasProperties} from "../../../../utils/utils";
 import {validateUserBody} from "./validators";
 import {validateRequest} from "../validators";
 import {userAlreadyExists} from "./errors";
@@ -16,7 +14,8 @@ export const register = (req, res) => {
 		return;
 	}
 
-	const userBodyErrors = validateUserBody(req.body);
+	const userFields = ["email", "password", "name"],
+				userBodyErrors = validateUserBody(req.body, userFields);
 
 	if (userBodyErrors.length) {
 		sendJsonResponse(res, 400, userBodyErrors);
@@ -36,10 +35,18 @@ export const register = (req, res) => {
 };
 
 export const login = (req, res) => {
-	if (!has(req, "body") || !hasProperties(req.body, ["email", "password"])) {
-		sendJsonResponse(res, 400, {
-			"message": "All fields required"
-		});
+	const requestErrors = validateRequest(req, "body");
+
+	if (requestErrors.length) {
+		sendJsonResponse(res, 400, requestErrors);
+		return;
+	}
+
+	const userFields = ["email", "password"],
+				userBodyErrors = validateUserBody(req.body, userFields);
+
+	if (userBodyErrors.length) {
+		sendJsonResponse(res, 400, userBodyErrors);
 		return;
 	}
 

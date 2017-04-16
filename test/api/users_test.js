@@ -219,7 +219,63 @@ describe("Users", function () {
 				});
 		});
 
-		it("should fail if there user is not registered", function () {
+		it("should fail when no data has been sent", function () {
+			return request(server)
+				.post("/api/login")
+				.expect(400)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no data has been sent", function () {
+			return request(server)
+				.post("/api/login")
+				.expect(400)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(dataNotFound("body"));
+				});
+		});
+
+		it("should fail when any of the required fields is not sent", function () {
+			const user = getUser();
+
+			return request(server)
+				.post("/api/login")
+				.send({
+					password: user.password
+				})
+				.expect(400)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when any of the required fields is not sent", function () {
+			const user = getUser();
+
+			return request(server)
+				.post("/api/login")
+				.send({
+					password: user.password
+				})
+				.expect(400)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(fieldNotFound("email"));
+				});
+		});
+
+		it("should fail if the user is not registered", function () {
 			const user = getUser();
 
 			return request(server)
