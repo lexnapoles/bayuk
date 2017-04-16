@@ -5,7 +5,7 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
-import {fieldNotFound, userAlreadyExists} from "../../server/api/controllers/users/errors";
+import {fieldNotFound, userAlreadyExists, loginFailed} from "../../server/api/controllers/users/errors";
 import {dataNotFound} from "../../server/api/controllers/errors";
 import faker from "faker";
 import jwt from "jsonwebtoken";
@@ -216,6 +216,82 @@ describe("Users", function () {
 					const tokenPayload = jwt.verify(response.body, process.env.JWT_SECRET);
 
 					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
+				});
+		});
+
+		it("should fail if there user is not registered", function () {
+			const user = getUser();
+
+			return request(server)
+				.post("/api/login")
+				.send({
+					email:    user.email,
+					password: user.password
+				})
+				.expect(401)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				})
+		});
+
+		it("should provide a detailed error if user is not registered", function () {
+			const user = getUser();
+
+			return request(server)
+				.post("/api/login")
+				.send({
+					email:    user.email,
+					password: user.password
+				})
+				.expect(401)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(loginFailed());
+				});
+		});
+
+		it("should fail if any of the credentials is wrong", function () {
+			const user              = getUser(),
+						incorrectPassword = `Wrong ${user.password}`;
+
+			return addUser(user)
+				.then(() =>
+					request(server)
+						.post("/api/login")
+						.send({
+							email:    user.email,
+							password: incorrectPassword
+						})
+						.expect(401))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when any of the credentials is wrong", function () {
+			const user              = getUser(),
+						incorrectPassword = `Wrong ${user.password}`;
+
+			return addUser(user)
+				.then(() =>
+					request(server)
+						.post("/api/login")
+						.send({
+							email:    user.email,
+							password: incorrectPassword
+						})
+						.expect(401))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(loginFailed());
 				});
 		});
 	});

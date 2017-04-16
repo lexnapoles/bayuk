@@ -8,4 +8,10 @@ export const userAlreadyExists = () => ({
 	code:    "ERR-2002",
 	title:   "User already exists",
 	details: `Found a user with the same email`
-})
+});
+
+export const loginFailed = () => ({
+	code:    "ERR-2003",
+	title:   "Login has failed",
+	details: "Incorrect email or password"
+});

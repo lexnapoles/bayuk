@@ -52,9 +52,11 @@ export const login = (req, res) => {
 		if (user) {
 			res.location(`/api/users/${user.id}`);
 			sendJsonResponse(res, 201, createJwt(user));
+			return;
 		}
 		else {
-			sendJsonResponse(res, 401, info);
+			sendJsonResponse(res, 401, [info]);
+			return;
 		}
 	})(req, res);
 };
