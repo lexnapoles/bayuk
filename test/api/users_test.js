@@ -5,7 +5,7 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
-import {fieldNotFound} from "../../server/api/controllers/users/errors";
+import {fieldNotFound, userAlreadyExists} from "../../server/api/controllers/users/errors";
 import {dataNotFound} from "../../server/api/controllers/errors";
 import faker from "faker";
 import jwt from "jsonwebtoken";
@@ -14,7 +14,7 @@ chai.should();
 
 let server = {};
 
-describe("users", function () {
+describe("Users", function () {
 	beforeEach(function () {
 		server = createServer();
 
@@ -144,6 +144,41 @@ describe("users", function () {
 								nameError  = fieldNotFound("name");
 
 					errors.should.deep.include.members([emailError, nameError]);
+				});
+		});
+
+		it("should fail when there's already a user with the same email", function () {
+			const user = getUser();
+
+			return addUser(user)
+				.then(() =>
+					request(server)
+						.post("/api/register")
+						.send(user)
+						.expect(409)
+				)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when there's already a user with the same email", function () {
+			const user = getUser();
+
+			return addUser(user)
+				.then(() =>
+					request(server)
+						.post("/api/register")
+						.send(user)
+						.expect(409)
+				)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.deep.equal(userAlreadyExists());
 				});
 		});
 	});

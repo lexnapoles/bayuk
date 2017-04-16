@@ -6,6 +6,7 @@ import {has} from "lodash/object";
 import {hasProperties} from "../../../../utils/utils";
 import {validateUserBody} from "./validators";
 import {validateRequest} from "../validators";
+import {userAlreadyExists} from "./errors";
 
 export const register = (req, res) => {
 	const requestErrors = validateRequest(req, "body");
@@ -27,7 +28,11 @@ export const register = (req, res) => {
 			res.location(`/api/users/${user.id}`);
 			sendJsonResponse(res, 201, token);
 		})
-		.catch(error => sendJsonResponse(res, 404, {error}));
+		.catch(error => {
+			if (error.code === "23505") {
+				sendJsonResponse(res, 409, [userAlreadyExists()])
+			}
+		});
 };
 
 export const login = (req, res) => {
