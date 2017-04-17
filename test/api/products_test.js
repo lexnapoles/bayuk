@@ -10,8 +10,9 @@ import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
 import {getProduct} from "../../server/seeder/database/productsTableSeeder";
-import {notFoundError} from "../../server/api/controllers/products/errors";
+import {notFoundError, fieldNotFound} from "../../server/api/controllers/products/errors";
 import {dataNotFound} from "../../server/api/controllers/errors";
+
 chai.should();
 
 let server = {};
@@ -213,6 +214,53 @@ describe("Products", function () {
 						errors.should.not.be.empty;
 					}
 				);
+		});
+
+		it("should provide an error for any field that is not sent", function () {
+			const product = {
+				name:        "Ray Ban sunglasses",
+				description: "Good as new, original Ray Ban sunglasses",
+				category:    "Accessories"
+			};
+
+			const FIELDS_DELETED = 2;
+
+			return getAUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.send(product)
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.have.lengthOf(FIELDS_DELETED);
+				})
+		});
+
+		it("should provide detailed errors for each field", function () {
+			const product = {
+				name:        "Ray Ban sunglasses",
+				description: "Good as new, original Ray Ban sunglasses",
+				category:    "Accessories"
+			};
+
+			return getAUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.send(product)
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					const priceError  = fieldNotFound("price"),
+								imagesError = fieldNotFound("images");
+
+					errors.should.deep.include.members([priceError, imagesError]);
+				});
 		});
 	});
 })
