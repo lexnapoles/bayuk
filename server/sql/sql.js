@@ -16,7 +16,8 @@ export const products = {
 	getAll:           sql("products/getAll.sql"),
 	getById:          sql("products/getById.sql"),
 	addWithAllFields: sql("products/addWithAllFields.sql"),
-	add:              sql("products/add.sql")
+	add:              sql("products/add.sql"),
+	update:           sql("products/update.sql")
 };
 
 export const users = {

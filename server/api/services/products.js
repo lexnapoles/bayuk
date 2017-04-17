@@ -32,18 +32,11 @@ export const addProduct = product =>
 			return createdProduct;
 		});
 
-const updateProductFromDB = (productId, {name, description, category, price}) =>
-	db.func("update_product", [
-		productId,
-		name,
-		description,
-		category,
-		price
-	], queryResult.one);
+const updateProductFromDB = product => db.one(products.update, product);
 
-export const updateProduct = (productId, product) =>
-	updateImages(productId, product.images)
-		.then(updateProductFromDB.bind(void 0, productId, product));
+export const updateProduct = product =>
+	updateImages(product.id, product.images)
+		.then(() => updateProductFromDB(product));
 
 const deleteProductFromDB = productId => db.proc("delete_product", productId);
 

@@ -7,9 +7,9 @@ import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users"
 import {addProductWithAllFields} from "../../server/api/services/products"
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
-import {getUser} from "../../server/seeder/database/usersTableSeeder";
+import {getUser as getRandomUser} from "../../server/seeder/database/usersTableSeeder";
 import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
-import {getProduct as getRawProduct} from "../../server/seeder/database/productsTableSeeder";
+import {getProduct as getRandomProduct} from "../../server/seeder/database/productsTableSeeder";
 import {notFoundError, fieldNotFound} from "../../server/errors/api/productErrors";
 import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
 import {dataNotFound} from "../../server/errors/api/controllerErrors";
@@ -21,19 +21,43 @@ chai.should();
 let server = {};
 
 const addRandomProduct = () => {
-	return addCategories()
-		.then(() => addUser(getUser()))
-		.then(({user}) => addProductWithAllFields(getRawProduct(user.id)));
+	let owner = {};
+
+	return addUser(getRandomUser())
+		.then(userData => {
+			owner = userData;
+			return addProductWithAllFields(getRandomProduct(userData.user.id))
+		})
+		.then(product => ({
+			owner,
+			product
+		}))
+};
+
+const addProductThroughAPI = () => {
+	let token = "";
+
+	return getAUserToken()
+		.then(jwt => {
+			token = jwt;
+
+			return request(server)
+				.post("/api/products/")
+				.set("Authorization", `Bearer ${jwt}`)
+				.send(getProduct())
+				.expect(201)
+		})
+		.then(response => ({
+			token,
+			product: response.body
+		}));
 };
 
 const getAUserToken = () => {
-	return addCategories()
-		.then(() =>
-			request(server)
-				.post("/api/register")
-				.send(getUser())
-				.expect(201)
-		)
+	return request(server)
+		.post("/api/register")
+		.send(getRandomUser())
+		.expect(201)
 		.then(response => response.body);
 };
 
@@ -50,7 +74,7 @@ const getProduct = () => ({
 			AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
 			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
 			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
-			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`
+			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`,
 	]
 });
 
@@ -58,7 +82,8 @@ describe("Products", function () {
 	beforeEach(function () {
 		server = createServer();
 
-		return db.none(global.truncateAll);
+		return db.none(global.truncateAll)
+			.then(() => addCategories());
 	});
 
 	afterEach(function (done) {
@@ -84,7 +109,7 @@ describe("Products", function () {
 			let productId = "";
 
 			return addRandomProduct()
-				.then(product => productId = product.id)
+				.then(({product}) => productId = product.id)
 				.then(() =>
 					request(server)
 						.get(`/api/products/${productId}`)
@@ -139,7 +164,7 @@ describe("Products", function () {
 	});
 
 	describe("POST /products", function () {
-		it("should successfully add a product", function () {
+		it("should add a product", function () {
 			const product = {
 				name:        "Ray Ban sunglasses",
 				description: "Good as new, original Ray Ban sunglasses",
@@ -309,7 +334,7 @@ describe("Products", function () {
 		});
 
 		it("should fail when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getUser());
+			const validTokenForNonExistentUser = createJwt(getRandomUser());
 
 			return request(server)
 				.post("/api/products")
@@ -325,7 +350,7 @@ describe("Products", function () {
 		});
 
 		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getUser());
+			const validTokenForNonExistentUser = createJwt(getRandomUser());
 
 			return request(server)
 				.post("/api/products")
@@ -337,6 +362,37 @@ describe("Products", function () {
 
 					error.should.be.deep.equal(userDoesNotExist());
 				});
+		});
+	});
+
+	describe("PUT /products/:productId", function () {
+		it("should update a product", function () {
+			return addProductThroughAPI()
+				.then(({token, product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							price:       987,
+							description: "Updated product description"
+						})
+						.expect(200))
+				.then(response => {
+					const product = response.body;
+
+					product.should.contain.all.keys([
+						"id",
+						"name",
+						"description",
+						"images",
+						"owner",
+						"category",
+						"createdAt",
+						"price",
+						"sold"
+					]);
+				})
 		});
 	});
 });

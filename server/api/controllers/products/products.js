@@ -25,7 +25,7 @@ export const readOneProduct = (req, res) => {
 	const {productId} = req.params;
 
 	getProductById(productId)
-		.then(product => transformProduct(product))
+		.then(transformProduct)
 		.then(product => sendJsonResponse(res, 200, product))
 		.catch(() => sendJsonResponse(res, 404, [notFoundError()]));
 };
@@ -52,7 +52,7 @@ export const createProduct = (req, res) => {
 	};
 
 	addProduct(product)
-		.then(product => transformProduct(product))
+		.then(transformProduct)
 		.then(product => {
 			res.location(`/api/products/${product.id}`);
 			sendJsonResponse(res, 201, product)
@@ -61,7 +61,7 @@ export const createProduct = (req, res) => {
 };
 
 export const updateOneProduct = (req, res) => {
-	if (!has(req, "params") && !has(req.params, "productId")) {
+	if (!has(req, "params") || !has(req.params, "productId") || !req.params.productId.length) {
 		sendJsonResponse(res, 404, {
 			message: "No productId in request"
 		});
@@ -74,14 +74,12 @@ export const updateOneProduct = (req, res) => {
 		return;
 	}
 
-	const {productId} = req.params,
-				product     = req.body;
+	const product = req.body;
 
-	return updateProduct(productId, product)
+	return updateProduct(product)
+		.then(transformProduct)
 		.then(product => sendJsonResponse(res, 200, product))
-		.catch(() => sendJsonResponse(res, 404, {
-			message: "Product could not be updated"
-		}));
+		.catch(error => sendJsonResponse(res, 404, error));
 };
 
 export const deleteOneProduct = (req, res) => {
