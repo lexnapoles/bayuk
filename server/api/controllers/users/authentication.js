@@ -5,7 +5,7 @@ import {createJwt} from "../../services/authentication";
 import {validateUserBody} from "./validators";
 import {validateRequest} from "../validators";
 import {userAlreadyExists} from "./errors";
-
+import dbErrors from "../../databaseErrors";
 export const register = (req, res) => {
 	const requestErrors = validateRequest(req, "body");
 
@@ -28,8 +28,8 @@ export const register = (req, res) => {
 			sendJsonResponse(res, 201, token);
 		})
 		.catch(error => {
-			if (error.code === "23505") {
-				sendJsonResponse(res, 409, [userAlreadyExists()])
+			if (error.code === dbErrors.dataAlreadyExists) {
+				sendJsonResponse(res, 409, [userAlreadyExists()]);
 			}
 		});
 };
