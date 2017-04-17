@@ -43,10 +43,9 @@ export const createProduct = (req, res) => {
 	};
 
 	addProduct(product)
-		.then(msg => sendJsonResponse(res, 201, msg))
-		.catch(() => sendJsonResponse(res, 404, {
-			message: "Could not add product"
-		}));
+		.then(product => transformProduct(product))
+		.then(product => sendJsonResponse(res, 201, product))
+		.catch(error => sendJsonResponse(res, 404, error));
 };
 
 export const updateOneProduct = (req, res) => {

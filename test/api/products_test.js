@@ -21,6 +21,17 @@ const addRandomProduct = () => {
 		.then(({user}) => addProductWithAllFields(getProduct(user.id)));
 };
 
+const getAUserToken = () => {
+	return addCategories()
+		.then(() =>
+			request(server)
+				.post("/api/register")
+				.send(getUser())
+				.expect(201)
+		)
+		.then(response => response.body);
+};
+
 describe("Products", function () {
 	beforeEach(function () {
 		server = createServer();
@@ -38,8 +49,9 @@ describe("Products", function () {
 				.get("/api/products")
 				.expect(200)
 				.then(response => {
-					response.body.should.be.instanceOf(Array);
-					response.body.should.have.lengthOf(0);
+					const products = response.body;
+					products.should.be.instanceOf(Array);
+					products.should.have.lengthOf(0);
 				})
 		});
 	});
@@ -55,8 +67,10 @@ describe("Products", function () {
 						.get(`/api/products/${productId}`)
 						.expect(200))
 				.then(response => {
-					response.body.should.be.instanceOf(Object);
-					response.body.should.contain.all.keys([
+					const product = response.body;
+
+					product.should.be.instanceOf(Object);
+					product.should.contain.all.keys([
 						"id",
 						"name",
 						"description",
@@ -64,9 +78,10 @@ describe("Products", function () {
 						"owner",
 						"category",
 						"createdAt",
-						"price"
+						"price",
+						"sold"
 					]);
-					response.body.should.have.property("id").equal(productId);
+					product.should.have.property("id").equal(productId);
 				});
 		});
 
@@ -99,4 +114,50 @@ describe("Products", function () {
 				});
 		});
 	});
-});
+
+	describe("POST /products", function () {
+		it("should successfully add a product", function () {
+			const product = {
+				name:        "Ray Ban sunglasses",
+				description: "Good as new, original Ray Ban sunglasses",
+				category:    "Accessories",
+				price:       50,
+				images:      [
+					`data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
+					LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
+					QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
+					AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
+					AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
+					AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
+					KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
+					rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`
+				]
+			};
+
+			return getAUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.send(product)
+						.expect(201)
+				)
+				.then(response => {
+					const product = response.body;
+
+					product.should.contain.all.keys([
+						"id",
+						"name",
+						"description",
+						"images",
+						"owner",
+						"category",
+						"createdAt",
+						"price",
+						"sold"
+					]);
+				})
+		});
+	});
+})
+;

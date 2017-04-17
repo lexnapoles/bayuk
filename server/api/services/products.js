@@ -14,15 +14,11 @@ export const getProductById = productId =>
 	db.one(products.getById, {productId})
 		.catch(() => Promise.reject("Product could not be found"));
 
-const addProductToDB = ({owner, name, description, category, price, images}) =>
-	db.func("add_product", [
-		owner,
-		name,
-		description,
-		category,
-		price,
-		images.length
-	], queryResult.one);
+const addProductToDB = product =>
+	db.one(products.add, {
+		...product,
+		images_count: product.images.length
+	});
 
 export const addProduct = product =>
 	addProductToDB(product)
