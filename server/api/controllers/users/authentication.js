@@ -4,8 +4,9 @@ import {addUser} from "../../services/users";
 import {createJwt} from "../../services/authentication";
 import {validateUserBody} from "./validators";
 import {validateRequest} from "../validators";
-import {userAlreadyExists} from "./errors";
-import dbErrors from "../../databaseErrors";
+import {userAlreadyExists} from "../../../errors/api/userErrors";
+import dbErrors from "../../../errors/database";
+
 export const register = (req, res) => {
 	const requestErrors = validateRequest(req, "body");
 

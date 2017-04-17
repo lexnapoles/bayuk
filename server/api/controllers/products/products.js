@@ -2,7 +2,7 @@ import {has} from "lodash/object";
 import {sendJsonResponse} from "../../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
-import {notFoundError} from "./errors";
+import {notFoundError}  from "../../../errors/api/productErrors";
 import {validateRequest} from "../validators";
 import {validateProductBody} from "./validators"
 

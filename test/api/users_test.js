@@ -5,8 +5,8 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
-import {fieldNotFound, userAlreadyExists, loginFailed} from "../../server/api/controllers/users/errors";
-import {dataNotFound} from "../../server/api/controllers/errors";
+import {fieldNotFound, userAlreadyExists, loginFailed} from "../../server/errors/api/userErrors";
+import {dataNotFound} from "../../server/errors/api/controllerErrors";
 import faker from "faker";
 import jwt from "jsonwebtoken";
 
