@@ -44,7 +44,10 @@ export const createProduct = (req, res) => {
 
 	addProduct(product)
 		.then(product => transformProduct(product))
-		.then(product => sendJsonResponse(res, 201, product))
+		.then(product => {
+			res.location(`/api/products/${product.id}`);
+			sendJsonResponse(res, 201, product)
+		})
 		.catch(error => sendJsonResponse(res, 404, error));
 };
 

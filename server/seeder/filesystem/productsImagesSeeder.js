@@ -15,7 +15,7 @@ const deleteFile = path =>
 		? fs.unlink(path)
 		: Promise.resolve(true);
 
-const cleanAllPreviouslyCreatedImages = () =>
+export const cleanAllPreviouslyCreatedImages = () =>
 	fs.readdir(path.join(process.env.IMAGESDIR, "products"))
 		.then(files => files.map(getImagePath))
 		.then(filePaths =>

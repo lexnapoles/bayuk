@@ -8,6 +8,7 @@ import {addUser} from "../../server/api/services/users"
 import {addProductWithAllFields} from "../../server/api/services/products"
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
+import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
 import {getProduct} from "../../server/seeder/database/productsTableSeeder";
 import {notFoundError} from "../../server/api/controllers/products/errors";
 
@@ -40,7 +41,8 @@ describe("Products", function () {
 	});
 
 	afterEach(function (done) {
-		server.close(done);
+		cleanAllPreviouslyCreatedImages()
+			.then(() => server.close(done));
 	});
 
 	describe("GET /products", function () {
@@ -141,6 +143,7 @@ describe("Products", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.send(product)
 						.expect(201)
+						.expect("Location", /\/api\/products\/.+/)
 				)
 				.then(response => {
 					const product = response.body;
