@@ -1,9 +1,4 @@
-import {has} from "lodash/object";
 import {fieldNotFound} from "./errors";
+import {validateBody} from "../validators";
 
-export const validateProductBody = (product, fields) =>
-	fields.reduce((errors, field) =>
-			!has(product, field)
-				? [...errors, fieldNotFound(field)]
-				: errors
-		, []);
+export const validateProductBody = (product, fields) => validateBody(product, fields, fieldNotFound);
