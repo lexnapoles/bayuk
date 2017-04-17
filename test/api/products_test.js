@@ -492,5 +492,31 @@ describe("Products", function () {
 					secondOldImage.should.be.a.file();
 				});
 		});
+
+		it("should delete the old images in the filesystem that are not included", function () {
+			let oldImagesIds = [];
+
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					oldImagesIds = product.images;
+
+					return request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							images: [oldImagesIds[0]]
+						})
+						.expect(200)
+				})
+				.then(() => {
+					const	firstOldImage  = getImagePath(oldImagesIds[0]),
+								secondOldImage = getImagePath(oldImagesIds[1]);
+
+					firstOldImage.should.be.a.file();
+
+					secondOldImage.should.not.be.a.path();
+				});
+		});
 	});
 });
