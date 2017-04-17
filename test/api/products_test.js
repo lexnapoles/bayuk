@@ -75,6 +75,15 @@ const getProduct = () => ({
 			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
 			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
 			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`,
+
+		`data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
+			LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
+			QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
+			AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
+			AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
+			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
+			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
+			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`,
 	]
 });
 
@@ -392,7 +401,33 @@ describe("Products", function () {
 						"price",
 						"sold"
 					]);
+				});
+		});
+
+		it("should update the images of a product", function () {
+			const images = [getProduct().images[0]];
+			let oldImages = [];
+
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					oldImages = product.images;
+
+					return request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							images
+						})
+						.expect(200)
 				})
+				.then(response => {
+					const {images} = response.body;
+
+					images.length.should.not.be.equal(oldImages.length);
+					images.should.be.lengthOf(1);
+					images.should.not.include.members(oldImages);
+				});
 		});
 	});
 });
