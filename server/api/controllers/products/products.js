@@ -1,9 +1,10 @@
+import {has} from "lodash/object";
 import {sendJsonResponse} from "../../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
 import {notFoundError} from "./errors";
 import {validateRequest} from "../validators";
-import {has} from "lodash/object";
+import {validateProductBody} from "./validators"
 
 export const readProducts = (req, res) =>
 	getProducts()
@@ -14,10 +15,10 @@ export const readProducts = (req, res) =>
 		}));
 
 export const readOneProduct = (req, res) => {
-	if (!has(req, "params") && !has(req.params, "productId")) {
-		sendJsonResponse(res, 400, {
-			message: "No productId in request"
-		});
+	const requestErrors = validateRequest(req, "params");
+
+	if (requestErrors.length) {
+		sendJsonResponse(res, 400, requestErrors);
 		return;
 	}
 
@@ -34,6 +35,14 @@ export const createProduct = (req, res) => {
 
 	if (requestErrors.length) {
 		sendJsonResponse(res, 400, requestErrors);
+		return;
+	}
+
+	const productFields     = ["name", "description", "images", "category", "price"],
+				productBodyErrors = validateProductBody(req.body, productFields);
+
+	if (productBodyErrors.length) {
+		sendJsonResponse(res, 400, productBodyErrors);
 		return;
 	}
 

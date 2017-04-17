@@ -191,6 +191,29 @@ describe("Products", function () {
 					}
 				);
 		});
+
+		it("should fail when any of the required fields is not sent", function () {
+			const product = {
+				name:        "Ray Ban sunglasses",
+				description: "Good as new, original Ray Ban sunglasses",
+				category:    "Accessories"
+			};
+
+			return getAUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.send(product)
+						.expect(400))
+				.then(response => {
+						const errors = response.body;
+
+						errors.should.be.instanceOf(Array);
+						errors.should.not.be.empty;
+					}
+				);
+		});
 	});
 })
 ;
