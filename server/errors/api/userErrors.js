@@ -10,8 +10,15 @@ export const userAlreadyExists = () => ({
 	details: `Found a user with the same email`
 });
 
-export const loginFailed = () => ({
+export const userDoesNotExist = () => ({
 	code:    "ERR-2003",
+	title:   "User doesn't exists",
+	details: `Given user can't be found`
+});
+
+export const loginFailed = () => ({
+	code:    "ERR-2004",
 	title:   "Login has failed",
 	details: "Incorrect email or password"
 });
+

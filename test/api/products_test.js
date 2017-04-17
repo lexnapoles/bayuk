@@ -9,10 +9,12 @@ import {addProductWithAllFields} from "../../server/api/services/products"
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
-import {getProduct} from "../../server/seeder/database/productsTableSeeder";
+import {getProduct as getRawProduct} from "../../server/seeder/database/productsTableSeeder";
 import {notFoundError, fieldNotFound} from "../../server/errors/api/productErrors";
 import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
 import {dataNotFound} from "../../server/errors/api/controllerErrors";
+import {createJwt} from "../../server/api/services/authentication"
+import {userDoesNotExist} from "../../server/errors/api/userErrors";
 
 chai.should();
 
@@ -21,7 +23,7 @@ let server = {};
 const addRandomProduct = () => {
 	return addCategories()
 		.then(() => addUser(getUser()))
-		.then(({user}) => addProductWithAllFields(getProduct(user.id)));
+		.then(({user}) => addProductWithAllFields(getRawProduct(user.id)));
 };
 
 const getAUserToken = () => {
@@ -34,6 +36,23 @@ const getAUserToken = () => {
 		)
 		.then(response => response.body);
 };
+
+const getProduct = () => ({
+	name:        "Ray Ban sunglasses",
+	description: "Good as new, original Ray Ban sunglasses",
+	category:    "Accessories",
+	price:       50,
+	images:      [
+		`data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
+			LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
+			QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
+			AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
+			AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
+			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
+			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
+			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`
+	]
+});
 
 describe("Products", function () {
 	beforeEach(function () {
@@ -265,26 +284,9 @@ describe("Products", function () {
 		});
 
 		it("should fail when no jwt token has been sent", function () {
-			const product = {
-				name:        "Ray Ban sunglasses",
-				description: "Good as new, original Ray Ban sunglasses",
-				category:    "Accessories",
-				price:       50,
-				images:      [
-					`data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
-					LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
-					QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
-					AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
-					AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
-					AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
-					KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
-					rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`
-				]
-			};
-
 			return request(server)
 				.post("/api/products")
-				.send(product)
+				.send(getProduct())
 				.expect(401)
 				.then(response => {
 					const errors = response.body;
@@ -295,31 +297,45 @@ describe("Products", function () {
 		});
 
 		it("should provide a detailed error when no jwt token has been sent", function () {
-			const product = {
-				name:        "Ray Ban sunglasses",
-				description: "Good as new, original Ray Ban sunglasses",
-				category:    "Accessories",
-				price:       50,
-				images:      [
-					`data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
-					LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
-					QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
-					AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
-					AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
-					AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
-					KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
-					rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`
-				]
-			};
-
 			return request(server)
 				.post("/api/products")
-				.send(product)
+				.send(getProduct())
 				.expect(401)
 				.then(response => {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
+
+		it("should fail when token is valid but the token's user can't be found", function () {
+			const validTokenForNonExistentUser = createJwt(getUser());
+
+			return request(server)
+				.post("/api/products")
+				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+				.send(getProduct())
+				.expect(404)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
+			const validTokenForNonExistentUser = createJwt(getUser());
+
+			return request(server)
+				.post("/api/products")
+				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+				.send(getProduct())
+				.expect(404)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(userDoesNotExist());
 				});
 		});
 	});
