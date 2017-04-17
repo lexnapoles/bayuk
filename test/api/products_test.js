@@ -462,5 +462,35 @@ describe("Products", function () {
 					secondOldImage.should.not.be.a.path();
 				});
 		});
+
+		it("should maintain the old images in the filesystem when they are included", function () {
+			const base64Image = getProduct().images[0];
+			let oldImagesIds = [];
+
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					oldImagesIds = product.images;
+
+					return request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							images: [...oldImagesIds, base64Image]
+						})
+						.expect(200)
+				})
+				.then(response => {
+					const {images: ids}  = response.body,
+								newImage       = getImagePath(ids[0]),
+								firstOldImage  = getImagePath(oldImagesIds[0]),
+								secondOldImage = getImagePath(oldImagesIds[1]);
+
+					newImage.should.be.a.file();
+
+					firstOldImage.should.be.a.file();
+					secondOldImage.should.be.a.file();
+				});
+		});
 	});
 });
