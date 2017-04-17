@@ -4,7 +4,7 @@ import fs from "fs-promise";
 import path from "path";
 import {isBase64, generateImagesObjs} from "../../../utils/utils";
 
-const getImagePath = id => `${path.join(process.env.IMAGESDIR, "/products", id)}.jpg`;
+export const getImagePath = id => `${path.join(process.env.IMAGESDIR, "/products", id)}.jpg`;
 
 const getDecodedImage = data => {
 	const img = data.replace(/^data:image\/\w+;base64,/, "");

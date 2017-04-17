@@ -1,10 +1,12 @@
 import chai from "chai";
+import chaiFs from "chai-fs";
 import request from "supertest";
 import faker from "faker";
 import createServer from "../../server/server";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users"
+import {getImagePath} from "../../server/api/services/images";
 import {addProductWithAllFields} from "../../server/api/services/products"
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser as getRandomUser} from "../../server/seeder/database/usersTableSeeder";
@@ -16,6 +18,7 @@ import {dataNotFound} from "../../server/errors/api/controllerErrors";
 import {createJwt} from "../../server/api/services/authentication"
 import {userDoesNotExist} from "../../server/errors/api/userErrors";
 
+chai.use(chaiFs);
 chai.should();
 
 let server = {};
@@ -427,6 +430,36 @@ describe("Products", function () {
 					images.length.should.not.be.equal(oldImages.length);
 					images.should.be.lengthOf(1);
 					images.should.not.include.members(oldImages);
+				});
+		});
+
+		it("should delete the old images and add the new ones in the filesystem", function () {
+			const base64Image = getProduct().images[0];
+			let oldImagesIds = [];
+
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					oldImagesIds = product.images;
+
+					return request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							images: [base64Image]
+						})
+						.expect(200)
+				})
+				.then(response => {
+					const {images: ids}  = response.body,
+								newImage       = getImagePath(ids[0]),
+								firstOldImage  = getImagePath(oldImagesIds[0]),
+								secondOldImage = getImagePath(oldImagesIds[1]);
+
+					newImage.should.be.a.file();
+
+					firstOldImage.should.not.be.a.path();
+					secondOldImage.should.not.be.a.path();
 				});
 		});
 	});
