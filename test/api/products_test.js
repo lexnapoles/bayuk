@@ -11,7 +11,7 @@ import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
 import {getProduct} from "../../server/seeder/database/productsTableSeeder";
 import {notFoundError} from "../../server/api/controllers/products/errors";
-
+import {dataNotFound} from "../../server/api/controllers/errors";
 chai.should();
 
 let server = {};
@@ -143,8 +143,7 @@ describe("Products", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.send(product)
 						.expect(201)
-						.expect("Location", /\/api\/products\/.+/)
-				)
+						.expect("Location", /\/api\/products\/.+/))
 				.then(response => {
 					const product = response.body;
 
@@ -159,7 +158,38 @@ describe("Products", function () {
 						"price",
 						"sold"
 					]);
-				})
+				});
+		});
+
+		it("should fail when no data has been sent", function () {
+			return getAUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+						const errors = response.body;
+
+						errors.should.be.instanceOf(Array);
+						errors.should.not.be.empty;
+					}
+				);
+		});
+
+		it("should provide a detailed error when no data has been sent", function () {
+			return getAUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+						const error = response.body[0];
+
+						error.should.be.deep.equal(dataNotFound("body"))
+					}
+				);
 		});
 	});
 })

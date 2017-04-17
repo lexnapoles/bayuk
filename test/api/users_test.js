@@ -173,8 +173,7 @@ describe("Users", function () {
 					request(server)
 						.post("/api/register")
 						.send(user)
-						.expect(409)
-				)
+						.expect(409))
 				.then(response => {
 					const error = response.body[0];
 
@@ -196,8 +195,7 @@ describe("Users", function () {
 							password: user.password
 						})
 						.expect(201)
-						.expect("Location", /\/api\/users\/.+/)
-				);
+						.expect("Location", /\/api\/users\/.+/));
 		});
 
 		it("should return a valid jwt with user info when successfully login a user", function () {

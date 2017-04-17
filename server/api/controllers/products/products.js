@@ -2,6 +2,7 @@ import {sendJsonResponse} from "../../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
 import {notFoundError} from "./errors";
+import {validateRequest} from "../validators";
 import {has} from "lodash/object";
 
 export const readProducts = (req, res) =>
@@ -29,11 +30,10 @@ export const readOneProduct = (req, res) => {
 };
 
 export const createProduct = (req, res) => {
-	if (!has(req, "body")) {
-		sendJsonResponse(res, 404, {
-			message: "No product data"
-		});
+	const requestErrors = validateRequest(req, "body");
 
+	if (requestErrors.length) {
+		sendJsonResponse(res, 400, requestErrors);
 		return;
 	}
 
