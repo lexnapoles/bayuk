@@ -6,7 +6,7 @@ import {notFoundError}  from "../../../errors/api/productErrors";
 import {invalidId}  from "../../../errors/api/controllerErrors";
 import dbErrors  from "../../../errors/database";
 import {validateRequest} from "../validators";
-import {validateProductBody} from "./validators"
+import {validateProductBody, validateProduct} from "./validators"
 import validateUUID from "uuid-validate";
 
 export const readProducts = (req, res) =>
@@ -57,6 +57,13 @@ export const createProduct = (req, res) => {
 		return;
 	}
 
+	const invalidProductErrors = validateProduct(req.body);
+
+	if (invalidProductErrors.length) {
+		sendJsonResponse(res, 400, invalidProductErrors);
+		return;
+	}
+
 	const product = {
 		...req.body,
 		owner: req.user.id
@@ -68,13 +75,12 @@ export const createProduct = (req, res) => {
 			res.location(`/api/products/${product.id}`);
 			sendJsonResponse(res, 201, product)
 		})
-		.catch(error => sendJsonResponse(res, 404, error));
+		.catch(error => sendJsonResponse(res, 400, error));
 };
 
 export const updateOneProduct = (req, res) => {
 	const requestErrors = [
-		...validateRequest(req, "body"),
-		...validateRequest(req, "params"),
+		...validateRequest(req, ["body", "params"]),
 		...validateRequest(req.params, "productId"),
 	];
 

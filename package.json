@@ -88,6 +88,7 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "ajv": "^5.0.0",
     "body-parser": "^1.15.2",
     "express": "^4.15.2",
     "express-jwt": "^5.1.0",

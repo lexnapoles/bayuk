@@ -12,7 +12,7 @@ import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser as getRandomUser} from "../../server/seeder/database/usersTableSeeder";
 import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
 import {getProduct as getRandomProduct} from "../../server/seeder/database/productsTableSeeder";
-import {notFoundError, fieldNotFound} from "../../server/errors/api/productErrors";
+import {notFoundError, fieldNotFound, invalidProduct} from "../../server/errors/api/productErrors";
 import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
 import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import {createJwt} from "../../server/api/services/authentication"
@@ -399,6 +399,49 @@ describe("Products", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(userDoesNotExist());
+				});
+		});
+
+		it("should fail when incorrect data has been sent", function () {
+			const product = {
+				...getProduct(),
+				name:  234,
+				price: "50"
+			};
+
+			return getAUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.send(product)
+						.expect(400))
+				.then(response =>{
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when incorrect data has been sent", function () {
+			const product = {
+				...getProduct(),
+				name:  234,
+				price: "50"
+			};
+
+			return getAUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.send(product)
+						.expect(400))
+				.then(response =>{
+					const error = response.body[0];
+
+					error.should.be.deep.equal(invalidProduct());
 				});
 		});
 	});
