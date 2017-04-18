@@ -13,3 +13,4 @@ const connectionOptions = isTesting ? testConfig : {};
 export default pgp(connectionOptions);
 
 export const queryResult = pgp.queryResult;
+export const queryResultErrorCode = pgp.errors.queryResultErrorCode;

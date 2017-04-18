@@ -1,7 +1,7 @@
 export const notFoundError = () => ({
 	code:    "ERR-1000",
 	title:   "Product not found",
-	details: "Product id supplied doesn't exist"
+	details: "Product with the given id doesn't exist"
 });
 
 export const fieldNotFound = field => ({

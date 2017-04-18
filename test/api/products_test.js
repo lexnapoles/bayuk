@@ -86,21 +86,20 @@ const getProduct = () => ({
 			AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
 			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
 			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
-			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`,
+			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`
 	]
 });
 
 describe("Products", function () {
 	beforeEach(function () {
-		server = createServer();
-
-		return db.none(global.truncateAll)
-			.then(() => addCategories());
+		return cleanAllPreviouslyCreatedImages()
+			.then(() => db.none(global.truncateAll))
+			.then(() => addCategories())
+			.then(() => server = createServer());
 	});
 
 	afterEach(function (done) {
-		cleanAllPreviouslyCreatedImages()
-			.then(() => server.close(done));
+		return server.close(done);
 	});
 
 	describe("GET /products", function () {
@@ -142,6 +141,33 @@ describe("Products", function () {
 						"sold"
 					]);
 					product.should.have.property("id").equal(productId);
+				});
+		});
+
+		it("should fail when the product id is not valid", function () {
+			const productId = void 0;
+
+			return request(server)
+				.get(`/api/products/${productId}`)
+				.expect(400)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the product id is not valid", function () {
+			const productId = void 0;
+
+			return request(server)
+				.get(`/api/products/${productId}`)
+				.expect(400)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(invalidId());
 				});
 		});
 
@@ -590,6 +616,49 @@ describe("Products", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(invalidId());
+				});
+		});
+
+		it("should fail when the product to update is not found", function () {
+			const productId = faker.random.uuid();
+
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					return request(server)
+						.put(`/api/products/${productId}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							price: 987,
+						})
+						.expect(404)
+				})
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the product to update is not found", function () {
+			const productId = faker.random.uuid();
+
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					return request(server)
+						.put(`/api/products/${productId}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							price: 987,
+						})
+						.expect(404)
+				})
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(notFoundError());
 				});
 		});
 	});

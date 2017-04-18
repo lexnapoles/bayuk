@@ -4,6 +4,7 @@ import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} f
 import {transformProduct} from "../../transformers/products";
 import {notFoundError}  from "../../../errors/api/productErrors";
 import {invalidId}  from "../../../errors/api/controllerErrors";
+import dbErrors  from "../../../errors/database";
 import {validateRequest} from "../validators";
 import {validateProductBody} from "./validators"
 import validateUUID from "uuid-validate";
@@ -17,7 +18,10 @@ export const readProducts = (req, res) =>
 		}));
 
 export const readOneProduct = (req, res) => {
-	const requestErrors = validateRequest(req, "params");
+	const requestErrors = [
+		...validateRequest(req, "params"),
+		...validateRequest(req.params, "productId")
+	];
 
 	if (requestErrors.length) {
 		sendJsonResponse(res, 400, requestErrors);
@@ -25,6 +29,11 @@ export const readOneProduct = (req, res) => {
 	}
 
 	const {productId} = req.params;
+
+	if (!validateUUID(productId)) {
+		sendJsonResponse(res, 400, [invalidId()]);
+		return;
+	}
 
 	getProductById(productId)
 		.then(transformProduct)
@@ -74,7 +83,7 @@ export const updateOneProduct = (req, res) => {
 		return;
 	}
 
-	const productId = req.params.productId;
+	const {productId} = req.params;
 
 	if (!validateUUID(productId)) {
 		sendJsonResponse(res, 400, [invalidId()]);
@@ -83,10 +92,18 @@ export const updateOneProduct = (req, res) => {
 
 	const product = req.body;
 
-	return updateProduct(product)
+	return getProductById(productId)
+		.then(() => updateProduct(product))
 		.then(transformProduct)
 		.then(product => sendJsonResponse(res, 200, product))
-		.catch(error => sendJsonResponse(res, 404, error));
+		.catch(error => {
+			if (error.code === dbErrors.dataNotFound) {
+				sendJsonResponse(res, 404, [notFoundError()]);
+				return;
+			}
+
+			sendJsonResponse(res, 500, [error]);
+		});
 };
 
 export const deleteOneProduct = (req, res) => {
