@@ -3,11 +3,9 @@ import {sendJsonResponse} from "../../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
 import {notFoundError}  from "../../../errors/api/productErrors";
-import {invalidId}  from "../../../errors/api/controllerErrors";
 import dbErrors  from "../../../errors/database";
-import {validateRequest} from "../validators";
+import {validateRequest, validateId} from "../validators";
 import {validateProductBody, validateProduct} from "./validators"
-import validateUUID from "uuid-validate";
 
 export const readProducts = (req, res) =>
 	getProducts()
@@ -30,8 +28,10 @@ export const readOneProduct = (req, res) => {
 
 	const {productId} = req.params;
 
-	if (!validateUUID(productId)) {
-		sendJsonResponse(res, 400, [invalidId()]);
+	const invalidIdError = validateId(productId);
+
+	if (invalidIdError.length) {
+		sendJsonResponse(res, 400, invalidIdError);
 		return;
 	}
 
@@ -91,11 +91,12 @@ export const updateOneProduct = (req, res) => {
 
 	const {productId} = req.params;
 
-	if (!validateUUID(productId)) {
-		sendJsonResponse(res, 400, [invalidId()]);
+	const invalidIdError = validateId(productId);
+
+	if (invalidIdError.length) {
+		sendJsonResponse(res, 400, invalidIdError);
 		return;
 	}
-
 	const product = req.body;
 
 	return getProductById(productId)
