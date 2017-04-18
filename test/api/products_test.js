@@ -14,7 +14,7 @@ import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/pr
 import {getProduct as getRandomProduct} from "../../server/seeder/database/productsTableSeeder";
 import {notFoundError, fieldNotFound} from "../../server/errors/api/productErrors";
 import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
-import {dataNotFound} from "../../server/errors/api/controllerErrors";
+import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import {createJwt} from "../../server/api/services/authentication"
 import {userDoesNotExist} from "../../server/errors/api/userErrors";
 
@@ -510,7 +510,7 @@ describe("Products", function () {
 						.expect(200)
 				})
 				.then(() => {
-					const	firstOldImage  = getImagePath(oldImagesIds[0]),
+					const firstOldImage  = getImagePath(oldImagesIds[0]),
 								secondOldImage = getImagePath(oldImagesIds[1]);
 
 					firstOldImage.should.be.a.file();
@@ -547,6 +547,49 @@ describe("Products", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(dataNotFound("body"))
+				});
+		});
+
+		it("should fail when the product id is not valid", function () {
+			const productId = void 0;
+
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					return request(server)
+						.put(`/api/products/${productId}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							price: 987,
+						})
+						.expect(400)
+				})
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the product id is not valid", function () {
+			const productId = void 0;
+
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					return request(server)
+						.put(`/api/products/${productId}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							price: 987,
+						})
+						.expect(400)
+				})
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(invalidId());
 				});
 		});
 	});

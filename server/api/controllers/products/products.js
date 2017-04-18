@@ -1,11 +1,12 @@
 import {has} from "lodash/object";
-import {isEmpty} from "lodash/lang";
 import {sendJsonResponse} from "../../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
 import {notFoundError}  from "../../../errors/api/productErrors";
+import {invalidId}  from "../../../errors/api/controllerErrors";
 import {validateRequest} from "../validators";
 import {validateProductBody} from "./validators"
+import validateUUID from "uuid-validate";
 
 export const readProducts = (req, res) =>
 	getProducts()
@@ -62,17 +63,21 @@ export const createProduct = (req, res) => {
 };
 
 export const updateOneProduct = (req, res) => {
-	const requestErrors = validateRequest(req, "body");
+	const requestErrors = [
+		...validateRequest(req, "body"),
+		...validateRequest(req, "params"),
+		...validateRequest(req.params, "productId"),
+	];
 
 	if (requestErrors.length) {
 		sendJsonResponse(res, 400, requestErrors);
 		return;
 	}
 
-	if (!has(req, "params") || !has(req.params, "productId") || !req.params.productId.length) {
-		sendJsonResponse(res, 400, {
-			message: "No productId in request"
-		});
+	const productId = req.params.productId;
+
+	if (!validateUUID(productId)) {
+		sendJsonResponse(res, 400, [invalidId()]);
 		return;
 	}
 

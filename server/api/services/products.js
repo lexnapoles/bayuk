@@ -1,4 +1,4 @@
-import db, {queryResult} from "../../db";
+import db from "../../db";
 import {products} from "../../sql/sql";
 import {
 	writeImagesToDisk,
@@ -10,9 +10,7 @@ import {generateImagesObjs} from "../../../utils/utils";
 
 export const getProducts = () => db.any(products.getAll);
 
-export const getProductById = productId =>
-	db.one(products.getById, {productId})
-		.catch(() => Promise.reject("Product could not be found"));
+export const getProductById = productId => db.one(products.getById, {productId});
 
 const addProductToDB = product =>
 	db.one(products.add, {
