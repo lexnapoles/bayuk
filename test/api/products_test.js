@@ -518,5 +518,36 @@ describe("Products", function () {
 					secondOldImage.should.not.be.a.path();
 				});
 		});
+
+		it("should fail when no product has been sent", function () {
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					return request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400)
+				})
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no product has been sent", function () {
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					return request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400)
+				})
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(dataNotFound("body"))
+				});
+		});
 	});
 });

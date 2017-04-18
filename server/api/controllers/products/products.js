@@ -1,4 +1,5 @@
 import {has} from "lodash/object";
+import {isEmpty} from "lodash/lang";
 import {sendJsonResponse} from "../../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
@@ -61,15 +62,16 @@ export const createProduct = (req, res) => {
 };
 
 export const updateOneProduct = (req, res) => {
-	if (!has(req, "params") || !has(req.params, "productId") || !req.params.productId.length) {
-		sendJsonResponse(res, 404, {
-			message: "No productId in request"
-		});
+	const requestErrors = validateRequest(req, "body");
+
+	if (requestErrors.length) {
+		sendJsonResponse(res, 400, requestErrors);
 		return;
 	}
-	else if (!has(req, "body")) {
-		sendJsonResponse(res, 404, {
-			message: "No product data"
+
+	if (!has(req, "params") || !has(req.params, "productId") || !req.params.productId.length) {
+		sendJsonResponse(res, 400, {
+			message: "No productId in request"
 		});
 		return;
 	}
