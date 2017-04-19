@@ -10,8 +10,8 @@ export const fieldNotFound = field => ({
 	details: `${field} field is not present`
 });
 
-export const invalidProduct = () => ({
+export const invalidProduct = (field, message) => ({
 	code: "ERR-1002",
 	title: "Product data is invalid",
-	details: "Product data does not conform with the product schema"
+	details: `${field} ${message}`
 });

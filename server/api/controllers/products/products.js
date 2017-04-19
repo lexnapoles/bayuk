@@ -99,6 +99,14 @@ export const updateOneProduct = (req, res) => {
 	}
 	const product = req.body;
 
+	const invalidProductErrors = validateProduct(product);
+
+	if (invalidProductErrors.length) {
+		sendJsonResponse(res, 400, invalidProductErrors);
+		return;
+	}
+
+
 	return getProductById(productId)
 		.then(() => updateProduct(product))
 		.then(transformProduct)

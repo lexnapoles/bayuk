@@ -6,6 +6,6 @@ export const transformProduct = product => ({
 	description: product.description,
 	category:    product.category,
 	createdAt:   product.created_at,
-	price:       product.price,
+	price:       parseInt(product.price, 10),
 	sold:        product.sold
 });

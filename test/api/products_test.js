@@ -416,7 +416,7 @@ describe("Products", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.send(product)
 						.expect(400))
-				.then(response =>{
+				.then(response => {
 					const errors = response.body;
 
 					errors.should.be.instanceOf(Array);
@@ -424,7 +424,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should provide a detailed error when incorrect data has been sent", function () {
+		it("should provide detailed errors for every incorrect field sent", function () {
 			const product = {
 				...getProduct(),
 				name:  234,
@@ -438,10 +438,12 @@ describe("Products", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.send(product)
 						.expect(400))
-				.then(response =>{
-					const error = response.body[0];
+				.then(response => {
+					const errors     = response.body,
+								nameError  = invalidProduct("name", "should be string"),
+								priceError = invalidProduct("price", "should be integer");
 
-					error.should.be.deep.equal(invalidProduct());
+					errors.should.deep.include.members([nameError, priceError]);
 				});
 		});
 	});
@@ -568,7 +570,6 @@ describe("Products", function () {
 			return addProductThroughAPI()
 				.then(({token, product}) => {
 					oldImagesIds = product.images;
-
 					return request(server)
 						.put(`/api/products/${product.id}`)
 						.set("Authorization", `Bearer ${token}`)
@@ -702,6 +703,21 @@ describe("Products", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(notFoundError());
+				});
+		});
+
+		it("should fail when incorrect data has been sent", function () {
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					return request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							price: "Price as string",
+							name:  465
+						})
+						.expect(400)
 				});
 		});
 	});
