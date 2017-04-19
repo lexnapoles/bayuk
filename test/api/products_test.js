@@ -7,11 +7,11 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users"
 import {getImagePath} from "../../server/api/services/images";
-import {addProductWithAllFields} from "../../server/api/services/products"
+import {addProduct} from "../../server/api/services/products"
+import {transformProduct} from "../../server/api/transformers/products";
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser as getRandomUser} from "../../server/seeder/database/usersTableSeeder";
 import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
-import {getProduct as getRandomProduct} from "../../server/seeder/database/productsTableSeeder";
 import {notFoundError, fieldNotFound, invalidProduct} from "../../server/errors/api/productErrors";
 import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
 import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
@@ -22,47 +22,6 @@ chai.use(chaiFs);
 chai.should();
 
 let server = {};
-
-const addRandomProduct = () => {
-	let owner = {};
-
-	return addUser(getRandomUser())
-		.then(userData => {
-			owner = userData;
-			return addProductWithAllFields(getRandomProduct(userData.user.id))
-		})
-		.then(product => ({
-			owner,
-			product
-		}))
-};
-
-const addProductThroughAPI = () => {
-	let token = "";
-
-	return getAUserToken()
-		.then(jwt => {
-			token = jwt;
-
-			return request(server)
-				.post("/api/products/")
-				.set("Authorization", `Bearer ${jwt}`)
-				.send(getProduct())
-				.expect(201)
-		})
-		.then(response => ({
-			token,
-			product: response.body
-		}));
-};
-
-const getAUserToken = () => {
-	return request(server)
-		.post("/api/register")
-		.send(getRandomUser())
-		.expect(201)
-		.then(response => response.body);
-};
 
 const getProduct = () => ({
 	name:        "Ray Ban sunglasses",
@@ -89,6 +48,29 @@ const getProduct = () => ({
 			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`
 	]
 });
+
+const getUserToken = () => {
+	return addUser(getRandomUser())
+		.then(({token}) => token);
+};
+
+const addRandomProduct = () => {
+	let token = "";
+
+	return addUser(getRandomUser())
+		.then(userData => {
+			token = userData.token;
+
+			return addProduct({
+				owner: userData.user.id,
+				...getProduct()
+			})
+		})
+		.then(createdProduct => ({
+			token,
+			product: transformProduct(createdProduct)
+		}));
+};
 
 describe("Products", function () {
 	beforeEach(function () {
@@ -220,7 +202,7 @@ describe("Products", function () {
 				]
 			};
 
-			return getAUserToken()
+			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
@@ -246,7 +228,7 @@ describe("Products", function () {
 		});
 
 		it("should fail when no data has been sent", function () {
-			return getAUserToken()
+			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
@@ -262,7 +244,7 @@ describe("Products", function () {
 		});
 
 		it("should provide a detailed error when no data has been sent", function () {
-			return getAUserToken()
+			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
@@ -283,7 +265,7 @@ describe("Products", function () {
 				category:    "Accessories"
 			};
 
-			return getAUserToken()
+			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
@@ -308,7 +290,7 @@ describe("Products", function () {
 
 			const FIELDS_DELETED = 2;
 
-			return getAUserToken()
+			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
@@ -329,7 +311,7 @@ describe("Products", function () {
 				category:    "Accessories"
 			};
 
-			return getAUserToken()
+			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
@@ -409,7 +391,7 @@ describe("Products", function () {
 				price: "50"
 			};
 
-			return getAUserToken()
+			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
@@ -431,7 +413,7 @@ describe("Products", function () {
 				price: "50"
 			};
 
-			return getAUserToken()
+			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
@@ -450,9 +432,9 @@ describe("Products", function () {
 
 	describe("PUT /products/:productId", function () {
 		it("should update a product", function () {
-			return addProductThroughAPI()
-				.then(({token, product}) =>
-					request(server)
+			return addRandomProduct()
+				.then(({token, product}) => {
+					return request(server)
 						.put(`/api/products/${product.id}`)
 						.set("Authorization", `Bearer ${token}`)
 						.send({
@@ -460,7 +442,8 @@ describe("Products", function () {
 							price:       987,
 							description: "Updated product description"
 						})
-						.expect(200))
+						.expect(200)
+				})
 				.then(response => {
 					const product = response.body;
 
@@ -482,7 +465,7 @@ describe("Products", function () {
 			const images = [getProduct().images[0]];
 			let oldImages = [];
 
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					oldImages = product.images;
 
@@ -508,7 +491,7 @@ describe("Products", function () {
 			const base64Image = getProduct().images[0];
 			let oldImagesIds = [];
 
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					oldImagesIds = product.images;
 
@@ -538,7 +521,7 @@ describe("Products", function () {
 			const base64Image = getProduct().images[0];
 			let oldImagesIds = [];
 
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					oldImagesIds = product.images;
 
@@ -567,7 +550,7 @@ describe("Products", function () {
 		it("should delete the old images in the filesystem that are not included", function () {
 			let oldImagesIds = [];
 
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					oldImagesIds = product.images;
 					return request(server)
@@ -590,7 +573,7 @@ describe("Products", function () {
 		});
 
 		it("should fail when no product has been sent", function () {
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					return request(server)
 						.put(`/api/products/${product.id}`)
@@ -606,7 +589,7 @@ describe("Products", function () {
 		});
 
 		it("should provide a detailed error when no product has been sent", function () {
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					return request(server)
 						.put(`/api/products/${product.id}`)
@@ -623,7 +606,7 @@ describe("Products", function () {
 		it("should fail when the product id is not valid", function () {
 			const productId = void 0;
 
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					return request(server)
 						.put(`/api/products/${productId}`)
@@ -645,7 +628,7 @@ describe("Products", function () {
 		it("should provide a detailed error when the product id is not valid", function () {
 			const productId = void 0;
 
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					return request(server)
 						.put(`/api/products/${productId}`)
@@ -666,7 +649,7 @@ describe("Products", function () {
 		it("should fail when the product to update is not found", function () {
 			const productId = faker.random.uuid();
 
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					return request(server)
 						.put(`/api/products/${productId}`)
@@ -688,7 +671,7 @@ describe("Products", function () {
 		it("should provide a detailed error when the product to update is not found", function () {
 			const productId = faker.random.uuid();
 
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					return request(server)
 						.put(`/api/products/${productId}`)
@@ -707,7 +690,7 @@ describe("Products", function () {
 		});
 
 		it("should fail when incorrect data has been sent", function () {
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					return request(server)
 						.put(`/api/products/${product.id}`)
@@ -722,7 +705,7 @@ describe("Products", function () {
 		});
 
 		it("should provide a detailed error for each invalid field that has been sent", function () {
-			return addProductThroughAPI()
+			return addRandomProduct()
 				.then(({token, product}) => {
 					return request(server)
 						.put(`/api/products/${product.id}`)
