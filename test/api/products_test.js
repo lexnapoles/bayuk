@@ -720,9 +720,46 @@ describe("Products", function () {
 					errors.should.deep.include.members([nameError, priceError]);
 				});
 		});
+
+		it("should fail when no jwt token has been sent", function () {
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.send({
+							...product,
+							price: "Price as string",
+							name:  465
+						})
+						.expect(401))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no jwt token has been sent", function () {
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.send({
+							...product,
+							price: "Price as string",
+							name:  465
+						})
+						.expect(401))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
 	});
 
-	describe.only("DELETE /products/:productId", function () {
+	describe("DELETE /products/:productId", function () {
 		it("should delete a product with the given id", function () {
 			return addRandomProduct()
 				.then(({token, product}) =>
@@ -763,6 +800,66 @@ describe("Products", function () {
 
 					error.should.be.deep.equal(invalidId());
 				})
+		});
+
+		it("should fail when the product to delete is not found", function () {
+			const productId = faker.random.uuid();
+
+			return getUserToken()
+				.then(token =>
+					request(server)
+						.delete(`/api/products/${productId}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(404))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				})
+		});
+
+		it("should provide a detailed error when the product to delete is not found", function () {
+			const productId = faker.random.uuid();
+
+			return getUserToken()
+				.then(token =>
+					request(server)
+						.delete(`/api/products/${productId}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(404))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(notFoundError());
+				})
+		});
+
+		it("should fail when no jwt token has been sent", function () {
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.delete(`/api/products/${product.id}`)
+						.expect(401))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no jwt token has been sent", function () {
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.expect(401))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(unauthorizedAccess())
+				});
 		});
 	});
 });

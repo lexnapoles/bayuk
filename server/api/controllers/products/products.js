@@ -123,11 +123,13 @@ export const updateOneProduct = (req, res) => {
 };
 
 export const deleteOneProduct = (req, res) => {
-	if (!has(req, "params") && !has(req.params, "productId")) {
-		sendJsonResponse(res, 404, {
-			message: "No productId in request"
-		});
+	const requestErrors = [
+		...validateRequest(req, "params"),
+		...validateRequest(req.params, "productId"),
+	];
 
+	if (requestErrors.length) {
+		sendJsonResponse(res, 400, requestErrors);
 		return;
 	}
 
@@ -140,9 +142,16 @@ export const deleteOneProduct = (req, res) => {
 		return;
 	}
 
-	return deleteProduct(productId)
+	return getProductById(productId)
+		.then(() => 	deleteProduct(productId))
 		.then(() => sendJsonResponse(res, 204, null))
-		.catch(error => sendJsonResponse(res, 404, error));
+		.catch(error => {
+			if (error.code === dbErrors.dataNotFound) {
+				sendJsonResponse(res, 404, [notFoundError()]);
+				return;
+			}
+
+		});
 };
 
 export const addProductImages = (req, res) => {
