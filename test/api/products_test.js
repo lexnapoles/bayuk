@@ -385,18 +385,16 @@ describe("Products", function () {
 		});
 
 		it("should fail when incorrect data has been sent", function () {
-			const product = {
-				...getProduct(),
-				name:  234,
-				price: "50"
-			};
-
 			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
 						.set("Authorization", `Bearer ${token}`)
-						.send(product)
+						.send({
+							...getProduct(),
+							name:  234,
+							price: "50"
+						})
 						.expect(400))
 				.then(response => {
 					const errors = response.body;
@@ -407,18 +405,16 @@ describe("Products", function () {
 		});
 
 		it("should provide detailed errors for every incorrect field sent", function () {
-			const product = {
-				...getProduct(),
-				name:  234,
-				price: "50"
-			};
-
 			return getUserToken()
 				.then(token =>
 					request(server)
 						.post("/api/products")
 						.set("Authorization", `Bearer ${token}`)
-						.send(product)
+						.send({
+							...getProduct(),
+							name:  234,
+							price: "50"
+						})
 						.expect(400))
 				.then(response => {
 					const errors     = response.body,
@@ -603,7 +599,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should fail when the product id is not valid", function () {
+		it("should fail when the product id is invalid", function () {
 			const productId = void 0;
 
 			return addRandomProduct()
@@ -625,7 +621,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should provide a detailed error when the product id is not valid", function () {
+		it("should provide a detailed error when the product id is invalid", function () {
 			const productId = void 0;
 
 			return addRandomProduct()
@@ -706,8 +702,8 @@ describe("Products", function () {
 
 		it("should provide a detailed error for each invalid field that has been sent", function () {
 			return addRandomProduct()
-				.then(({token, product}) => {
-					return request(server)
+				.then(({token, product}) =>
+					request(server)
 						.put(`/api/products/${product.id}`)
 						.set("Authorization", `Bearer ${token}`)
 						.send({
@@ -715,15 +711,58 @@ describe("Products", function () {
 							price: "Price as string",
 							name:  465
 						})
-						.expect(400)
-						.then(response => {
-							const errors     = response.body,
-										nameError  = invalidProduct("name", "should be string"),
-										priceError = invalidProduct("price", "should be integer");
+						.expect(400))
+				.then(response => {
+					const errors     = response.body,
+								nameError  = invalidProduct("name", "should be string"),
+								priceError = invalidProduct("price", "should be integer");
 
-							errors.should.deep.include.members([nameError, priceError]);
-						});
+					errors.should.deep.include.members([nameError, priceError]);
 				});
+		});
+	});
+
+	describe.only("DELETE /products/:productId", function () {
+		it("should delete a product with the given id", function () {
+			return addRandomProduct()
+				.then(({token, product}) =>
+					request(server)
+						.delete(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(204))
+		});
+
+		it("should fail when the product id is invalid", function () {
+			const productId = void 0;
+
+			return addRandomProduct()
+				.then(({token}) =>
+					request(server)
+						.delete(`/api/products/${productId}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				})
+		});
+
+		it("should provide a detailed error when the product id is invalid", function () {
+			const productId = void 0;
+
+			return addRandomProduct()
+				.then(({token}) =>
+					request(server)
+						.delete(`/api/products/${productId}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(invalidId());
+				})
 		});
 	});
 });

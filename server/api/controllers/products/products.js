@@ -97,6 +97,7 @@ export const updateOneProduct = (req, res) => {
 		sendJsonResponse(res, 400, invalidIdError);
 		return;
 	}
+
 	const product = req.body;
 
 	const invalidProductErrors = validateProduct(product);
@@ -132,11 +133,16 @@ export const deleteOneProduct = (req, res) => {
 
 	const {productId} = req.params;
 
+	const invalidIdError = validateId(productId);
+
+	if (invalidIdError.length) {
+		sendJsonResponse(res, 400, invalidIdError);
+		return;
+	}
+
 	return deleteProduct(productId)
 		.then(() => sendJsonResponse(res, 204, null))
-		.catch(error => sendJsonResponse(res, 404, {
-			message: error
-		}));
+		.catch(error => sendJsonResponse(res, 404, error));
 };
 
 export const addProductImages = (req, res) => {
