@@ -720,5 +720,27 @@ describe("Products", function () {
 						.expect(400)
 				});
 		});
+
+		it("should provide a detailed error for each invalid field that has been sent", function () {
+			return addProductThroughAPI()
+				.then(({token, product}) => {
+					return request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							price: "Price as string",
+							name:  465
+						})
+						.expect(400)
+						.then(response => {
+							const errors     = response.body,
+										nameError  = invalidProduct("name", "should be string"),
+										priceError = invalidProduct("price", "should be integer");
+
+							errors.should.deep.include.members([nameError, priceError]);
+						});
+				});
+		});
 	});
 });
