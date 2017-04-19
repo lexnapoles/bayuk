@@ -328,7 +328,48 @@ describe("Products", function () {
 				});
 		});
 
-		it("should fail when no jwt token has been sent", function () {
+		it("should fail when incorrect data has been sent", function () {
+			return getUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...getProduct(),
+							name:  234,
+							price: "50"
+						})
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide detailed errors for every incorrect field sent", function () {
+			return getUserToken()
+				.then(token =>
+					request(server)
+						.post("/api/products")
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...getProduct(),
+							name:  234,
+							price: "50"
+						})
+						.expect(400))
+				.then(response => {
+					const errors     = response.body,
+								nameError  = invalidProduct("name", "should be string"),
+								priceError = invalidProduct("price", "should be integer");
+
+					errors.should.deep.include.members([nameError, priceError]);
+				});
+		});
+
+		it("should fail when no token has been sent", function () {
 			return request(server)
 				.post("/api/products")
 				.send(getProduct())
@@ -341,7 +382,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should provide a detailed error when no jwt token has been sent", function () {
+		it("should provide a detailed error when no token has been sent", function () {
 			return request(server)
 				.post("/api/products")
 				.send(getProduct())
@@ -381,47 +422,6 @@ describe("Products", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(userDoesNotExist());
-				});
-		});
-
-		it("should fail when incorrect data has been sent", function () {
-			return getUserToken()
-				.then(token =>
-					request(server)
-						.post("/api/products")
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...getProduct(),
-							name:  234,
-							price: "50"
-						})
-						.expect(400))
-				.then(response => {
-					const errors = response.body;
-
-					errors.should.be.instanceOf(Array);
-					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide detailed errors for every incorrect field sent", function () {
-			return getUserToken()
-				.then(token =>
-					request(server)
-						.post("/api/products")
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...getProduct(),
-							name:  234,
-							price: "50"
-						})
-						.expect(400))
-				.then(response => {
-					const errors     = response.body,
-								nameError  = invalidProduct("name", "should be string"),
-								priceError = invalidProduct("price", "should be integer");
-
-					errors.should.deep.include.members([nameError, priceError]);
 				});
 		});
 	});
@@ -599,6 +599,42 @@ describe("Products", function () {
 				});
 		});
 
+		it("should fail when incorrect data has been sent", function () {
+			return addRandomProduct()
+				.then(({token, product}) => {
+					return request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							price: "Price as string",
+							name:  465
+						})
+						.expect(400)
+				});
+		});
+
+		it("should provide a detailed error for each invalid field that has been sent", function () {
+			return addRandomProduct()
+				.then(({token, product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							price: "Price as string",
+							name:  465
+						})
+						.expect(400))
+				.then(response => {
+					const errors     = response.body,
+								nameError  = invalidProduct("name", "should be string"),
+								priceError = invalidProduct("price", "should be integer");
+
+					errors.should.deep.include.members([nameError, priceError]);
+				});
+		});
+
 		it("should fail when the product id is invalid", function () {
 			const productId = void 0;
 
@@ -685,43 +721,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should fail when incorrect data has been sent", function () {
-			return addRandomProduct()
-				.then(({token, product}) => {
-					return request(server)
-						.put(`/api/products/${product.id}`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...product,
-							price: "Price as string",
-							name:  465
-						})
-						.expect(400)
-				});
-		});
-
-		it("should provide a detailed error for each invalid field that has been sent", function () {
-			return addRandomProduct()
-				.then(({token, product}) =>
-					request(server)
-						.put(`/api/products/${product.id}`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...product,
-							price: "Price as string",
-							name:  465
-						})
-						.expect(400))
-				.then(response => {
-					const errors     = response.body,
-								nameError  = invalidProduct("name", "should be string"),
-								priceError = invalidProduct("price", "should be integer");
-
-					errors.should.deep.include.members([nameError, priceError]);
-				});
-		});
-
-		it("should fail when no jwt token has been sent", function () {
+		it("should fail when no token has been sent", function () {
 			return addRandomProduct()
 				.then(({product}) =>
 					request(server)
@@ -740,7 +740,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should provide a detailed error when no jwt token has been sent", function () {
+		it("should provide a detailed error when no token has been sent", function () {
 			return addRandomProduct()
 				.then(({product}) =>
 					request(server)
@@ -870,7 +870,7 @@ describe("Products", function () {
 				})
 		});
 
-		it("should fail when no jwt token has been sent", function () {
+		it("should fail when no token has been sent", function () {
 			return addRandomProduct()
 				.then(({product}) =>
 					request(server)
@@ -884,7 +884,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should provide a detailed error when no jwt token has been sent", function () {
+		it("should provide a detailed error when no token has been sent", function () {
 			return addRandomProduct()
 				.then(({product}) =>
 					request(server)
