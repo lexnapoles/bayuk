@@ -757,6 +757,41 @@ describe("Products", function () {
 					error.should.be.deep.equal(unauthorizedAccess())
 				});
 		});
+
+		it("should fail when token is valid but the token's user can't be found", function () {
+			const validTokenForNonExistentUser = createJwt(getRandomUser());
+
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+						.send(getProduct())
+						.expect(404))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
+			const validTokenForNonExistentUser = createJwt(getRandomUser());
+
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+						.send(getProduct())
+						.expect(404))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(userDoesNotExist());
+				});
+		});
 	});
 
 	describe("DELETE /products/:productId", function () {
@@ -859,6 +894,39 @@ describe("Products", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
+
+		it("should fail when token is valid but the token's user can't be found", function () {
+			const validTokenForNonExistentUser = createJwt(getRandomUser());
+
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.delete(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+						.expect(404))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
+			const validTokenForNonExistentUser = createJwt(getRandomUser());
+
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.delete(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+						.expect(404))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(userDoesNotExist());
 				});
 		});
 	});
