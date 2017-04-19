@@ -321,8 +321,8 @@ describe("Products", function () {
 				.then(response => {
 					const errors = response.body;
 
-					const priceError  = fieldNotFound("price"),
-								imagesError = fieldNotFound("images");
+					const priceError  = invalidProduct("Product", "should have required property price"),
+								imagesError = invalidProduct("Product", "should have required property images");
 
 					errors.should.deep.include.members([priceError, imagesError]);
 				});

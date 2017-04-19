@@ -4,14 +4,8 @@ export const notFoundError = () => ({
 	details: "Product with the given id doesn't exist"
 });
 
-export const fieldNotFound = field => ({
-	code:    "ERR-1001",
-	title:   "Products fields don't exist",
-	details: `${field} field is not present`
-});
-
-export const invalidProduct = (field, message) => ({
-	code: "ERR-1002",
-	title: "Product data is invalid",
-	details: `${field} ${message}`
-});
+export const invalidProduct = (field = "Product", message) => ({
+		code: "ERR-1001",
+		title: "Product data is invalid",
+		details: `${field.length ? field : "Product"} ${message}`
+	});

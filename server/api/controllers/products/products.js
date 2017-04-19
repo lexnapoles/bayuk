@@ -1,11 +1,10 @@
-import {has} from "lodash/object";
 import {sendJsonResponse} from "../../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
 import {notFoundError}  from "../../../errors/api/productErrors";
 import dbErrors  from "../../../errors/database";
 import {validateRequest, validateId} from "../validators";
-import {validateProductBody, validateProduct} from "./validators"
+import {validateProduct} from "./validators"
 
 export const readProducts = (req, res) =>
 	getProducts()
@@ -46,14 +45,6 @@ export const createProduct = (req, res) => {
 
 	if (requestErrors.length) {
 		sendJsonResponse(res, 400, requestErrors);
-		return;
-	}
-
-	const productFields     = ["name", "description", "images", "category", "price"],
-				productBodyErrors = validateProductBody(req.body, productFields);
-
-	if (productBodyErrors.length) {
-		sendJsonResponse(res, 400, productBodyErrors);
 		return;
 	}
 
