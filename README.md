@@ -22,6 +22,8 @@ to make a real SPA, including both the front and back end and npm as the build t
   * PostgreSQL
   
   * REST API secured with JSON Web Tokens.
+  
+  * Client data validation with JSON Schemas.
    
 ####  Testing:
  
