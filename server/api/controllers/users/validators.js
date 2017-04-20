@@ -1,4 +1,7 @@
-import {fieldNotFound} from "../../../errors/api/userErrors";
-import {validateBody} from "../validators";
+import {invalidUser} from "../../../errors/api/userErrors";
+import {validateSchema} from "../validators";
+import {register, login} from "../../schemas/user";
 
-export const validateUserBody = (user, fields) => validateBody(user, fields, fieldNotFound);
+export const validateRegister = user => validateSchema(user, register, invalidUser);
+
+export const validateLogin = user => validateSchema(user, login, invalidUser);

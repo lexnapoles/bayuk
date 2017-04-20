@@ -2,7 +2,7 @@ import passport from "passport";
 import {sendJsonResponse} from "../../../../utils/utils";
 import {addUser} from "../../services/users";
 import {createJwt} from "../../services/authentication";
-import {validateUserBody} from "./validators";
+import {validateRegister, validateLogin} from "./validators";
 import {validateRequest} from "../validators";
 import {userAlreadyExists} from "../../../errors/api/userErrors";
 import dbErrors from "../../../errors/database";
@@ -15,11 +15,10 @@ export const register = (req, res) => {
 		return;
 	}
 
-	const userFields = ["email", "password", "name"],
-				userBodyErrors = validateUserBody(req.body, userFields);
+	const invalidErrors = validateRegister(req.body);
 
-	if (userBodyErrors.length) {
-		sendJsonResponse(res, 400, userBodyErrors);
+	if (invalidErrors.length) {
+		sendJsonResponse(res, 400, invalidErrors);
 		return;
 	}
 
@@ -43,11 +42,10 @@ export const login = (req, res) => {
 		return;
 	}
 
-	const userFields = ["email", "password"],
-				userBodyErrors = validateUserBody(req.body, userFields);
+	const invalidErrors = validateLogin(req.body);
 
-	if (userBodyErrors.length) {
-		sendJsonResponse(res, 400, userBodyErrors);
+	if (invalidErrors.length) {
+		sendJsonResponse(res, 400, invalidErrors);
 		return;
 	}
 

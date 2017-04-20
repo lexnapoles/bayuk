@@ -328,7 +328,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should fail when incorrect data has been sent", function () {
+		it("should fail when invalid data has been sent", function () {
 			return getUserToken()
 				.then(token =>
 					request(server)
@@ -348,7 +348,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should provide detailed errors for every incorrect field sent", function () {
+		it("should provide detailed errors for every invalid field sent", function () {
 			return getUserToken()
 				.then(token =>
 					request(server)

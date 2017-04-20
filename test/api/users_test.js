@@ -5,7 +5,7 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
-import {fieldNotFound, userAlreadyExists, loginFailed} from "../../server/errors/api/userErrors";
+import {invalidUser, fieldNotFound, userAlreadyExists, loginFailed} from "../../server/errors/api/userErrors";
 import {dataNotFound} from "../../server/errors/api/controllerErrors";
 import faker from "faker";
 import jwt from "jsonwebtoken";
@@ -140,8 +140,8 @@ describe("Users", function () {
 				.then(response => {
 					const errors = response.body;
 
-					const emailError = fieldNotFound("email"),
-								nameError  = fieldNotFound("name");
+					const emailError = invalidUser("User", "should have required property email"),
+								nameError  = invalidUser("User", "should have required property name");
 
 					errors.should.deep.include.members([emailError, nameError]);
 				});
@@ -269,7 +269,9 @@ describe("Users", function () {
 				.then(response => {
 					const error = response.body[0];
 
-					error.should.be.deep.equal(fieldNotFound("email"));
+					const emailError = invalidUser("User", "should have required property email");
+
+					error.should.be.deep.equal(emailError);
 				});
 		});
 
