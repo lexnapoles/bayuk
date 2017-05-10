@@ -1,4 +1,9 @@
-import {createUserImage, readUsers, readOneUser, updateOneUser, deleteOneUser} from "../controllers/users";
+import bodyParser from "body-parser";
+import verifyUser from "../../middlewares/verifyUser";
+import auth from "../../middlewares/auth";
+import {createUserImage, readUsers, readOneUser, updateOneUser, updateUserEmail, deleteOneUser} from "../controllers/users";
+
+const jsonParser = bodyParser.json({limit: "50mb"});
 
 export default router => {
 	router.get("/users", readUsers);
@@ -6,6 +11,8 @@ export default router => {
 
 	router.put("/users/:userId", updateOneUser);
 	router.put("/users/:userId/image", createUserImage);
+
+	router.put("/users/:userId/email", auth, verifyUser, jsonParser, updateUserEmail);
 
 	router.delete("/users/:userId", deleteOneUser);
 

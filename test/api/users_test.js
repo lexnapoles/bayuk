@@ -22,6 +22,8 @@ describe("Users", function () {
 	});
 
 	afterEach(function (done) {
+		db.none(global.truncateAll);
+
 		server.close(done);
 	});
 
@@ -349,6 +351,25 @@ describe("Users", function () {
 
 					error.should.be.deep.equal(loginFailed());
 				});
+		});
+	});
+
+	describe("PUT /users/:userId/email", function () {
+		it("should change the user email",function () {
+			const email = "new@email.com";
+
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}/email`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({email})
+						.expect(200))
+				.then(response => {
+					const tokenPayload = jwt.verify(response.body, process.env.JWT_SECRET);
+
+					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
+				})
 		});
 	});
 });

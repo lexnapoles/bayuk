@@ -1,0 +1,1 @@
+SELECT * FROM update_user_email(${id}, ${email});

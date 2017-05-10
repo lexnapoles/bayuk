@@ -1,5 +1,6 @@
 import {sendJsonResponse} from "../../../utils/utils";
-import {getUsers, getUserById} from "../services/users";
+import {getUsers, getUserById, updateEmail} from "../services/users";
+import {createJwt} from "../services/authentication";
 import {has} from "lodash/object";
 
 export const readUsers = (req, res) =>
@@ -21,6 +22,14 @@ export const readOneUser = (req, res) => {
 	getUserById(userId)
 		.then(user => sendJsonResponse(res, 200, user))
 		.catch(error => sendJsonResponse(res, 404, {"message": error}));
+};
+
+export const updateUserEmail = (req, res) => {
+	const {userId} = req.params,
+				{email}  = req.body;
+
+	updateEmail(userId, email)
+		.then(user => sendJsonResponse(res, 200, createJwt(user)));
 };
 
 export const updateOneUser = (req, res) => {

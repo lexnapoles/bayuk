@@ -12,7 +12,7 @@ import {transformProduct} from "../../server/api/transformers/products";
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser as getRandomUser} from "../../server/seeder/database/usersTableSeeder";
 import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
-import {notFoundError, fieldNotFound, invalidProduct} from "../../server/errors/api/productErrors";
+import {notFoundError, invalidProduct} from "../../server/errors/api/productErrors";
 import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
 import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import {createJwt} from "../../server/api/services/authentication"
@@ -80,8 +80,10 @@ describe("Products", function () {
 			.then(() => server = createServer());
 	});
 
-	afterEach(function (done) {
-		return server.close(done);
+	afterEach(function () {
+		return cleanAllPreviouslyCreatedImages()
+			.then(() => db.none(global.truncateAll))
+			.then(() => server.close());
 	});
 
 	describe("GET /products", function () {

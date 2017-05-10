@@ -24,3 +24,5 @@ export const addUser = ({email, name, password, location}) =>
 			user,
 			token: createJwt(user)
 		}));
+
+export const updateEmail = (id, email) => db.one(users.updateEmail, {id, email});

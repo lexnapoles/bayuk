@@ -37,7 +37,14 @@ export const readOneProduct = (req, res) => {
 	getProductById(productId)
 		.then(transformProduct)
 		.then(product => sendJsonResponse(res, 200, product))
-		.catch(() => sendJsonResponse(res, 404, [notFoundError()]));
+		.catch(error => {
+			if (error.code === dbErrors.dataNotFound) {
+				sendJsonResponse(res, 404, [notFoundError()]);
+				return;
+			}
+
+			sendJsonResponse(res, 500, [error]);
+		});
 };
 
 export const createProduct = (req, res) => {
@@ -134,7 +141,7 @@ export const deleteOneProduct = (req, res) => {
 	}
 
 	return getProductById(productId)
-		.then(() => 	deleteProduct(productId))
+		.then(() => deleteProduct(productId))
 		.then(() => sendJsonResponse(res, 204, null))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {
