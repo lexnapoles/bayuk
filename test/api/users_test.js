@@ -81,7 +81,6 @@ describe("Users", function () {
 				});
 		});
 
-
 		it("should fail when any of the required fields is not sent", function () {
 			const user = {
 				email:    faker.internet.email(),
@@ -355,7 +354,7 @@ describe("Users", function () {
 	});
 
 	describe("PUT /users/:userId/email", function () {
-		it("should change the user email",function () {
+		it("should change the user email", function () {
 			const email = "new@email.com";
 
 			return addUser(getUser())
@@ -369,7 +368,36 @@ describe("Users", function () {
 					const tokenPayload = jwt.verify(response.body, process.env.JWT_SECRET);
 
 					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
-				})
+				});
+		});
+
+		it("should fail when no data has been sent", function () {
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}/email`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no data has been sent", function () {
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}/email`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(dataNotFound("body"));
+				});
 		});
 	});
 });

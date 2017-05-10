@@ -1,7 +1,7 @@
 import bodyParser from "body-parser";
 import verifyUser from "../../middlewares/verifyUser";
 import auth from "../../middlewares/auth";
-import {createUserImage, readUsers, readOneUser, updateOneUser, updateUserEmail, deleteOneUser} from "../controllers/users";
+import {createUserImage, readUsers, readOneUser, updateOneUser, updateUserEmail, deleteOneUser} from "../controllers/users/users";
 
 const jsonParser = bodyParser.json({limit: "50mb"});
 
