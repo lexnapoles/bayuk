@@ -1,5 +1,7 @@
 import chai from "chai";
 import request from "supertest";
+import faker from "faker";
+import jwt from "jsonwebtoken";
 import createServer from "../../server/server";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
@@ -7,8 +9,8 @@ import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {invalidUser, userAlreadyExists, loginFailed} from "../../server/errors/api/userErrors";
 import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
-import faker from "faker";
-import jwt from "jsonwebtoken";
+import {createJwt} from "../../server/api/services/authentication"
+import {userDoesNotExist} from "../../server/errors/api/userErrors";
 
 chai.should();
 
@@ -353,7 +355,7 @@ describe("Users", function () {
 		});
 	});
 
-	describe.only("PUT /users/:userId/email", function () {
+	describe("PUT /users/:userId/email", function () {
 		it("should change the user email", function () {
 			const email = "new@email.com";
 
@@ -401,15 +403,14 @@ describe("Users", function () {
 		});
 
 		it("should fail when the user id is invalid", function () {
-			const userId = void 0,
-						email  = "new@email.com";
+			const userId = void 0;
 
 			return addUser(getUser())
 				.then(({token}) =>
 					request(server)
 						.put(`/api/users/${userId}/email`)
 						.set("Authorization", `Bearer ${token}`)
-						.send({email})
+						.send({email: "new@email.com"})
 						.expect(400))
 				.then(response => {
 					const errors = response.body;
@@ -420,20 +421,54 @@ describe("Users", function () {
 		});
 
 		it("should provide a detailed error when the user id is invalid", function () {
-			const userId = void 0,
-						email  = "new@email.com";
+			const userId = void 0;
 
 			return addUser(getUser())
 				.then(({token}) =>
 					request(server)
 						.put(`/api/users/${userId}/email`)
 						.set("Authorization", `Bearer ${token}`)
-						.send({email})
+						.send({email: "new@email.com"})
 						.expect(400))
 				.then(response => {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(invalidId());
+				});
+		});
+
+		it("should fail when the user is not found", function () {
+			const randomUser = getUser({uuid: faker.random.uuid()});
+
+			const validTokenForNonExistentUser = createJwt(randomUser);
+
+			return request(server)
+				.put(`/api/users/${randomUser.uuid}/email`)
+				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+				.send({email: "new@email.com"})
+				.expect(404)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the user is not found", function () {
+			const randomUser = getUser({uuid: faker.random.uuid()});
+
+			const validTokenForNonExistentUser = createJwt(randomUser);
+
+			return request(server)
+				.put(`/api/users/${randomUser.uuid}/email`)
+				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+				.send({email: "new@email.com"})
+				.expect(404)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(userDoesNotExist());
 				});
 		});
 	});
