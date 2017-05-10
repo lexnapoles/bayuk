@@ -5,8 +5,8 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
-import {invalidUser, fieldNotFound, userAlreadyExists, loginFailed} from "../../server/errors/api/userErrors";
-import {dataNotFound} from "../../server/errors/api/controllerErrors";
+import {invalidUser, userAlreadyExists, loginFailed} from "../../server/errors/api/userErrors";
+import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import faker from "faker";
 import jwt from "jsonwebtoken";
 
@@ -353,7 +353,7 @@ describe("Users", function () {
 		});
 	});
 
-	describe("PUT /users/:userId/email", function () {
+	describe.only("PUT /users/:userId/email", function () {
 		it("should change the user email", function () {
 			const email = "new@email.com";
 
@@ -397,6 +397,43 @@ describe("Users", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(dataNotFound("body"));
+				});
+		});
+
+		it("should fail when the user id is invalid", function () {
+			const userId = void 0,
+						email  = "new@email.com";
+
+			return addUser(getUser())
+				.then(({token}) =>
+					request(server)
+						.put(`/api/users/${userId}/email`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({email})
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the user id is invalid", function () {
+			const userId = void 0,
+						email  = "new@email.com";
+
+			return addUser(getUser())
+				.then(({token}) =>
+					request(server)
+						.put(`/api/users/${userId}/email`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({email})
+						.expect(400))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(invalidId());
 				});
 		});
 	});

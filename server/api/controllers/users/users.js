@@ -1,5 +1,5 @@
 import {sendJsonResponse} from "../../../../utils/utils";
-import {validateRequest} from "../validators";
+import {validateRequest, validateId} from "../validators";
 import {getUsers, getUserById, updateEmail} from "../../services/users";
 import {createJwt} from "../../services/authentication";
 import {has} from "lodash/object";
@@ -26,12 +26,16 @@ export const readOneUser = (req, res) => {
 };
 
 export const updateUserEmail = (req, res) => {
-	const requestErrors = validateRequest(req, "body");
+	const requestErrors = [
+		...validateRequest(req, ["body", "params"]),
+		...validateRequest(req.params, "userId"),
+	];
 
 	if (requestErrors.length) {
 		sendJsonResponse(res, 400, requestErrors);
 		return;
 	}
+
 	const {userId} = req.params,
 				{email}  = req.body;
 
@@ -40,6 +44,13 @@ export const updateUserEmail = (req, res) => {
 	if (noEmailError.length) {
 		sendJsonResponse(res, 400, noEmailError);
 		return
+	}
+
+	const invalidIdError = validateId(userId);
+
+	if (invalidIdError.length) {
+		sendJsonResponse(res, 400, invalidIdError);
+		return;
 	}
 
 	updateEmail(userId, email)
