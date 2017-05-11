@@ -1,10 +1,7 @@
 import {has} from "lodash/object";
 import {getProductById} from "../api/services/products";
-
-const UserNotFoundError = () => ({
-	name:    "UserNotFoundError",
-	message: "User not found"
-});
+import {sendJsonResponse} from "../../utils/utils";
+import {userDoesNotExist} from "../errors/api/userErrors";
 
 const ProductNotFoundError = () => ({
 	name:    "ProductNotFoundError",
@@ -18,8 +15,10 @@ const TokenDoesNotMatchError = () => ({
 
 export default (req, res, next) => {
 	if (!has(req, "user")) {
-		return next(UserNotFoundError());
+		sendJsonResponse(res, 404, [userDoesNotExist()]);
+		return;
 	}
+
 
 	if (!has(req, "params") || !has(req.params, "productId")) {
 		return next(ProductNotFoundError());

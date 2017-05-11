@@ -9,7 +9,7 @@ import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {invalidUser, userAlreadyExists, loginFailed} from "../../server/errors/api/userErrors";
 import {unauthorizedAccess, tokenDoesNotMatch} from "../../server/errors/api/authorizationErrors";
-import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
+import {dataNotFound} from "../../server/errors/api/controllerErrors";
 import {createJwt} from "../../server/api/services/authentication"
 import {userDoesNotExist} from "../../server/errors/api/userErrors";
 

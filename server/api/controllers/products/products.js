@@ -1,7 +1,7 @@
 import {sendJsonResponse} from "../../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
-import {notFoundError}  from "../../../errors/api/productErrors";
+import {productDoesNotExist}  from "../../../errors/api/productErrors";
 import {tokenDoesNotMatch}  from "../../../errors/api/authorizationErrors";
 import dbErrors  from "../../../errors/database";
 import {validateRequest, validateId} from "../validators";
@@ -40,7 +40,7 @@ export const readOneProduct = (req, res) => {
 		.then(product => sendJsonResponse(res, 200, product))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {
-				sendJsonResponse(res, 404, [notFoundError()]);
+				sendJsonResponse(res, 404, [productDoesNotExist()]);
 				return;
 			}
 
@@ -112,7 +112,7 @@ export const updateOneProduct = (req, res) => {
 		.then(product => sendJsonResponse(res, 200, product))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {
-				sendJsonResponse(res, 404, [notFoundError()]);
+				sendJsonResponse(res, 404, [productDoesNotExist()]);
 				return;
 			}
 
@@ -138,7 +138,7 @@ export const deleteOneProduct = (req, res) => {
 		.then(() => sendJsonResponse(res, 204, null))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {
-				sendJsonResponse(res, 404, [notFoundError()]);
+				sendJsonResponse(res, 404, [productDoesNotExist()]);
 				return;
 			}
 

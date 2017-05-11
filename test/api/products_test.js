@@ -12,7 +12,7 @@ import {transformProduct} from "../../server/api/transformers/products";
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser as getRandomUser} from "../../server/seeder/database/usersTableSeeder";
 import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
-import {notFoundError, invalidProduct} from "../../server/errors/api/productErrors";
+import {productDoesNotExist, invalidProduct} from "../../server/errors/api/productErrors";
 import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
 import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import {createJwt} from "../../server/api/services/authentication"
@@ -180,7 +180,7 @@ describe("Products", function () {
 
 					error.should.contain.all.keys(["code", "title", "details"]);
 
-					error.should.be.deep.equal(notFoundError());
+					error.should.be.deep.equal(productDoesNotExist());
 				});
 		});
 	});
@@ -676,7 +676,7 @@ describe("Products", function () {
 				.then(response => {
 					const error = response.body[0];
 
-					error.should.be.deep.equal(notFoundError());
+					error.should.be.deep.equal(productDoesNotExist());
 				});
 		});
 
@@ -815,7 +815,7 @@ describe("Products", function () {
 				.then(response => {
 					const error = response.body[0];
 
-					error.should.be.deep.equal(notFoundError());
+					error.should.be.deep.equal(productDoesNotExist());
 				})
 		});
 

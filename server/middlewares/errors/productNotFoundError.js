@@ -1,9 +1,9 @@
 import {sendJsonResponse} from "../../../utils/utils";
-import {notFoundError} from "../../errors/api/productErrors";
+import {productDoesNotExist} from "../../errors/api/productErrors";
 
 export default (err, req, res, next) => {
 	if (err.name === "ProductNotFoundError") {
-		sendJsonResponse(res, 404, [notFoundError()]);
+		sendJsonResponse(res, 404, [productDoesNotExist()]);
 	}
 
 	next(err);

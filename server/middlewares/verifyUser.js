@@ -1,10 +1,7 @@
 import {has} from "lodash/object";
 import {getUserById} from "../api/services/users";
-
-const UserNotFoundError = () => ({
-	name:    "UserNotFoundError",
-	message: "User not found"
-});
+import {sendJsonResponse} from "../../utils/utils";
+import {userDoesNotExist} from "../errors/api/userErrors";
 
 const TokenDoesNotMatchError = () => ({
 	name:    "TokenDoesNotMatchError",
@@ -13,7 +10,8 @@ const TokenDoesNotMatchError = () => ({
 
 export default (req, res, next) => {
 	if (!has(req, "user")) {
-		return next(UserNotFoundError());
+		sendJsonResponse(res, 404, [userDoesNotExist()]);
+		return;
 	}
 
 	const tokenUserId = req.user.id;
@@ -24,5 +22,5 @@ export default (req, res, next) => {
 
 	getUserById(tokenUserId)
 		.then(() => next())
-		.catch(() => next(UserNotFoundError()));
+		.catch(() => sendJsonResponse(res, 404, [userDoesNotExist()]));
 };

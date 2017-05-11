@@ -1,6 +1,6 @@
-export const notFoundError = () => ({
+export const productDoesNotExist = () => ({
 	code:    "ERR-1000",
-	title:   "Product not found",
+	title:   "Product doesn't exists",
 	details: "Product with the given id doesn't exist"
 });
 
