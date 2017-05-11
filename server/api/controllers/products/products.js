@@ -2,9 +2,10 @@ import {sendJsonResponse} from "../../../../utils/utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
 import {notFoundError}  from "../../../errors/api/productErrors";
+import {tokenDoesNotMatch}  from "../../../errors/api/authorizationErrors";
 import dbErrors  from "../../../errors/database";
 import {validateRequest, validateId} from "../validators";
-import {validateProduct} from "./validators"
+import {validateProduct, validateTokenWithProduct} from "./validators"
 
 export const readProducts = (req, res) =>
 	getProducts()
@@ -89,13 +90,6 @@ export const updateOneProduct = (req, res) => {
 
 	const {productId} = req.params;
 
-	const invalidIdError = validateId(productId);
-
-	if (invalidIdError.length) {
-		sendJsonResponse(res, 400, invalidIdError);
-		return;
-	}
-
 	const product = req.body;
 
 	const invalidProductErrors = validateProduct(product);
@@ -105,8 +99,14 @@ export const updateOneProduct = (req, res) => {
 		return;
 	}
 
-
 	return getProductById(productId)
+		.then(product => {
+			const tokenInvalidError = validateTokenWithProduct(req.user, product);
+
+			if (tokenInvalidError.length) {
+				return Promise.reject(tokenInvalidError[0])
+			}
+	})
 		.then(() => updateProduct(product))
 		.then(transformProduct)
 		.then(product => sendJsonResponse(res, 200, product))
@@ -132,13 +132,6 @@ export const deleteOneProduct = (req, res) => {
 	}
 
 	const {productId} = req.params;
-
-	const invalidIdError = validateId(productId);
-
-	if (invalidIdError.length) {
-		sendJsonResponse(res, 400, invalidIdError);
-		return;
-	}
 
 	return getProductById(productId)
 		.then(() => deleteProduct(productId))

@@ -4,8 +4,8 @@ export const unauthorizedAccess = () => ({
 	details: "Access cannot be granted based on the given token"
 });
 
-export const tokenDoesNotMatchUser = () => ({
+export const tokenDoesNotMatch = () => ({
 	code:    "ERR-3001",
-	title:   "Token does not match user",
-	details: "Token is invalid for this user"
+	title:   "Token does not match",
+	details: "Token is invalid for this operation"
 });

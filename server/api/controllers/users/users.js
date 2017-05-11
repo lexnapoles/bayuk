@@ -1,5 +1,5 @@
 import {sendJsonResponse} from "../../../../utils/utils";
-import {validateRequest, validateId} from "../validators";
+import {validateRequest} from "../validators";
 import {validateTokenWithUser} from "./validators";
 import {getUsers, getUserById, updateEmail} from "../../services/users";
 import {createJwt} from "../../services/authentication";
@@ -45,13 +45,6 @@ export const updateUserEmail = (req, res) => {
 	if (noEmailError.length) {
 		sendJsonResponse(res, 400, noEmailError);
 		return
-	}
-
-	const invalidIdError = validateId(userId);
-
-	if (invalidIdError.length) {
-		sendJsonResponse(res, 400, invalidIdError);
-		return;
 	}
 
 	const invalidTokenError = validateTokenWithUser(req.user, req.params);

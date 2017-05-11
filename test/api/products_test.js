@@ -637,49 +637,6 @@ describe("Products", function () {
 				});
 		});
 
-		it("should fail when the product id is invalid", function () {
-			const productId = void 0;
-
-			return addRandomProduct()
-				.then(({token, product}) => {
-					return request(server)
-						.put(`/api/products/${productId}`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...product,
-							price: 987,
-						})
-						.expect(400)
-				})
-				.then(response => {
-					const errors = response.body;
-
-					errors.should.be.instanceOf(Array);
-					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when the product id is invalid", function () {
-			const productId = void 0;
-
-			return addRandomProduct()
-				.then(({token, product}) => {
-					return request(server)
-						.put(`/api/products/${productId}`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...product,
-							price: 987,
-						})
-						.expect(400)
-				})
-				.then(response => {
-					const error = response.body[0];
-
-					error.should.be.deep.equal(invalidId());
-				});
-		});
-
 		it("should fail when the product to update is not found", function () {
 			const productId = faker.random.uuid();
 
@@ -794,6 +751,29 @@ describe("Products", function () {
 					error.should.be.deep.equal(userDoesNotExist());
 				});
 		});
+
+		it("should fail when token does not match product owner", function () {
+			let differentUserToken = "";
+
+			return getUserToken()
+				.then(token => differentUserToken = token)
+				.then(() => addRandomProduct())
+				.then(({product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${differentUserToken}`)
+						.send({
+							...product,
+							price: 987
+						})
+						.expect(403))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
 	});
 
 	describe("DELETE /products/:productId", function () {
@@ -804,39 +784,6 @@ describe("Products", function () {
 						.delete(`/api/products/${product.id}`)
 						.set("Authorization", `Bearer ${token}`)
 						.expect(204))
-		});
-
-		it("should fail when the product id is invalid", function () {
-			const productId = void 0;
-
-			return addRandomProduct()
-				.then(({token}) =>
-					request(server)
-						.delete(`/api/products/${productId}`)
-						.set("Authorization", `Bearer ${token}`)
-						.expect(400))
-				.then(response => {
-					const errors = response.body;
-
-					errors.should.be.instanceOf(Array);
-					errors.should.not.be.empty;
-				})
-		});
-
-		it("should provide a detailed error when the product id is invalid", function () {
-			const productId = void 0;
-
-			return addRandomProduct()
-				.then(({token}) =>
-					request(server)
-						.delete(`/api/products/${productId}`)
-						.set("Authorization", `Bearer ${token}`)
-						.expect(400))
-				.then(response => {
-					const error = response.body[0];
-
-					error.should.be.deep.equal(invalidId());
-				})
 		});
 
 		it("should fail when the product to delete is not found", function () {
