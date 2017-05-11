@@ -2,16 +2,13 @@ import {has} from "lodash/object";
 import {getProductById} from "../api/services/products";
 import {sendJsonResponse} from "../../utils/utils";
 import {userDoesNotExist} from "../errors/api/userErrors";
+import {tokenDoesNotMatch} from "../errors/api/authorizationErrors";
 
 const ProductNotFoundError = () => ({
 	name:    "ProductNotFoundError",
 	message: "Product not found"
 });
 
-const TokenDoesNotMatchError = () => ({
-	name:    "TokenDoesNotMatchError",
-	message: "Token does not match userId"
-});
 
 export default (req, res, next) => {
 	if (!has(req, "user")) {
@@ -28,6 +25,6 @@ export default (req, res, next) => {
 				productId   = req.params.productId;
 
 	getProductById(productId)
-		.then(({owner}) => owner !== tokenUserId ? next(TokenDoesNotMatchError()) : next())
+		.then(({owner}) => owner !== tokenUserId ? 	sendJsonResponse(res, 403, [tokenDoesNotMatch()]) : next())
 		.catch(() => next(ProductNotFoundError()));
 };

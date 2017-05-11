@@ -2,11 +2,7 @@ import {has} from "lodash/object";
 import {getUserById} from "../api/services/users";
 import {sendJsonResponse} from "../../utils/utils";
 import {userDoesNotExist} from "../errors/api/userErrors";
-
-const TokenDoesNotMatchError = () => ({
-	name:    "TokenDoesNotMatchError",
-	message: "Token does not match userId"
-});
+import {tokenDoesNotMatch} from "../errors/api/authorizationErrors";
 
 export default (req, res, next) => {
 	if (!has(req, "user")) {
@@ -17,7 +13,8 @@ export default (req, res, next) => {
 	const tokenUserId = req.user.id;
 
 	if (has(req, "params") && has(req.params, "userId") && req.params.userId !== tokenUserId) {
-		return next(TokenDoesNotMatchError());
+		sendJsonResponse(res, 403, [tokenDoesNotMatch()]);
+		return;
 	}
 
 	getUserById(tokenUserId)
