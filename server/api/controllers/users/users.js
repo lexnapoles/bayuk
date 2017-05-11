@@ -1,5 +1,6 @@
 import {sendJsonResponse} from "../../../../utils/utils";
 import {validateRequest, validateId} from "../validators";
+import {validateTokenWithUser} from "./validators";
 import {getUsers, getUserById, updateEmail} from "../../services/users";
 import {createJwt} from "../../services/authentication";
 import {has} from "lodash/object";
@@ -50,6 +51,13 @@ export const updateUserEmail = (req, res) => {
 
 	if (invalidIdError.length) {
 		sendJsonResponse(res, 400, invalidIdError);
+		return;
+	}
+
+	const invalidTokenError = validateTokenWithUser(req.user, req.params);
+
+	if (invalidTokenError.length) {
+		sendJsonResponse(res, 403, invalidTokenError);
 		return;
 	}
 

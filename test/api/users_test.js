@@ -8,7 +8,7 @@ import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {invalidUser, userAlreadyExists, loginFailed} from "../../server/errors/api/userErrors";
-import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
+import {unauthorizedAccess, tokenDoesNotMatchUser} from "../../server/errors/api/authorizationErrors";
 import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import {createJwt} from "../../server/api/services/authentication"
 import {userDoesNotExist} from "../../server/errors/api/userErrors";
@@ -499,6 +499,39 @@ describe("Users", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
+
+		it("should fail when the token does not match the userId", function () {
+			return addUser(getUser())
+				.then(({token}) =>
+					request(server)
+						.put(`/api/users/${faker.random.uuid()}/email`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({email: "new@email.com"})
+						.expect(403))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the token does not match the userId", function () {
+			const idDifferentFromTokenId = faker.random.uuid();
+
+			return addUser(getUser())
+				.then(({token}) =>
+					request(server)
+						.put(`/api/users/${idDifferentFromTokenId}/email`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({email: "new@email.com"})
+						.expect(403))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(tokenDoesNotMatchUser())
 				});
 		});
 	});
