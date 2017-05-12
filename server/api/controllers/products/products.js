@@ -10,9 +10,7 @@ export const readProducts = (req, res) =>
 	getProducts()
 		.then(products => products.map(transformProduct))
 		.then(products => sendJsonResponse(res, 200, products))
-		.catch(error => sendJsonResponse(res, 404, {
-			message: error
-		}));
+		.catch(error => sendJsonResponse(res, 500, [error]));
 
 export const readOneProduct = (req, res) => {
 	const requestErrors = [
@@ -73,7 +71,7 @@ export const createProduct = (req, res) => {
 			res.location(`/api/products/${product.id}`);
 			sendJsonResponse(res, 201, product)
 		})
-		.catch(error => sendJsonResponse(res, 400, error));
+		.catch(error => sendJsonResponse(res, 500, [error]));
 };
 
 export const updateOneProduct = (req, res) => {

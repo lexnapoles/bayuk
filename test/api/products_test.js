@@ -13,7 +13,7 @@ import addCategories from "../../server/seeder/database/categoriesTableSeeder";
 import {getUser as getRandomUser} from "../../server/seeder/database/usersTableSeeder";
 import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
 import {productDoesNotExist, invalidProduct} from "../../server/errors/api/productErrors";
-import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
+import {unauthorizedAccess, tokenDoesNotMatch} from "../../server/errors/api/authorizationErrors";
 import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import {createJwt} from "../../server/api/services/authentication"
 import {userDoesNotExist} from "../../server/errors/api/userErrors";
@@ -601,7 +601,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should fail when incorrect data has been sent", function () {
+		it("should fail when invalid data has been sent", function () {
 			return addRandomProduct()
 				.then(({token, product}) => {
 					return request(server)
@@ -774,6 +774,28 @@ describe("Products", function () {
 					errors.should.not.be.empty;
 				});
 		});
+
+		it("should provide a detailed error when token does not match product owner", function () {
+			let differentUserToken = "";
+
+			return getUserToken()
+				.then(token => differentUserToken = token)
+				.then(() => addRandomProduct())
+				.then(({product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${differentUserToken}`)
+						.send({
+							...product,
+							price: 987
+						})
+						.expect(403))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(tokenDoesNotMatch());
+				});
+		});
 	});
 
 	describe("DELETE /products/:productId", function () {
@@ -876,6 +898,43 @@ describe("Products", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(userDoesNotExist());
+				});
+		});
+
+		it("should fail when token does not match product owner", function () {
+			let differentUserToken = "";
+
+			return getUserToken()
+				.then(token => differentUserToken = token)
+				.then(() => addRandomProduct())
+				.then(({product}) =>
+					request(server)
+						.delete(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${differentUserToken}`)
+						.expect(403))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when token does not match product owner", function () {
+			let differentUserToken = "";
+
+			return getUserToken()
+				.then(token => differentUserToken = token)
+				.then(() => addRandomProduct())
+				.then(({product}) =>
+					request(server)
+						.delete(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${differentUserToken}`)
+						.expect(403))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(tokenDoesNotMatch());
 				});
 		});
 	});
