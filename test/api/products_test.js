@@ -397,7 +397,7 @@ describe("Products", function () {
 		});
 
 		it("should fail when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getRandomUser());
+			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
 
 			return request(server)
 				.post("/api/products")
@@ -413,7 +413,7 @@ describe("Products", function () {
 		});
 
 		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getRandomUser());
+			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
 
 			return request(server)
 				.post("/api/products")
@@ -718,7 +718,7 @@ describe("Products", function () {
 		});
 
 		it("should fail when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getRandomUser());
+			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
 
 			return addRandomProduct()
 				.then(({product}) =>
@@ -736,7 +736,7 @@ describe("Products", function () {
 		});
 
 		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getRandomUser());
+			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
 
 			return addRandomProduct()
 				.then(({product}) =>
@@ -847,7 +847,7 @@ describe("Products", function () {
 		});
 
 		it("should fail when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getRandomUser());
+			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
 
 			return addRandomProduct()
 				.then(({product}) =>
@@ -864,7 +864,7 @@ describe("Products", function () {
 		});
 
 		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getRandomUser());
+			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
 
 			return addRandomProduct()
 				.then(({product}) =>

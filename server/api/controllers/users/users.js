@@ -1,6 +1,5 @@
 import {sendJsonResponse} from "../../../../utils/utils";
 import {validateRequest} from "../validators";
-import {validateTokenWithUser} from "./validators";
 import {getUsers, getUserById, updateEmail} from "../../services/users";
 import {createJwt} from "../../services/authentication";
 import {has} from "lodash/object";
@@ -11,7 +10,6 @@ export const readUsers = (req, res) =>
 		.catch(error => sendJsonResponse(res, 404, {"message": error}));
 
 export const readOneUser = (req, res) => {
-
 	if (!has(req, "params") && !has(req.params, "userId")) {
 		sendJsonResponse(res, 404, {
 			"message": "No userId in request"
@@ -27,10 +25,7 @@ export const readOneUser = (req, res) => {
 };
 
 export const updateUserEmail = (req, res) => {
-	const requestErrors = [
-		...validateRequest(req, ["body", "params"]),
-		...validateRequest(req.params, "userId"),
-	];
+	const requestErrors = validateRequest(req, "body");
 
 	if (requestErrors.length) {
 		sendJsonResponse(res, 400, requestErrors);
@@ -47,15 +42,9 @@ export const updateUserEmail = (req, res) => {
 		return
 	}
 
-	const invalidTokenError = validateTokenWithUser(req.user, req.params);
-
-	if (invalidTokenError.length) {
-		sendJsonResponse(res, 403, invalidTokenError);
-		return;
-	}
-
 	updateEmail(userId, email)
-		.then(user => sendJsonResponse(res, 200, createJwt(user)));
+		.then(user => sendJsonResponse(res, 200, createJwt(user)))
+		.catch(error => sendJsonResponse(res, 500, [error]))
 };
 
 export const updateOneUser = (req, res) => {
