@@ -500,4 +500,144 @@ describe("Users", function () {
 				});
 		});
 	});
+
+	describe("PUT /users/:userId/password", function () {
+		it("should change the user password", function () {
+			const password = "newPassword123";
+
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}/password`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({password})
+						.expect(204));
+		});
+
+		it("should fail when no data has been sent", function () {
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}/password`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no data has been sent", function () {
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}/password`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(dataNotFound("body"));
+				});
+		});
+
+		it("should fail when the user is not found", function () {
+			const randomUser = getUser({id: faker.random.uuid()});
+
+			const validTokenForNonExistentUser = createJwt(randomUser);
+
+			return request(server)
+				.put(`/api/users/${randomUser.id}/password`)
+				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+				.send({password: "newPassword123"})
+				.expect(404)
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the user is not found", function () {
+			const randomUser = getUser({id: faker.random.uuid()});
+
+			const validTokenForNonExistentUser = createJwt(randomUser);
+
+			return request(server)
+				.put(`/api/users/${randomUser.id}/password`)
+				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+				.send({password: "newPassword123"})
+				.expect(404)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(userDoesNotExist());
+				});
+		});
+
+		it("should fail when no token has been sent", function () {
+			return addUser(getUser())
+				.then(({user}) =>
+					request(server)
+						.put(`/api/users/${user.id}/password`)
+						.send({password: "newPassword123"})
+						.expect(401))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no token has been sent", function () {
+			return addUser(getUser())
+				.then(({user}) =>
+					request(server)
+						.put(`/api/users/${user.id}/password`)
+						.send({password: "newPassword123"})
+						.expect(401))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
+
+		it("should fail when the token does not match the userId", function () {
+			return addUser(getUser())
+				.then(({token}) =>
+					request(server)
+						.put(`/api/users/${faker.random.uuid()}/password`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({password: "newPassword123"})
+						.expect(403))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the token does not match the userId", function () {
+			const idDifferentFromTokenId = faker.random.uuid();
+
+			return addUser(getUser())
+				.then(({token}) =>
+					request(server)
+						.put(`/api/users/${idDifferentFromTokenId}/password`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({password: "newPassword123"})
+						.expect(403))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(tokenDoesNotMatch())
+				});
+		});
+	});
 });

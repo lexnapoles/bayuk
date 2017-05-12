@@ -26,3 +26,7 @@ export const addUser = ({email, name, password, location}) =>
 		}));
 
 export const updateEmail = (id, email) => db.one(users.updateEmail, {id, email});
+
+export const updatePassword = (id, password) =>
+	setPassword(password)
+		.then(credentials => db.one(users.updatePassword, {id, ...credentials}));
