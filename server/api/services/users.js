@@ -1,4 +1,5 @@
 import db from "../../db";
+import {omit} from "lodash/object";
 import {users} from "../../sql/sql";
 import {createJwt, setPassword} from "./authentication";
 
@@ -15,15 +16,19 @@ export const getUserById = id =>
 export const getCredentials = email =>
 	db.one("SELECT hash, salt from users WHERE email=$1", email);
 
-const addUserToDB = ({email, name, location, credentials}) =>	db.one(users.add, {email, name, ...location, ...credentials});
+const addUserToDB = user =>	db.one(users.add, user);
 
-export const addUser = ({email, name, password, location}) =>
-	setPassword(password)
-		.then(credentials => addUserToDB({email, name, location, credentials}))
+export const addUser = user =>
+	setPassword(user.password)
+		.then(credentials => addUserToDB({...omit(user, "password"), ...credentials}))
 		.then(user => ({
 			user,
 			token: createJwt(user)
 		}));
+
+export const updateUser = ({id, name, email, latitude, longitude, image}) => {
+	return db.one(users.update, {id, name, email, latitude, longitude});
+}
 
 export const updateEmail = (id, email) => db.one(users.updateEmail, {id, email});
 

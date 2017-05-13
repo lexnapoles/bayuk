@@ -22,6 +22,7 @@ export const products = {
 
 export const users = {
 	add:            sql("users/add.sql"),
+	update:         sql("users/update.sql"),
 	updateEmail:    sql("users/updateEmail.sql"),
 	updatePassword: sql("users/updatePassword.sql"),
 };

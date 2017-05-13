@@ -17,6 +17,8 @@ chai.should();
 
 let server = {};
 
+const userKeys = ["id", "name", "email", "latitude", "longitude", "image"];
+
 describe("Users", function () {
 	beforeEach(function () {
 		server = createServer();
@@ -33,13 +35,11 @@ describe("Users", function () {
 	describe("POST /register", function () {
 		it("should register a user", function () {
 			const user = {
-				email:    faker.internet.email(),
-				name:     faker.name.findName(),
-				password: faker.internet.password(),
-				location: {
-					latitude:  faker.address.latitude(),
-					longitude: faker.address.longitude()
-				}
+				email:     faker.internet.email(),
+				name:      faker.name.findName(),
+				password:  faker.internet.password(),
+				latitude:  faker.address.latitude(),
+				longitude: faker.address.longitude()
 			};
 
 			return request(server)
@@ -57,7 +57,7 @@ describe("Users", function () {
 				.then(response => {
 					const tokenPayload = jwt.verify(response.body, process.env.JWT_SECRET);
 
-					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
+					tokenPayload.should.contain.all.keys(["id", "name", "email", "latitude", "longitude", "image"]);
 				})
 		});
 
@@ -86,12 +86,10 @@ describe("Users", function () {
 
 		it("should fail when any of the required fields is not sent", function () {
 			const user = {
-				email:    faker.internet.email(),
-				password: faker.internet.password(),
-				location: {
-					latitude:  faker.address.latitude(),
-					longitude: faker.address.longitude()
-				}
+				email:     faker.internet.email(),
+				password:  faker.internet.password(),
+				latitude:  faker.address.latitude(),
+				longitude: faker.address.longitude()
 			};
 
 			return request(server)
@@ -108,11 +106,9 @@ describe("Users", function () {
 
 		it("should provide an error for any field that is not sent", function () {
 			const user = {
-				password: faker.internet.password(),
-				location: {
-					latitude:  faker.address.latitude(),
-					longitude: faker.address.longitude()
-				}
+				password:  faker.internet.password(),
+				latitude:  faker.address.latitude(),
+				longitude: faker.address.longitude()
 			};
 
 			const FIELDS_DELETED = 2;
@@ -130,11 +126,9 @@ describe("Users", function () {
 
 		it("should provide detailed errors for each field", function () {
 			const user = {
-				password: faker.internet.password(),
-				location: {
-					latitude:  faker.address.latitude(),
-					longitude: faker.address.longitude()
-				}
+				password:  faker.internet.password(),
+				latitude:  faker.address.latitude(),
+				longitude: faker.address.longitude()
 			};
 
 			return request(server)
@@ -217,7 +211,7 @@ describe("Users", function () {
 				.then(response => {
 					const tokenPayload = jwt.verify(response.body, process.env.JWT_SECRET);
 
-					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
+					tokenPayload.should.contain.all.keys(userKeys);
 				});
 		});
 
@@ -356,6 +350,30 @@ describe("Users", function () {
 		});
 	});
 
+	describe.only("PUT /users/:userId", function () {
+		it("should modify the user", function () {
+			const name = "New Name";
+
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...user,
+							name
+						})
+						.expect(200))
+				.then(response => {
+					const user = response.body;
+
+					user.should.include.all.keys(userKeys);
+
+					user.name.should.be.equal(name);
+				});
+		});
+	});
+
 	describe("PUT /users/:userId/email", function () {
 		it("should change the user email", function () {
 			const email = "new@email.com";
@@ -370,7 +388,7 @@ describe("Users", function () {
 				.then(response => {
 					const tokenPayload = jwt.verify(response.body, process.env.JWT_SECRET);
 
-					tokenPayload.should.contain.all.keys(["id", "name", "email", "location", "image"]);
+					tokenPayload.should.contain.all.keys(userKeys);
 				});
 		});
 
@@ -640,4 +658,5 @@ describe("Users", function () {
 				});
 		});
 	});
-});
+})
+;

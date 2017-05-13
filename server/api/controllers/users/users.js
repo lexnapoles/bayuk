@@ -1,6 +1,6 @@
 import {sendJsonResponse} from "../../../../utils/utils";
 import {validateRequest} from "../validators";
-import {getUsers, getUserById, updateEmail, updatePassword} from "../../services/users";
+import {getUsers, getUserById, updateUser, updateEmail, updatePassword} from "../../services/users";
 import {createJwt} from "../../services/authentication";
 import {has} from "lodash/object";
 
@@ -55,8 +55,8 @@ export const updateUserPassword = (req, res) => {
 		return;
 	}
 
-	const {userId} = req.params,
-				{password}  = req.body;
+	const {userId}   = req.params,
+				{password} = req.body;
 
 	const noPasswordError = validateRequest(req.body, "password");
 
@@ -71,10 +71,12 @@ export const updateUserPassword = (req, res) => {
 };
 
 export const updateOneUser = (req, res) => {
-	return;
-};
+	const user = req.body;
 
-export const createUserImage = (req, res) => {
+	updateUser(user)
+		.then(user => sendJsonResponse(res, 200, user))
+		.catch(error => sendJsonResponse(res, 500, [user, error]));
+
 	return;
 };
 

@@ -4,28 +4,23 @@ export const register = {
 	"type":       "object",
 	"title":      "Register",
 	"properties": {
-		"name":     {
+		"name":      {
 			"type": "string"
 		},
-		"email":    {
+		"email":     {
 			"type": "string"
 		},
-		"password": {
+		"password":  {
 			"type": "string"
 		},
-		"location": {
-			"type":       "object",
-			"properties": {
-				"latitude":  {
-					"type": "string"
-				},
-				"longitude": {
-					"type": "string"
-				}
-			}
+		"latitude":  {
+			"type": "string"
 		},
+		"longitude": {
+			"type": "string"
+		}
 	},
-	"required":   ["name", "email", "password", "location"]
+	"required":   ["name", "email", "password", "latitude", "longitude"]
 };
 
 export const login = {

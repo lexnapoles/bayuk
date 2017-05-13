@@ -5,13 +5,11 @@ import {addUser} from "../../api/services/users";
 import {wrapDataInPromise} from "../../../utils/utils";
 
 export const getUser = (user = {}) => ({
-	email:    faker.internet.email(),
-	name:     faker.name.findName(),
-	password: faker.internet.password(),
-	location: {
-		latitude:  faker.address.latitude(),
-		longitude: faker.address.longitude()
-	},
+	email:     faker.internet.email(),
+	name:      faker.name.findName(),
+	password:  faker.internet.password(),
+	latitude:  faker.address.latitude(),
+	longitude: faker.address.longitude(),
 	...user
 });
 
