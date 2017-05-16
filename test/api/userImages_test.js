@@ -3,16 +3,22 @@ import fs from "fs-promise";
 import chai from "chai";
 import chaiFs from "chai-fs";
 import faker from "faker";
+import db from "../../server/db";
+import {global} from "../../server/sql/sql";
 import {
 	getUserImagePath,
+	getImageOfUser,
 	writeUserImageToDisk,
 	deleteUserImageFromDisk,
-	addImage
+	addUserImageToDB,
+	deleteUserImageFromDB
 } from "../../server/api/services/userImages";
+import {addUser} from "../../server/api/services/users";
+import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {getFileNameWithNoExtension, deleteFile} from "../../utils/utils";
 
 chai.use(chaiFs);
-chai.should();
+const should = chai.should();
 
 const PLACEHOLDER_IMAGE = getUserImagePath("default");
 
@@ -26,7 +32,7 @@ const clearImages = () =>
 				? Promise.all(filePaths.map(deleteUserImage))
 				: Promise.resolve(true));
 
-describe("user image services", function () {
+describe("User image services", function () {
 	describe("writeUserImageToDisk", function () {
 		afterEach(function () {
 			return clearImages();
@@ -71,6 +77,31 @@ describe("user image services", function () {
 			writeUserImageToDisk(image)
 				.then(() => deleteUserImageFromDisk(image.id))
 				.then(() => getUserImagePath(image.id).should.not.be.a.file);
+		});
+	});
+
+	describe("addUserImageToDB", function () {
+		afterEach(function () {
+			return db.none(global.truncateAll);
+		});
+
+		it("should add a user image to DB", function () {
+			return addUser(getUser())
+				.then(({user}) => addUserImageToDB(user.id))
+				.then(imageId => imageId.should.exist);
+		});
+	});
+
+	describe("deleteUserImageToDB", function () {
+		it("should delete a user image from DB", function () {
+			let createdUser = {};
+
+			return addUser(getUser())
+				.then(({user}) => createdUser = user)
+				.then(() => addUserImageToDB(createdUser.id))
+				.then(deleteUserImageFromDB)
+				.then(() => getImageOfUser(createdUser.id))
+				.then(id => should.not.exist(id));
 		});
 	});
 });
