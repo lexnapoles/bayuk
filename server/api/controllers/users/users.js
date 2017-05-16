@@ -75,9 +75,8 @@ export const updateOneUser = (req, res) => {
 
 	updateUser(user)
 		.then(user => sendJsonResponse(res, 200, user))
-		.catch(error => sendJsonResponse(res, 500, [user, error]));
+		.catch(error => sendJsonResponse(res, 500, [error]));
 
-	return;
 };
 
 export const deleteOneUser = (req, res) => {

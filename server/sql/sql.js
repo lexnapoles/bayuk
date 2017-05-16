@@ -15,16 +15,20 @@ export const categories = {
 export const products = {
 	getAll:           sql("products/getAll.sql"),
 	getById:          sql("products/getById.sql"),
+	getImages:        sql("products/getImages.sql"),
 	addWithAllFields: sql("products/addWithAllFields.sql"),
 	add:              sql("products/add.sql"),
+	addImages:        sql("products/addImages.sql"),
 	update:           sql("products/update.sql")
 };
 
 export const users = {
+	getImage:       sql("users/getImage.sql"),
 	add:            sql("users/add.sql"),
+	addImage:       sql("users/addImage.sql"),
 	update:         sql("users/update.sql"),
 	updateEmail:    sql("users/updateEmail.sql"),
-	updatePassword: sql("users/updatePassword.sql"),
+	updatePassword: sql("users/updatePassword.sql")
 };
 
 export const global = {

@@ -350,7 +350,7 @@ describe("Users", function () {
 		});
 	});
 
-	describe.only("PUT /users/:userId", function () {
+	describe("PUT /users/:userId", function () {
 		it("should modify the user", function () {
 			const name = "New Name";
 
@@ -370,6 +370,35 @@ describe("Users", function () {
 					user.should.include.all.keys(userKeys);
 
 					user.name.should.be.equal(name);
+				});
+		});
+
+		it("should modify the user image", function () {
+			const image = `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
+			LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
+			QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
+			AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
+			AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
+			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
+			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
+			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`;
+
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...user,
+							image
+						})
+						.expect(200))
+				.then(response => {
+					const user = response.body;
+
+					user.should.include.all.keys(userKeys);
+
+					user.image.should.exist();
 				});
 		});
 	});

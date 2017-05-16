@@ -1,11 +1,11 @@
 import db from "../../db";
 import {products} from "../../sql/sql";
 import {
-	writeImagesToDisk,
-	deleteImagesFromDisk,
-	updateImages,
+	writeProductImagesToDisk,
+	deleteProductImagesFromDisk,
+	updateProductImages,
 	getImagesOfProduct
-} from "./images";
+} from "./productImages";
 import {generateImagesObjs} from "../../../utils/utils";
 
 export const getProducts = () => db.any(products.getAll);
@@ -25,7 +25,7 @@ export const addProduct = product =>
 						imagesData = product.images,
 						images     = generateImagesObjs(imagesIds, imagesData);
 
-			writeImagesToDisk(images);
+			writeProductImagesToDisk(images);
 
 			return createdProduct;
 		});
@@ -33,14 +33,14 @@ export const addProduct = product =>
 const updateProductFromDB = product => db.one(products.update, product);
 
 export const updateProduct = product =>
-	updateImages(product.id, product.images)
+	updateProductImages(product.id, product.images)
 		.then(() => updateProductFromDB(product));
 
 const deleteProductFromDB = productId => db.proc("delete_product", productId);
 
 export const deleteProduct = productId =>
 	getImagesOfProduct(productId)
-		.then(deleteImagesFromDisk)
+		.then(deleteProductImagesFromDisk)
 		.then(deleteProductFromDB.bind(void 0, productId));
 
 export const addProductWithAllFields = product => db.one(products.addWithAllFields, product);

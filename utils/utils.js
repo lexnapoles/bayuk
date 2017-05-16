@@ -1,3 +1,4 @@
+import fs from "fs-promise";
 import {isEmpty} from "lodash/lang";
 
 export const sendJsonResponse = (res, status, content) => {
@@ -46,6 +47,18 @@ export const hasProperties = (obj = {}, props) => {
 
 	return f;
 };
+
+export const getFileNameWithNoExtension = file => file.split(".")[0];
+
+export const deleteFile = (path, validator = () => true) =>
+	fs.open(path, "r")
+		.then(() => validator(path) ? fs.unlink(path) : true)
+		.catch(error => {
+			if (error.code === "ENOENT") {
+				console.error(`${path} does not exist`);
+				return;
+			}
+		});
 
 export const createDefaultObjectFrom = (base = {}, defaultValue = "") => {
 	const keys = Array.isArray(base)

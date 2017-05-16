@@ -107,7 +107,3 @@ export const deleteOneProduct = (req, res) => {
 		.then(() => sendJsonResponse(res, 204, null))
 		.catch(error => sendJsonResponse(res, 500, [error]));
 };
-
-export const addProductImages = (req, res) => {
-	return;
-};

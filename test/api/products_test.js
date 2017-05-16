@@ -6,7 +6,7 @@ import createServer from "../../server/server";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users"
-import {getImagePath} from "../../server/api/services/images";
+import {getProductsImagePath} from "../../server/api/services/productImages";
 import {addProduct} from "../../server/api/services/products"
 import {transformProduct} from "../../server/api/transformers/products";
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
@@ -504,9 +504,9 @@ describe("Products", function () {
 				})
 				.then(response => {
 					const {images: ids}  = response.body,
-								newImage       = getImagePath(ids[0]),
-								firstOldImage  = getImagePath(oldImagesIds[0]),
-								secondOldImage = getImagePath(oldImagesIds[1]);
+								newImage       = getProductsImagePath(ids[0]),
+								firstOldImage  = getProductsImagePath(oldImagesIds[0]),
+								secondOldImage = getProductsImagePath(oldImagesIds[1]);
 
 					newImage.should.be.a.file();
 
@@ -534,9 +534,9 @@ describe("Products", function () {
 				})
 				.then(response => {
 					const {images: ids}  = response.body,
-								newImage       = getImagePath(ids[0]),
-								firstOldImage  = getImagePath(oldImagesIds[0]),
-								secondOldImage = getImagePath(oldImagesIds[1]);
+								newImage       = getProductsImagePath(ids[0]),
+								firstOldImage  = getProductsImagePath(oldImagesIds[0]),
+								secondOldImage = getProductsImagePath(oldImagesIds[1]);
 
 					newImage.should.be.a.file();
 
@@ -561,8 +561,8 @@ describe("Products", function () {
 						.expect(200)
 				})
 				.then(() => {
-					const firstOldImage  = getImagePath(oldImagesIds[0]),
-								secondOldImage = getImagePath(oldImagesIds[1]);
+					const firstOldImage  = getProductsImagePath(oldImagesIds[0]),
+								secondOldImage = getProductsImagePath(oldImagesIds[1]);
 
 					firstOldImage.should.be.a.file();
 

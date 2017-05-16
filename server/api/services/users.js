@@ -2,6 +2,7 @@ import db from "../../db";
 import {omit} from "lodash/object";
 import {users} from "../../sql/sql";
 import {createJwt, setPassword} from "./authentication";
+import {updateUserImage} from "./userImages";
 
 export const getUsers = () =>
 	db.any("SELECT * FROM users_with_images")
@@ -16,7 +17,7 @@ export const getUserById = id =>
 export const getCredentials = email =>
 	db.one("SELECT hash, salt from users WHERE email=$1", email);
 
-const addUserToDB = user =>	db.one(users.add, user);
+const addUserToDB = user => db.one(users.add, user);
 
 export const addUser = user =>
 	setPassword(user.password)
@@ -26,9 +27,11 @@ export const addUser = user =>
 			token: createJwt(user)
 		}));
 
-export const updateUser = ({id, name, email, latitude, longitude, image}) => {
-	return db.one(users.update, {id, name, email, latitude, longitude});
-}
+const updateUserFromDB = user => db.one(user.update, user);
+
+export const updateUser = user =>
+	updateUserImage(user.id, user.image)
+		.then(() => updateUserFromDB(user));
 
 export const updateEmail = (id, email) => db.one(users.updateEmail, {id, email});
 

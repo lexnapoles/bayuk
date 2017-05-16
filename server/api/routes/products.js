@@ -15,7 +15,6 @@ const jsonParser = bodyParser.json({limit: "50mb"});
 
 export default router => {
 	router.post("/products", auth, verifyUser, jsonParser, createProduct);
-	router.post("/products/:productId/images", auth, verifyUser, jsonParser, addProductImages);
 
 	router.get("/products", readProducts);
 	router.get("/products/:productId", readOneProduct);
