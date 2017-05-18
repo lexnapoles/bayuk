@@ -11,7 +11,8 @@ import {
 	writeUserImageToDisk,
 	deleteUserImageFromDisk,
 	addUserImageToDB,
-	deleteUserImageFromDB
+	deleteUserImageFromDB,
+	addImage
 } from "../../server/api/services/userImages";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
@@ -102,6 +103,31 @@ describe("User image services", function () {
 				.then(deleteUserImageFromDB)
 				.then(() => getImageOfUser(createdUser.id))
 				.then(id => should.not.exist(id));
+		});
+	});
+
+	describe("addImage", function () {
+		afterEach(function () {
+			return clearImages()
+				.then(() => db.none(global.truncateAll));
+		});
+
+		it("should add an image", function () {
+			const image = `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
+			LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
+			QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
+			AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
+			AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
+			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
+			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
+			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`;
+
+			let createdUser = {};
+
+			return addUser(getUser())
+				.then(({user}) => createdUser = user)
+				.then(() => addImage(createdUser.id, image))
+				.then(image => image.should.exist);
 		});
 	});
 });

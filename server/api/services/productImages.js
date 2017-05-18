@@ -1,7 +1,14 @@
 import {every} from "lodash/collection";
 import db from "../../db";
 import {products} from "../../sql/sql";
-import {getImagePath, getImagesToDelete, isImageObjValid, writeImagesToDisk, deleteImagesFromDisk, getDecodedImage} from "./images";
+import {
+	getImagePath,
+	getImagesToDelete,
+	isImageObjValid,
+	writeImagesToDisk,
+	deleteImagesFromDisk,
+	getDecodedImage
+} from "./images";
 import {isBase64, generateImagesObjs} from "../../../utils/utils";
 
 export const getProductsImagePath = id => getImagePath(id, "products");
@@ -21,11 +28,12 @@ export const writeProductImagesToDisk = (images = []) => {
 	}
 
 	const imagesToWrite = images.map(({id, data}) => ({
-		id:   getProductsImagePath(id),
+		path: getProductsImagePath(id),
 		data: getDecodedImage(data)
 	}));
 
-	return writeImagesToDisk(imagesToWrite);
+	return writeImagesToDisk(imagesToWrite)
+		.then(() => images.map(({id}) => id));
 };
 
 export const addProductImagesToDB = (id, imagesCount) =>

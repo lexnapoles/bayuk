@@ -14,7 +14,7 @@ export const getDecodedImage = data => {
 
 export const isImageObjValid = image => has(image, "id") && has(image, "data");
 
-const writeOneImageToDisk = ({id, data}) => fs.writeFile(id, data);
+const writeOneImageToDisk = ({path, data}) => fs.writeFile(path, data);
 
 export const writeImagesToDisk = (images = []) => {
 	if (!Array.isArray(images) || !images.length) {

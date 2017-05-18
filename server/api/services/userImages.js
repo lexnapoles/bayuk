@@ -19,7 +19,7 @@ export const writeUserImageToDisk = image => {
 	}
 
 	const imageToWrite = {
-		id:   getUserImagePath(image.id),
+		path: getUserImagePath(image.id),
 		data: getDecodedImage(image.data)
 	};
 
@@ -37,9 +37,10 @@ export const addImage = (userId, imageToAdd = "") => {
 
 	return addUserImageToDB(userId)
 		.then(imageId => {
-			const image = generateImagesObjs([imageId], [imageToAdd]);
+			const image = generateImagesObjs([imageId], [imageToAdd])[0];
 
-			return writeUserImageToDisk(image);
+			return writeUserImageToDisk(image)
+
 		});
 };
 
