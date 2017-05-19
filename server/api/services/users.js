@@ -27,7 +27,7 @@ export const addUser = user =>
 			token: createJwt(user)
 		}));
 
-const updateUserFromDB = user => db.one(user.update, user);
+const updateUserFromDB = user => db.one(users.update, user);
 
 export const updateUser = user =>
 	updateUserImage(user.id, user.image)

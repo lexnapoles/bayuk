@@ -11,8 +11,7 @@ import {
 	writeUserImageToDisk,
 	deleteUserImageFromDisk,
 	addUserImageToDB,
-	deleteUserImageFromDB,
-	addImage
+	deleteUserImageFromDB
 } from "../../server/api/services/userImages";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
@@ -21,17 +20,27 @@ import {getFileNameWithNoExtension, deleteFile} from "../../utils/utils";
 chai.use(chaiFs);
 const should = chai.should();
 
+const IMAGE_DATA = `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
+			LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
+			QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
+			AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
+			AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
+			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
+			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
+			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`;
+
 const PLACEHOLDER_IMAGE = getUserImagePath("default");
 
-const deleteUserImage = path => deleteFile(path, () => path !== PLACEHOLDER_IMAGE);
+const deleteImage = path => deleteFile(path, () => path !== PLACEHOLDER_IMAGE);
 
 const clearImages = () =>
 	fs.readdir(path.join(process.env.IMAGESDIR, "users"))
 		.then(files => files.map(file => getUserImagePath(getFileNameWithNoExtension(file))))
 		.then(filePaths =>
 			filePaths.length
-				? Promise.all(filePaths.map(deleteUserImage))
+				? Promise.all(filePaths.map(deleteImage))
 				: Promise.resolve(true));
+
 
 describe("User image services", function () {
 	describe("writeUserImageToDisk", function () {
@@ -65,14 +74,7 @@ describe("User image services", function () {
 		it("should delete an image from disk", function () {
 			const image = {
 				id:   faker.random.uuid(),
-				data: `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
-			LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
-			QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
-			AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
-			AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
-			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
-			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
-			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`
+				data: IMAGE_DATA
 			};
 
 			writeUserImageToDisk(image)
@@ -93,7 +95,7 @@ describe("User image services", function () {
 		});
 	});
 
-	describe("deleteUserImageToDB", function () {
+	describe("deleteUserImageFromDB", function () {
 		it("should delete a user image from DB", function () {
 			let createdUser = {};
 
@@ -103,31 +105,6 @@ describe("User image services", function () {
 				.then(deleteUserImageFromDB)
 				.then(() => getImageOfUser(createdUser.id))
 				.then(id => should.not.exist(id));
-		});
-	});
-
-	describe("addImage", function () {
-		afterEach(function () {
-			return clearImages()
-				.then(() => db.none(global.truncateAll));
-		});
-
-		it("should add an image", function () {
-			const image = `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAcFBQYFBAcGBQYIBwcIChE
-			LCgkJChUPEAwRGBUaGRgVGBcbHichGx0lHRcYIi4iJSgpKywrGiAvMy8qMicqKyr/2wBDAQcICAoJCh
-			QLCxQqHBgcKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKir/w
-			AARCAAXAB0DASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAwQG/8QAIxAAAQMFAAICAwAA
-			AAAAAAAAAQACEQMEEiExQVETImGRof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBgEF/8QAHREAAgICAwE
-			AAAAAAAAAAAAAAAECAwQRBRJRQf/aAAwDAQACEQMRAD8AQNP7mIVr3wzsQFly+pJaOQ3flUV7ks1Oz0
-			KZS2ccLq4AbA9SYS+pfMJGR/qmvXIBLRr17SmrlUdJdj+I4nxrTB6nW4yMna1KxXtOSXP5HR4QhJRov
-			rAfIcSYIiUnurksuXMDSIjYPUIVLweLTlXyhdHaUd/fV4Gf/9k=`;
-
-			let createdUser = {};
-
-			return addUser(getUser())
-				.then(({user}) => createdUser = user)
-				.then(() => addImage(createdUser.id, image))
-				.then(image => image.should.exist);
 		});
 	});
 });

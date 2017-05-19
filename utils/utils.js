@@ -14,19 +14,9 @@ export const mapArraysSequentially = (arr1 = [], arr2 = []) => {
 	return func => arr1.map((val, index) => func(val, arr2[index]));
 };
 
-export const generateImagesObjs = (ids, data) => mapArraysSequentially(ids, data)((id, data) => ({id, data}));
+export const generateSingleImageObject = (id, data) => ({id, data});
 
-// export const generateImagesObjs = (ids, data) => generateObjFromMappedArrays(ids, data)("id", "data");
-//
-//
-// export const generateObjFromMappedArrays = (arr1, arr2) => (firstPropName, secondPropName) =>	{
-// 	const createObj = (firstProp, secondProp) => ({
-// 		[firstPropName]: firstProp,
-// 		[secondPropName]: secondProp
-// 	});
-//
-// 	return mapArraysSequentially(arr1, arr2)(createObj);
-// };
+export const generateImagesObjs = (ids, data) => mapArraysSequentially(ids, data)(generateSingleImageObject);
 
 export const wrapDataInPromise = (dataArr = [], func) => {
 	if (!dataArr.length) {

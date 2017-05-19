@@ -398,7 +398,7 @@ describe("Users", function () {
 
 					user.should.include.all.keys(userKeys);
 
-					user.image.should.exist();
+					user.image.should.exist;
 				});
 		});
 	});

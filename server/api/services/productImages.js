@@ -40,16 +40,17 @@ export const addProductImagesToDB = (id, imagesCount) =>
 	db.one(products.addImages, {id, imagesCount})
 		.then(({images}) => images);
 
-export const addImages = (productId, imagesToAdd = []) => {
+export const addProductImages = (productId, imagesToAdd = []) => {
 	if (!imagesToAdd.length) {
-		return;
+		return Promise.resolve();
 	}
 
 	return addProductImagesToDB(productId, imagesToAdd.length)
 		.then(imagesIds => {
 			const images = generateImagesObjs(imagesIds, imagesToAdd);
 
-			return writeProductImagesToDisk(images);
+			return writeProductImagesToDisk(images)
+				.then(() => imagesIds);
 		});
 };
 
@@ -73,7 +74,7 @@ export const deleteProductImagesFromDisk = (imagesIds = []) => {
 
 export const deleteProductImages = (images = []) => {
 	if (!images.length) {
-		return;
+		return Promise.resolve();
 	}
 
 	return deleteProductImagesFromDB(images)
@@ -86,5 +87,5 @@ export const updateProductImages = (productId, newImages = []) => {
 	return getImagesOfProduct(productId)
 		.then(getImagesToDelete.bind(void 0, newImages))
 		.then(deleteProductImages)
-		.then(addImages.bind(void 0, productId, imagesToAdd));
+		.then(addProductImages.bind(void 0, productId, imagesToAdd));
 };
