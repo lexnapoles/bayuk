@@ -431,6 +431,55 @@ describe("Users", function () {
 				});
 		});
 
+		it("should fail when invalid data has been sent", function () {
+			const invalidUserParams = {
+				name:  453,
+				image: []
+			};
+
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...user,
+							...invalidUserParams
+						})
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when invalid data has been sent", function () {
+			const invalidUserParams = {
+				name:  453,
+				image: []
+			};
+
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...user,
+							...invalidUserParams
+						})
+						.expect(400))
+				.then(response => {
+					const errors     = response.body,
+								nameError  = invalidUser("name", "should be string"),
+								imageError = invalidUser("image", "should be null,string");
+
+					errors.should.deep.include.members([nameError, imageError]);
+				})
+		});
+
 		it("should fail when the user is not found", function () {
 			const randomUser = getUser({id: faker.random.uuid()});
 
@@ -508,6 +557,43 @@ describe("Users", function () {
 					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
+
+		it("should fail when the token does not match the userId", function () {
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${faker.random.uuid}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...user,
+							name: "New Name"
+						})
+						.expect(403))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the token does not match the userId", function () {
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${faker.random.uuid}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...user,
+							name: "New Name"
+						})
+						.expect(403))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(tokenDoesNotMatch())
 				});
 		});
 	});
@@ -796,5 +882,5 @@ describe("Users", function () {
 				});
 		});
 	});
-})
-;
+});
+

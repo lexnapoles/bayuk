@@ -3,6 +3,7 @@ import {validateRequest} from "../validators";
 import {getUsers, getUserById, updateUser, updateEmail, updatePassword} from "../../services/users";
 import {createJwt} from "../../services/authentication";
 import {has} from "lodash/object";
+import {validateUser} from "./validators"
 
 export const readUsers = (req, res) =>
 	getUsers()
@@ -79,6 +80,13 @@ export const updateOneUser = (req, res) => {
 	}
 
 	const user = req.body;
+
+	const invalidUserErrors = validateUser(user);
+
+	if (invalidUserErrors.length) {
+		sendJsonResponse(res, 400, invalidUserErrors);
+		return;
+	}
 
 	updateUser(user)
 		.then(user => sendJsonResponse(res, 200, user))

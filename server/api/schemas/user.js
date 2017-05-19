@@ -38,3 +38,32 @@ export const login = {
 	},
 	"required":   ["email", "password"]
 };
+
+export const user = {
+	"$schema":    "http://json-schema.org/schema#",
+	"id":         "http://bayuk.com/schemas/myschema.json",
+	"type":       "object",
+	"title":      "Userr",
+	"properties": {
+		"id":        {
+			"type": "string"
+		},
+		"name":      {
+			"type": "string"
+		},
+		"email":     {
+			"type":   "string",
+			"format": "email"
+		},
+		"latitude":  {
+			"type": "number"
+		},
+		"longitude": {
+			"type": "number"
+		},
+		"image":     {
+			"type": ["null", "string"]
+		}
+	},
+	"required":   ["id", "name", "image", "latitude", "longitude"]
+};

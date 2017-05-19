@@ -1,6 +1,6 @@
 export const invalidUser = (field = "User", message) => ({
 	code: "ERR-2000",
-	title: "Product data is invalid",
+	title: "User data is invalid",
 	details: `${field.length ? field : "User"} ${message}`
 });
 

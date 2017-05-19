@@ -602,21 +602,11 @@ describe("Products", function () {
 		});
 
 		it("should fail when invalid data has been sent", function () {
-			return addRandomProduct()
-				.then(({token, product}) => {
-					return request(server)
-						.put(`/api/products/${product.id}`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...product,
-							price: "Price as string",
-							name:  465
-						})
-						.expect(400)
-				});
-		});
+			const invalidProductParams = {
+				price: "Price as string",
+				name:  465
+			};
 
-		it("should provide a detailed error for each invalid field that has been sent", function () {
 			return addRandomProduct()
 				.then(({token, product}) =>
 					request(server)
@@ -624,8 +614,31 @@ describe("Products", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.send({
 							...product,
-							price: "Price as string",
-							name:  465
+							...invalidProductParams
+						})
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error for each invalid field that has been sent", function () {
+			const invalidProductParams = {
+				price: "Price as string",
+				name:  465
+			};
+
+			return addRandomProduct()
+				.then(({token, product}) =>
+					request(server)
+						.put(`/api/products/${product.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							...product,
+							...invalidProductParams
 						})
 						.expect(400))
 				.then(response => {
