@@ -401,6 +401,115 @@ describe("Users", function () {
 					user.image.should.exist;
 				});
 		});
+
+		it("should fail when no data has been sent", function () {
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no data has been sent", function () {
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.put(`/api/users/${user.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(dataNotFound("body"));
+				});
+		});
+
+		it("should fail when the user is not found", function () {
+			const randomUser = getUser({id: faker.random.uuid()});
+
+			const validTokenForNonExistentUser = createJwt(randomUser);
+
+			return addUser(getUser())
+				.then(({user}) =>
+					request(server)
+						.put(`/api/users/${randomUser.id}`)
+						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+						.send({
+							...user,
+							name: "New Name"
+						})
+						.expect(404))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when the user is not found", function () {
+			const randomUser = getUser({id: faker.random.uuid()});
+
+			const validTokenForNonExistentUser = createJwt(randomUser);
+
+			return addUser(getUser())
+				.then(({user}) =>
+					request(server)
+						.put(`/api/users/${randomUser.id}`)
+						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+						.send({
+							...user,
+							name: "New Name"
+						})
+						.expect(404))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(userDoesNotExist());
+				});
+		});
+
+		it("should fail when no token has been sent", function () {
+			return addUser(getUser())
+				.then(({user}) =>
+					request(server)
+						.put(`/api/users/${user.id}`)
+						.send({
+							...user,
+							name: "New Name"
+						})
+						.expect(401))
+				.then(response => {
+					const errors = response.body;
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+				});
+		});
+
+		it("should provide a detailed error when no token has been sent", function () {
+			return addUser(getUser())
+				.then(({user}) =>
+					request(server)
+						.put(`/api/users/${user.id}`)
+						.send({
+							...user,
+							name: "New Name"
+						})
+						.expect(401))
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
 	});
 
 	describe("PUT /users/:userId/email", function () {

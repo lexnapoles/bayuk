@@ -71,6 +71,13 @@ export const updateUserPassword = (req, res) => {
 };
 
 export const updateOneUser = (req, res) => {
+	const requestErrors = validateRequest(req, "body");
+
+	if (requestErrors.length) {
+		sendJsonResponse(res, 400, requestErrors);
+		return;
+	}
+
 	const user = req.body;
 
 	updateUser(user)
