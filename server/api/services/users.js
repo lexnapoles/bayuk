@@ -2,7 +2,7 @@ import db from "../../db";
 import {omit} from "lodash/object";
 import {users} from "../../sql/sql";
 import {createJwt, setPassword} from "./authentication";
-import {updateUserImage} from "./userImages";
+import {updateUserImage, deleteUserImageFromDisk} from "./userImages";
 
 export const getUsers = () =>
 	db.any("SELECT * FROM users_with_images")
@@ -38,3 +38,10 @@ export const updateEmail = (id, email) => db.one(users.updateEmail, {id, email})
 export const updatePassword = (id, password) =>
 	setPassword(password)
 		.then(credentials => db.one(users.updatePassword, {id, ...credentials}));
+
+export const deleteUser = id => {
+	return getUserById(id)
+		.then(({image}) => image ? deleteUserImageFromDisk(image) : true)
+		.then(() => db.any("SELECT FROM delete_user($1::uuid)", id));
+};
+

@@ -433,22 +433,11 @@ describe("Users", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.expect(400))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no data has been sent", function () {
-			return addUser(getUser())
-				.then(({user, token}) =>
-					request(server)
-						.put(`/api/users/${user.id}/email`)
-						.set("Authorization", `Bearer ${token}`)
-						.expect(400))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(dataNotFound("body"));
 				});
@@ -465,25 +454,11 @@ describe("Users", function () {
 				.send({email: "new@email.com"})
 				.expect(404)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when the user is not found", function () {
-			const randomUser = getUser({id: faker.random.uuid()});
-
-			const validTokenForNonExistentUser = createJwt(randomUser);
-
-			return request(server)
-				.put(`/api/users/${randomUser.id}/email`)
-				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
-				.send({email: "new@email.com"})
-				.expect(404)
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(userDoesNotExist());
 				});
@@ -497,22 +472,11 @@ describe("Users", function () {
 						.send({email: "new@email.com"})
 						.expect(401))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no token has been sent", function () {
-			return addUser(getUser())
-				.then(({user}) =>
-					request(server)
-						.put(`/api/users/${user.id}/email`)
-						.send({email: "new@email.com"})
-						.expect(401))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
 				});
@@ -527,25 +491,11 @@ describe("Users", function () {
 						.send({email: "new@email.com"})
 						.expect(403))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when the token does not match the userId", function () {
-			const idDifferentFromTokenId = faker.random.uuid();
-
-			return addUser(getUser())
-				.then(({token}) =>
-					request(server)
-						.put(`/api/users/${idDifferentFromTokenId}/email`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({email: "new@email.com"})
-						.expect(403))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(tokenDoesNotMatch())
 				});
@@ -629,6 +579,46 @@ describe("Users", function () {
 						.put(`/api/users/${faker.random.uuid()}/password`)
 						.set("Authorization", `Bearer ${token}`)
 						.send({password: "newPassword123"})
+						.expect(403))
+				.then(response => {
+					const errors = response.body,
+								error  = response.body[0];
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+
+					error.should.be.deep.equal(tokenDoesNotMatch())
+				});
+		});
+	});
+
+	describe("DELETE /users/:userId", function () {
+		it("should delete the user", function () {
+			return addUser(getUser())
+				.then(({user, token}) =>
+					request(server)
+						.delete(`/api/users/${user.id}`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(204))
+		});
+
+		it("should fail if the user is not found", function () {
+			const randomUser = getUser({id: faker.random.uuid()});
+
+			const validTokenForNonExistentUser = createJwt(randomUser);
+
+			return request(server)
+				.delete(`/api/users/${randomUser.id}`)
+				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+				.expect(404);
+		});
+
+		it("should fail when the token does not match the userId", function () {
+			return addUser(getUser())
+				.then(({token}) =>
+					request(server)
+						.delete(`/api/users/${faker.random.uuid()}`)
+						.set("Authorization", `Bearer ${token}`)
 						.expect(403))
 				.then(response => {
 					const errors = response.body,

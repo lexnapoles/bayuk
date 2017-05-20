@@ -1,6 +1,6 @@
 import {sendJsonResponse} from "../../../../utils/utils";
 import {validateRequest} from "../validators";
-import {getUsers, getUserById, updateUser, updateEmail, updatePassword} from "../../services/users";
+import {getUsers, getUserById, updateUser, updateEmail, updatePassword, deleteUser} from "../../services/users";
 import {createJwt} from "../../services/authentication";
 import {has} from "lodash/object";
 import {validateUser} from "./validators"
@@ -95,6 +95,10 @@ export const updateOneUser = (req, res) => {
 };
 
 export const deleteOneUser = (req, res) => {
-	return;
+	const {userId} = req.params;
+
+	return deleteUser(userId)
+		.then(() => sendJsonResponse(res, 204))
+		.catch(error => sendJsonResponse(res, 500, [req.params, error]))
 };
 

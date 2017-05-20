@@ -14,7 +14,7 @@ export default router => {
 	router.put("/users/:userId/email", auth, verifyUser, jsonParser, updateUserEmail);
 	router.put("/users/:userId/password", auth, verifyUser, jsonParser, updateUserPassword);
 
-	router.delete("/users/:userId", deleteOneUser);
+	router.delete("/users/:userId", auth, verifyUser, deleteOneUser);
 
 	return router;
 };
