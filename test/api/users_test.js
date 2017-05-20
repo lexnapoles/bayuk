@@ -613,6 +613,23 @@ describe("Users", function () {
 				.expect(404);
 		});
 
+		it("should fail when no token has been sent", function () {
+			return addUser(getUser())
+				.then(({user}) =>
+					request(server)
+						.delete(`/api/users/${user.id}`)
+						.expect(401))
+				.then(response => {
+					const errors = response.body,
+								error  = response.body[0];
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+
+					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
+
 		it("should fail when the token does not match the userId", function () {
 			return addUser(getUser())
 				.then(({token}) =>
