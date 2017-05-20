@@ -135,21 +135,11 @@ describe("Products", function () {
 				.get(`/api/products/${productId}`)
 				.expect(400)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when the product id is not valid", function () {
-			const productId = void 0;
-
-			return request(server)
-				.get(`/api/products/${productId}`)
-				.expect(400)
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(invalidId());
 				});
@@ -162,21 +152,11 @@ describe("Products", function () {
 				.get(`/api/products/${nonExistentProduct}`)
 				.expect(404)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should have a detailed error object when failing to find a product", function () {
-			const nonExistentProduct = faker.random.uuid();
-
-			return request(server)
-				.get(`/api/products/${nonExistentProduct}`)
-				.expect(404)
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.contain.all.keys(["code", "title", "details"]);
 
@@ -237,23 +217,11 @@ describe("Products", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.expect(400))
 				.then(response => {
-						const errors = response.body;
+						const errors = response.body,
+									error  = response.body[0];
 
 						errors.should.be.instanceOf(Array);
 						errors.should.not.be.empty;
-					}
-				);
-		});
-
-		it("should provide a detailed error when no data has been sent", function () {
-			return getUserToken()
-				.then(token =>
-					request(server)
-						.post("/api/products")
-						.set("Authorization", `Bearer ${token}`)
-						.expect(400))
-				.then(response => {
-						const error = response.body[0];
 
 						error.should.be.deep.equal(dataNotFound("body"))
 					}
@@ -275,82 +243,19 @@ describe("Products", function () {
 						.send(product)
 						.expect(400))
 				.then(response => {
-						const errors = response.body;
+						const errors      = response.body,
+									priceError  = invalidProduct("Product", "should have required property price"),
+									imagesError = invalidProduct("Product", "should have required property images");
 
 						errors.should.be.instanceOf(Array);
 						errors.should.not.be.empty;
+
+						errors.should.deep.include.members([priceError, imagesError]);
 					}
 				);
 		});
 
-		it("should provide an error for any field that is not sent", function () {
-			const product = {
-				name:        "Ray Ban sunglasses",
-				description: "Good as new, original Ray Ban sunglasses",
-				category:    "Accessories"
-			};
-
-			const FIELDS_DELETED = 2;
-
-			return getUserToken()
-				.then(token =>
-					request(server)
-						.post("/api/products")
-						.set("Authorization", `Bearer ${token}`)
-						.send(product)
-						.expect(400))
-				.then(response => {
-					const errors = response.body;
-
-					errors.should.be.have.lengthOf(FIELDS_DELETED);
-				})
-		});
-
-		it("should provide detailed errors for each field", function () {
-			const product = {
-				name:        "Ray Ban sunglasses",
-				description: "Good as new, original Ray Ban sunglasses",
-				category:    "Accessories"
-			};
-
-			return getUserToken()
-				.then(token =>
-					request(server)
-						.post("/api/products")
-						.set("Authorization", `Bearer ${token}`)
-						.send(product)
-						.expect(400))
-				.then(response => {
-					const errors = response.body;
-
-					const priceError  = invalidProduct("Product", "should have required property price"),
-								imagesError = invalidProduct("Product", "should have required property images");
-
-					errors.should.deep.include.members([priceError, imagesError]);
-				});
-		});
-
 		it("should fail when invalid data has been sent", function () {
-			return getUserToken()
-				.then(token =>
-					request(server)
-						.post("/api/products")
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...getProduct(),
-							name:  234,
-							price: "50"
-						})
-						.expect(400))
-				.then(response => {
-					const errors = response.body;
-
-					errors.should.be.instanceOf(Array);
-					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide detailed errors for every invalid field sent", function () {
 			return getUserToken()
 				.then(token =>
 					request(server)
@@ -367,6 +272,9 @@ describe("Products", function () {
 								nameError  = invalidProduct("name", "should be string"),
 								priceError = invalidProduct("price", "should be integer");
 
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+
 					errors.should.deep.include.members([nameError, priceError]);
 				});
 		});
@@ -377,20 +285,11 @@ describe("Products", function () {
 				.send(getProduct())
 				.expect(401)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no token has been sent", function () {
-			return request(server)
-				.post("/api/products")
-				.send(getProduct())
-				.expect(401)
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
 				});
@@ -405,23 +304,11 @@ describe("Products", function () {
 				.send(getProduct())
 				.expect(404)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
-
-			return request(server)
-				.post("/api/products")
-				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
-				.send(getProduct())
-				.expect(404)
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(userDoesNotExist());
 				});
@@ -579,23 +466,11 @@ describe("Products", function () {
 						.expect(400)
 				})
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no product has been sent", function () {
-			return addRandomProduct()
-				.then(({token, product}) => {
-					return request(server)
-						.put(`/api/products/${product.id}`)
-						.set("Authorization", `Bearer ${token}`)
-						.expect(400)
-				})
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(dataNotFound("body"))
 				});
@@ -618,33 +493,12 @@ describe("Products", function () {
 						})
 						.expect(400))
 				.then(response => {
-					const errors = response.body;
-
-					errors.should.be.instanceOf(Array);
-					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error for each invalid field that has been sent", function () {
-			const invalidProductParams = {
-				price: "Price as string",
-				name:  465
-			};
-
-			return addRandomProduct()
-				.then(({token, product}) =>
-					request(server)
-						.put(`/api/products/${product.id}`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...product,
-							...invalidProductParams
-						})
-						.expect(400))
-				.then(response => {
 					const errors     = response.body,
 								nameError  = invalidProduct("name", "should be string"),
 								priceError = invalidProduct("price", "should be integer");
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
 
 					errors.should.deep.include.members([nameError, priceError]);
 				});
@@ -665,29 +519,11 @@ describe("Products", function () {
 						.expect(404)
 				})
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when the product to update is not found", function () {
-			const productId = faker.random.uuid();
-
-			return addRandomProduct()
-				.then(({token, product}) => {
-					return request(server)
-						.put(`/api/products/${productId}`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...product,
-							price: 987,
-						})
-						.expect(404)
-				})
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(productDoesNotExist());
 				});
@@ -705,26 +541,11 @@ describe("Products", function () {
 						})
 						.expect(401))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no token has been sent", function () {
-			return addRandomProduct()
-				.then(({product}) =>
-					request(server)
-						.put(`/api/products/${product.id}`)
-						.send({
-							...product,
-							price: "Price as string",
-							name:  465
-						})
-						.expect(401))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
 				});
@@ -741,25 +562,11 @@ describe("Products", function () {
 						.send(getProduct())
 						.expect(404))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
-
-			return addRandomProduct()
-				.then(({product}) =>
-					request(server)
-						.put(`/api/products/${product.id}`)
-						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
-						.send(getProduct())
-						.expect(404))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(userDoesNotExist());
 				});
@@ -781,30 +588,11 @@ describe("Products", function () {
 						})
 						.expect(403))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when token does not match product owner", function () {
-			let differentUserToken = "";
-
-			return getUserToken()
-				.then(token => differentUserToken = token)
-				.then(() => addRandomProduct())
-				.then(({product}) =>
-					request(server)
-						.put(`/api/products/${product.id}`)
-						.set("Authorization", `Bearer ${differentUserToken}`)
-						.send({
-							...product,
-							price: 987
-						})
-						.expect(403))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(tokenDoesNotMatch());
 				});
@@ -831,24 +619,11 @@ describe("Products", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.expect(404))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				})
-		});
-
-		it("should provide a detailed error when the product to delete is not found", function () {
-			const productId = faker.random.uuid();
-
-			return getUserToken()
-				.then(token =>
-					request(server)
-						.delete(`/api/products/${productId}`)
-						.set("Authorization", `Bearer ${token}`)
-						.expect(404))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(productDoesNotExist());
 				})
@@ -861,21 +636,11 @@ describe("Products", function () {
 						.delete(`/api/products/${product.id}`)
 						.expect(401))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no token has been sent", function () {
-			return addRandomProduct()
-				.then(({product}) =>
-					request(server)
-						.put(`/api/products/${product.id}`)
-						.expect(401))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
 				});
@@ -891,24 +656,11 @@ describe("Products", function () {
 						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
 						.expect(404))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when token is valid but the token's user can't be found", function () {
-			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
-
-			return addRandomProduct()
-				.then(({product}) =>
-					request(server)
-						.delete(`/api/products/${product.id}`)
-						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
-						.expect(404))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(userDoesNotExist());
 				});
@@ -926,26 +678,11 @@ describe("Products", function () {
 						.set("Authorization", `Bearer ${differentUserToken}`)
 						.expect(403))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when token does not match product owner", function () {
-			let differentUserToken = "";
-
-			return getUserToken()
-				.then(token => differentUserToken = token)
-				.then(() => addRandomProduct())
-				.then(({product}) =>
-					request(server)
-						.delete(`/api/products/${product.id}`)
-						.set("Authorization", `Bearer ${differentUserToken}`)
-						.expect(403))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(tokenDoesNotMatch());
 				});

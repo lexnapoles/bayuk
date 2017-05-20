@@ -66,19 +66,11 @@ describe("Users", function () {
 				.post("/api/register")
 				.expect(400)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no data has been sent", function () {
-			return request(server)
-				.post("/api/register")
-				.expect(400)
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(dataNotFound("body"));
 				});
@@ -86,7 +78,6 @@ describe("Users", function () {
 
 		it("should fail when any of the required fields is not sent", function () {
 			const user = {
-				email:     faker.internet.email(),
 				password:  faker.internet.password(),
 				latitude:  faker.address.latitude(),
 				longitude: faker.address.longitude()
@@ -97,49 +88,12 @@ describe("Users", function () {
 				.send(user)
 				.expect(400)
 				.then(response => {
-					const errors = response.body;
+					const errors     = response.body,
+								emailError = invalidUser("User", "should have required property email"),
+								nameError  = invalidUser("User", "should have required property name");
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide an error for any field that is not sent", function () {
-			const user = {
-				password:  faker.internet.password(),
-				latitude:  faker.address.latitude(),
-				longitude: faker.address.longitude()
-			};
-
-			const FIELDS_DELETED = 2;
-
-			return request(server)
-				.post("/api/register")
-				.send(user)
-				.expect(400)
-				.then(response => {
-					const errors = response.body;
-
-					errors.should.be.have.lengthOf(FIELDS_DELETED);
-				})
-		});
-
-		it("should provide detailed errors for each field", function () {
-			const user = {
-				password:  faker.internet.password(),
-				latitude:  faker.address.latitude(),
-				longitude: faker.address.longitude()
-			};
-
-			return request(server)
-				.post("/api/register")
-				.send(user)
-				.expect(400)
-				.then(response => {
-					const errors = response.body;
-
-					const emailError = invalidUser("User", "should have required property email"),
-								nameError  = invalidUser("User", "should have required property name");
 
 					errors.should.deep.include.members([emailError, nameError]);
 				});
@@ -156,28 +110,16 @@ describe("Users", function () {
 						.expect(409)
 				)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when there's already a user with the same email", function () {
-			const user = getUser();
-
-			return addUser(user)
-				.then(() =>
-					request(server)
-						.post("/api/register")
-						.send(user)
-						.expect(409))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.deep.equal(userAlreadyExists());
 				});
 		});
+
 	});
 
 	describe("POST /login", function () {
@@ -220,19 +162,11 @@ describe("Users", function () {
 				.post("/api/login")
 				.expect(400)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no data has been sent", function () {
-			return request(server)
-				.post("/api/login")
-				.expect(400)
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(dataNotFound("body"));
 				});
@@ -248,26 +182,12 @@ describe("Users", function () {
 				})
 				.expect(400)
 				.then(response => {
-					const errors = response.body;
+					const errors     = response.body,
+								error      = response.body[0],
+								emailError = invalidUser("User", "should have required property email");
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when any of the required fields is not sent", function () {
-			const user = getUser();
-
-			return request(server)
-				.post("/api/login")
-				.send({
-					password: user.password
-				})
-				.expect(400)
-				.then(response => {
-					const error = response.body[0];
-
-					const emailError = invalidUser("User", "should have required property email");
 
 					error.should.be.deep.equal(emailError);
 				});
@@ -284,28 +204,14 @@ describe("Users", function () {
 				})
 				.expect(401)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				})
-		});
-
-		it("should provide a detailed error if user is not registered", function () {
-			const user = getUser();
-
-			return request(server)
-				.post("/api/login")
-				.send({
-					email:    user.email,
-					password: user.password
-				})
-				.expect(401)
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(loginFailed());
-				});
+				})
 		});
 
 		it("should fail if any of the credentials is wrong", function () {
@@ -322,28 +228,11 @@ describe("Users", function () {
 						})
 						.expect(401))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when any of the credentials is wrong", function () {
-			const user              = getUser(),
-						incorrectPassword = `Wrong ${user.password}`;
-
-			return addUser(user)
-				.then(() =>
-					request(server)
-						.post("/api/login")
-						.send({
-							email:    user.email,
-							password: incorrectPassword
-						})
-						.expect(401))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(loginFailed());
 				});
@@ -410,22 +299,11 @@ describe("Users", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.expect(400))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no data has been sent", function () {
-			return addUser(getUser())
-				.then(({user, token}) =>
-					request(server)
-						.put(`/api/users/${user.id}`)
-						.set("Authorization", `Bearer ${token}`)
-						.expect(400))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(dataNotFound("body"));
 				});
@@ -448,36 +326,15 @@ describe("Users", function () {
 						})
 						.expect(400))
 				.then(response => {
-					const errors = response.body;
-
-					errors.should.be.instanceOf(Array);
-					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when invalid data has been sent", function () {
-			const invalidUserParams = {
-				name:  453,
-				image: []
-			};
-
-			return addUser(getUser())
-				.then(({user, token}) =>
-					request(server)
-						.put(`/api/users/${user.id}`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...user,
-							...invalidUserParams
-						})
-						.expect(400))
-				.then(response => {
 					const errors     = response.body,
 								nameError  = invalidUser("name", "should be string"),
 								imageError = invalidUser("image", "should be null,string");
 
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+
 					errors.should.deep.include.members([nameError, imageError]);
-				})
+				});
 		});
 
 		it("should fail when the user is not found", function () {
@@ -496,30 +353,11 @@ describe("Users", function () {
 						})
 						.expect(404))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when the user is not found", function () {
-			const randomUser = getUser({id: faker.random.uuid()});
-
-			const validTokenForNonExistentUser = createJwt(randomUser);
-
-			return addUser(getUser())
-				.then(({user}) =>
-					request(server)
-						.put(`/api/users/${randomUser.id}`)
-						.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
-						.send({
-							...user,
-							name: "New Name"
-						})
-						.expect(404))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(userDoesNotExist());
 				});
@@ -536,25 +374,11 @@ describe("Users", function () {
 						})
 						.expect(401))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no token has been sent", function () {
-			return addUser(getUser())
-				.then(({user}) =>
-					request(server)
-						.put(`/api/users/${user.id}`)
-						.send({
-							...user,
-							name: "New Name"
-						})
-						.expect(401))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
 				});
@@ -572,28 +396,13 @@ describe("Users", function () {
 						})
 						.expect(403))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
 
-		it("should provide a detailed error when the token does not match the userId", function () {
-			return addUser(getUser())
-				.then(({user, token}) =>
-					request(server)
-						.put(`/api/users/${faker.random.uuid}`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({
-							...user,
-							name: "New Name"
-						})
-						.expect(403))
-				.then(response => {
-					const error = response.body[0];
-
-					error.should.be.deep.equal(tokenDoesNotMatch())
+					error.should.be.deep.equal(tokenDoesNotMatch());
 				});
 		});
 	});
@@ -764,22 +573,11 @@ describe("Users", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.expect(400))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no data has been sent", function () {
-			return addUser(getUser())
-				.then(({user, token}) =>
-					request(server)
-						.put(`/api/users/${user.id}/password`)
-						.set("Authorization", `Bearer ${token}`)
-						.expect(400))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(dataNotFound("body"));
 				});
@@ -796,25 +594,11 @@ describe("Users", function () {
 				.send({password: "newPassword123"})
 				.expect(404)
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when the user is not found", function () {
-			const randomUser = getUser({id: faker.random.uuid()});
-
-			const validTokenForNonExistentUser = createJwt(randomUser);
-
-			return request(server)
-				.put(`/api/users/${randomUser.id}/password`)
-				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
-				.send({password: "newPassword123"})
-				.expect(404)
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(userDoesNotExist());
 				});
@@ -828,22 +612,11 @@ describe("Users", function () {
 						.send({password: "newPassword123"})
 						.expect(401))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when no token has been sent", function () {
-			return addUser(getUser())
-				.then(({user}) =>
-					request(server)
-						.put(`/api/users/${user.id}/password`)
-						.send({password: "newPassword123"})
-						.expect(401))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(unauthorizedAccess())
 				});
@@ -858,25 +631,11 @@ describe("Users", function () {
 						.send({password: "newPassword123"})
 						.expect(403))
 				.then(response => {
-					const errors = response.body;
+					const errors = response.body,
+								error  = response.body[0];
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
-				});
-		});
-
-		it("should provide a detailed error when the token does not match the userId", function () {
-			const idDifferentFromTokenId = faker.random.uuid();
-
-			return addUser(getUser())
-				.then(({token}) =>
-					request(server)
-						.put(`/api/users/${idDifferentFromTokenId}/password`)
-						.set("Authorization", `Bearer ${token}`)
-						.send({password: "newPassword123"})
-						.expect(403))
-				.then(response => {
-					const error = response.body[0];
 
 					error.should.be.deep.equal(tokenDoesNotMatch())
 				});
