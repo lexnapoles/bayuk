@@ -7,11 +7,10 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
-import {invalidUser, userAlreadyExists, loginFailed} from "../../server/errors/api/userErrors";
+import {invalidUser, userAlreadyExists, loginFailed, userDoesNotExist} from "../../server/errors/api/userErrors";
 import {unauthorizedAccess, tokenDoesNotMatch} from "../../server/errors/api/authorizationErrors";
 import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import {createJwt} from "../../server/api/services/authentication"
-import {userDoesNotExist} from "../../server/errors/api/userErrors";
 
 chai.should();
 
@@ -253,6 +252,7 @@ describe("Users", function () {
 				})
 		});
 
+
 		it("should fail when the user id is not valid", function () {
 			const userId = void 0;
 
@@ -268,7 +268,24 @@ describe("Users", function () {
 
 					error.should.be.deep.equal(invalidId());
 				});
-		})
+		});
+
+		it("should fail if there's no user with the given id", function () {
+			const nonExistentUser = faker.random.uuid();
+
+			return request(server)
+				.get(`/api/users/${nonExistentUser}`)
+				.expect(404)
+				.then(response => {
+					const errors = response.body,
+								error  = response.body[0];
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+
+					error.should.be.deep.equal(userDoesNotExist());
+				});
+		});
 	});
 
 	describe("PUT /users/:userId", function () {

@@ -1,10 +1,10 @@
 import {sendJsonResponse} from "../../../../utils/utils";
-import {validateRequest} from "../validators";
-import {validateId} from "../validators";
+import {validateUser} from "./validators"
+import {validateRequest, validateId} from "../validators";
 import {getUsers, getUserById, updateUser, updateEmail, updatePassword, deleteUser} from "../../services/users";
 import {createJwt} from "../../services/authentication";
-import {has} from "lodash/object";
-import {validateUser} from "./validators"
+import dbErrors from "../../../errors/database";
+import {userDoesNotExist} from "../../../errors/api/userErrors";
 
 export const readUsers = (req, res) =>
 	getUsers()
@@ -29,7 +29,14 @@ export const readOneUser = (req, res) => {
 
 	getUserById(userId)
 		.then(user => sendJsonResponse(res, 200, user))
-		.catch(error => sendJsonResponse(res, 404, {"message": error}));
+		.catch(error => {
+			if (error.code === dbErrors.dataNotFound) {
+				sendJsonResponse(res, 404, [userDoesNotExist()]);
+				return;
+			}
+
+			sendJsonResponse(res, 500, [error]);
+		});
 };
 
 export const updateUserEmail = (req, res) => {

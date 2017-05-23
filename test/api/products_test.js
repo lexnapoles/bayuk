@@ -158,8 +158,6 @@ describe("Products", function () {
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
 
-					error.should.contain.all.keys(["code", "title", "details"]);
-
 					error.should.be.deep.equal(productDoesNotExist());
 				});
 		});
