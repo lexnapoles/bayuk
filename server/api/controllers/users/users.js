@@ -1,5 +1,6 @@
 import {sendJsonResponse} from "../../../../utils/utils";
 import {validateRequest} from "../validators";
+import {validateId} from "../validators";
 import {getUsers, getUserById, updateUser, updateEmail, updatePassword, deleteUser} from "../../services/users";
 import {createJwt} from "../../services/authentication";
 import {has} from "lodash/object";
@@ -11,14 +12,20 @@ export const readUsers = (req, res) =>
 		.catch(error => sendJsonResponse(res, 404, {"message": error}));
 
 export const readOneUser = (req, res) => {
-	if (!has(req, "params") && !has(req.params, "userId")) {
-		sendJsonResponse(res, 404, {
-			"message": "No userId in request"
-		});
+	const noUserIdError = validateRequest(req.params, "userId");
+
+	if (noUserIdError.length) {
+		sendJsonResponse(res, 400, noUserIdError);
 		return;
 	}
 
-	const {userId} = req.params;
+	const {userId}       = req.params,
+				invalidIdError = validateId(userId);
+
+	if (invalidIdError.length) {
+		sendJsonResponse(res, 400, invalidIdError);
+		return;
+	}
 
 	getUserById(userId)
 		.then(user => sendJsonResponse(res, 200, user))
@@ -99,6 +106,6 @@ export const deleteOneUser = (req, res) => {
 
 	return deleteUser(userId)
 		.then(() => sendJsonResponse(res, 204))
-		.catch(error => sendJsonResponse(res, 500, [req.params, error]))
+		.catch(error => sendJsonResponse(res, 500, [error]))
 };
 
