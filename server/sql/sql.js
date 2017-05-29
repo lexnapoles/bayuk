@@ -31,6 +31,11 @@ export const users = {
 	updatePassword: sql("users/updatePassword.sql")
 };
 
+export const reviews = {
+	get: sql("reviews/get.sql"),
+	add: sql("reviews/add.sql"),
+};
+
 export const global = {
 	truncateAll: sql("global/truncateAll.sql")
 };

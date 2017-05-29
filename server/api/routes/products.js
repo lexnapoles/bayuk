@@ -7,8 +7,7 @@ import {
 	readOneProduct,
 	createProduct,
 	updateOneProduct,
-	deleteOneProduct,
-	addProductImages
+	deleteOneProduct
 } from "../controllers/products/products";
 
 const jsonParser = bodyParser.json({limit: "50mb"});

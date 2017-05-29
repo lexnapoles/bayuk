@@ -1,0 +1,1 @@
+SELECT * FROM reviews where target=${id};

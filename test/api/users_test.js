@@ -252,7 +252,6 @@ describe("Users", function () {
 				})
 		});
 
-
 		it("should fail when the user id is not valid", function () {
 			const userId = void 0;
 
