@@ -293,7 +293,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should fail when token is valid but the token's user can't be found", function () {
+		it("should fail when token is valid but the user can't be found", function () {
 			const validTokenForNonExistentUser = createJwt(getRandomUser({id: faker.random.uuid()}));
 
 			return request(server)

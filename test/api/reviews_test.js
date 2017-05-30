@@ -7,8 +7,11 @@ import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {addReview} from "../../server/api/services/reviews";
 import {invalidReview} from "../../server/errors/api/reviewErrors";
+import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
+import {userDoesNotExist} from "../../server/errors/api/userErrors";
 import {dataNotFound} from "../../server/errors/api/controllerErrors";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
+import {createJwt} from "../../server/api/services/authentication"
 
 chai.should();
 
@@ -24,10 +27,10 @@ const addUsersInvolvedInReview = () =>
 const addRandomReview = () => {
 	return addUsersInvolvedInReview()
 		.then(({sourceUser, targetUser}) => addReview({
-			rating: 5,
+			rating:      5,
 			description: faker.lorem.sentences(),
-			source: sourceUser.user.id,
-			target: targetUser.user.id
+			source:      sourceUser.user.id,
+			target:      targetUser.user.id
 		}))
 };
 
@@ -76,7 +79,7 @@ describe("Reviews", function () {
 						.send({
 							source,
 							target,
-							rating: 4,
+							rating:      4,
 							description: "Good seller, product in good condition"
 						})
 						.expect(201)
@@ -105,6 +108,7 @@ describe("Reviews", function () {
 					error.should.be.deep.equal(dataNotFound("body"))
 				})
 		});
+
 		it("should fail when invalid data has been sent", function () {
 			return addUsersInvolvedInReview()
 				.then(({sourceUser}) => {
@@ -115,14 +119,14 @@ describe("Reviews", function () {
 						.set("Authorization", `Bearer ${token}`)
 						.send({
 							source,
-							target: "Invalid target",
-							rating: "A rating",
+							target:      "Invalid target",
+							rating:      "A rating",
 							description: "Good seller"
 						})
 						.expect(400)
 				})
 				.then(response => {
-					const errors = response.body,
+					const errors      = response.body,
 								ratingError = invalidReview("rating", "should be integer"),
 								targetError = invalidReview("target", 'should match format "uuid"');
 
@@ -132,5 +136,31 @@ describe("Reviews", function () {
 					errors.should.deep.include.members([ratingError, targetError]);
 				});
 		});
+
+		it("should fail when no token has been sent", function () {
+			return request(server)
+				.post(`/api/reviews`)
+				.expect(401)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
+
+		it("should fail when token is valid but the user can't be found", function () {
+			const validTokenForNonExistentUser = createJwt(getUser({id: faker.random.uuid()}));
+
+			return request(server)
+				.post(`/api/reviews`)
+				.set("Authorization", `Bearer ${validTokenForNonExistentUser}`)
+				.expect(404)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(userDoesNotExist());
+				})
+		});
+
 	});
 });
