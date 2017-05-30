@@ -12,11 +12,25 @@ chai.should();
 
 let server = {};
 
+
 const addUsersInvolvedInReview = () =>
 	Promise.all([addUser(getUser()), addUser(getUser())])
-		.then(users => [users[0].user, users[1].user]);
+		.then(users => ({
+			sourceUser: users[0],
+			targetUser: users[1]
+		}));
 
-describe("Reviews", function () {
+const addRandomReview = () => {
+	return addUsersInvolvedInReview()
+		.then(({sourceUser, targetUser}) => addReview({
+			rating: 5,
+			review: faker.lorem.sentences(),
+			source: sourceUser.user.id,
+			target: targetUser.user.id
+		}))
+};
+
+describe.only("Reviews", function () {
 	beforeEach(function () {
 		server = createServer();
 
@@ -29,18 +43,12 @@ describe("Reviews", function () {
 		server.close(done);
 	});
 
-	describe("GET /:userId/reviews", function () {
+	describe("GET /reviews/:userId", function () {
 		it("should get the user reviews", function () {
-			return addUsersInvolvedInReview()
-				.then(users => addReview({
-					rating: 5,
-					review: faker.lorem.sentences(),
-					source: users[0].id,
-					target: users[1].id
-				}))
+			return addRandomReview()
 				.then(({target}) =>
 					request(server)
-						.get(`/api/${target}/reviews`)
+						.get(`/api/reviews/${target}`)
 						.expect(200))
 				.then(response => {
 					const reviews = response.body,
@@ -51,6 +59,33 @@ describe("Reviews", function () {
 
 					review.should.include.all.keys(["id", "rating", "review", "source", "target"]);
 				});
+		});
+	});
+
+	describe("POST /reviews", function () {
+		it("should add a new review", function () {
+			return addUsersInvolvedInReview()
+				.then(({sourceUser, targetUser}) => {
+					const {user: {id: source}, token} = sourceUser,
+								{user: {id: target}}        = targetUser;
+
+					return request(server)
+						.post(`/api/reviews`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							source,
+							target,
+							rating: 4,
+							review: "Good seller, product in good condition"
+						})
+						.expect(201)
+						.expect("Location", `/api/reviews/${target}`)
+				})
+				.then(response => {
+					const review = response.body;
+
+					review.should.include.all.keys(["id", "rating", "review", "source", "target"]);
+				})
 		});
 	});
 });
