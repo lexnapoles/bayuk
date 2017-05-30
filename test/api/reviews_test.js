@@ -7,6 +7,7 @@ import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {addReview} from "../../server/api/services/reviews";
 import {invalidReview} from "../../server/errors/api/reviewErrors";
+import {dataNotFound} from "../../server/errors/api/controllerErrors";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 
 chai.should();
@@ -88,6 +89,22 @@ describe("Reviews", function () {
 				})
 		});
 
+		it("should fail when no data has been sent", function () {
+			return addUsersInvolvedInReview()
+				.then(({sourceUser}) => {
+					const {token} = sourceUser;
+
+					return request(server)
+						.post(`/api/reviews`)
+						.set("Authorization", `Bearer ${token}`)
+						.expect(400)
+				})
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(dataNotFound("body"))
+				})
+		});
 		it("should fail when invalid data has been sent", function () {
 			return addUsersInvolvedInReview()
 				.then(({sourceUser}) => {
@@ -113,7 +130,7 @@ describe("Reviews", function () {
 					errors.should.not.be.empty;
 
 					errors.should.deep.include.members([ratingError, targetError]);
-				})
+				});
 		});
 	});
 });

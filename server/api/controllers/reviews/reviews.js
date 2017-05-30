@@ -1,8 +1,16 @@
 import {sendJsonResponse} from "../../../../utils/utils";
 import {getReviews, addReview} from "../../services/reviews";
 import {validateReview} from "./validators";
+import {validateRequest} from "../validators";
 
 export const createReview = (req, res) => {
+	const requestErrors = validateRequest(req, "body");
+
+	if (requestErrors.length) {
+		sendJsonResponse(res, 400, requestErrors);
+		return;
+	}
+
 	const review = req.body;
 
 	const reviewErrors = validateReview(review);
