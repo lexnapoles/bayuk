@@ -21,16 +21,16 @@ export const createReview = (req, res) => {
 		return;
 	}
 
-	const reviewer = req.user.id;
+	const buyer = req.user.id;
 
-	if (reviewer !== review.source) {
+	if (buyer !== review.buyer) {
 		sendJsonResponse(res, 401, [unauthorizedAccess()]);
 		return;
 	}
 
 	addReview(review)
 		.then(createdReview => {
-			res.location(`/api/reviews/${createdReview.target}`);
+			res.location(`/api/reviews/${createdReview.seller}`);
 			sendJsonResponse(res, 201, createdReview);
 		})
 		.catch(error => sendJsonResponse(res, 500, [error]))

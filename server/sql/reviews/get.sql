@@ -1,1 +1,1 @@
-SELECT * FROM reviews where target=${id};
+SELECT * FROM reviews where seller=${id};

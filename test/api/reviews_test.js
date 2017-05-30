@@ -20,19 +20,18 @@ let server = {};
 const addUsersInvolvedInReview = () =>
 	Promise.all([addUser(getUser()), addUser(getUser())])
 		.then(users => ({
-			sourceUser: users[0],
-			targetUser: users[1]
+			buyer:  users[0],
+			seller: users[1]
 		}));
 
-const addRandomReview = () => {
-	return addUsersInvolvedInReview()
-		.then(({sourceUser, targetUser}) => addReview({
+const addRandomReview = () =>
+	addUsersInvolvedInReview()
+		.then(({buyer, seller}) => addReview({
 			rating:      5,
 			description: faker.lorem.sentences(),
-			source:      sourceUser.user.id,
-			target:      targetUser.user.id
-		}))
-};
+			buyer:       buyer.user.id,
+			seller:      seller.user.id
+		}));
 
 describe("Reviews", function () {
 	beforeEach(function () {
@@ -50,9 +49,9 @@ describe("Reviews", function () {
 	describe("GET /reviews/:userId", function () {
 		it("should get the user reviews", function () {
 			return addRandomReview()
-				.then(({target}) =>
+				.then(({seller}) =>
 					request(server)
-						.get(`/api/reviews/${target}`)
+						.get(`/api/reviews/${seller}`)
 						.expect(200))
 				.then(response => {
 					const reviews = response.body,
@@ -61,7 +60,7 @@ describe("Reviews", function () {
 					reviews.should.be.instanceOf(Array);
 					reviews.should.not.be.empty;
 
-					review.should.include.all.keys(["id", "rating", "description", "source", "target"]);
+					review.should.include.all.keys(["id", "rating", "description", "buyer", "seller"]);
 				});
 		});
 	});
@@ -69,33 +68,33 @@ describe("Reviews", function () {
 	describe("POST /reviews", function () {
 		it("should add a new review", function () {
 			return addUsersInvolvedInReview()
-				.then(({sourceUser, targetUser}) => {
-					const {user: {id: source}, token} = sourceUser,
-								{user: {id: target}}        = targetUser;
+				.then(({buyer, seller}) => {
+					const {user: {id: buyerId}, token} = buyer,
+								{user: {id: sellerId}}       = seller;
 
 					return request(server)
 						.post(`/api/reviews`)
 						.set("Authorization", `Bearer ${token}`)
 						.send({
-							source,
-							target,
+							buyer:       buyerId,
+							seller:      sellerId,
 							rating:      4,
 							description: "Good seller, product in good condition"
 						})
 						.expect(201)
-						.expect("Location", `/api/reviews/${target}`)
+						.expect("Location", `/api/reviews/${sellerId}`)
 				})
 				.then(response => {
 					const review = response.body;
 
-					review.should.include.all.keys(["id", "rating", "description", "source", "target"]);
+					review.should.include.all.keys(["id", "rating", "description", "buyer", "seller"]);
 				})
 		});
 
 		it("should fail when no data has been sent", function () {
 			return addUsersInvolvedInReview()
-				.then(({sourceUser}) => {
-					const {token} = sourceUser;
+				.then(({buyer}) => {
+					const {token} = buyer;
 
 					return request(server)
 						.post(`/api/reviews`)
@@ -111,15 +110,15 @@ describe("Reviews", function () {
 
 		it("should fail when invalid data has been sent", function () {
 			return addUsersInvolvedInReview()
-				.then(({sourceUser}) => {
-					const {user: {id: source}, token} = sourceUser;
+				.then(({buyer}) => {
+					const {user: {id: buyerId}, token} = buyer;
 
 					return request(server)
 						.post(`/api/reviews`)
 						.set("Authorization", `Bearer ${token}`)
 						.send({
-							source,
-							target:      "Invalid target",
+							buyer:       buyerId,
+							seller:      "Invalid seller",
 							rating:      "A rating",
 							description: "Good seller"
 						})
@@ -128,12 +127,12 @@ describe("Reviews", function () {
 				.then(response => {
 					const errors      = response.body,
 								ratingError = invalidReview("rating", "should be integer"),
-								targetError = invalidReview("target", 'should match format "uuid"');
+								sellerError = invalidReview("seller", 'should match format "uuid"');
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
 
-					errors.should.deep.include.members([ratingError, targetError]);
+					errors.should.deep.include.members([ratingError, sellerError]);
 				});
 		});
 
@@ -164,16 +163,16 @@ describe("Reviews", function () {
 
 		it("should fail when the token user is not the one to write the review", function () {
 			return addUsersInvolvedInReview()
-				.then(({sourceUser, targetUser}) => {
-					const {token}              = sourceUser,
-								{user: {id: target}} = targetUser;
+				.then(({buyer, seller}) => {
+					const {user: {id: sellerId}} = seller,
+								{token}                = buyer;
 
 					return request(server)
 						.post(`/api/reviews`)
 						.set("Authorization", `Bearer ${token}`)
 						.send({
-							target,
-							source:      faker.random.uuid(),
+							seller:      sellerId,
+							buyer:       faker.random.uuid(),
 							rating:      4,
 							description: "Good seller, product in good condition"
 						})
