@@ -8,7 +8,8 @@ export const register = {
 			"type": "string"
 		},
 		"email":     {
-			"type": "string"
+			"type": "string",
+			"format": "email"
 		},
 		"password":  {
 			"type": "string"
@@ -43,10 +44,11 @@ export const user = {
 	"$schema":    "http://json-schema.org/schema#",
 	"id":         "http://bayuk.com/schemas/myschema.json",
 	"type":       "object",
-	"title":      "Userr",
+	"title":      "User",
 	"properties": {
 		"id":        {
-			"type": "string"
+			"type": "string",
+			"format": "uuid"
 		},
 		"name":      {
 			"type": "string"

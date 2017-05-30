@@ -6,12 +6,12 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users";
 import {addReview} from "../../server/api/services/reviews";
+import {invalidReview} from "../../server/errors/api/reviewErrors";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 
 chai.should();
 
 let server = {};
-
 
 const addUsersInvolvedInReview = () =>
 	Promise.all([addUser(getUser()), addUser(getUser())])
@@ -24,13 +24,13 @@ const addRandomReview = () => {
 	return addUsersInvolvedInReview()
 		.then(({sourceUser, targetUser}) => addReview({
 			rating: 5,
-			review: faker.lorem.sentences(),
+			description: faker.lorem.sentences(),
 			source: sourceUser.user.id,
 			target: targetUser.user.id
 		}))
 };
 
-describe.only("Reviews", function () {
+describe("Reviews", function () {
 	beforeEach(function () {
 		server = createServer();
 
@@ -57,7 +57,7 @@ describe.only("Reviews", function () {
 					reviews.should.be.instanceOf(Array);
 					reviews.should.not.be.empty;
 
-					review.should.include.all.keys(["id", "rating", "review", "source", "target"]);
+					review.should.include.all.keys(["id", "rating", "description", "source", "target"]);
 				});
 		});
 	});
@@ -76,7 +76,7 @@ describe.only("Reviews", function () {
 							source,
 							target,
 							rating: 4,
-							review: "Good seller, product in good condition"
+							description: "Good seller, product in good condition"
 						})
 						.expect(201)
 						.expect("Location", `/api/reviews/${target}`)
@@ -84,7 +84,35 @@ describe.only("Reviews", function () {
 				.then(response => {
 					const review = response.body;
 
-					review.should.include.all.keys(["id", "rating", "review", "source", "target"]);
+					review.should.include.all.keys(["id", "rating", "description", "source", "target"]);
+				})
+		});
+
+		it("should fail when invalid data has been sent", function () {
+			return addUsersInvolvedInReview()
+				.then(({sourceUser}) => {
+					const {user: {id: source}, token} = sourceUser;
+
+					return request(server)
+						.post(`/api/reviews`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							source,
+							target: "Invalid target",
+							rating: "A rating",
+							description: "Good seller"
+						})
+						.expect(400)
+				})
+				.then(response => {
+					const errors = response.body,
+								ratingError = invalidReview("rating", "should be integer"),
+								targetError = invalidReview("target", 'should match format "uuid"');
+
+					errors.should.be.instanceOf(Array);
+					errors.should.not.be.empty;
+
+					errors.should.deep.include.members([ratingError, targetError]);
 				})
 		});
 	});

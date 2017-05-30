@@ -1,5 +1,5 @@
 import bodyParser from "body-parser";
-import {createReview, readReviews} from "../controllers/reviews";
+import {createReview, readReviews} from "../controllers/reviews/reviews";
 
 const jsonParser = bodyParser.json({limit: "50mb"});
 
