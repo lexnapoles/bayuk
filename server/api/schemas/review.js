@@ -22,7 +22,12 @@ export default {
 			"type":     "integer",
 			"minItems": 1,
 			"maxItems": 5
-		}
+		},
+		
+		"product": {
+			"type":   "string",
+			"format": "uuid"
+		},
 	},
-	"required":   ["buyer", "seller", "description", "rating"]
+	"required":   ["buyer", "seller", "description", "rating", "product"]
 };
