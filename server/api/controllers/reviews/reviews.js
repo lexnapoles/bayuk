@@ -2,6 +2,7 @@ import {sendJsonResponse} from "../../../../utils/utils";
 import {getReviews, addReview} from "../../services/reviews";
 import {validateReview} from "./validators";
 import {validateRequest} from "../validators";
+import {unauthorizedAccess} from "../../../errors/api/authorizationErrors";
 
 export const createReview = (req, res) => {
 	const requestErrors = validateRequest(req, "body");
@@ -17,6 +18,13 @@ export const createReview = (req, res) => {
 
 	if (reviewErrors.length) {
 		sendJsonResponse(res, 400, reviewErrors);
+		return;
+	}
+
+	const reviewer = req.user.id;
+
+	if (reviewer !== review.source) {
+		sendJsonResponse(res, 401, [unauthorizedAccess()]);
 		return;
 	}
 

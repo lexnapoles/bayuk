@@ -162,5 +162,28 @@ describe("Reviews", function () {
 				})
 		});
 
+		it("should fail when the token user is not the one to write the review", function () {
+			return addUsersInvolvedInReview()
+				.then(({sourceUser, targetUser}) => {
+					const {token}              = sourceUser,
+								{user: {id: target}} = targetUser;
+
+					return request(server)
+						.post(`/api/reviews`)
+						.set("Authorization", `Bearer ${token}`)
+						.send({
+							target,
+							source:      faker.random.uuid(),
+							rating:      4,
+							description: "Good seller, product in good condition"
+						})
+						.expect(401)
+				})
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(unauthorizedAccess())
+				});
+		});
 	});
 });
