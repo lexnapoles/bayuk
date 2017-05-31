@@ -1,8 +1,11 @@
 import {sendJsonResponse} from "../../../../utils/utils";
 import {getReviews, addReview} from "../../services/reviews";
+import {getUserById} from "../../services/users";
 import {validateReview} from "./validators";
 import {validateRequest} from "../validators";
 import {unauthorizedAccess} from "../../../errors/api/authorizationErrors";
+import {userDoesNotExist} from "../../../errors/api/userErrors";
+import dbErrors from "../../../errors/database";
 
 export const createReview = (req, res) => {
 	const requestErrors = validateRequest(req, "body");
@@ -39,9 +42,17 @@ export const createReview = (req, res) => {
 export const readReviews = (req, res) => {
 	const {userId} = req.params;
 
-	getReviews(userId)
+	getUserById(userId)
+		.then(() => getReviews(userId))
 		.then(reviews => sendJsonResponse(res, 200, reviews))
-		.catch(error => sendJsonResponse(res, 500, [error]));
+		.catch(error => {
+			if (error.code === dbErrors.dataNotFound) {
+				sendJsonResponse(res, 404, [userDoesNotExist()]);
+				return;
+			}
+			
+			sendJsonResponse(res, 500, [error]);
+		});
 };
 
 

@@ -100,6 +100,12 @@ describe("Reviews", function () {
 					review.should.include.all.keys(["id", "rating", "description", "buyer", "seller", "product"]);
 				});
 		});
+
+		it("should fail if there's no user with the given id", function () {
+			return request(server)
+				.get(`/api/reviews/${faker.random.uuid()}`)
+				.expect(404);
+		});
 	});
 
 	describe("POST /reviews", function () {
@@ -173,6 +179,10 @@ describe("Reviews", function () {
 
 					errors.should.deep.include.members([ratingError, sellerError]);
 				});
+		});
+
+		it("should fail when the buyer already revieweded the seller product", function () {
+
 		});
 
 		it("should fail when no token has been sent", function () {
