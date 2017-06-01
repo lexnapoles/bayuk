@@ -2,13 +2,20 @@ import {sendJsonResponse} from "../../../../utils/utils";
 import {getReviews, addReview} from "../../services/reviews";
 import {getUserById} from "../../services/users";
 import {validateReview} from "./validators";
-import {validateRequest} from "../validators";
+import {validateRequest, validateId} from "../validators";
 import {unauthorizedAccess} from "../../../errors/api/authorizationErrors";
 import {userDoesNotExist} from "../../../errors/api/userErrors";
 import dbErrors from "../../../errors/database";
 
 export const readReviews = (req, res) => {
 	const {userId} = req.params;
+
+	const invalidIdError = validateId(userId);
+
+	if (invalidIdError.length) {
+		sendJsonResponse(res, 400, invalidIdError);
+		return;
+	}
 
 	getUserById(userId)
 		.then(() => getReviews(userId))

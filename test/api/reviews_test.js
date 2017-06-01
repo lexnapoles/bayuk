@@ -11,7 +11,7 @@ import {addProduct} from "../../server/api/services/products"
 import {invalidReview} from "../../server/errors/api/reviewErrors";
 import {unauthorizedAccess} from "../../server/errors/api/authorizationErrors";
 import {userDoesNotExist} from "../../server/errors/api/userErrors";
-import {dataNotFound} from "../../server/errors/api/controllerErrors";
+import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {createJwt} from "../../server/api/services/authentication"
 
@@ -101,6 +101,18 @@ describe("Reviews", function () {
 				});
 		});
 
+		it("should fail when the user id is not valid", function () {
+			const userId = void 0;
+
+			return request(server)
+				.get(`/api/reviews/${userId}`)
+				.expect(400)
+				.then(response => {
+					const error = response.body[0];
+
+					error.should.be.deep.equal(invalidId());
+				});
+		});
 		it("should fail if there's no user with the given id", function () {
 			return request(server)
 				.get(`/api/reviews/${faker.random.uuid()}`)
