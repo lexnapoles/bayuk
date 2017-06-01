@@ -1,1 +1,1 @@
-SELECT * FROM reviews where seller=${id};
+SELECT * FROM get_user_reviews(${id});

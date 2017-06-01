@@ -4,12 +4,12 @@ export default {
 	"type":       "object",
 	"title":      "Review",
 	"properties": {
-		"buyer": {
+		"source": {
 			"type":   "string",
 			"format": "uuid"
 		},
 
-		"seller": {
+		"target": {
 			"type":   "string",
 			"format": "uuid"
 		},
@@ -29,5 +29,5 @@ export default {
 			"format": "uuid"
 		},
 	},
-	"required":   ["buyer", "seller", "description", "rating", "product"]
+	"required":   ["source", "target", "description", "rating", "product"]
 };

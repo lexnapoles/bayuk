@@ -50,10 +50,10 @@ const generateReviewData = () => {
 
 	return Promise.all([addUser(getUser()), addUser(getUser())])
 		.then(users => usersData = {
-			buyer:  users[0],
-			seller: users[1]
+			source: users[0],
+			target: users[1]
 		})
-		.then(() => addProduct({...product, owner: usersData.seller.user.id}))
+		.then(() => addProduct({...product, owner: usersData.target.user.id}))
 		.then((data) => ({
 			...usersData,
 			product: data.id
@@ -62,11 +62,11 @@ const generateReviewData = () => {
 
 const addRandomReview = () =>
 	generateReviewData()
-		.then(({buyer, seller, product}) => addReview({
+		.then(({source, target, product}) => addReview({
 			rating:      5,
 			description: faker.lorem.sentences(),
-			buyer:       buyer.user.id,
-			seller:      seller.user.id,
+			source:      source.user.id,
+			target:      target.user.id,
 			product
 		}));
 
@@ -86,9 +86,9 @@ describe("Reviews", function () {
 	describe("GET /reviews/:userId", function () {
 		it("should get the user reviews", function () {
 			return addRandomReview()
-				.then(({seller}) =>
+				.then(({target}) =>
 					request(server)
-						.get(`/api/reviews/${seller}`)
+						.get(`/api/reviews/${target}`)
 						.expect(200))
 				.then(response => {
 					const reviews = response.body,
@@ -97,7 +97,7 @@ describe("Reviews", function () {
 					reviews.should.be.instanceOf(Array);
 					reviews.should.not.be.empty;
 
-					review.should.include.all.keys(["id", "rating", "description", "buyer", "seller", "product"]);
+					review.should.include.all.keys(["id", "rating", "description", "source", "target", "product"]);
 				});
 		});
 
@@ -111,16 +111,16 @@ describe("Reviews", function () {
 	describe("POST /reviews", function () {
 		it("should add a new review", function () {
 			return generateReviewData()
-				.then(({buyer, seller, product}) => {
-					const {user: {id: buyerId}, token} = buyer,
-								{user: {id: sellerId}}       = seller;
+				.then(({source, target, product}) => {
+					const {user: {id: buyerId}, token} = source,
+								{user: {id: sellerId}}       = target;
 
 					return request(server)
 						.post(`/api/reviews`)
 						.set("Authorization", `Bearer ${token}`)
 						.send({
-							buyer:       buyerId,
-							seller:      sellerId,
+							source:      buyerId,
+							target:      sellerId,
 							rating:      4,
 							description: "Good seller, product in good condition",
 							product
@@ -131,14 +131,14 @@ describe("Reviews", function () {
 				.then(response => {
 					const review = response.body;
 
-					review.should.include.all.keys(["id", "rating", "description", "buyer", "seller", "product"]);
+					review.should.include.all.keys(["id", "rating", "description", "source", "target", "product"]);
 				})
 		});
 
 		it("should fail when no data has been sent", function () {
 			return generateReviewData()
-				.then(({buyer}) => {
-					const {token} = buyer;
+				.then(({source}) => {
+					const {token} = source;
 
 					return request(server)
 						.post(`/api/reviews`)
@@ -154,15 +154,15 @@ describe("Reviews", function () {
 
 		it("should fail when invalid data has been sent", function () {
 			return generateReviewData()
-				.then(({buyer, product}) => {
-					const {user: {id: buyerId}, token} = buyer;
+				.then(({source, product}) => {
+					const {user: {id: buyerId}, token} = source;
 
 					return request(server)
 						.post(`/api/reviews`)
 						.set("Authorization", `Bearer ${token}`)
 						.send({
-							buyer:       buyerId,
-							seller:      "Invalid seller",
+							source:      buyerId,
+							target:      "Invalid seller",
 							rating:      "A rating",
 							description: "Good seller",
 							product
@@ -172,17 +172,13 @@ describe("Reviews", function () {
 				.then(response => {
 					const errors      = response.body,
 								ratingError = invalidReview("rating", "should be integer"),
-								sellerError = invalidReview("seller", 'should match format "uuid"');
+								targetError = invalidReview("target", 'should match format "uuid"');
 
 					errors.should.be.instanceOf(Array);
 					errors.should.not.be.empty;
 
-					errors.should.deep.include.members([ratingError, sellerError]);
+					errors.should.deep.include.members([ratingError, targetError]);
 				});
-		});
-
-		it("should fail when the buyer already revieweded the seller product", function () {
-
 		});
 
 		it("should fail when no token has been sent", function () {
@@ -212,16 +208,16 @@ describe("Reviews", function () {
 
 		it("should fail when the token user is not the one to write the review", function () {
 			return generateReviewData()
-				.then(({buyer, seller, product}) => {
-					const {user: {id: sellerId}} = seller,
-								{token}                = buyer;
+				.then(({source, target, product}) => {
+					const {token}                = source,
+								{user: {id: sellerId}} = target;
 
 					return request(server)
 						.post(`/api/reviews`)
 						.set("Authorization", `Bearer ${token}`)
 						.send({
-							seller:      sellerId,
-							buyer:       faker.random.uuid(),
+							target:      sellerId,
+							source:      faker.random.uuid(),
 							rating:      4,
 							description: "Good seller, product in good condition",
 							product
