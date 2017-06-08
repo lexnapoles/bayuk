@@ -1,6 +1,6 @@
-import webpack from "webpack";
-import  merge from  "webpack-merge";
-import baseConfig from "./webpack.base.config.js";
+const webpack = require("webpack");
+const merge = require("webpack-merge");
+const baseConfig = require("./webpack.base.config.js");
 
 const devConfig = merge({
 	entry: ["webpack-hot-middleware/client"],
@@ -14,4 +14,4 @@ const devConfig = merge({
 }, baseConfig);
 
 
-export default devConfig;
+module.exports = devConfig;

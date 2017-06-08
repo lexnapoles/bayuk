@@ -1,8 +1,8 @@
-import path     from "path";
-import merge from "webpack-merge";
-import baseConfig from "./webpack.base.config.js";
+const path = require("path");
+const merge = require("webpack-merge");
+const baseConfig = require("./webpack.base.config.js");
 
-export default merge(baseConfig, {
+module.exports = merge(baseConfig, {
 	entry: null,
 
 	externals: {
