@@ -2,6 +2,7 @@ import chai from "chai";
 import chaiFs from "chai-fs";
 import request from "supertest";
 import faker from "faker";
+import stoppable from "stoppable";
 import createServer from "../../server/server";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
@@ -77,13 +78,13 @@ describe("Products", function () {
 		return cleanAllPreviouslyCreatedImages()
 			.then(() => db.none(global.truncateAll))
 			.then(() => addCategories())
-			.then(() => server = createServer());
+			.then(() => server = stoppable(createServer(), 0));
 	});
 
 	afterEach(function () {
 		return cleanAllPreviouslyCreatedImages()
 			.then(() => db.none(global.truncateAll))
-			.then(() => server.close());
+			.then(() => server.stop());
 	});
 
 	describe("GET /products", function () {

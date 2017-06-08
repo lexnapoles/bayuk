@@ -2,6 +2,7 @@ import chai from "chai";
 import request from "supertest";
 import faker from "faker";
 import jwt from "jsonwebtoken";
+import stoppable from "stoppable";
 import createServer from "../../server/server";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
@@ -20,7 +21,7 @@ const userKeys = ["id", "name", "email", "latitude", "longitude", "image"];
 
 describe("Users", function () {
 	beforeEach(function () {
-		server = createServer();
+		server = stoppable(createServer(), 0);
 
 		return db.none(global.truncateAll);
 	});
@@ -28,7 +29,7 @@ describe("Users", function () {
 	afterEach(function (done) {
 		db.none(global.truncateAll);
 
-		server.close(done);
+		server.stop(done);
 	});
 
 	describe("POST /register", function () {

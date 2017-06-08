@@ -1,1 +1,1 @@
-TRUNCATE categories, products, users RESTART IDENTITY CASCADE;
+TRUNCATE categories, reviews, products, users RESTART IDENTITY CASCADE;

@@ -1,6 +1,7 @@
 import chai from "chai";
 import request from "supertest";
 import faker from "faker";
+import stoppable from "stoppable";
 import createServer from "../../server/server";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
@@ -74,13 +75,13 @@ describe("Reviews", function () {
 	beforeEach(function () {
 		return db.none(global.truncateAll)
 			.then(() => addCategories())
-			.then(() => server = createServer());
+			.then(() => server = stoppable(createServer(), 0));
 	});
 
 	afterEach(function (done) {
 		db.none(global.truncateAll);
 
-		server.close(done);
+		server.stop(done);
 	});
 
 	describe("GET /reviews/:userId", function () {

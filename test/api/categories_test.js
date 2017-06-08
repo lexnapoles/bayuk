@@ -4,6 +4,7 @@ import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addCategories} from "../../server/api/services/categories";
 import createServer from "../../server/server";
+import stoppable from "stoppable";
 
 chai.should();
 
@@ -12,13 +13,13 @@ let server = {};
 describe("Categories", function () {
 	describe("GET /categories", function () {
 		beforeEach(function () {
-			server = createServer();
+			server = stoppable(createServer(), 0)
 
 			return db.none(global.truncateAll);
 		});
 
 		afterEach(function (done) {
-			server.close(done);
+			server.stop(done);
 		});
 
 		it("should get all categories", function () {
