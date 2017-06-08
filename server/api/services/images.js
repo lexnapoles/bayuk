@@ -1,8 +1,7 @@
 import {has} from "lodash/object";
-import {wrapDataInPromise} from "../../../utils/utils";
+import {wrapDataInPromise, isBase64, deleteFile} from "../../utils";
 import fs from "fs-promise";
 import path from "path";
-import {isBase64, deleteFile} from "../../../utils/utils";
 
 export const getImagePath = (id, dir) => `${path.join(process.env.IMAGESDIR, `/${dir}`, id)}.jpg`;
 

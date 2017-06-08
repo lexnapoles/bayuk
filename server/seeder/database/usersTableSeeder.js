@@ -2,7 +2,7 @@ import faker from "faker";
 import {times} from "lodash/util";
 import {MAX_USERS} from "../config";
 import {addUser} from "../../api/services/users";
-import {wrapDataInPromise} from "../../../utils/utils";
+import {wrapDataInPromise} from "../../utils";
 
 export const getUser = (user = {}) => ({
 	email:     faker.internet.email(),

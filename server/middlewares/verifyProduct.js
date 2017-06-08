@@ -1,6 +1,6 @@
 import {has} from "lodash/object";
 import {getProductById} from "../api/services/products";
-import {sendJsonResponse} from "../../utils/utils";
+import {sendJsonResponse} from "../utils";
 import {productDoesNotExist} from "../errors/api/productErrors";
 import {validateRequest} from "../api/controllers/validators";
 import {unauthorizedAccess, tokenDoesNotMatch} from "../errors/api/authorizationErrors";

@@ -1,6 +1,6 @@
 import {has} from "lodash/object";
 import {getUserById} from "../api/services/users";
-import {sendJsonResponse} from "../../utils/utils";
+import {sendJsonResponse} from "../utils";
 import {userDoesNotExist} from "../errors/api/userErrors";
 import dbErrors from "../errors/database";
 import {unauthorizedAccess, tokenDoesNotMatch} from "../errors/api/authorizationErrors";

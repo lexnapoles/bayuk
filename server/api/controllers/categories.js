@@ -1,4 +1,4 @@
-import {sendJsonResponse} from "../../../utils/utils";
+import {sendJsonResponse} from "../../utils";
 import {getCategories} from "../services/categories";
 import transformCategories from "../transformers/categories";
 

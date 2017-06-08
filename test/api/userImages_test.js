@@ -15,7 +15,7 @@ import {
 } from "../../server/api/services/userImages";
 import {addUser} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
-import {getFileNameWithNoExtension, deleteFile} from "../../utils/utils";
+import {getFileNameWithNoExtension, deleteFile} from "../../server/utils";
 
 chai.use(chaiFs);
 const should = chai.should();

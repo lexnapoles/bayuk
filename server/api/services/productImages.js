@@ -9,7 +9,7 @@ import {
 	deleteImagesFromDisk,
 	getDecodedImage
 } from "./images";
-import {isBase64, generateImagesObjs} from "../../../utils/utils";
+import {isBase64, generateImagesObjs} from "../../utils";
 
 export const getProductsImagePath = id => getImagePath(id, "products");
 

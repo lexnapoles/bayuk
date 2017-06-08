@@ -1,5 +1,5 @@
 import passport from "passport";
-import {sendJsonResponse} from "../../../../utils/utils";
+import {sendJsonResponse} from "../../../utils";
 import {addUser} from "../../services/users";
 import {createJwt} from "../../services/authentication";
 import {validateRegister, validateLogin} from "./validators";

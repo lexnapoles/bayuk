@@ -1,7 +1,7 @@
 import db from "../../db";
 import {users} from "../../sql/sql";
 import {getImagePath, isImageObjValid, writeImagesToDisk, deleteImagesFromDisk, getDecodedImage} from "./images";
-import {isBase64, generateSingleImageObject} from "../../../utils/utils";
+import {isBase64, generateSingleImageObject} from "../../utils";
 
 export const getUserImagePath = id => getImagePath(id, "users");
 

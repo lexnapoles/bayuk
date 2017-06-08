@@ -1,6 +1,6 @@
 import db from "../../db";
 import {categories} from "../../sql/sql";
-import {wrapDataInPromise} from "../../../utils/utils";
+import {wrapDataInPromise} from "../../utils";
 
 const addCategoryToDB = category => db.none(categories.add, category);
 

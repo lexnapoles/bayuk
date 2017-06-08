@@ -1,4 +1,4 @@
-import {sendJsonResponse} from "../../../../utils/utils";
+import {sendJsonResponse} from "../../../utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
 import {productDoesNotExist}  from "../../../errors/api/productErrors";

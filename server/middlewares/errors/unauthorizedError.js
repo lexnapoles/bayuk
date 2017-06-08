@@ -1,4 +1,4 @@
-import {sendJsonResponse} from "../../../utils/utils";
+import {sendJsonResponse} from "../../utils";
 import {unauthorizedAccess} from "../../errors/api/authorizationErrors";
 
 export default (err, req, res, next) => {

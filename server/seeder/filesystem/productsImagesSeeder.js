@@ -2,7 +2,7 @@ import fs from "fs-promise";
 import path from "path";
 import db from "../../db";
 import {getProductsImagePath} from "../../api/services/productImages";
-import {getFileNameWithNoExtension, deleteFile} from "../../../utils/utils";
+import {getFileNameWithNoExtension, deleteFile} from "../../utils";
 
 const getProductImagesIds = () =>
 	db.any("SELECT image_id from product_images")

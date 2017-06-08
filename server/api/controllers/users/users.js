@@ -1,4 +1,4 @@
-import {sendJsonResponse} from "../../../../utils/utils";
+import {sendJsonResponse} from "../../../utils";
 import {validateUser} from "./validators"
 import {validateRequest, validateId} from "../validators";
 import {getUsers, getUserById, updateUser, updateEmail, updatePassword, deleteUser} from "../../services/users";

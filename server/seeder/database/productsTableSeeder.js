@@ -3,7 +3,7 @@ import faker from "faker";
 import {sample} from "lodash/collection";
 import {times} from "lodash/util";
 import {MAX_PRODUCTS, categories} from "../config";
-import {wrapDataInPromise} from "../../../utils/utils";
+import {wrapDataInPromise} from "../../utils";
 
 export const getProduct = userId => ({
 	uuid:        faker.random.uuid(),

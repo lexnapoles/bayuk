@@ -1,4 +1,4 @@
-import {sendJsonResponse} from "../../../../utils/utils";
+import {sendJsonResponse} from "../../../utils";
 import {getReviews, addReview} from "../../services/reviews";
 import {getUserById} from "../../services/users";
 import {validateReview} from "./validators";

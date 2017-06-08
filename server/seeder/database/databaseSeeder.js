@@ -16,7 +16,7 @@ export default () => {
 		.then(seedCategoriesTable)
 		.then(seedUsersTable)
 		.then(createdUsers => users = createdUsers)
-		.then(() => seedReviewsTable(users))
 		.then(() => seedProductsTable(users))
+		.then(products => seedReviewsTable(users, products).then(() => products))
 		.then(seedProductImagesTable);
 };

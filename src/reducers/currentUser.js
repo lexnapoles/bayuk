@@ -1,5 +1,5 @@
 import {REGISTER_USER, LOGIN_USER} from "../constants/actionTypes";
-import {getJwtPayload} from "../../utils/utils";
+import {getJwtPayload} from "../utils";
 import {REHYDRATE} from 'redux-persist/constants'
 import {omit} from "lodash/object";
 
