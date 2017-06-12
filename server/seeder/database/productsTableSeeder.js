@@ -20,7 +20,7 @@ const addAllProductsToDB = products => Promise.all(wrapDataInPromise(products, a
 
 export default users => {
 	const userIds  = Array.from(users, ({id}) => id),
-				products = times(MAX_PRODUCTS, getProduct.bind(void 0, sample(userIds)));
+				products = times(MAX_PRODUCTS, getProduct.bind(void 0, () => sample(userIds)));
 
 	return addAllProductsToDB(products)
 		.then(() => products);
