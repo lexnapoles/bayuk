@@ -14,6 +14,7 @@ export const categories = {
 
 export const products = {
 	getAll:           sql("products/getAll.sql"),
+	getByFilters:     sql("products/getByFilters.sql"),
 	getById:          sql("products/getById.sql"),
 	getImages:        sql("products/getImages.sql"),
 	addWithAllFields: sql("products/addWithAllFields.sql"),

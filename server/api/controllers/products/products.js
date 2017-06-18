@@ -6,27 +6,26 @@ import dbErrors  from "../../../errors/database";
 import {validateRequest, validateId} from "../validators";
 import {validateProduct} from "./validators"
 
-export const readProducts = (req, res) =>
-	getProducts()
+export const readProducts = (req, res) =>{
+	const filters = req.query;
+
+	getProducts(filters)
 		.then(products => products.map(transformProduct))
 		.then(products => {
-			const {latitude, longitude} = products[products.length - 1];
+			const {id: lastId} = products[products.length - 1];
 
-			const query = {
-				sortByDistance: true,
-				descending:     false,
-				radius:         2000,
-				latitude,
-				longitude
+			const nextFilter = {
+				...filters,
+				lastId
 			};
 
-			const link = new Buffer(JSON.stringify(query)).toString('base64');
+			const link = new Buffer(JSON.stringify(nextFilter)).toString('base64');
 
 			res.set("Link", `/api/products?${link}; rel="next"`);
 
 			sendJsonResponse(res, 200, products);
 		})
-		.catch(error => sendJsonResponse(res, 500, [error]));
+};
 
 export const readOneProduct = (req, res) => {
 	const requestErrors = [

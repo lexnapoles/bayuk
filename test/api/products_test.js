@@ -89,18 +89,28 @@ describe("Products", function () {
 	});
 
 	describe("GET /products", function () {
-		it("should get a list of products", function () {
-			const PRODUCTS = 10;
+		it("should get a paginated and filtered list of products", function () {
+			const PRODUCTS_CREATED = 100;
 
-			return Promise.all(times(PRODUCTS, addRandomProduct))
-				.then(() => request(server)
-					.get("/api/products")
-					.expect(200))
+			const filters = {
+				sortByDistance: true,
+				descending:     false,
+				radius:         9000,
+				latitude:       -72.2468,
+				longitude:      81.4777
+			};
+
+			return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
+				.then(() =>
+					request(server)
+						.get("/api/products")
+						.query(filters)
+						.expect(200))
 				.then(response => {
 					const products = response.body;
 
-					products.should.be.instanceOf(Array);
-					products.should.have.lengthOf(PRODUCTS);
+					products.should.not.have.lengthOf(0);
+					products.length.should.be.below(PRODUCTS_CREATED);
 				});
 		});
 
@@ -108,13 +118,18 @@ describe("Products", function () {
 			const PRODUCTS = 10;
 
 			return Promise.all(times(PRODUCTS, addRandomProduct))
-				.then(() => request(server)
-					.get("/api/products")
-					.expect(200)
-					.expect("Link", /api\/products?(.*); rel="next"/))
-				.then(response => {
-					console.log(response.headers.link)
-				})
+				.then(() =>
+					request(server)
+						.get("/api/products")
+						.query({
+							sortByDistance: true,
+							descending:     false,
+							radius:         9000,
+							latitude:       -72.2468,
+							longitude:      81.4777
+						})
+						.expect(200)
+						.expect("Link", /api\/products?(.*); rel="next"/))
 		});
 	});
 

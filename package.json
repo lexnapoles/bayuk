@@ -91,6 +91,7 @@
   "dependencies": {
     "ajv": "^5.0.0",
     "body-parser": "^1.15.2",
+    "debug": "^2.6.8",
     "express": "^4.15.2",
     "express-jwt": "^5.1.0",
     "font-awesome": "^4.6.1",

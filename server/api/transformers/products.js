@@ -7,5 +7,7 @@ export const transformProduct = product => ({
 	category:    product.category,
 	createdAt:   product.created_at,
 	price:       parseInt(product.price, 10),
+	latitude:    parseFloat(product.latitude),
+	longitude:   parseFloat(product.longitude),
 	sold:        product.sold
 });

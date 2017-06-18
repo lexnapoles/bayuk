@@ -8,7 +8,17 @@ import {
 } from "./productImages";
 import {generateImagesObjs} from "../../utils";
 
-export const getProducts = () => db.any(products.getAll);
+export const getProducts = filters => {
+	const optionalParameters = {
+		lastId: '',
+		category: '',
+		minPrice: 0,
+		maxPrice: 99999,
+		sold: false
+	};
+
+	return db.any(products.getByFilters, {...optionalParameters, ...filters});
+};
 
 export const getProductById = productId => db.one(products.getById, {productId});
 
