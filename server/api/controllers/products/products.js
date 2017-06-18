@@ -9,7 +9,23 @@ import {validateProduct} from "./validators"
 export const readProducts = (req, res) =>
 	getProducts()
 		.then(products => products.map(transformProduct))
-		.then(products => sendJsonResponse(res, 200, products))
+		.then(products => {
+			const {latitude, longitude} = products[products.length - 1];
+
+			const query = {
+				sortByDistance: true,
+				descending:     false,
+				radius:         2000,
+				latitude,
+				longitude
+			};
+
+			const link = new Buffer(JSON.stringify(query)).toString('base64');
+
+			res.set("Link", `/api/products?${link}; rel="next"`);
+
+			sendJsonResponse(res, 200, products);
+		})
 		.catch(error => sendJsonResponse(res, 500, [error]));
 
 export const readOneProduct = (req, res) => {

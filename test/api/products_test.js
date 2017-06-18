@@ -4,6 +4,7 @@ import request from "supertest";
 import faker from "faker";
 import stoppable from "stoppable";
 import createServer from "../../server/server";
+import {times} from "lodash/util";
 import db from "../../server/db";
 import {global} from "../../server/sql/sql";
 import {addUser} from "../../server/api/services/users"
@@ -89,13 +90,30 @@ describe("Products", function () {
 
 	describe("GET /products", function () {
 		it("should get a list of products", function () {
-			return request(server)
-				.get("/api/products")
-				.expect(200)
+			const PRODUCTS = 10;
+
+			return Promise.all(times(PRODUCTS, addRandomProduct))
+				.then(() => request(server)
+					.get("/api/products")
+					.expect(200))
 				.then(response => {
 					const products = response.body;
+
 					products.should.be.instanceOf(Array);
-					products.should.have.lengthOf(0);
+					products.should.have.lengthOf(PRODUCTS);
+				});
+		});
+
+		it("should get a link to fetch the next products", function () {
+			const PRODUCTS = 10;
+
+			return Promise.all(times(PRODUCTS, addRandomProduct))
+				.then(() => request(server)
+					.get("/api/products")
+					.expect(200)
+					.expect("Link", /api\/products?(.*); rel="next"/))
+				.then(response => {
+					console.log(response.headers.link)
 				})
 		});
 	});
