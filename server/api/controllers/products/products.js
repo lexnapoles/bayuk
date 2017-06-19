@@ -6,7 +6,7 @@ import dbErrors  from "../../../errors/database";
 import {validateRequest, validateId} from "../validators";
 import {validateProduct} from "./validators"
 
-function generateLinkHeaders(products, filters) {
+const generateLinkHeaders = (products, filters) => {
 	const {id: lastId} = products[products.length - 1];
 
 	const nextFilter = {
@@ -17,7 +17,8 @@ function generateLinkHeaders(products, filters) {
 	const link = encodeURI(Buffer.from(JSON.stringify(nextFilter)).toString('base64'));
 
 	return `</api/products?cursor=${link}>; rel="next"`;
-}
+};
+
 export const readProducts = (req, res) => {
 	const filters = req.query.cursor
 		? JSON.parse(Buffer.from(decodeURI(req.query.cursor), 'base64').toString())

@@ -133,6 +133,20 @@ describe("Products", function () {
 						.expect("Link", /api\/products?(.*); rel="next"/))
 		});
 
+		it("should not get a next link header when there aren't more products", function () {
+			return request(server)
+				.get("/api/products")
+				.query({
+					sortByDistance: true,
+					descending:     false,
+					radius:         9000,
+					latitude:       -72.2468,
+					longitude:      81.4777
+				})
+				.expect(200)
+				.then(({headers}) => headers.should.not.have.property("Link"))
+		});
+
 		it("should get the next products with the next link header", function () {
 			const PRODUCTS_CREATED = 100;
 
