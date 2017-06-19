@@ -1,7 +1,7 @@
 import db from "../../db";
 import {users} from "../../sql/sql";
 import {getImagePath, isImageObjValid, writeImagesToDisk, deleteImagesFromDisk, getDecodedImage} from "./images";
-import {isBase64, generateSingleImageObject} from "../../utils";
+import {isImageBase64, generateSingleImageObject} from "../../utils";
 
 export const getUserImagePath = id => getImagePath(id, "users");
 
@@ -73,7 +73,7 @@ export const deleteUserImage = (image = "") => {
 };
 
 export const updateUserImage = (userId, image = "") => {
-	if (image === null || !image.length || !isBase64(image)) {
+	if (image === null || !image.length || !isImageBase64(image)) {
 		return Promise.resolve();
 	}
 

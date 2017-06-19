@@ -102,6 +102,7 @@
     "lodash": "^4.17.4",
     "normalizr": "^2.3.0",
     "nuka-carousel": "^2.0.2",
+    "parse-link-header": "^1.0.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pg": "^6.1.0",

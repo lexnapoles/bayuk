@@ -24,7 +24,7 @@ export const wrapDataInPromise = (dataArr = [], func) => {
 	return dataArr.map(data => Promise.resolve(func(data)));
 };
 
-export const isBase64 = file => file.search(/^data:image\/\w+;base64,/) !== -1;
+export const isImageBase64 = file => file.search(/^data:image\/\w+;base64,/) !== -1;
 
 export const mapArraysSequentially = (arr1 = [], arr2 = []) => {
 	if (arr1.length > arr2.length) {

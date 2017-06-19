@@ -1,5 +1,5 @@
 import {has} from "lodash/object";
-import {wrapDataInPromise, isBase64, deleteFile} from "../../utils";
+import {wrapDataInPromise, isImageBase64, deleteFile} from "../../utils";
 import fs from "fs-promise";
 import path from "path";
 
@@ -36,7 +36,7 @@ export const deleteImagesFromDisk = (images = []) => {
 };
 
 export const getImagesToDelete = (newImages, oldImages) => {
-	const unmodifiedImages = newImages.filter(img => !isBase64(img));
+	const unmodifiedImages = newImages.filter(img => !isImageBase64(img));
 
 	return oldImages.filter(img => !unmodifiedImages.find(elem => img === elem));
 };

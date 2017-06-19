@@ -9,7 +9,7 @@ import {
 	deleteImagesFromDisk,
 	getDecodedImage
 } from "./images";
-import {isBase64, generateImagesObjs} from "../../utils";
+import {isImageBase64, generateImagesObjs} from "../../utils";
 
 export const getProductsImagePath = id => getImagePath(id, "products");
 
@@ -82,7 +82,7 @@ export const deleteProductImages = (images = []) => {
 };
 
 export const updateProductImages = (productId, newImages = []) => {
-	const imagesToAdd = newImages.filter(isBase64);
+	const imagesToAdd = newImages.filter(isImageBase64);
 
 	return getImagesOfProduct(productId)
 		.then(getImagesToDelete.bind(void 0, newImages))

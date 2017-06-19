@@ -6,22 +6,27 @@ import dbErrors  from "../../../errors/database";
 import {validateRequest, validateId} from "../validators";
 import {validateProduct} from "./validators"
 
-export const readProducts = (req, res) =>{
-	const filters = req.query;
+export const readProducts = (req, res) => {
+
+	const filters = req.query.cursor
+		? JSON.parse(Buffer.from(decodeURI(req.query.cursor), 'base64').toString())
+		: req.query;
 
 	getProducts(filters)
 		.then(products => products.map(transformProduct))
 		.then(products => {
-			const {id: lastId} = products[products.length - 1];
+			if (products.length) {
+				const {id: lastId} = products[products.length - 1];
 
-			const nextFilter = {
-				...filters,
-				lastId
-			};
+				const nextFilter = {
+					...filters,
+					lastId
+				};
 
-			const link = new Buffer(JSON.stringify(nextFilter)).toString('base64');
+				const link = (Buffer.from(JSON.stringify(nextFilter)).toString('base64'));
 
-			res.set("Link", `/api/products?${link}; rel="next"`);
+				res.set("Link", `</api/products?cursor=${link}>; rel="next"`);
+			}
 
 			sendJsonResponse(res, 200, products);
 		})

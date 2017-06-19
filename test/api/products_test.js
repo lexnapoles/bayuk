@@ -3,6 +3,7 @@ import chaiFs from "chai-fs";
 import request from "supertest";
 import faker from "faker";
 import stoppable from "stoppable";
+import parse from "parse-link-header";
 import createServer from "../../server/server";
 import {times} from "lodash/util";
 import db from "../../server/db";
@@ -115,9 +116,9 @@ describe("Products", function () {
 		});
 
 		it("should get a link to fetch the next products", function () {
-			const PRODUCTS = 10;
+			const PRODUCTS_CREATED = 10;
 
-			return Promise.all(times(PRODUCTS, addRandomProduct))
+			return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
 				.then(() =>
 					request(server)
 						.get("/api/products")
@@ -130,6 +131,37 @@ describe("Products", function () {
 						})
 						.expect(200)
 						.expect("Link", /api\/products?(.*); rel="next"/))
+		});
+
+		it("should get the next products with the next link header", function () {
+			const PRODUCTS_CREATED = 100;
+
+			const filters = {
+				sortByDistance: true,
+				descending:     false,
+				radius:         9000,
+				latitude:       -72.2468,
+				longitude:      81.4777
+			};
+
+			return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
+				.then(() =>
+					request(server)
+						.get("/api/products")
+						.query(filters)
+						.expect(200))
+				.then(({headers}) => {
+					const nextLink = parse(decodeURI(headers.link)).next;
+
+					return request(server)
+						.get(nextLink.url)
+						.expect(200)
+				})
+				.then(response => {
+					const products = response.body;
+
+					products.length.should.be.below(PRODUCTS_CREATED);
+				})
 		});
 	});
 
