@@ -163,6 +163,26 @@ describe("Products", function () {
 					products.length.should.be.below(PRODUCTS_CREATED);
 				})
 		});
+
+		it("should fail if the query doesn't have the obligatory keys", function () {
+			const invalidFilters = {
+				sortByDist: true,
+				descending: false,
+				radius:     9000
+			};
+
+			return request(server)
+				.get("/api/products")
+				.query(invalidFilters)
+				.expect(400)
+				.then(response => {
+					const [sortByDistanceError, latitudeError, longitudeError] = response.body;
+
+					sortByDistanceError.should.be.deep.equal(dataNotFound("sortByDistance"));
+					latitudeError.should.be.deep.equal(dataNotFound("latitude"));
+					longitudeError.should.be.deep.equal(dataNotFound("longitude"));
+				})
+		});
 	});
 
 	describe("GET /products/:productId", function () {

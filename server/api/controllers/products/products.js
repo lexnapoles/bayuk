@@ -7,10 +7,16 @@ import {validateRequest, validateId} from "../validators";
 import {validateProduct} from "./validators"
 
 export const readProducts = (req, res) => {
-
 	const filters = req.query.cursor
 		? JSON.parse(Buffer.from(decodeURI(req.query.cursor), 'base64').toString())
 		: req.query;
+
+	const queryErrors = validateRequest(filters, ["sortByDistance", "descending", "latitude", "longitude"]);
+
+	if (queryErrors.length) {
+		sendJsonResponse(res, 400, queryErrors);
+		return;
+	}
 
 	getProducts(filters)
 		.then(products => products.map(transformProduct))
@@ -30,6 +36,7 @@ export const readProducts = (req, res) => {
 
 			sendJsonResponse(res, 200, products);
 		})
+		.catch(error => sendJsonResponse(res, 500, [error]));
 };
 
 export const readOneProduct = (req, res) => {

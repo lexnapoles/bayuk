@@ -5,7 +5,7 @@ export const productDoesNotExist = () => ({
 });
 
 export const invalidProduct = (field = "Product", message) => ({
-		code: "ERR-1001",
-		title: "Product data is invalid",
-		details: `${field.length ? field : "Product"} ${message}`
-	});
+	code:    "ERR-1001",
+	title:   "Product data is invalid",
+	details: `${field.length ? field : "Product"} ${message}`
+});
