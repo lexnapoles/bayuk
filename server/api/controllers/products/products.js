@@ -19,17 +19,20 @@ const generateLinkHeaders = (products, filters) => {
 	return `</api/products?cursor=${link}>; rel="next"`;
 };
 
-export const readProducts = (req, res) => {
-	const filters = req.query.cursor
+const getFilters = req =>
+	req.query.cursor
 		? JSON.parse(Buffer.from(decodeURI(req.query.cursor), 'base64').toString())
 		: req.query;
 
-	const queryErrors = validateRequest(filters, ["sortByDistance", "descending", "latitude", "longitude"]);
+export const readProducts = (req, res) => {
+	const filters = getFilters(req);
 
-	if (queryErrors.length) {
-		sendJsonResponse(res, 400, queryErrors);
-		return;
-	}
+	// const queryErrors = validateRequest(filters, ["sortByDistance", "descending", "latitude", "longitude"]);
+	//
+	// if (queryErrors.length) {
+	// 	sendJsonResponse(res, 400, queryErrors);
+	// 	return;
+	// }
 
 	getProducts(filters)
 		.then(products => products.map(transformProduct))

@@ -1,0 +1,1 @@
+SELECT * from get_products_by_owner(${owner}, ${sold}, ${lastId});

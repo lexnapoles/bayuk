@@ -9,15 +9,24 @@ import {
 import {generateImagesObjs} from "../../utils";
 
 export const getProducts = filters => {
-	const optionalParameters = {
+	const byOwnerParameters = {
+		sold: null,
+		lastId: '',
+		...filters
+	};
+
+	const sortingParameters = {
 		lastId: '',
 		category: '',
 		minPrice: 0,
 		maxPrice: 99999,
-		sold: false
+		sold: false,
+		...filters
 	};
 
-	return db.any(products.getByFilters, {...optionalParameters, ...filters});
+	return filters.owner
+		?	db.any(products.getByOwner, byOwnerParameters)
+		: db.any(products.getByFilters, sortingParameters);
 };
 
 export const getProductById = productId => db.one(products.getById, {productId});
