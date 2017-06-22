@@ -27,12 +27,14 @@ const getFilters = req =>
 export const readProducts = (req, res) => {
 	const filters = getFilters(req);
 
-	// const queryErrors = validateRequest(filters, ["sortByDistance", "descending", "latitude", "longitude"]);
-	//
-	// if (queryErrors.length) {
-	// 	sendJsonResponse(res, 400, queryErrors);
-	// 	return;
-	// }
+	if (!filters.owner) {
+		const queryErrors = validateRequest(filters, ["sortByDistance", "descending", "latitude", "longitude"]);
+
+		if (queryErrors.length) {
+			sendJsonResponse(res, 400, queryErrors);
+			return;
+		}
+	}
 
 	getProducts(filters)
 		.then(products => products.map(transformProduct))

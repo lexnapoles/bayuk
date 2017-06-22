@@ -199,7 +199,7 @@ describe("Products", function () {
 				})
 		});
 
-		it.skip("should fail if the query doesn't have the obligatory keys", function () {
+		it("should fail if sorting by price or distance doesn't have the obligatory keys", function () {
 			const invalidFilters = {
 				sortByDist: true,
 				descending: false,
