@@ -19,28 +19,72 @@ const generateLinkHeaders = (products, filters) => {
 	return `</api/products?cursor=${link}>; rel="next"`;
 };
 
-const getFilters = req =>
-	req.query.cursor
+const getSortingFilters = queryParameters => {
+	const SORT_BY_DISTANCE = "distance",
+				SORT_ORDER       = "descending";
+
+	const errors = validateRequest(queryParameters, ["sort", "order", "latitude", "longitude"]);
+
+	if (errors.length) {
+		return {
+			errors
+		}
+	}
+
+	const {sort, order, radius, latitude, longitude, ...optionalQueryParams} = queryParameters;
+
+	const filters = {
+		sortByDistance: sort === SORT_BY_DISTANCE,
+		descending:     order === SORT_ORDER,
+		radius,
+		latitude,
+		longitude,
+		...optionalQueryParams
+	};
+
+	return {
+		filters,
+		errors: []
+	}
+};
+
+const getOwnerFilters = queryParameters => {
+	const {owner, sold, lastId} = queryParameters;
+
+	const filters = {owner, sold, lastId};
+
+	return {
+		filters,
+		errors: []
+	};
+};
+
+const getFilters = req => {
+	const query = req.query.cursor
 		? JSON.parse(Buffer.from(decodeURI(req.query.cursor), 'base64').toString())
 		: req.query;
 
+	if (query.owner) {
+		return getOwnerFilters(query);
+	}
+
+	return getSortingFilters(query);
+};
+
+
 export const readProducts = (req, res) => {
-	const filters = getFilters(req);
+	const {filters, errors} = getFilters(req);
 
-	if (!filters.owner) {
-		const queryErrors = validateRequest(filters, ["sortByDistance", "descending", "latitude", "longitude"]);
-
-		if (queryErrors.length) {
-			sendJsonResponse(res, 400, queryErrors);
-			return;
-		}
+	if (errors.length) {
+		sendJsonResponse(res, 400, errors);
+		return;
 	}
 
 	getProducts(filters)
 		.then(products => products.map(transformProduct))
 		.then(products => {
 			if (products.length) {
-				res.set("Link", generateLinkHeaders(products, filters));
+				res.set("Link", generateLinkHeaders(products, req.query));
 			}
 
 			sendJsonResponse(res, 200, products);

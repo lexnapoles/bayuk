@@ -90,15 +90,40 @@ describe("Products", function () {
 	});
 
 	describe("GET /products", function () {
-		it("should get a paginated and filtered list of products", function () {
+		it("should get a paginated and sorted list of products", function () {
 			const PRODUCTS_CREATED = 100;
 
 			const filters = {
-				sortByDistance: true,
-				descending:     false,
-				radius:         9000,
-				latitude:       -72.2468,
-				longitude:      81.4777
+				sort:      "distance",
+				order:     "ascending",
+				radius:    9000,
+				latitude:  -72.2468,
+				longitude: 81.4777
+			};
+
+			return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
+				.then(() =>
+					request(server)
+						.get("/api/products")
+						.query(filters)
+						.expect(200))
+				.then(response => {
+					const products = response.body;
+
+					products.should.not.have.lengthOf(0);
+					products.length.should.be.below(PRODUCTS_CREATED);
+				});
+		});
+
+		it("should get a paginated and sorted list of products", function () {
+			const PRODUCTS_CREATED = 100;
+
+			const filters = {
+				sort:      "distance",
+				order:     "descending",
+				radius:    9000,
+				latitude:  -72.2468,
+				longitude: 81.4777
 			};
 
 			return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
@@ -123,11 +148,11 @@ describe("Products", function () {
 					request(server)
 						.get("/api/products")
 						.query({
-							sortByDistance: true,
-							descending:     false,
-							radius:         9000,
-							latitude:       -72.2468,
-							longitude:      81.4777
+							sort:      "distance",
+							order:     "descending",
+							radius:    9000,
+							latitude:  -72.2468,
+							longitude: 81.4777
 						})
 						.expect(200)
 						.expect("Link", /api\/products?(.*); rel="next"/))
@@ -158,11 +183,11 @@ describe("Products", function () {
 			return request(server)
 				.get("/api/products")
 				.query({
-					sortByDistance: true,
-					descending:     false,
-					radius:         9000,
-					latitude:       -72.2468,
-					longitude:      81.4777
+					sort:      "distance",
+					order:     "descending",
+					radius:    9000,
+					latitude:  -72.2468,
+					longitude: 81.4777
 				})
 				.expect(200)
 				.then(({headers}) => headers.should.not.have.property("Link"))
@@ -172,11 +197,11 @@ describe("Products", function () {
 			const PRODUCTS_CREATED = 100;
 
 			const filters = {
-				sortByDistance: true,
-				descending:     false,
-				radius:         9000,
-				latitude:       -72.2468,
-				longitude:      81.4777
+				sort:      "distance",
+				order:     "descending",
+				radius:    9000,
+				latitude:  -72.2468,
+				longitude: 81.4777
 			};
 
 			return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
@@ -201,9 +226,9 @@ describe("Products", function () {
 
 		it("should fail if sorting by price or distance doesn't have the obligatory keys", function () {
 			const invalidFilters = {
-				sortByDist: true,
-				descending: false,
-				radius:     9000
+				sort:   "price",
+				order:  "ascending",
+				radius: 9000
 			};
 
 			return request(server)
@@ -211,9 +236,8 @@ describe("Products", function () {
 				.query(invalidFilters)
 				.expect(400)
 				.then(response => {
-					const [sortByDistanceError, latitudeError, longitudeError] = response.body;
+					const [latitudeError, longitudeError] = response.body;
 
-					sortByDistanceError.should.be.deep.equal(dataNotFound("sortByDistance"));
 					latitudeError.should.be.deep.equal(dataNotFound("latitude"));
 					longitudeError.should.be.deep.equal(dataNotFound("longitude"));
 				})
