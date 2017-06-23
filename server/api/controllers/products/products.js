@@ -1,3 +1,4 @@
+import {pick} from "lodash/object";
 import {sendJsonResponse} from "../../../utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
@@ -82,6 +83,11 @@ export const readProducts = (req, res) => {
 
 	getProducts(filters)
 		.then(products => products.map(transformProduct))
+		.then(products => {
+			const {fields} = req.query;
+
+			return fields ? products.map(product => pick(product, fields.split(","))) : products;
+		})
 		.then(products => {
 			if (products.length) {
 				res.set("Link", generateLinkHeaders(products, req.query));

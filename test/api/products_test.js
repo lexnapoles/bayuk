@@ -221,7 +221,27 @@ describe("Products", function () {
 					const products = response.body;
 
 					products.length.should.be.below(PRODUCTS_CREATED);
-				})
+				});
+		});
+
+		it("should get selected fields", function () {
+			const selectedFields = ["id", "name", "price"];
+
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.get("/api/products")
+						.query({
+							owner: product.owner,
+							fields: selectedFields.join()
+						})
+						.expect(200))
+				.then(response => {
+					const product = response.body[0];
+
+					product.should.have.all.deep.keys(selectedFields);
+
+				});
 		});
 
 		it("should fail if sorting by price or distance doesn't have the obligatory keys", function () {
