@@ -1,5 +1,5 @@
-import db from "../../db";
-import {reviews} from "../../sql/sql";
+import db from "../../database/db";
+import {reviews} from "../../database/sql/sql";
 
 export const getReviews = id =>	db.any(reviews.get, {id});
 

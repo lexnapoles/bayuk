@@ -1,4 +1,4 @@
-import db from "../../db";
+import db from "../../database/db";
 import {wrapDataInPromise} from "../../utils";
 
 const addProductImageToDB = productId => db.none("INSERT INTO product_images (product_id) VALUES ($1)", productId);

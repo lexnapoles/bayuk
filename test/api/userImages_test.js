@@ -3,8 +3,8 @@ import fs from "fs-promise";
 import chai from "chai";
 import chaiFs from "chai-fs";
 import faker from "faker";
-import db from "../../server/db";
-import {global} from "../../server/sql/sql";
+import db from "../../server/database/db";
+import {global} from "../../server/database/sql/sql";
 import {
 	getUserImagePath,
 	getImageOfUser,

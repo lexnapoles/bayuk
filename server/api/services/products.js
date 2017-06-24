@@ -1,5 +1,5 @@
-import db from "../../db";
-import {products} from "../../sql/sql";
+import db from "../../database/db";
+import {products} from "../../database/sql/sql";
 import {
 	writeProductImagesToDisk,
 	deleteProductImagesFromDisk,

@@ -6,8 +6,8 @@ import stoppable from "stoppable";
 import parse from "parse-link-header";
 import createServer from "../../server/server";
 import {times} from "lodash/util";
-import db from "../../server/db";
-import {global} from "../../server/sql/sql";
+import db from "../../server/database/db";
+import {global} from "../../server/database/sql/sql";
 import {addUser} from "../../server/api/services/users"
 import {getProductsImagePath} from "../../server/api/services/productImages";
 import {addProduct} from "../../server/api/services/products"

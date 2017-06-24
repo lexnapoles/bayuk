@@ -1,6 +1,6 @@
 import {every} from "lodash/collection";
-import db from "../../db";
-import {products} from "../../sql/sql";
+import db from "../../database/db";
+import {products} from "../../database/sql/sql";
 import {
 	getImagePath,
 	getImagesToDelete,

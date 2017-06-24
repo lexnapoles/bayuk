@@ -1,7 +1,7 @@
 import chai from "chai";
 import request from "supertest";
-import db from "../../server/db";
-import {global} from "../../server/sql/sql";
+import db from "../../server/database/db";
+import {global} from "../../server/database/sql/sql";
 import {addCategories} from "../../server/api/services/categories";
 import createServer from "../../server/server";
 import stoppable from "stoppable";
@@ -13,7 +13,7 @@ let server = {};
 describe("Categories", function () {
 	describe("GET /categories", function () {
 		beforeEach(function () {
-			server = stoppable(createServer(), 0)
+			server = stoppable(createServer(), 0);
 
 			return db.none(global.truncateAll);
 		});

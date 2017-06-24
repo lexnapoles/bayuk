@@ -1,4 +1,4 @@
-import db from "../../db";
+import db from "../../database/db";
 import seedCategoriesTable from "./categoriesTableSeeder";
 import seedUsersTable from "./usersTableSeeder";
 import seedProductsTable from "./productsTableSeeder";

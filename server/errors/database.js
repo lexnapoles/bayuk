@@ -1,4 +1,4 @@
-import {queryResultErrorCode} from "../db";
+import {queryResultErrorCode} from "../database/db";
 
 export default {
 	dataAlreadyExists: "23505",

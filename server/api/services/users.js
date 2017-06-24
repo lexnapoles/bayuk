@@ -1,6 +1,6 @@
-import db from "../../db";
+import db from "../../database/db";
 import {omit} from "lodash/object";
-import {users} from "../../sql/sql";
+import {users} from "../../database/sql/sql";
 import {createJwt, setPassword} from "./authentication";
 import {updateUserImage, deleteUserImageFromDisk} from "./userImages";
 

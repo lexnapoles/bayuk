@@ -1,5 +1,5 @@
-import db from "../../db";
-import {users} from "../../sql/sql";
+import db from "../../database/db";
+import {users} from "../../database/sql/sql";
 import {getImagePath, isImageObjValid, writeImagesToDisk, deleteImagesFromDisk, getDecodedImage} from "./images";
 import {isImageBase64, generateSingleImageObject} from "../../utils";
 

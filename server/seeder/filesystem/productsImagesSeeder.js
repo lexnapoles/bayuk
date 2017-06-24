@@ -1,6 +1,6 @@
 import fs from "fs-promise";
 import path from "path";
-import db from "../../db";
+import db from "../../database/db";
 import {getProductsImagePath} from "../../api/services/productImages";
 import {getFileNameWithNoExtension, deleteFile} from "../../utils";
 
