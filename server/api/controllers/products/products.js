@@ -80,11 +80,9 @@ export const readProducts = (req, res) => {
 		return;
 	}
 
-	const fields = req.query.fields ? req.query.fields.split(",") : void 0;
-
 	getProducts(filters)
 		.then(products => products.map(transformProduct))
-		.then(products => products.map(product => getSelectedFields(product, fields)))
+		.then(products => products.map(product => getSelectedFields(product, req)))
 		.then(products => {
 			if (products.length) {
 				res.set("Link", generateLinkHeaders(products, req.query));
@@ -115,11 +113,9 @@ export const readOneProduct = (req, res) => {
 		return;
 	}
 
-	const fields = req.query.fields ? req.query.fields.split(",") : void 0;
-
 	getProductById(productId)
 		.then(transformProduct)
-		.then(product => getSelectedFields(product, fields))
+		.then(product => getSelectedFields(product, req))
 		.then(product => sendJsonResponse(res, 200, product))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {

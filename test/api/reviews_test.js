@@ -102,6 +102,26 @@ describe("Reviews", function () {
 				});
 		});
 
+		it("should get selected fields", function () {
+			const selectedFields = ["rating", "source", "target"];
+
+			return addRandomReview()
+				.then(({target}) =>
+					request(server)
+						.get(`/api/reviews/${target}`)
+						.query({
+							fields: selectedFields.join()
+						})
+						.expect(200))
+				.then(response => {
+					const review = response.body[0];
+
+					review.should.have.all.deep.keys(selectedFields);
+
+				});
+		});
+
+
 		it("should fail when the user id is not valid", function () {
 			const userId = void 0;
 

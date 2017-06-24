@@ -1,7 +1,11 @@
 import {pick} from "lodash/object";
 import {intersection} from "lodash/array";
 
-export const getSelectedFields = (object, fields) => {
+const extractFields = req =>  req.query.fields ? req.query.fields.split(",") : void 0;
+
+export const getSelectedFields = (object, req) => {
+	const fields = extractFields(req);
+
 	if (fields) {
 		const fieldsInObject = intersection(Object.keys(object), fields);
 
@@ -10,3 +14,4 @@ export const getSelectedFields = (object, fields) => {
 
 	return object;
 };
+

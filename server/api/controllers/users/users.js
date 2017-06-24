@@ -28,10 +28,8 @@ export const readOneUser = (req, res) => {
 		return;
 	}
 
-	const fields = req.query.fields ? req.query.fields.split(",") : void 0;
-
 	getUserById(userId)
-		.then(user => getSelectedFields(user, fields))
+		.then(user => getSelectedFields(user, req))
 		.then(user => sendJsonResponse(res, 200, user))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {

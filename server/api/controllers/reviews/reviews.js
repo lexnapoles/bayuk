@@ -6,6 +6,7 @@ import {validateRequest, validateId} from "../validators";
 import {unauthorizedAccess} from "../../../errors/api/authorizationErrors";
 import {userDoesNotExist} from "../../../errors/api/userErrors";
 import dbErrors from "../../../errors/database";
+import {getSelectedFields} from "../controller";
 
 export const readReviews = (req, res) => {
 	const {userId} = req.params;
@@ -19,6 +20,7 @@ export const readReviews = (req, res) => {
 
 	getUserById(userId)
 		.then(() => getReviews(userId))
+		.then(reviews => reviews.map(review => getSelectedFields(review, req)))
 		.then(reviews => sendJsonResponse(res, 200, reviews))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {
