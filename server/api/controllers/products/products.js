@@ -126,8 +126,11 @@ export const readOneProduct = (req, res) => {
 		return;
 	}
 
+	const fields = req.query.fields ? req.query.fields.split(",") : void 0;
+
 	getProductById(productId)
 		.then(transformProduct)
+		.then(product => getSelectedFields(product, fields))
 		.then(product => sendJsonResponse(res, 200, product))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {
