@@ -253,6 +253,24 @@ describe("Users", function () {
 				})
 		});
 
+		it("should get selected fields", function () {
+			const selectedFields = ["id", "name", "email"];
+
+			return addUser(getUser())
+				.then(({user}) =>
+					request(server)
+						.get(`/api/users/${user.id}`)
+						.query({
+							fields: selectedFields.join()
+						})
+						.expect(200))
+				.then(response => {
+					const user = response.body;
+
+					user.should.have.all.deep.keys(selectedFields);
+				});
+		});
+
 		it("should fail when the user id is not valid", function () {
 			const userId = void 0;
 

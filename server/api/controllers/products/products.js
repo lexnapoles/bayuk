@@ -1,5 +1,3 @@
-import {pick} from "lodash/object";
-import {intersection} from "lodash/array";
 import {sendJsonResponse} from "../../../utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
@@ -7,6 +5,7 @@ import {productDoesNotExist}  from "../../../errors/api/productErrors";
 import dbErrors  from "../../../errors/database";
 import {validateRequest, validateId} from "../validators";
 import {validateProduct} from "./validators"
+import {getSelectedFields} from "../controller";
 
 const generateLinkHeaders = (products, filters) => {
 	const {id: lastId} = products[products.length - 1];
@@ -71,16 +70,6 @@ const getFilters = req => {
 	}
 
 	return getSortingFilters(query);
-};
-
-const getSelectedFields = (product, fields) => {
-	if (fields) {
-		const fieldsInProduct = intersection(Object.keys(product), fields);
-
-		return fieldsInProduct.length ? pick(product, fieldsInProduct) : product;
-	}
-
-	return product;
 };
 
 export const readProducts = (req, res) => {

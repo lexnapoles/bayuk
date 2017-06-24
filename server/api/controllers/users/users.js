@@ -5,6 +5,7 @@ import {getUsers, getUserById, updateUser, updateEmail, updatePassword, deleteUs
 import {createJwt} from "../../services/authentication";
 import dbErrors from "../../../errors/database";
 import {userDoesNotExist} from "../../../errors/api/userErrors";
+import {getSelectedFields} from "../controller";
 
 export const readUsers = (req, res) =>
 	getUsers()
@@ -27,7 +28,10 @@ export const readOneUser = (req, res) => {
 		return;
 	}
 
+	const fields = req.query.fields ? req.query.fields.split(",") : void 0;
+
 	getUserById(userId)
+		.then(user => getSelectedFields(user, fields))
 		.then(user => sendJsonResponse(res, 200, user))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {
