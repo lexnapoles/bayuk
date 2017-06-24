@@ -89,7 +89,7 @@ describe("Products", function () {
 			.then(() => server.stop());
 	});
 
-	describe("GET /products", function () {
+	describe.only("GET /products", function () {
 		it("should get a paginated and sorted list of products", function () {
 			const PRODUCTS_CREATED = 100;
 
@@ -261,6 +261,25 @@ describe("Products", function () {
 					const product = response.body[0];
 
 					product.should.have.all.deep.keys(validFields);
+				});
+		});
+
+		it("should get the entire product if the fields query is empty", function () {
+			const ALL_PRODUCT_KEYS = ["id", "name", "description", "images", "price", "owner", "createdAt", "category", "sold", "latitude", "longitude"];
+
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.get("/api/products")
+						.query({
+							owner:  product.owner,
+							fields: ""
+						})
+						.expect(200))
+				.then(response => {
+					const product = response.body[0];
+
+					product.should.have.all.deep.keys(ALL_PRODUCT_KEYS);
 				});
 		});
 
