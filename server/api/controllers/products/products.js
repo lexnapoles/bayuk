@@ -1,4 +1,5 @@
 import {pick} from "lodash/object";
+import {intersection} from "lodash/array";
 import {sendJsonResponse} from "../../../utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
 import {transformProduct} from "../../transformers/products";
@@ -72,6 +73,15 @@ const getFilters = req => {
 	return getSortingFilters(query);
 };
 
+const getSelectedFields = (product, fields) => {
+	if (fields) {
+		const fieldsInProduct = intersection(Object.keys(product), fields);
+
+		return fieldsInProduct.length ? pick(product, fieldsInProduct) : product;
+	}
+
+	return product;
+};
 
 export const readProducts = (req, res) => {
 	const {filters, errors} = getFilters(req);
@@ -81,13 +91,11 @@ export const readProducts = (req, res) => {
 		return;
 	}
 
+	const fields = req.query.fields ? req.query.fields.split(",") : void 0;
+
 	getProducts(filters)
 		.then(products => products.map(transformProduct))
-		.then(products => {
-			const {fields} = req.query;
-
-			return fields ? products.map(product => pick(product, fields.split(","))) : products;
-		})
+		.then(products => products.map(product => getSelectedFields(product, fields)))
 		.then(products => {
 			if (products.length) {
 				res.set("Link", generateLinkHeaders(products, req.query));

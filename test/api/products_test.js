@@ -232,7 +232,7 @@ describe("Products", function () {
 					request(server)
 						.get("/api/products")
 						.query({
-							owner: product.owner,
+							owner:  product.owner,
 							fields: selectedFields.join()
 						})
 						.expect(200))
@@ -241,6 +241,26 @@ describe("Products", function () {
 
 					product.should.have.all.deep.keys(selectedFields);
 
+				});
+		});
+
+		it("should get only the valid fields of the selected ones", function () {
+			const validFields   = ["id", "name"],
+						invalidFields = ["pirce", "descr"];
+
+			return addRandomProduct()
+				.then(({product}) =>
+					request(server)
+						.get("/api/products")
+						.query({
+							owner:  product.owner,
+							fields: [...validFields, ...invalidFields].join()
+						})
+						.expect(200))
+				.then(response => {
+					const product = response.body[0];
+
+					product.should.have.all.deep.keys(validFields);
 				});
 		});
 
