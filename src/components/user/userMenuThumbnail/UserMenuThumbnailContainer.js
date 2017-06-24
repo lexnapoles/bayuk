@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import UserMenuThumbnail from "./UserMenuThumbnail";
 import {getCurrentUser, isUserLoggedIn} from "../../../reducers/root";
-import {getImagePath} from "../../../../utils/utils";
+import {getImagePath} from "../../../utils";
 
 const mapStateToProps = state => {
 	let image = void 0,

@@ -1,10 +1,9 @@
-import {sendJsonResponse} from "../../../utils/utils";
+import {sendJsonResponse} from "../../utils";
+import {unauthorizedAccess} from "../../errors/api/authorizationErrors";
 
 export default (err, req, res, next) => {
 	if (err.name === "UnauthorizedError") {
-		sendJsonResponse(res, 401, {
-			"message": `${err.name}: ${err.message}`
-		});
+		sendJsonResponse(res, 401, [unauthorizedAccess()]);
 	}
 
 	next(err);

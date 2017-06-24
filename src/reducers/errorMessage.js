@@ -1,4 +1,4 @@
-import {getErrorMessage} from "../../utils/utils";
+import {getErrorMessage} from "../utils";
 
 const errorMessage = (state = null, action) => {
 	const {error} = action;

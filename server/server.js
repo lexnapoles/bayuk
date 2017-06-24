@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import passport from "passport";
 import configureServer from "./serverConfiguration/configureServer";
-import "./db";
+import "./database/db";
 import apiRoutes from "./api/routes/index";
 import unauthorizedError from "./middlewares/errors/unauthorizedError";
 

@@ -1,10 +1,10 @@
-import webpack from "webpack";
-import path from "path";
+const webpack = require("webpack");
+const path = require("path");
 
 const DIST_DIR   = path.resolve(__dirname, "dist"),
 			CLIENT_DIR = path.resolve(__dirname, "src");
 
-export default {
+module.exports = {
 	context: CLIENT_DIR,
 
 	entry: ["./main"],

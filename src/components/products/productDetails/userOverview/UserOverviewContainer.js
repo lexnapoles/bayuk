@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import UserOverview from "./UserOverview";
 import {getUserById} from "../../../../reducers/root";
-import {getImagePath} from "../../../../../utils/utils";
+import {getImagePath} from "../../../../utils";
 
 const formatUser = user => ({
 	...user,

@@ -1,1 +1,1 @@
-export default categories => categories.map(data => data.category);
+export default data => data.category;

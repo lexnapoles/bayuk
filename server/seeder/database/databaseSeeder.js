@@ -1,4 +1,4 @@
-import db from "../../db";
+import db from "../../database/db";
 import seedCategoriesTable from "./categoriesTableSeeder";
 import seedUsersTable from "./usersTableSeeder";
 import seedProductsTable from "./productsTableSeeder";
@@ -16,7 +16,7 @@ export default () => {
 		.then(seedCategoriesTable)
 		.then(seedUsersTable)
 		.then(createdUsers => users = createdUsers)
-		.then(() => seedReviewsTable(users))
 		.then(() => seedProductsTable(users))
+		.then(products => seedReviewsTable(users, products).then(() => products))
 		.then(seedProductImagesTable);
 };

@@ -1,52 +1,40 @@
 import chai from "chai";
-import chaiAsPromised from "chai-as-promised";
-import chaiHttp from "chai-http";
-import {addCategories, deleteCategories} from "../../server/api/services/categories";
+import request from "supertest";
+import db from "../../server/database/db";
+import {global} from "../../server/database/sql/sql";
+import {addCategories} from "../../server/api/services/categories";
 import createServer from "../../server/server";
-
-chai.use(chaiAsPromised);
-chai.use(chaiHttp);
+import stoppable from "stoppable";
 
 chai.should();
 
 let server = {};
 
-describe("GET /categories", function () {
-	beforeEach(function () {
-		server = createServer();
+describe("Categories", function () {
+	describe("GET /categories", function () {
+		beforeEach(function () {
+			server = stoppable(createServer(), 0);
 
-		return deleteCategories();
-	});
+			return db.none(global.truncateAll);
+		});
 
-	afterEach(function (done) {
-		server.close(done);
-	});
+		afterEach(function (done) {
+			server.stop(done);
+		});
 
-	it("should return a 200 status code in a successful response", function () {
-		return chai
-			.request(server)
-			.get("/api/categories")
-			.then(res => res.status)
-			.should.eventually.equal(200);
-	});
+		it("should get all categories", function () {
+			const categories = ["TV", "Movies"];
 
-	it("should return an array", function () {
-		return chai
-			.request(server)
-			.get("/api/categories")
-			.then(res => res.body)
-			.should.eventually.be.instanceOf(Array);
-	});
-
-	it("should return the categories", function () {
-		const categories = ["TV", "Movies"];
-
-		return addCategories(categories)
-			.then(() =>
-				chai
-					.request(server)
-					.get("/api/categories"))
-			.then(res => res.body)
-			.should.eventually.be.deep.equal(categories);
+			return addCategories(categories)
+				.then(() =>
+					request(server)
+						.get("/api/categories")
+						.expect(200))
+				.then(response => {
+					response.body.should.be.instanceOf(Array);
+					response.body.should.be.deep.equal(categories)
+				});
+		});
 	});
 });
+

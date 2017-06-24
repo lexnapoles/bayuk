@@ -1,5 +1,5 @@
 import React, {Component, createElement} from "react";
-import {createDefaultObjectFrom} from "../../../../utils/utils";
+import {createDefaultObjectFrom} from "../../../utils";
 import {omit} from "lodash/object";
 import {some} from "lodash/collection";
 

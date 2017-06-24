@@ -1,30 +1,25 @@
 import fs from "fs-promise";
 import path from "path";
-import db from "../../db";
+import db from "../../database/db";
+import {getProductsImagePath} from "../../api/services/productImages";
+import {getFileNameWithNoExtension, deleteFile} from "../../utils";
 
 const getProductImagesIds = () =>
 	db.any("SELECT image_id from product_images")
 		.then(result => result.map(({image_id}) => image_id));
 
-const getImagePath = name => path.join(process.env.IMAGESDIR, "products", `${name}`);
+const PLACEHOLDER_IMAGE = getProductsImagePath("placeholder");
 
-const PLACEHOLDER_IMAGE = getImagePath("placeholder.jpg");
+const deleteProductImage = path => deleteFile(path, () => path !== PLACEHOLDER_IMAGE);
 
-const deleteFile = path =>
-	path !== PLACEHOLDER_IMAGE
-		? fs.unlink(path)
-		: Promise.resolve(true);
-
-const cleanAllPreviouslyCreatedImages = () =>
+export const cleanAllPreviouslyCreatedImages = () =>
 	fs.readdir(path.join(process.env.IMAGESDIR, "products"))
-		.then(files => files.map(getImagePath))
-		.then(filePaths =>
-			filePaths.length
-				? Promise.all(filePaths.map(deleteFile))
-				: Promise.resolve(true)
-		);
+		.then(files => files.map(file => getProductsImagePath(getFileNameWithNoExtension(file))))
+		.then(filePaths => filePaths.length
+			? Promise.all(filePaths.map(deleteProductImage))
+			: Promise.resolve(true));
 
-const writeImage = (id, data) => fs.writeFile(getImagePath(`${id}.jpg`), data);
+const writeImage = (id, data) => fs.writeFile(getProductsImagePath(id), data);
 
 const writeAllImages = ids =>
 	fs.open(PLACEHOLDER_IMAGE, "r")

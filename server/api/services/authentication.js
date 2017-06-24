@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import {randomBytes, pbkdf2} from "../../../utils/promisifiedCrypto";
+import {randomBytes, pbkdf2} from "../../../lib/promisifiedCrypto";
 
 const config = {
 	hashBytes:  64,

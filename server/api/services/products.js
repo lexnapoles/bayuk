@@ -1,27 +1,41 @@
-import db, {queryResult} from "../../db";
+import db from "../../database/db";
+import {products} from "../../database/sql/sql";
 import {
-	writeImagesToDisk,
-	deleteImagesFromDisk,
-	updateImages,
+	writeProductImagesToDisk,
+	deleteProductImagesFromDisk,
+	updateProductImages,
 	getImagesOfProduct
-} from "./images";
-import {generateImagesObjs} from "../../../utils/utils";
+} from "./productImages";
+import {generateImagesObjs} from "../../utils";
 
-export const getProducts = () => db.any("SELECT * FROM products_with_images");
+export const getProducts = filters => {
+	const byOwnerParameters = {
+		sold: null,
+		lastId: '',
+		...filters
+	};
 
-export const getProductById = productId =>
-	db.one("SELECT * FROM products_with_images WHERE id=$1", productId)
-		.catch(() => Promise.reject("Product could not be found"));
+	const sortingParameters = {
+		lastId: '',
+		category: '',
+		minPrice: 0,
+		maxPrice: 99999,
+		sold: false,
+		...filters
+	};
 
-const addProductToDB = ({owner, name, description, category, price, images}) =>
-	db.func("add_product", [
-		owner,
-		name,
-		description,
-		category,
-		price,
-		images.length
-	], queryResult.one);
+	return filters.owner
+		?	db.any(products.getByOwner, byOwnerParameters)
+		: db.any(products.getByFilters, sortingParameters);
+};
+
+export const getProductById = productId => db.one(products.getById, {productId});
+
+const addProductToDB = product =>
+	db.one(products.add, {
+		...product,
+		images_count: product.images.length
+	});
 
 export const addProduct = product =>
 	addProductToDB(product)
@@ -30,27 +44,22 @@ export const addProduct = product =>
 						imagesData = product.images,
 						images     = generateImagesObjs(imagesIds, imagesData);
 
-			writeImagesToDisk(images);
+			writeProductImagesToDisk(images);
 
 			return createdProduct;
 		});
 
-const updateProductFromDB = (productId, {name, description, category, price}) =>
-	db.func("update_product", [
-		productId,
-		name,
-		description,
-		category,
-		price
-	], queryResult.one);
+const updateProductFromDB = product => db.one(products.update, product);
 
-export const updateProduct = (productId, product) =>
-	updateImages(productId, product.images)
-		.then(updateProductFromDB.bind(void 0, productId, product));
+export const updateProduct = product =>
+	updateProductImages(product.id, product.images)
+		.then(() => updateProductFromDB(product));
 
 const deleteProductFromDB = productId => db.proc("delete_product", productId);
 
 export const deleteProduct = productId =>
 	getImagesOfProduct(productId)
-		.then(deleteImagesFromDisk)
+		.then(deleteProductImagesFromDisk)
 		.then(deleteProductFromDB.bind(void 0, productId));
+
+export const addProductWithAllFields = product => db.one(products.addWithAllFields, product);

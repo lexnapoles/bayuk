@@ -1,17 +1,31 @@
 import {has} from "lodash/object";
-import {getUserByEmail} from "../api/services/users";
+import {getUserById} from "../api/services/users";
+import {sendJsonResponse} from "../utils";
+import {userDoesNotExist} from "../errors/api/userErrors";
+import dbErrors from "../errors/database";
+import {unauthorizedAccess, tokenDoesNotMatch} from "../errors/api/authorizationErrors";
 
-const UserNotFoundError = () => ({
-	name: "UserNotFoundError",
-	message: "User not found"
-});
+const invalidTokenInUserRoutes = req => has(req, "params") && has(req.params, "userId") && req.params.userId !== req.user.id;
 
 export default (req, res, next) => {
-	if (!has(req, "user")) {
-		return next(UserNotFoundError());
+	if (!has(req, "user") || !has(req.user, "id")) {
+		sendJsonResponse(res, 401, [unauthorizedAccess()]);
+		return;
 	}
 
-	getUserByEmail(req.user.email)
+	if (invalidTokenInUserRoutes(req)) {
+		sendJsonResponse(res, 403, [tokenDoesNotMatch()]);
+		return;
+	}
+
+	getUserById(req.user.id)
 		.then(() => next())
-		.catch(() => next(UserNotFoundError()));
+		.catch(error => {
+			if (error.code === dbErrors.dataNotFound) {
+				sendJsonResponse(res, 404, [userDoesNotExist()]);
+				return;
+			}
+
+			sendJsonResponse(res, 500, [error]);
+		});
 };

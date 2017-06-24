@@ -2,9 +2,9 @@ import faker from "faker"
 import {sample} from "lodash/collection";
 import {times} from "lodash/util";
 import {random} from "lodash/number";
-import db from "../../db";
+import {addReview} from "../../api/services/reviews";
 import {MAX_REVIEWS, MAX_USER_RATING} from "../config";
-import {wrapDataInPromise} from "../../../utils/utils";
+import {wrapDataInPromise} from "../../utils";
 
 const pickUsersForReview = ids => {
 	const source = sample(ids);
@@ -19,23 +19,17 @@ const pickUsersForReview = ids => {
 	return {source, target}
 };
 
-const getReview = (ids, users = {}) => ({
+const getReview = (ids, products, users = {}) => ({
 	rating: random(MAX_USER_RATING),
+	description: faker.lorem.sentence(),
+	product: sample(products).uuid,
 	...pickUsersForReview(ids),
-	review: faker.lorem.sentence(),
 	...users
 });
 
-const addReviewToDB = review =>
-	db.none("INSERT INTO reviews (rating, user_source, user_target, review) " +
-		"VALUES (${rating}, ${source}, ${target}, ${review})", review);
+export default (users, products) => {
+	const ids     = Array.from(users, ({id}) => id),
+				reviews = times(MAX_REVIEWS, getReview.bind(void 0, ids, products));
 
-const addAllReviewsToDB = reviews => Promise.all(wrapDataInPromise(reviews, addReviewToDB));
-
-export default users => {
-	const ids     = Array.from(users, ({uuid}) => uuid),
-				reviews = times(MAX_REVIEWS, getReview.bind(void 0, ids));
-
-	return addAllReviewsToDB(reviews)
-					.then(reviews);
+	return Promise.all(wrapDataInPromise(reviews, addReview));
 };
