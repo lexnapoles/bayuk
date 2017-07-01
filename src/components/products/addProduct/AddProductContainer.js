@@ -61,7 +61,7 @@ const mapStateToProps = (state) => {
 		isLoggedIn: isUserLoggedIn(state),
 		rehydrated
 	};
-}
+};
 
 export default connect(mapStateToProps, {
 	onSubmit: addProduct

@@ -5,7 +5,7 @@ import routes from "../../routes/routes";
 const Root = ({store}) =>
 	<Provider store={store}>
 		{routes}
-	</Provider>
+	</Provider>;
 
 Root.propTypes = {
 	store: React.PropTypes.object.isRequired

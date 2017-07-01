@@ -1,6 +1,7 @@
 import {normalize} from "normalizr";
 import * as schema from "../actions/schema";
 import {CALL_API, getJSON} from "redux-api-middleware";
+import queryString from "query-string";
 import {
 	FETCH_PRODUCTS,
 	FETCH_USERS,
@@ -27,20 +28,24 @@ export const fetchCategories = () => ({
 	}
 });
 
-export const fetchProducts = () => ({
-	[CALL_API]: {
-		endpoint: `${apiBaseUrl}/products`,
-		method:   "GET",
-		types:    [
-			FETCH_PRODUCTS.request,
-			{
-				type:    FETCH_PRODUCTS.success,
-				payload: normalizeResponse(schema.arrayOfProducts)
-			},
-			FETCH_PRODUCTS.failure
-		]
-	}
-});
+export const fetchProducts = (params = {}) => {
+	const query = Object.keys(params).length ? `?${queryString.stringify(params)}` : "";
+
+	return ({
+		[CALL_API]: {
+			endpoint: `${apiBaseUrl}/products${query}`,
+			method:   "GET",
+			types:    [
+				FETCH_PRODUCTS.request,
+				{
+					type:    FETCH_PRODUCTS.success,
+					payload: normalizeResponse(schema.arrayOfProducts)
+				},
+				FETCH_PRODUCTS.failure
+			]
+		}
+	});
+};
 
 export const fetchOneProduct = productId => ({
 	[CALL_API]: {

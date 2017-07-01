@@ -11,10 +11,6 @@ export const createDefaultObjectFrom = (base = {}, defaultValue = "") => {
 	}), {});
 };
 
-export const getErrorMessage = payload => {
-	return payload.response.message;
-};
-
 export const getImagePath = (entity, imageId) => {
 	imageId = imageId ? imageId : "default";
 
