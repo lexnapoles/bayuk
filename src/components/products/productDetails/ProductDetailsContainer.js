@@ -1,4 +1,5 @@
 import React, {Component}from "react";
+import {omit} from "lodash/object";
 import {connect} from "react-redux";
 import ProductDetails from "./ProductDetails";
 import {getProductById} from "../../../reducers/root";
@@ -13,7 +14,9 @@ class ProductDetailsContainer extends Component {
 	}
 
 	render() {
-		return <ProductDetails {...this.props}/>
+		const props = omit(this.props, "loadProduct");
+
+		return <ProductDetails {...props}/>;
 	}
 }
 

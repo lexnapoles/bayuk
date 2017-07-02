@@ -21,7 +21,7 @@ const normalizeResponse = schema => (action, state, res) => getJSON(res).then((j
 
 const stringifyQueryParams = params => Object.keys(params).length ? `?${encodeURI(queryString.stringify(params))}` : "";
 
-const getTypes = asynAction => [asynAction.request, asynAction.success, asynAction.failure];
+const getTypes = ({request, success,failure}) => [request, success, failure];
 
 export const fetchCategories = () => ({
 	[CALL_API]: {

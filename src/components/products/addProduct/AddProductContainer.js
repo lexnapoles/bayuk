@@ -1,4 +1,7 @@
+import {Component, createElement} from "react";
+import {omit} from "lodash/object";
 import {connect} from "react-redux";
+import {loadCategories} from "../../../actions/categories";
 import {addProduct} from "../../../actions/api";
 import {findKey} from "lodash/object";
 import {isNotEmpty} from "../../../utils";
@@ -63,6 +66,19 @@ const mapStateToProps = (state) => {
 	};
 };
 
+const loadData = ({loadCategories}) => loadCategories();
+
+class AddProductContainer extends Component {
+	componentWillMount() {
+		loadData(this.props);
+	}
+
+	render() {
+		return createElement(addAuthenticationTo(connectForm(props)(AddProduct)), omit(this.props, "loadCategories"));
+	}
+}
+
 export default connect(mapStateToProps, {
-	onSubmit: addProduct
-})(addAuthenticationTo(connectForm(props)(AddProduct)));
+	onSubmit: addProduct,
+	loadCategories
+})(AddProductContainer);

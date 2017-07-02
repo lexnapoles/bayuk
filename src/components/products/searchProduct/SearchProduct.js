@@ -19,11 +19,11 @@ const SearchProduct = ({
 );
 
 SearchProduct.propTypes = {
-	form:             React.PropTypes.object.isRequired,
-	onSubmit:         React.PropTypes.func.isRequired,
-	onNameChange:     React.PropTypes.func.isRequired,
+	form:               React.PropTypes.object.isRequired,
+	onSubmit:           React.PropTypes.func.isRequired,
+	onNameChange:       React.PropTypes.func.isRequired,
 	onCategoriesChange: React.PropTypes.func.isRequired,
-	onPriceChange:    React.PropTypes.func.isRequired
+	onPriceChange:      React.PropTypes.func.isRequired
 };
 
 export default SearchProduct;

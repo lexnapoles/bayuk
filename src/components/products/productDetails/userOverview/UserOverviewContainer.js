@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {omit} from "lodash/object";
 import {connect} from "react-redux";
 import UserOverview from "./UserOverview";
 import {getUserById} from "../../../../reducers/root";
@@ -13,7 +14,9 @@ class UserOverviewContainer extends Component {
 	}
 
 	render() {
-		return <UserOverview {...this.props}/>
+		const props = omit(this.props, "loadUser");
+
+		return <UserOverview {...props}/>
 	}
 }
 
@@ -35,7 +38,6 @@ const mapStateToProps = (state, {id}) => {
 		? {isFetching, id, user: {}}
 		: {isFetching, id, user: item ? formatUser(item) : {}};
 };
-
 
 export default connect(mapStateToProps, {
 	loadUser
