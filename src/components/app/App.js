@@ -48,8 +48,8 @@ class App extends Component {
 }
 
 App.propTypes = {
-	loadProducts:   React.PropTypes.func,
-	loadCategories: React.PropTypes.func
+	loadProducts:   React.PropTypes.func.isRequired,
+	loadCategories: React.PropTypes.func.isRequired
 };
 
 export default connect(null, {

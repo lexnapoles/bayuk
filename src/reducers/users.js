@@ -1,9 +1,16 @@
 import {combineReducers} from "redux";
-import {FETCH_USERS} from "../constants/actionTypes";
+import {FETCH_ONE_USER, FETCH_USERS} from "../constants/actionTypes";
 import createFetchingReducer from "./isFetching";
+import user from "./user";
 
 const byId = (state = {}, action) => {
 	switch (action.type) {
+		case FETCH_ONE_USER.success:
+			return {
+				...state,
+				[action.payload.id]: user(void 0, action)
+			};
+
 		case FETCH_USERS.success:
 			return {
 				...state,
@@ -18,6 +25,9 @@ const byId = (state = {}, action) => {
 
 const allIds = (state = [], action) => {
 	switch (action.type) {
+		case FETCH_ONE_USER.success:
+			return [...state, action.payload.id];
+
 		case FETCH_USERS.success:
 			return [...state, ...action.payload.result];
 
@@ -29,5 +39,5 @@ const allIds = (state = [], action) => {
 export default combineReducers({
 	byId,
 	allIds,
-	isFetching: createFetchingReducer(FETCH_USERS.request, FETCH_USERS.success)
+	isFetching: createFetchingReducer([FETCH_USERS.request, FETCH_ONE_USER.request], [FETCH_USERS.success, FETCH_ONE_USER.success])
 });

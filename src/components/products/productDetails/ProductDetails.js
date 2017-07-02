@@ -19,7 +19,7 @@ class ProductDetails extends Component {
 			return <NotFound/>
 		}
 
-		const {price, name, description, images, user_id} = product;
+		const {price, name, description, images, owner} = product;
 
 		return (
 			<main styleName="productContainer">
@@ -37,7 +37,7 @@ class ProductDetails extends Component {
 					<hr styleName="line"/>
 					<GeolocationInfo styleName="map"/>
 					<hr styleName="line"/>
-					<UserOverviewContainer styleName="infoSection" user={user_id}/>
+					<UserOverviewContainer styleName="infoSection" id={owner}/>
 				</section>
 			</main>
 		);

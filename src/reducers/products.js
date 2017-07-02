@@ -25,6 +25,7 @@ const byId = (state = {}, action) => {
 
 const allIds = (state = [], action) => {
 	switch (action.type) {
+		case FETCH_ONE_PRODUCT.success:
 		case ADD_PRODUCT.success:
 			return [...state, action.payload.id];
 
@@ -39,5 +40,5 @@ const allIds = (state = [], action) => {
 export default combineReducers({
 	byId,
 	allIds,
-	isFetching: createFetchingReducer(FETCH_PRODUCTS.request, FETCH_PRODUCTS.success)
+	isFetching: createFetchingReducer([FETCH_PRODUCTS.request, FETCH_ONE_PRODUCT.request], [FETCH_PRODUCTS.success, FETCH_ONE_PRODUCT.success])
 });

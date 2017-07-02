@@ -5,6 +5,7 @@ import queryString from "query-string";
 import {
 	FETCH_PRODUCTS,
 	FETCH_USERS,
+	FETCH_ONE_USER,
 	FETCH_CATEGORIES,
 	FETCH_ONE_PRODUCT,
 	ADD_PRODUCT,
@@ -122,5 +123,13 @@ export const fetchUsers = () => ({
 			},
 			FETCH_USERS.failure
 		]
+	}
+});
+
+export const fetchOneUser = userId => ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/users/${userId}`,
+		method:   "GET",
+		types:    getTypes(FETCH_ONE_USER)
 	}
 });

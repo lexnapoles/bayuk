@@ -1,14 +1,22 @@
-const createFetchingReducer = (REQUEST, RECEIVE) => (state = true, action) => {
-	switch (action.type) {
-		case REQUEST:
-			return true;
+const findType = (action, type) => type === action.type;
 
-		case RECEIVE:
-			return false;
-
-		default:
-			return state;
+const isFetching = (REQUEST = [], RECEIVE = []) => (state = true, action) => {
+	if (!Array.isArray(REQUEST) || !Array.isArray(RECEIVE)) {
+		return state;
 	}
+
+	const requestType  = REQUEST.find(findType.bind(void 0, action)),
+				receivedType = RECEIVE.find(findType.bind(void 0, action));
+
+
+	if (requestType) {
+		return true
+	}
+	else if (receivedType) {
+		return false;
+	}
+
+	return state;
 };
 
-export default createFetchingReducer;
+export default isFetching;
