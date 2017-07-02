@@ -5,9 +5,9 @@ import queryString from "query-string";
 import {
 	FETCH_PRODUCTS,
 	FETCH_USERS,
+	FETCH_ONE_PRODUCT,
 	FETCH_ONE_USER,
 	FETCH_CATEGORIES,
-	FETCH_ONE_PRODUCT,
 	ADD_PRODUCT,
 	UPDATE_PRODUCT,
 	DELETE_PRODUCT,
@@ -19,6 +19,8 @@ const apiBaseUrl = `http://localhost:3000/api`;
 
 const normalizeResponse = schema => (action, state, res) => getJSON(res).then((json) => normalize(json, schema));
 
+const stringifyQueryParams = params => Object.keys(params).length ? `?${encodeURI(queryString.stringify(params))}` : "";
+
 const getTypes = asynAction => [asynAction.request, asynAction.success, asynAction.failure];
 
 export const fetchCategories = () => ({
@@ -29,28 +31,24 @@ export const fetchCategories = () => ({
 	}
 });
 
-export const fetchProducts = (params = {}) => {
-	const query = Object.keys(params).length ? `?${queryString.stringify(params)}` : "";
-
-	return ({
-		[CALL_API]: {
-			endpoint: `${apiBaseUrl}/products${query}`,
-			method:   "GET",
-			types:    [
-				FETCH_PRODUCTS.request,
-				{
-					type:    FETCH_PRODUCTS.success,
-					payload: normalizeResponse(schema.arrayOfProducts)
-				},
-				FETCH_PRODUCTS.failure
-			]
-		}
-	});
-};
-
-export const fetchOneProduct = productId => ({
+export const fetchProducts = (params = {}) => ({
 	[CALL_API]: {
-		endpoint: `${apiBaseUrl}/products/${productId}`,
+		endpoint: `${apiBaseUrl}/products${stringifyQueryParams(params)}`,
+		method:   "GET",
+		types:    [
+			FETCH_PRODUCTS.request,
+			{
+				type:    FETCH_PRODUCTS.success,
+				payload: normalizeResponse(schema.arrayOfProducts)
+			},
+			FETCH_PRODUCTS.failure
+		]
+	}
+});
+
+export const fetchOneProduct = (productId, params = {}) => ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/products/${productId}${stringifyQueryParams(params)}`,
 		method:   "GET",
 		types:    getTypes(FETCH_ONE_PRODUCT)
 	}
