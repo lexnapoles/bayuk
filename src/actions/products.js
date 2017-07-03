@@ -1,5 +1,6 @@
 import {ADD_PRODUCT} from "../constants/actionTypes";
 import {fetchProducts, fetchOneProduct} from "./api";
+import {getAllProducts, getProductById} from "../reducers/root";
 
 export const addProduct = (product) => ({
 	type:    ADD_PRODUCT,
@@ -8,7 +9,7 @@ export const addProduct = (product) => ({
 
 export const loadProducts = params => (dispatch, getState) => {
 	const MINIMUM_PRODUCTS = 10,
-				products         = getState().entities.products.allIds;
+				products         = getAllProducts(getState()).items;
 
 	if (products && products.length >= MINIMUM_PRODUCTS) {
 		return null;
@@ -18,7 +19,7 @@ export const loadProducts = params => (dispatch, getState) => {
 };
 
 export const loadProduct = (id, params) => (dispatch, getState) => {
-	const product = getState().entities.products.byId[id];
+	const product = getProductById(getState(), id).item;
 
 	if (product) {
 		return null;
