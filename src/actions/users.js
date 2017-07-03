@@ -4,7 +4,7 @@ import {getUserById, getGeolocation} from "../reducers/root";
 
 export const updateGeolocation = coords => ({
 	type:    UPDATE_GEOLOCATION,
-	payload: coords
+	payload: {coords}
 });
 
 export const loadUser = userId => (dispatch, getState) => {
@@ -16,7 +16,6 @@ export const loadUser = userId => (dispatch, getState) => {
 
 	return dispatch(fetchOneUser(userId));
 };
-
 
 export const loadGeolocation = coords => (dispatch, getState) => {
 	const userGeo = getGeolocation(getState());

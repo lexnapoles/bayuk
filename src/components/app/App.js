@@ -13,7 +13,7 @@ const DEFAULT_MADRID_COORDS = {
 	longitude: 3.7
 };
 
-const loadData = ({loadProducts, loadCategories}, coords = DEFAULT_MADRID_COORDS) => {
+const loadData = ({loadProducts, loadCategories, loadGeolocation}, coords = DEFAULT_MADRID_COORDS) => {
 	const query = {
 		sort:      "distance",
 		order:     "descending",

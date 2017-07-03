@@ -25,21 +25,20 @@ const currentUser = (state = {rehydrated: false}, action) => {
 		}
 
 		case UPDATE_GEOLOCATION: {
-			const {latitude, longitude} = action.payload;
+			const {latitude, longitude} = action.payload.coords;
 
 			return {
 				...state,
 				latitude,
 				longitude
 			};
-
 		}
 		default:
 			return state;
 	}
 };
 
-export const getGeolocation = ({latitude, longitude}) => latitude && longitude ? {latitude, longitude} : null;
+export const getGeolocation = (user) => user.latitude && user.longitude ? {latitude: user.latitude, longitude: user.longitude} : null;
 
 export const getCurrentUser = user => ({...user});
 
