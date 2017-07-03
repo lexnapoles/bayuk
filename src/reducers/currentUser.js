@@ -1,4 +1,4 @@
-import {REGISTER_USER, LOGIN_USER} from "../constants/actionTypes";
+import {REGISTER_USER, LOGIN_USER, UPDATE_GEOLOCATION} from "../constants/actionTypes";
 import {getJwtPayload} from "../utils";
 import {REHYDRATE} from 'redux-persist/constants'
 import {omit} from "lodash/object";
@@ -23,10 +23,23 @@ const currentUser = (state = {rehydrated: false}, action) => {
 				token
 			};
 		}
+
+		case UPDATE_GEOLOCATION: {
+			const {latitude, longitude} = action.payload;
+
+			return {
+				...state,
+				latitude,
+				longitude
+			};
+
+		}
 		default:
 			return state;
 	}
 };
+
+export const getGeolocation = ({latitude, longitude}) => latitude && longitude ? {latitude, longitude} : null;
 
 export const getCurrentUser = user => ({...user});
 

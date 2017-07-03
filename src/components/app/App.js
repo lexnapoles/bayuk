@@ -5,6 +5,7 @@ import CSSModules from "react-css-modules";
 import HomeHeader from "../header/homeHeader/HomeHeader";
 import ProductTableContainer from "../products/productTable/ProductTableContainer";
 import {loadProducts} from "../../actions/products";
+import {loadGeolocation} from "../../actions/users";
 import {loadCategories} from "../../actions/categories";
 
 const DEFAULT_MADRID_COORDS = {
@@ -12,15 +13,16 @@ const DEFAULT_MADRID_COORDS = {
 	longitude: 3.7
 };
 
-const loadData = ({loadProducts, loadCategories}, {latitude, longitude} = DEFAULT_MADRID_COORDS) => {
+const loadData = ({loadProducts, loadCategories}, coords = DEFAULT_MADRID_COORDS) => {
 	const query = {
 		sort:      "distance",
 		order:     "descending",
 		radius:    99999,
-		latitude,
-		longitude
+		latitude:  coords.latitude,
+		longitude: coords.longitude
 	};
 
+	loadGeolocation(coords);
 	loadCategories();
 	loadProducts(query);
 };
@@ -28,8 +30,11 @@ const loadData = ({loadProducts, loadCategories}, {latitude, longitude} = DEFAUL
 
 class App extends Component {
 	componentWillMount() {
-		const success = ({coords}) => loadData(this.props, coords),
-					error   = () => loadData(this.props);
+		const success = ({coords}) => {
+			loadData(this.props, coords);
+		};
+
+		const error = () => loadData(this.props);
 
 		navigator.geolocation.getCurrentPosition(success, error);
 	}
@@ -48,11 +53,13 @@ class App extends Component {
 }
 
 App.propTypes = {
-	loadProducts:   React.PropTypes.func.isRequired,
-	loadCategories: React.PropTypes.func.isRequired
+	loadProducts:    React.PropTypes.func.isRequired,
+	loadCategories:  React.PropTypes.func.isRequired,
+	loadGeolocation: React.PropTypes.func.isRequired
 };
 
 export default connect(null, {
 	loadProducts,
-	loadCategories
+	loadCategories,
+	loadGeolocation
 })(CSSModules(App, styles));

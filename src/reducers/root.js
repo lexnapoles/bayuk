@@ -15,7 +15,7 @@ export const getAllUsers = ({entities}) => fromEntities.getAllUsers(entities);
 
 export const getCurrentUser = ({currentUser}) => fromUser.getCurrentUser(currentUser);
 export const isUserLoggedIn = ({currentUser}) => fromUser.isUserLoggedIn(currentUser);
-
+export const getGeolocation = ({currentUser}) => fromUser.getGeolocation(currentUser);
 
 export default combineReducers({
 	entities,
