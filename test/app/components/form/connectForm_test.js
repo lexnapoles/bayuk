@@ -23,7 +23,7 @@ const getForm = (props = {}, children = SomeComponent) => {
 };
 
 describe("connectForm", function () {
-	it("returns a React.Component wrapping FormWrapper(WrappedComponent)", function () {
+	it("returns a React.Component wrapping formWrapper(WrappedComponent)", function () {
 		const component = connectForm(requiredProps)(SomeComponent);
 
 		assert.isTrue(Boolean(component.prototype.isReactComponent));

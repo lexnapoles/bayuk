@@ -3,11 +3,7 @@ import {omit} from "lodash/object";
 import {connect} from "react-redux"
 import {registerUser} from "../../actions/api";
 import AuthFormContainer from "./authForm/AuthFormContainer";
-
-const DEFAULT_MADRID_COORDS = {
-	latitude:  40.416,
-	longitude: 3.7
-};
+import geolocated from "../geolocated/geolocated";
 
 class Register extends Component {
 	constructor(props) {
@@ -17,19 +13,13 @@ class Register extends Component {
 	}
 
 	onSubmit(formData) {
-		const success = ({coords}) => {
-			const user = {
-				...formData,
-				latitude:  coords.latitude,
-				longitude: coords.longitude
-			};
+		const {latitude, longitude} = this.props;
 
-			this.props.onSubmit(user);
-		};
-
-		const error = () => this.props.onSubmit({...formData, ...DEFAULT_MADRID_COORDS});
-
-		navigator.geolocation.getCurrentPosition(success, error);
+		this.props.onSubmit({
+			...formData,
+			latitude,
+			longitude
+		});
 	}
 
 	render() {
@@ -43,9 +33,11 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-	onSubmit: PropTypes.func.isRequired
+	latitude:  PropTypes.number.isRequired,
+	longitude: PropTypes.number.isRequired,
+	onSubmit:  PropTypes.func.isRequired
 };
 
 export default connect(void 0, {
 	onSubmit: registerUser
-})(Register);
+})(geolocated(Register));

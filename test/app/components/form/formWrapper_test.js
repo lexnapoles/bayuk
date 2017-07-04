@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {shallow} from "enzyme";
-import FormWrapper from "Components/form/connectForm/FormWrapper";
+import FormWrapper from "Components/form/connectForm/formWrapper";
 
 const getEvent = value => ({
 	target: {
@@ -25,7 +25,7 @@ const getForm = (props, children) => {
 	return shallow(<Form {...formProps}/>);
 };
 
-describe("<FormWrapper/>", function () {
+describe("<formWrapper/>", function () {
 	it("creates the form state using the elements prop", function () {
 		const wrapper = getForm({elements: ["name", "email"]});
 

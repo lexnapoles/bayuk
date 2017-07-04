@@ -9,7 +9,7 @@ const getChildrenProps = props => {
 	return omit(props, ownProps);
 };
 
-const FormWrapper = (WrappedComponent, options = {}) => {
+const formWrapper = (WrappedComponent, options = {}) => {
 	class FormContainer extends Component {
 		constructor(props) {
 			super(props);
@@ -148,4 +148,4 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 	return FormContainer;
 };
 
-export default FormWrapper;
+export default formWrapper;
