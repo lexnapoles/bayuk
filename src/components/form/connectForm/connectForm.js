@@ -1,4 +1,4 @@
-import React, {Component, createElement} from "react";
+import {PropTypes, Component, createElement} from "react";
 import FormWrapper from "./FormWrapper";
 import {has} from "lodash/object";
 import {isEmpty} from "lodash/lang";
@@ -57,7 +57,7 @@ const connectForm = (props = {}) => WrappedComponent => {
 	}
 
 	ConnectForm.propTypes = {
-		onSubmit: React.PropTypes.func
+		onSubmit: PropTypes.func
 	};
 
 	return ConnectForm;

@@ -14,7 +14,7 @@ const currentUser = (state = {rehydrated: false}, action) => {
 
 		case REGISTER_USER.success:
 		case LOGIN_USER.success: {
-			const {token} = action.payload,
+			const token = action.payload,
 						payload = omit(getJwtPayload(token), ["exp", "iat"]);
 
 			return {

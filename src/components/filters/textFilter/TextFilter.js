@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import {container} from "./textFilter.css";
 import Filter from "../filter/Filter";
 import TextInput from "../../inputs/textInput/TextInput";
@@ -11,10 +11,10 @@ const TextFilter = ({name, error, placeholder, onChange}) =>
 	</Filter>;
 
 TextFilter.propTypes = {
-	name:        React.PropTypes.string.isRequired,
-	onChange:    React.PropTypes.func.isRequired,
-	error:       React.PropTypes.string,
-	placeholder: React.PropTypes.string
+	name:        PropTypes.string.isRequired,
+	onChange:    PropTypes.func.isRequired,
+	error:       PropTypes.string,
+	placeholder: PropTypes.string
 };
 
 export default TextFilter;

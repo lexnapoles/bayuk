@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PropTypes, Component} from "react";
 import {browserHistory} from "react-router";
 import {Link} from "react-router";
 import Spinner from "../../spinner/Spinner";
@@ -44,8 +44,8 @@ class ProductTable extends Component {
 }
 
 ProductTable.propTypes = {
-	products:   React.PropTypes.array.isRequired,
-	isFetching: React.PropTypes.bool
+	products:   PropTypes.array.isRequired,
+	isFetching: PropTypes.bool
 };
 
 ProductTable.defaultProps = {

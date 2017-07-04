@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import Icon from "react-fa";
 import ImagePreview from "./ImagePreview";
 import {container, imageContainer, deleteBtn} from "./imagePreviewWithDelete.css";
@@ -12,10 +12,10 @@ const ImagePreviewWithDelete = ({hover, className, url, onDelete}) =>
 	</div >
 
 ImagePreviewWithDelete.propTypes = {
-	hover:     React.PropTypes.bool,
-	className: React.PropTypes.string,
-	url:       React.PropTypes.string.isRequired,
-	onDelete:  React.PropTypes.func.isRequired
+	hover:     PropTypes.bool,
+	className: PropTypes.string,
+	url:       PropTypes.string.isRequired,
+	onDelete:  PropTypes.func.isRequired
 };
 
 

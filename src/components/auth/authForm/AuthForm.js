@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import TextInput from "../../inputs/textInput/TextInput";
 import {authContainer, auth, formContainer, title, inputsContainer, inputs, submitButton} from "./authForm.css";
 
@@ -22,14 +22,14 @@ const AuthForm = ({form, formName, onNameChange, onEmailChange, onPasswordChange
 
 
 AuthForm.propTypes = {
-	formName:         React.PropTypes.string.isRequired,
-	onEmailChange:    React.PropTypes.func.isRequired,
-	onPasswordChange: React.PropTypes.func.isRequired,
-	onSubmit:         React.PropTypes.func.isRequired,
-	errors:           React.PropTypes.object.isRequired,
-	form:             React.PropTypes.object.isRequired,
-	onNameChange:     React.PropTypes.func,
-	logIn:            React.PropTypes.bool
+	formName:         PropTypes.string.isRequired,
+	onEmailChange:    PropTypes.func.isRequired,
+	onPasswordChange: PropTypes.func.isRequired,
+	onSubmit:         PropTypes.func.isRequired,
+	errors:           PropTypes.object.isRequired,
+	form:             PropTypes.object.isRequired,
+	onNameChange:     PropTypes.func,
+	logIn:            PropTypes.bool
 };
 
 AuthForm.defaultProps = {

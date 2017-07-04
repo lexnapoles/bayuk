@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import {Link} from "react-router";
 import Icon from "react-fa";
 import {returnIcon} from "./returnIcon.css";
@@ -9,7 +9,7 @@ const ReturnIcon = ({url}) =>
 	</Link>
 
 ReturnIcon.propTypes = {
-	url: React.PropTypes.string.isRequired
+	url: PropTypes.string.isRequired
 }
 
 export default ReturnIcon;

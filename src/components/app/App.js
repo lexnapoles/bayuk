@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PropTypes, Component} from "react";
 import {connect} from "react-redux";
 import styles from "../layout.css";
 import CSSModules from "react-css-modules";
@@ -53,9 +53,9 @@ class App extends Component {
 }
 
 App.propTypes = {
-	loadProducts:    React.PropTypes.func.isRequired,
-	loadCategories:  React.PropTypes.func.isRequired,
-	loadGeolocation: React.PropTypes.func.isRequired
+	loadProducts:    PropTypes.func.isRequired,
+	loadCategories:  PropTypes.func.isRequired,
+	loadGeolocation: PropTypes.func.isRequired
 };
 
 export default connect(null, {

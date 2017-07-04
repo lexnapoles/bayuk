@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PropTypes, Component} from "react";
 import {overlay, sidebar} from "./sidebarMenu.css";
 
 class SidebarMenu extends Component {
@@ -67,9 +67,9 @@ class SidebarMenu extends Component {
 }
 
 SidebarMenu.propTypes = {
-	visible:          React.PropTypes.bool,
-	onOverlayClicked: React.PropTypes.func.isRequired,
-	children:         React.PropTypes.node
+	visible:          PropTypes.bool,
+	onOverlayClicked: PropTypes.func.isRequired,
+	children:         PropTypes.node
 };
 
 SidebarMenu.defaultProps = {

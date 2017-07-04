@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PropTypes, Component} from "react";
 import {omit} from "lodash/object";
 import {connect} from "react-redux";
 import UserOverview from "./UserOverview";
@@ -21,8 +21,8 @@ class UserOverviewContainer extends Component {
 }
 
 UserOverviewContainer.propTypes = {
-	id:       React.PropTypes.string.isRequired,
-	loadUser: React.PropTypes.func.isRequired
+	id:       PropTypes.string.isRequired,
+	loadUser: PropTypes.func.isRequired
 };
 
 

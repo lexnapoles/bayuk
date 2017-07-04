@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import Filter from "./filter/Filter";
 import PriceInput from "../inputs/PriceInput";
 
@@ -9,7 +9,7 @@ const PriceFilter = ({onChange}) =>
 	</Filter>
 
 PriceFilter.propTypes = {
-	onChange: React.PropTypes.func.isRequired
+	onChange: PropTypes.func.isRequired
 };
 
 export default PriceFilter;

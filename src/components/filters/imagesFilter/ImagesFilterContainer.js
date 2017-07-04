@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PropTypes, Component} from "react";
 import ImagesFilter from "./ImagesFilter";
 
 class ImagesFilterContainer extends Component {
@@ -46,9 +46,9 @@ class ImagesFilterContainer extends Component {
 }
 
 ImagesFilterContainer.propTypes = {
-	maxImages: React.PropTypes.number.isRequired,
-	onChange:  React.PropTypes.func.isRequired,
-	error:      React.PropTypes.string.isRequired
+	maxImages: PropTypes.number.isRequired,
+	onChange:  PropTypes.func.isRequired,
+	error:     PropTypes.string.isRequired
 };
 
 export default ImagesFilterContainer;

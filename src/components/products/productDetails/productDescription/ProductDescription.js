@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {container, subtitle} from "./productDescription.css";
 
 const ProductDescription = ({className, style, price, name, description}) => {
@@ -14,11 +14,11 @@ const ProductDescription = ({className, style, price, name, description}) => {
 };
 
 ProductDescription.propTypes = {
-	style:       React.PropTypes.object,
-	className:   React.PropTypes.string,
-	price:       React.PropTypes.number.isRequired,
-	name:        React.PropTypes.string.isRequired,
-	description: React.PropTypes.string.isRequired
+	style:       PropTypes.object,
+	className:   PropTypes.string,
+	price:       PropTypes.number.isRequired,
+	name:        PropTypes.string.isRequired,
+	description: PropTypes.string.isRequired
 };
 
 ProductDescription.defaultProps = {

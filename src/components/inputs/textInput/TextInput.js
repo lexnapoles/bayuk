@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import {input, invalidInput, errorText, underline} from "./textInput.css";
 
 const TextInput = ({value, placeholder, onChange, className, error}) =>
@@ -13,11 +13,11 @@ const TextInput = ({value, placeholder, onChange, className, error}) =>
 	</div>;
 
 TextInput.propTypes = {
-	value:       React.PropTypes.string.isRequired,
-	placeholder: React.PropTypes.string,
-	onChange:    React.PropTypes.func.isRequired,
-	className: 	 React.PropTypes.string,
-	error: 			 React.PropTypes.string
+	value:       PropTypes.string.isRequired,
+	placeholder: PropTypes.string,
+	onChange:    PropTypes.func.isRequired,
+	className: 	 PropTypes.string,
+	error: 			 PropTypes.string
 };
 
 TextInput.defaultProps = {

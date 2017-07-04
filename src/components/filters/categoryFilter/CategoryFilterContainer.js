@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PropTypes, Component} from "react";
 import {connect} from "react-redux";
 import CategoryFilter  from "./CategoryFilter";
 import {createDefaultObjectFrom} from "../../../utils";
@@ -60,11 +60,11 @@ class CategoryFilterContainer extends Component {
 }
 
 CategoryFilterContainer.propTypes = {
-	categories: React.PropTypes.array.isRequired,
-	onChange:   React.PropTypes.func.isRequired,
-	error:      React.PropTypes.string,
-	exclusive:  React.PropTypes.bool,
-	isFetching: React.PropTypes.bool
+	categories: PropTypes.array.isRequired,
+	onChange:   PropTypes.func.isRequired,
+	error:      PropTypes.string,
+	exclusive:  PropTypes.bool,
+	isFetching: PropTypes.bool
 };
 
 CategoryFilterContainer.defaultProps = {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import Icon from "react-fa";
 import {inputFile} from "./fileInput.css";
 
@@ -15,12 +15,12 @@ const FileInput = ({className, style, id, accept, onChange, children}) => {
 }
 
 FileInput.propTypes = {
-	className: React.PropTypes.string,
-	style:     React.PropTypes.object,
-	id:        React.PropTypes.number.isRequired,
-	accept:    React.PropTypes.string.isRequired,
-	onChange:  React.PropTypes.func.isRequired,
-	children:  React.PropTypes.node
+	className: PropTypes.string,
+	style:     PropTypes.object,
+	id:        PropTypes.number.isRequired,
+	accept:    PropTypes.string.isRequired,
+	onChange:  PropTypes.func.isRequired,
+	children:  PropTypes.node
 };
 
 FileInput.defaultProps = {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import {browserHistory} from "react-router";
 import {container, userImage, text} from "./thumbnail.css";
 
@@ -14,10 +14,10 @@ const UserMenuThumbnail = ({isLoggedIn, id, name, image}) => {
 };
 
 UserMenuThumbnail.propTypes = {
-	isLoggedIn: React.PropTypes.bool.isRequired,
-	id: React.PropTypes.string,
-	name: React.PropTypes.string,
-	image: React.PropTypes.string
+	isLoggedIn: PropTypes.bool.isRequired,
+	id:         PropTypes.string,
+	name:       PropTypes.string,
+	image:      PropTypes.string
 };
 
 export default UserMenuThumbnail;

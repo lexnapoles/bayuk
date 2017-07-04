@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import {filter, invalidFilter, errorText, label} from "./filter.css";
 
 const Filter = ({title, error, children}) => {
@@ -14,9 +14,9 @@ const Filter = ({title, error, children}) => {
 };
 
 Filter.propTypes = {
-	title:    React.PropTypes.string,
-	error:    React.PropTypes.string,
-	children: React.PropTypes.node.isRequired
+	title:    PropTypes.string,
+	error:    PropTypes.string,
+	children: PropTypes.node.isRequired
 };
 
 Filter.defaultProps = {

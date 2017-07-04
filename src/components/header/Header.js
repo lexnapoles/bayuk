@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import {header, nav} from "./header.css";
 
 const Header = ({children}) =>
@@ -9,7 +9,7 @@ const Header = ({children}) =>
 	</header>
 
 Header.propTypes = {
-	children: React.PropTypes.node
-}
+	children: PropTypes.node
+};
 
 export default Header;

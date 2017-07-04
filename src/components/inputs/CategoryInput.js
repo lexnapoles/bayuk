@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import Input from "./labeledInput/LabeledInput";
 
 const CategoryInput = ({id, description, onChange, checked}) => {
@@ -14,10 +14,10 @@ const CategoryInput = ({id, description, onChange, checked}) => {
 };
 
 CategoryInput.propTypes = {
-	onChange:    React.PropTypes.func.isRequired,
-	id:          React.PropTypes.string.isRequired,
-	description: React.PropTypes.string.isRequired,
-	checked:     React.PropTypes.bool.isRequired
+	onChange:    PropTypes.func.isRequired,
+	id:          PropTypes.string.isRequired,
+	description: PropTypes.string.isRequired,
+	checked:     PropTypes.bool.isRequired
 };
 
 export default CategoryInput;

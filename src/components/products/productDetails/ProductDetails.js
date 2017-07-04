@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PropTypes, Component} from "react";
 import CSSModules from "react-css-modules";
 import Spinner from "../../spinner/Spinner";
 import styles from "./productDetails.css";
@@ -64,9 +64,9 @@ class ProductDetails extends Component {
 }
 
 ProductDetails.propTypes = {
-	product:    React.PropTypes.object,
-	isFetching: React.PropTypes.bool,
-	onClick:    React.PropTypes.func
+	product:    PropTypes.object,
+	isFetching: PropTypes.bool,
+	onClick:    PropTypes.func
 };
 
 ProductDetails.defaultProps = {

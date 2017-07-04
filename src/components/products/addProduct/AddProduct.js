@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import Form from "../../form/Form";
 import TextFilter from "../../filters/textFilter/TextFilter";
 import CategoryFilter from "../../filters/categoryFilter/CategoryFilterContainer";
@@ -28,15 +28,15 @@ const AddProduct = ({
 );
 
 AddProduct.propTypes = {
-	form:                React.PropTypes.object.isRequired,
-	errors:              React.PropTypes.object.isRequired,
-	maxImages:           React.PropTypes.number.isRequired,
-	onSubmit:         	 React.PropTypes.func.isRequired,
-	onNameChange:        React.PropTypes.func.isRequired,
-	onImagesChange:      React.PropTypes.func.isRequired,
-	onDescriptionChange: React.PropTypes.func.isRequired,
-	onCategoryChange:    React.PropTypes.func.isRequired,
-	onPriceChange:       React.PropTypes.func.isRequired
+	form:                PropTypes.object.isRequired,
+	errors:              PropTypes.object.isRequired,
+	maxImages:           PropTypes.number.isRequired,
+	onSubmit:         	 PropTypes.func.isRequired,
+	onNameChange:        PropTypes.func.isRequired,
+	onImagesChange:      PropTypes.func.isRequired,
+	onDescriptionChange: PropTypes.func.isRequired,
+	onCategoryChange:    PropTypes.func.isRequired,
+	onPriceChange:       PropTypes.func.isRequired
 };
 
 export default AddProduct;

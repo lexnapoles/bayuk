@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {container, userImage, rating} from "./userOverview.css";
 import Icon from "react-fa";
 import {times} from "lodash/util";
@@ -32,10 +32,10 @@ const UserOverview = ({isFetching, user, className, style}) => {
 };
 
 UserOverview.propTypes = {
-	user:       React.PropTypes.object.isRequired,
-	isFetching: React.PropTypes.bool,
-	style:      React.PropTypes.object,
-	className:  React.PropTypes.string
+	user:       PropTypes.object.isRequired,
+	isFetching: PropTypes.bool,
+	style:      PropTypes.object,
+	className:  PropTypes.string
 };
 
 UserOverview.defaultProps = {

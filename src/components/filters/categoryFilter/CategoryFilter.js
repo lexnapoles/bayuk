@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import Filter from "../filter/Filter";
 import Spinner from "../../spinner/Spinner";
 import CategoryInput  from "../../inputs/CategoryInput";
@@ -24,10 +24,10 @@ const CategoryFilter = ({isFetching, onChange, categories, error}) => {
 };
 
 CategoryFilter.propTypes = {
-	isFetching: React.PropTypes.bool,
-	onChange:   React.PropTypes.func.isRequired,
-	categories: React.PropTypes.object.isRequired,
-	error:      React.PropTypes.string
+	isFetching: PropTypes.bool,
+	onChange:   PropTypes.func.isRequired,
+	categories: PropTypes.object.isRequired,
+	error:      PropTypes.string
 };
 
 CategoryFilter.defaultProps = {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropTypes} from "react";
 import {container, title} from "./LabeledInput.css";
 
 const LabeledInput = ({id, description, onChange, inputConf}) =>
@@ -8,10 +8,10 @@ const LabeledInput = ({id, description, onChange, inputConf}) =>
 	</div>
 
 LabeledInput.propTypes = {
-	onChange:    React.PropTypes.func.isRequired,
-	id:          React.PropTypes.string.isRequired,
-	description: React.PropTypes.string.isRequired,
-	inputConf:   React.PropTypes.object
+	onChange:    PropTypes.func.isRequired,
+	id:          PropTypes.string.isRequired,
+	description: PropTypes.string.isRequired,
+	inputConf:   PropTypes.object
 };
 
 export default LabeledInput;

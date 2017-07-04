@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {container, map} from "./geolocationInfo.css";
 
 const GeolocationInfo = ({className, style}) => {
@@ -10,8 +10,8 @@ const GeolocationInfo = ({className, style}) => {
 };
 
 GeolocationInfo.propTypes = {
-	style:     React.PropTypes.object,
-	className: React.PropTypes.string
+	style:     PropTypes.object,
+	className: PropTypes.string
 };
 GeolocationInfo.defaultProps = {
 	style:     {},

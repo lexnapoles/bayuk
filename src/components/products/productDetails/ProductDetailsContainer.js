@@ -1,4 +1,4 @@
-import React, {Component}from "react";
+import React, {PropTypes, Component}from "react";
 import {omit} from "lodash/object";
 import {connect} from "react-redux";
 import ProductDetails from "./ProductDetails";
@@ -21,8 +21,8 @@ class ProductDetailsContainer extends Component {
 }
 
 ProductDetailsContainer.propTypes = {
-	id:          React.PropTypes.string.isRequired,
-	loadProduct: React.PropTypes.func.isRequired
+	id:          PropTypes.string.isRequired,
+	loadProduct: PropTypes.func.isRequired
 };
 
 

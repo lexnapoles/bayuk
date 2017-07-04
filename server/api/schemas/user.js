@@ -15,10 +15,10 @@ export const register = {
 			"type": "string"
 		},
 		"latitude":  {
-			"type": "string"
+			"type": "number"
 		},
 		"longitude": {
-			"type": "string"
+			"type": "number"
 		}
 	},
 	"required":   ["name", "email", "password", "latitude", "longitude"]
