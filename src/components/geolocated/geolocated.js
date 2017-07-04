@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PropTypes, Component} from "react";
 
 const DEFAULT_MADRID_COORDS = {
 	latitude:  40.416,
@@ -26,14 +26,18 @@ const geolocated = WrappedComponent => {
 		}
 
 		render() {
-			const props = {
-				...this.state,
-				...this.props
-			};
+			const props = this.props.alreadyLocated && this.props.coords
+				? this.props
+				: {...this.props, ...this.state};
 
 			return <WrappedComponent {...props}/>;
 		}
 	}
+
+	Geolocator.propTypes = {
+		alreadyLocated: PropTypes.bool,
+		coords:         PropTypes.object
+	};
 
 	return Geolocator;
 };
