@@ -1,23 +1,22 @@
 import {Component, createElement} from "react";
 import {connect} from "react-redux";
 import connectForm from "../../form/connectForm/connectForm";
+import {onCheckBoxChange, onRangeChange} from "../../form/formHandlers";
 import SearchProduct from "./SearchProduct";
 import {loadCategories} from "../../../actions/categories";
 
 const loadData = ({loadCategories}) => loadCategories();
 
-const elements = ["name", "categories", "price"];
+const elements = ["name", "category", "price", "distance"];
 
 const defaultFormState = {
 	price: {min: 0, max: 0}
 };
 
 const handlers = {
-	onCategoriesChange: categories => categories,
-	onPriceChange:      (event, {price}) => ({
-		...price,
-		[event.target.id]: parseInt(event.target.value)
-	})
+	onCategoryChange: onCheckBoxChange,
+	onDistanceChange: onCheckBoxChange,
+	onPriceChange:    onRangeChange.bind(void 0, "price")
 };
 
 const props = {

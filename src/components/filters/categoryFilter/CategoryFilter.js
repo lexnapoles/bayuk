@@ -1,14 +1,14 @@
 import React, {PropTypes} from "react";
 import Filter from "../filter/Filter";
 import Spinner from "../../spinner/Spinner";
-import CategoryInput  from "../../inputs/CategoryInput";
+import CheckBoxInput  from "../../inputs/CheckBoxInput";
 
 const CategoryFilter = ({isFetching, onChange, categories, error}) => {
 	const renderCategories = () => {
 		const categoryNames = Object.keys(categories);
 
 		return categoryNames.map(name =>
-			<CategoryInput key={name}
+			<CheckBoxInput key={name}
 											id={name}
 											description={name}
 											checked={categories[name]}

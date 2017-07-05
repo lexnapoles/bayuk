@@ -4,19 +4,13 @@ import CategoryFilter  from "./CategoryFilter";
 import {createDefaultObjectFrom} from "../../../utils";
 import {getAllCategories} from "../../../reducers/root";
 
-const mapStateToProps = state => {
-	const {isFetching, items} = getAllCategories(state);
-
-	return items.length ? {isFetching,	categories: items} : {isFetching: true, categories: []};
-};
-
 class CategoryFilterContainer extends Component {
-	componentWillReceiveProps({categories}) {
+	componentWillReceiveProps({categories, extraCategories}) {
 		const noPreviousCategories = !this.props.categories.length;
 
 		if (noPreviousCategories && categories.length) {
 			this.setState({
-				categories: createDefaultObjectFrom(categories, false)
+				categories: createDefaultObjectFrom([...categories, ...extraCategories], false)
 			});
 		}
 	}
@@ -24,9 +18,10 @@ class CategoryFilterContainer extends Component {
 	constructor(props) {
 		super(props);
 
+		const {categories, extraCategories} = this.props;
 
 		this.state = {
-			categories: createDefaultObjectFrom(this.props.categories, false)
+			categories: createDefaultObjectFrom([...categories, ...extraCategories], false)
 		};
 
 		this.onCategoryChange = this.onCategoryChange.bind(this);
@@ -60,16 +55,24 @@ class CategoryFilterContainer extends Component {
 }
 
 CategoryFilterContainer.propTypes = {
-	categories: PropTypes.array.isRequired,
-	onChange:   PropTypes.func.isRequired,
-	error:      PropTypes.string,
-	exclusive:  PropTypes.bool,
-	isFetching: PropTypes.bool
+	categories:      PropTypes.array.isRequired,
+	extraCategories: PropTypes.array,
+	onChange:        PropTypes.func.isRequired,
+	error:           PropTypes.string,
+	exclusive:       PropTypes.bool,
+	isFetching:      PropTypes.bool
 };
 
 CategoryFilterContainer.defaultProps = {
-	exclusive: true,
-	isFetching: false
+	exclusive:       true,
+	isFetching:      false,
+	extraCategories: []
+};
+
+const mapStateToProps = state => {
+	const {isFetching, items} = getAllCategories(state);
+
+	return items.length ? {isFetching, categories: items} : {isFetching: true, categories: []};
 };
 
 export default connect(mapStateToProps)(CategoryFilterContainer);

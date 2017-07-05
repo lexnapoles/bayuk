@@ -1,7 +1,7 @@
 import React, {PropTypes} from "react";
 import Input from "./labeledInput/LabeledInput";
 
-const CategoryInput = ({id, description, onChange, checked}) => {
+const CheckBoxInput = ({id, description, onChange, checked}) => {
 	const inputConf = {
 		type: "checkbox",
 		checked
@@ -13,11 +13,11 @@ const CategoryInput = ({id, description, onChange, checked}) => {
 								inputConf={inputConf}/>
 };
 
-CategoryInput.propTypes = {
+CheckBoxInput.propTypes = {
 	onChange:    PropTypes.func.isRequired,
 	id:          PropTypes.string.isRequired,
 	description: PropTypes.string.isRequired,
 	checked:     PropTypes.bool.isRequired
 };
 
-export default CategoryInput;
+export default CheckBoxInput;

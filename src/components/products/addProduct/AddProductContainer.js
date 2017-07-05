@@ -3,7 +3,7 @@ import {omit} from "lodash/object";
 import {connect} from "react-redux";
 import {loadCategories} from "../../../actions/categories";
 import {addProduct} from "../../../actions/api";
-import {findKey} from "lodash/object";
+import {onCheckBoxChange} from "../../form/formHandlers";
 import {isNotEmpty} from "../../../utils";
 import connectForm from "../../form/connectForm/connectForm";
 import {isUserLoggedIn} from "../../../reducers/root";
@@ -34,11 +34,7 @@ const validation = {
 const handlers = {
 	onPriceChange:    event => parseInt(event.target.value),
 	onImagesChange:   images => images,
-	onCategoryChange: categories => {
-		const category = findKey(categories, category => category);
-
-		return category ? category : ""
-	}
+	onCategoryChange: onCheckBoxChange
 };
 
 const errorMessages = {
