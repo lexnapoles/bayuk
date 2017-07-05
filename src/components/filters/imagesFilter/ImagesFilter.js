@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import Filter from "../filter/Filter";
 import ImageInput from "../../inputs/fileInputs/imageInput/ImageInputContainer";
 import {imagesContainer} from "./imagesFilter.css";

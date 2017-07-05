@@ -1,4 +1,5 @@
-import React, {PropTypes, Component}from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import {omit} from "lodash/object";
 import {connect} from "react-redux";
 import ProductDetails from "./ProductDetails";

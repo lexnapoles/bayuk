@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import {container, title} from "./LabeledInput.css";
 
 const LabeledInput = ({id, description, onChange, inputConf}) =>

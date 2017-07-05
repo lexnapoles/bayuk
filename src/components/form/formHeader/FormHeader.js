@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import {check} from "./formHeader.css";
 import Header from "../../header/Header";
 import ReturnIcon from "../../icons/returnIcon/ReturnIcon";

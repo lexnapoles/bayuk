@@ -1,4 +1,5 @@
-import {PropTypes, Component, createElement} from "react";
+import PropTypes from 'prop-types';
+import { Component, createElement } from "react";
 import FormWrapper from "./formWrapper";
 import {has} from "lodash/object";
 import {isEmpty} from "lodash/lang";

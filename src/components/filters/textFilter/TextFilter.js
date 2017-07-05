@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import {container} from "./textFilter.css";
 import Filter from "../filter/Filter";
 import TextInput from "../../inputs/textInput/TextInput";

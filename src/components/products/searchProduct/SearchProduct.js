@@ -1,6 +1,8 @@
-import React, {PropTypes} from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import Form from "../../form/Form";
 import TextFilter from "../../filters/textFilter/TextFilter";
+import LocationFilter from "../../filters/locationFilter/LocationFilterContainer";
 import PriceFilter from "../../filters/PriceFilter";
 import CategoryFilter from "../../filters/categoryFilter/CategoryFilterContainer";
 import DistanceFilter from "../../filters/distanceFilter/DistanceFilterContainer";
@@ -11,16 +13,15 @@ const SearchProduct = ({
 	onNameChange,
 	onCategoryChange,
 	onPriceChange,
-	onDistanceChange
+	onDistanceChange,
+	onLocationChange
 }) => (
 	<Form formName="searchProduct" onSubmit={onSubmit}>
 		<TextFilter name={form.name} placeholder="What are you looking for?" onChange={onNameChange} required={true}/>
 		<CategoryFilter exclusive={true} onChange={onCategoryChange} extraCategories={["All"]}/>
 		<PriceFilter onChange={onPriceChange}/>
-		<div className="location">
-
-		</div>
 		<DistanceFilter onChange={onDistanceChange}/>
+		<LocationFilter onChange={onLocationChange}/>
 
 		<div className="sort">
 
@@ -35,6 +36,7 @@ SearchProduct.propTypes = {
 	onCategoryChange: PropTypes.func.isRequired,
 	onPriceChange:    PropTypes.func.isRequired,
 	onDistanceChange: PropTypes.func.isRequired,
+	onLocationChange: PropTypes.func.isRequired,
 };
 
 export default SearchProduct;

@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import Spinner from "../../spinner/Spinner";
 import AuthPage from "../authPage/AuthPage";
 import {alignCenter} from "./addAuthenticationTo.css";

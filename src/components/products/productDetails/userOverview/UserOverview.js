@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {container, userImage, rating} from "./userOverview.css";
 import Icon from "react-fa";
 import {times} from "lodash/util";

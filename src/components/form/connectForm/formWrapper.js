@@ -1,4 +1,5 @@
-import {PropTypes, Component, createElement} from "react";
+import PropTypes from 'prop-types';
+import { Component, createElement } from "react";
 import {createDefaultObjectFrom} from "../../../utils";
 import {omit} from "lodash/object";
 import {some} from "lodash/collection";

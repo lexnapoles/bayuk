@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import TextInput from "../../inputs/textInput/TextInput";
 import {authContainer, auth, formContainer, title, inputsContainer, inputs, submitButton} from "./authForm.css";
 

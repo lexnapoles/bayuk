@@ -1,4 +1,5 @@
-import React, {PropTypes} from "react";
+import PropTypes from 'prop-types';
+import React from "react";
 import FormHeader from "./formHeader/FormHeader";
 import {container, main, formContainer, form} from "./form.css";
 
