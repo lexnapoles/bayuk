@@ -16,9 +16,9 @@ const defaultFormState = {
 const handlers = {
 	onCategoryChange: onCheckBoxChange,
 	onDistanceChange: onCheckBoxChange,
+	onSortChange:     onCheckBoxChange,
 	onPriceChange:    onRangeChange.bind(void 0, "price"),
-	onLocationChange: coords => coords,
-	onSortChange:     onCheckBoxChange
+	onLocationChange: coords => coords
 };
 
 const props = {

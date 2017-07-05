@@ -1,31 +1,13 @@
 import PropTypes from 'prop-types';
 import React from "react";
-import Filter from "../filter/Filter";
-import CheckBoxInput  from "../../inputs/CheckBoxInput";
+import CheckBoxFilterContainer from "../checkBoxFilter/CheckBoxFilterContainer";
 
-const SortFilter = ({onChange, options}) => {
-	const renderDistanceOptions = options => {
-		const distanceOptions = Object.keys(options);
+const options = ["Expensive",	"Cheap", "Distance", "New"];
 
-		return distanceOptions.map(name =>
-			<CheckBoxInput key={name}
-											id={name}
-											description={name}
-											checked={options[name]}
-											onChange={onChange}/>
-		);
-	};
+const SortFilter = ({onChange}) => <CheckBoxFilterContainer title="Sort By" options={options} onChange={onChange}/>;
 
-	return (
-		<Filter title="Distance">
-			{renderDistanceOptions(options)}
-		</Filter>
-	);
-};
-
-SortFilter .propTypes = {
-	options:  PropTypes.object.isRequired,
+SortFilter.propTypes = {
 	onChange: PropTypes.func.isRequired
 };
 
-export default SortFilter ;
+export default SortFilter;

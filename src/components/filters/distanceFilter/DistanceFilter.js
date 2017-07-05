@@ -1,31 +1,13 @@
 import PropTypes from 'prop-types';
 import React from "react";
-import Filter from "../filter/Filter";
-import CheckBoxInput  from "../../inputs/CheckBoxInput";
+import CheckBoxFilterContainer from "../checkBoxFilter/CheckBoxFilterContainer";
 
-const DistanceFilter = ({onChange, options}) => {
-	const renderDistanceOptions = options => {
-		const distanceOptions = Object.keys(options);
+const options = ["1km", "5km", "10km", ">10km"];
 
-		return distanceOptions.map(name =>
-			<CheckBoxInput key={name}
-											id={name}
-											description={name}
-											checked={options[name]}
-											onChange={onChange}/>
-		);
-	};
-
-	return (
-		<Filter title="Distance">
-			{renderDistanceOptions(options)}
-		</Filter>
-	);
-};
+const DistanceFilter = ({onChange}) => <CheckBoxFilterContainer title="Distance" options={options} onChange={onChange}/>;
 
 DistanceFilter.propTypes = {
-	options:  PropTypes.object.isRequired,
-	onChange: PropTypes.func.isRequired
+	onChange:  PropTypes.func.isRequired
 };
 
 export default DistanceFilter;

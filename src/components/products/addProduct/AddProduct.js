@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from "react";
 import Form from "../../form/Form";
 import TextFilter from "../../filters/textFilter/TextFilter";
-import CategoryFilter from "../../filters/categoryFilter/CategoryFilterContainer";
+import CategoryFilter from "../../filters/categoryFilter/CategoryFilter";
 import Filter from "../../filters/filter/Filter";
 import ImagesFilter from "../../filters/ImagesFilter/ImagesFilterContainer";
 

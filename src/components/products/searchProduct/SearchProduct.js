@@ -4,9 +4,9 @@ import Form from "../../form/Form";
 import TextFilter from "../../filters/textFilter/TextFilter";
 import LocationFilter from "../../filters/locationFilter/LocationFilterContainer";
 import PriceFilter from "../../filters/PriceFilter";
-import CategoryFilter from "../../filters/categoryFilter/CategoryFilterContainer";
-import DistanceFilter from "../../filters/distanceFilter/DistanceFilterContainer";
-import SortFilter from "../../filters/sortFilter/SortFilterContainer";
+import CategoryFilter from "../../filters/categoryFilter/CategoryFilter";
+import DistanceFilter from "../../filters/distanceFilter/DistanceFilter";
+import SortFilter from "../../filters/sortFilter/SortFilter";
 
 const SearchProduct = ({
 	form,
@@ -20,7 +20,7 @@ const SearchProduct = ({
 }) => (
 	<Form formName="searchProduct" onSubmit={onSubmit}>
 		<TextFilter name={form.name} placeholder="What are you looking for?" onChange={onNameChange} required={true}/>
-		<CategoryFilter exclusive={true} onChange={onCategoryChange} extraCategories={["All"]}/>
+		<CategoryFilter onChange={onCategoryChange}/>
 		<PriceFilter onChange={onPriceChange}/>
 		<DistanceFilter onChange={onDistanceChange}/>
 		<LocationFilter onChange={onLocationChange}/>
