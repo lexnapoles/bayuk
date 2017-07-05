@@ -7,7 +7,7 @@ import {loadCategories} from "../../../actions/categories";
 
 const loadData = ({loadCategories}) => loadCategories();
 
-const elements = ["name", "category", "price", "distance", "location"];
+const elements = ["name", "category", "price", "distance", "location", "sort"];
 
 const defaultFormState = {
 	price: {min: 0, max: 0}
@@ -17,7 +17,8 @@ const handlers = {
 	onCategoryChange: onCheckBoxChange,
 	onDistanceChange: onCheckBoxChange,
 	onPriceChange:    onRangeChange.bind(void 0, "price"),
-	onLocationChange: coords => coords
+	onLocationChange: coords => coords,
+	onSortChange:     onCheckBoxChange
 };
 
 const props = {

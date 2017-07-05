@@ -6,6 +6,7 @@ import LocationFilter from "../../filters/locationFilter/LocationFilterContainer
 import PriceFilter from "../../filters/PriceFilter";
 import CategoryFilter from "../../filters/categoryFilter/CategoryFilterContainer";
 import DistanceFilter from "../../filters/distanceFilter/DistanceFilterContainer";
+import SortFilter from "../../filters/sortFilter/SortFilterContainer";
 
 const SearchProduct = ({
 	form,
@@ -14,7 +15,8 @@ const SearchProduct = ({
 	onCategoryChange,
 	onPriceChange,
 	onDistanceChange,
-	onLocationChange
+	onLocationChange,
+	onSortChange
 }) => (
 	<Form formName="searchProduct" onSubmit={onSubmit}>
 		<TextFilter name={form.name} placeholder="What are you looking for?" onChange={onNameChange} required={true}/>
@@ -22,10 +24,7 @@ const SearchProduct = ({
 		<PriceFilter onChange={onPriceChange}/>
 		<DistanceFilter onChange={onDistanceChange}/>
 		<LocationFilter onChange={onLocationChange}/>
-
-		<div className="sort">
-
-		</div>
+		<SortFilter onChange={onSortChange}/>
 	</Form>
 );
 
@@ -37,6 +36,7 @@ SearchProduct.propTypes = {
 	onPriceChange:    PropTypes.func.isRequired,
 	onDistanceChange: PropTypes.func.isRequired,
 	onLocationChange: PropTypes.func.isRequired,
+	onSortChange:     PropTypes.func.isRequired,
 };
 
 export default SearchProduct;
