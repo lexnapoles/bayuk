@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from "react";
+import React, {Component} from "react";
 import CSSModules from "react-css-modules";
 import Spinner from "../../spinner/Spinner";
 import styles from "./productDetails.css";
@@ -20,7 +20,7 @@ class ProductDetails extends Component {
 			return <NotFound/>
 		}
 
-		const {price, name, description, images, owner} = product;
+		const {price, name, description, images, owner, latitude, longitude} = product;
 
 		return (
 			<main styleName="productContainer">
@@ -36,7 +36,7 @@ class ProductDetails extends Component {
 						description={description}
 					/>
 					<hr styleName="line"/>
-					<GeolocationInfo styleName="map"/>
+					<GeolocationInfo styleName="map" latitude={latitude} longitude={longitude}/>
 					<hr styleName="line"/>
 					<UserOverviewContainer styleName="infoSection" id={owner}/>
 				</section>
@@ -46,9 +46,9 @@ class ProductDetails extends Component {
 
 	renderSpinner() {
 		return (
-		<main styleName="productContainer">
-			<Spinner/>
-		</main>
+			<main styleName="productContainer">
+				<Spinner/>
+			</main>
 		);
 	}
 
