@@ -6,6 +6,7 @@ import {
 	FETCH_PRODUCTS,
 	FETCH_USERS,
 	FETCH_ONE_PRODUCT,
+	SEARCH_PRODUCTS,
 	FETCH_ONE_USER,
 	FETCH_CATEGORIES,
 	ADD_PRODUCT,
@@ -19,7 +20,7 @@ const apiBaseUrl = `http://localhost:3000/api`;
 
 const normalizeResponse = schema => (action, state, res) => getJSON(res).then((json) => normalize(json, schema));
 
-const stringifyQueryParams = params => Object.keys(params).length ? `?${encodeURI(queryString.stringify(params))}` : "";
+const stringifyQueryParams = params => Object.keys(params).length ? `?${queryString.stringify(params)}` : "";
 
 const getTypes = ({request, success,failure}) => [request, success, failure];
 
@@ -45,6 +46,24 @@ export const fetchProducts = (params = {}) => ({
 		]
 	}
 });
+
+export const searchProducts = (params = {}) => {
+	console.log(stringifyQueryParams(params))
+	return ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/products${stringifyQueryParams(params)}`,
+		method:   "GET",
+		types:    [
+			SEARCH_PRODUCTS.request,
+			{
+				type:    SEARCH_PRODUCTS.success,
+				payload: normalizeResponse(schema.arrayOfProducts)
+			},
+			SEARCH_PRODUCTS.failure
+		]
+	}
+});
+}
 
 export const fetchOneProduct = (productId, params = {}) => ({
 	[CALL_API]: {

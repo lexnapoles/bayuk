@@ -1,10 +1,12 @@
 import {Component, createElement} from "react";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import connectForm from "../../form/connectForm/connectForm";
 import {onCheckBoxChange, onRangeChange} from "../../form/formHandlers";
 import SearchProduct from "./SearchProduct";
 import {loadCategories} from "../../../actions/categories";
-
+import {searchProducts} from "../../../actions/api";
+import getParamsFromSearch from "../../../services/search";
 const loadData = ({loadCategories}) => loadCategories();
 
 const elements = ["name", "category", "price", "distance", "location", "sort"];
@@ -21,23 +23,45 @@ const handlers = {
 	onLocationChange: coords => coords
 };
 
+
 const props = {
 	elements,
 	handlers,
-	defaultFormState,
-	onSubmit: () => void 0
+	defaultFormState
 };
 
 class SearchFormContainer extends Component {
+	constructor(props) {
+		super(props);
+
+		this.onSubmit = this.onSubmit.bind(this);
+	}
+
 	componentWillMount() {
 		loadData(this.props);
 	}
 
+	onSubmit(data) {
+		const search = getParamsFromSearch(data);
+
+		this.props.onSubmit(search);
+	}
+
 	render() {
-		return createElement(connectForm(props)(SearchProduct));
+		const formProps = {
+			...props,
+			onSubmit: this.onSubmit
+		};
+
+		return createElement(connectForm(formProps)(SearchProduct));
 	}
 }
 
+SearchFormContainer.propTypes = {
+	onSubmit: PropTypes.func.isRequired
+};
+
 export default connect(void 0, {
-	loadCategories
+	loadCategories,
+	onSubmit: searchProducts
 })(SearchFormContainer);

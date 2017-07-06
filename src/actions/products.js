@@ -8,10 +8,9 @@ export const addProduct = (product) => ({
 });
 
 export const loadProducts = params => (dispatch, getState) => {
-	const MINIMUM_PRODUCTS = 10,
-				products         = getAllProducts(getState()).items;
+	const products = getAllProducts(getState()).items;
 
-	if (products && products.length >= MINIMUM_PRODUCTS) {
+	if (products.length) {
 		return null;
 	}
 

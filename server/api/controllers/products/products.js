@@ -24,7 +24,7 @@ const getSortingFilters = queryParameters => {
 	const SORT_BY_DISTANCE = "distance",
 				SORT_ORDER       = "descending";
 
-	const errors = validateRequest(queryParameters, ["sort", "order", "latitude", "longitude"]);
+	const errors = validateRequest(queryParameters, ["sort", "order", "radius", "latitude", "longitude"]);
 
 	if (errors.length) {
 		return {
