@@ -39,5 +39,5 @@ const allIds = (state = [], action) => {
 export default combineReducers({
 	byId,
 	allIds,
-	isFetching: createFetchingReducer([FETCH_USERS.request, FETCH_ONE_USER.request], [FETCH_USERS.success, FETCH_ONE_USER.success])
+	isFetching: createFetchingReducer([FETCH_USERS, FETCH_ONE_USER])
 });

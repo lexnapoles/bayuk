@@ -47,5 +47,5 @@ const allIds = (state = [], action) => {
 export default combineReducers({
 	byId,
 	allIds,
-	isFetching: createFetchingReducer([FETCH_PRODUCTS.request, FETCH_ONE_PRODUCT.request, SEARCH_PRODUCTS.request], [FETCH_PRODUCTS.success, FETCH_ONE_PRODUCT.success, SEARCH_PRODUCTS.success])
+	isFetching: createFetchingReducer([FETCH_PRODUCTS, FETCH_ONE_PRODUCT, SEARCH_PRODUCTS])
 });
