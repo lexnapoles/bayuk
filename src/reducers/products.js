@@ -37,7 +37,6 @@ const allIds = (state = [], action) => {
 			return union(state, action.payload.result);
 
 		case SEARCH_PRODUCTS.success:
-			console.log("allIds", action.payload.result);
 			return action.payload.result;
 
 		default:

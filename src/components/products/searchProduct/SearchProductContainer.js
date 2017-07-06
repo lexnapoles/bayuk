@@ -7,6 +7,8 @@ import SearchProduct from "./SearchProduct";
 import {loadCategories} from "../../../actions/categories";
 import {searchProducts} from "../../../actions/api";
 import getParamsFromSearch from "../../../services/search";
+import {browserHistory} from "react-router";
+
 const loadData = ({loadCategories}) => loadCategories();
 
 const elements = ["name", "category", "price", "distance", "location", "sort"];
@@ -45,6 +47,8 @@ class SearchFormContainer extends Component {
 		const search = getParamsFromSearch(data);
 
 		this.props.onSubmit(search);
+
+		browserHistory.push("/results");
 	}
 
 	render() {

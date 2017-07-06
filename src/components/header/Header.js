@@ -7,7 +7,7 @@ const Header = ({children}) =>
 		<nav className={nav}>
 			{children}
 		</nav>
-	</header>
+	</header>;
 
 Header.propTypes = {
 	children: PropTypes.node

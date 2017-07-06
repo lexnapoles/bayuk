@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from "react";
 import {connect} from "react-redux";
 import {container, main} from "../layout.css";
-import HomeHeader from "../header/homeHeader/HomeHeader";
+import HomeHeader from "./homeHeader/HomeHeader";
 import ProductTableContainer from "../products/productTable/ProductTableContainer";
 import {loadProducts} from "../../actions/products";
 import {loadCategories} from "../../actions/categories";

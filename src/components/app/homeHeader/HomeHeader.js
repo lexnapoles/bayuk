@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {logo, searchIcon} from "./homeHeader.css";
-import {Link} from "react-router";
+import {logo} from "./homeHeader.css";
 import Icon from "react-fa";
+import SearchIcon from "../../icons/searchIcon/SearchIcon";
 import SidebarMenu from "../../sidebarMenu/SidebarMenu";
-import Header from "../Header";
+import Header from "../../header/Header";
 import UserMenuThumbnailContainer from "../../user/userMenuThumbnail/UserMenuThumbnailContainer";
 
 class HomeHeader extends Component {
@@ -27,9 +27,7 @@ class HomeHeader extends Component {
 				</SidebarMenu>
 				<Icon name="bars" size="lg" onClick={this.toggleSidebarVisibility}/>
 				<div className={logo}>Bayuk</div>
-				<Link to={"/search"}>
-					<Icon name="search" size="lg" className={searchIcon}/>
-				</Link>
+				<SearchIcon/>
 			</Header>
 		);
 	}

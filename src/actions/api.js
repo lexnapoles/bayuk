@@ -22,7 +22,7 @@ const normalizeResponse = schema => (action, state, res) => getJSON(res).then((j
 
 const stringifyQueryParams = params => Object.keys(params).length ? `?${queryString.stringify(params)}` : "";
 
-const getTypes = ({request, success,failure}) => [request, success, failure];
+const getTypes = ({request, success, failure}) => [request, success, failure];
 
 export const fetchCategories = () => ({
 	[CALL_API]: {
@@ -47,9 +47,7 @@ export const fetchProducts = (params = {}) => ({
 	}
 });
 
-export const searchProducts = (params = {}) => {
-	console.log(stringifyQueryParams(params))
-	return ({
+export const searchProducts = (params = {}) => ({
 	[CALL_API]: {
 		endpoint: `${apiBaseUrl}/products${stringifyQueryParams(params)}`,
 		method:   "GET",
@@ -63,7 +61,6 @@ export const searchProducts = (params = {}) => {
 		]
 	}
 });
-}
 
 export const fetchOneProduct = (productId, params = {}) => ({
 	[CALL_API]: {
