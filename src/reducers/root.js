@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import errorMessage from "./errorMessage";
+import errorMessages from "./errorMessages";
 import currentUser from "./currentUser";
 import entities from "./entities";
 import * as fromUser from "./currentUser";
@@ -20,5 +20,5 @@ export const getGeolocation = ({currentUser}) => fromUser.getGeolocation(current
 export default combineReducers({
 	entities,
 	currentUser,
-	errorMessage
+	errorMessages
 });

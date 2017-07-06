@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { Component } from "react";
+import React, {Component} from "react";
+import {omit} from "lodash/object";
 
 const DEFAULT_MADRID_COORDS = {
 	latitude:  40.416,
@@ -26,18 +27,37 @@ const geolocated = WrappedComponent => {
 			navigator.geolocation.getCurrentPosition(success);
 		}
 
+		getAlreadyLocatedCoordsProps({coords: {latitude, longitude}}) {
+			return {
+				...omit(this.props, "isAlreadyLocated"),
+				latitude,
+				longitude
+			};
+		}
+
+		getOwnCoordsProps() {
+			return {
+				...omit(this.props, "isAlreadyLocated"),
+				...this.state
+			}
+		}
+
 		render() {
-			const props = this.props.alreadyLocated && this.props.coords
-				? this.props
-				: {...this.props, ...this.state};
+			const props = this.props.isAlreadyLocated && this.props.coords
+				? this.getAlreadyLocatedCoordsProps(this.props)
+				: this.getOwnCoordsProps();
 
 			return <WrappedComponent {...props}/>;
 		}
 	}
 
 	Geolocator.propTypes = {
-		alreadyLocated: PropTypes.bool,
-		coords:         PropTypes.object
+		isAlreadyLocated: PropTypes.bool,
+		coords:           PropTypes.object
+	};
+
+	Geolocator.defaultPropTypes = {
+		isAlreadyLocated: false
 	};
 
 	return Geolocator;

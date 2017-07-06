@@ -25,7 +25,6 @@ const handlers = {
 	onLocationChange: coords => coords
 };
 
-
 const props = {
 	elements,
 	handlers,
@@ -48,7 +47,7 @@ class SearchFormContainer extends Component {
 
 		this.props.onSubmit(search);
 
-		browserHistory.push("/results");
+		browserHistory.push("/");
 	}
 
 	render() {

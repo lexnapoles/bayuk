@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {connect} from "react-redux";
 import {container, main} from "../layout.css";
 import HomeHeader from "./homeHeader/HomeHeader";
@@ -60,7 +60,7 @@ const mapStateToProps = state => {
 
 	return {
 		isAlreadyLocated: Boolean(coords),
-		coords:           coords ? coords : {}
+		coords:           coords ? coords : null
 	};
 };
 
