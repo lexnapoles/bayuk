@@ -47,7 +47,7 @@ class SearchFormContainer extends Component {
 
 		this.props.onSubmit(search);
 
-		browserHistory.push("/");
+		browserHistory.push("/results");
 	}
 
 	render() {
