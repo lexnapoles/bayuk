@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from "react";
 import {browserHistory} from "react-router";
-import {Link} from "react-router";
 import Spinner from "../../spinner/Spinner";
 import ProductOverview from "../productOverview/ProductOverview";
-import Icon from "react-fa";
-import {container, addButtonContainer, addButton, spinner} from "./productTable.css";
+import {container, spinner} from "./productTable.css";
 
 class ProductTable extends Component {
 	renderProducts(products) {
@@ -20,11 +18,7 @@ class ProductTable extends Component {
 				<div className={container}>
 					{this.renderProducts(products)}
 				</div>
-				<div className={addButtonContainer}>
-					<Link className={addButton} to={"/add"}>
-						<Icon name="plus-circle" size="4x"/>
-					</Link>
-				</div>
+				{this.props.children}
 			</div>
 		);
 	}
@@ -46,6 +40,7 @@ class ProductTable extends Component {
 
 ProductTable.propTypes = {
 	products:   PropTypes.array.isRequired,
+	children:   PropTypes.element,
 	isFetching: PropTypes.bool
 };
 

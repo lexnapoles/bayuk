@@ -3,6 +3,7 @@ import {container, main} from "../../layout.css";
 import ResultsHeader from "./resultsHeader/ResultsHeader";
 import ProductTableContainer from "../productTable/ProductTableContainer";
 
+
 const SearchResult = () =>
 	<div className={container}>
 		<ResultsHeader/>
