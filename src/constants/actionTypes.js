@@ -4,6 +4,14 @@ const asyncActionTypes = actionName => ({
 	failure: `${actionName}_FAILURE`
 });
 
+const hasNeededKeys = action => action.request && action.success && action.failure;
+
+const isEveryKeyAString = action => Object.keys(action).every(t => typeof action[t] === "string");
+
+const isEveryTypeValid = ({request, success, failure}) =>  request.includes("_REQUEST") || !success.includes("_SUCCESS") || !failure.includes("_FAILURE");
+
+export const isAsyncActionType = action =>  hasNeededKeys(action) || isEveryKeyAString(action) || isEveryTypeValid(action);
+
 export const ADD_PRODUCT = asyncActionTypes("ADD_PRODUCT");
 export const FETCH_PRODUCTS = asyncActionTypes("FETCH_PRODUCTS");
 export const SEARCH_PRODUCTS = asyncActionTypes("SEARCH_PRODUCTS");
