@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {browserHistory} from "react-router";
 import Spinner from "../../spinner/Spinner";
 import ProductOverview from "../productOverview/ProductOverview";
@@ -32,16 +32,29 @@ class ProductTable extends Component {
 	}
 
 	render() {
-		const {isFetching, products} = this.props;
+		const {isFetching, products, nextPageUrl} = this.props;
 
-		return (isFetching ? this.renderSpinner() : this.renderProductsTable(products));
+		const isEmpty = !products.length;
+
+		if (isEmpty && isFetching) {
+			return this.renderSpinner();
+		}
+
+		const isLastPage = !nextPageUrl;
+
+		if (isEmpty && isLastPage) {
+			return <h1><i>"Sorry, there's nothing here!"</i></h1>
+		}
+
+		return this.renderProductsTable(products)
 	}
 }
 
 ProductTable.propTypes = {
-	products:   PropTypes.array.isRequired,
-	children:   PropTypes.element,
-	isFetching: PropTypes.bool
+	products:    PropTypes.array.isRequired,
+	children:    PropTypes.element,
+	isFetching:  PropTypes.bool,
+	nextPageUrl: PropTypes.bool
 };
 
 ProductTable.defaultProps = {

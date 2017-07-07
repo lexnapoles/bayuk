@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {container, main} from "../layout.css";
 import HomeHeader from "./homeHeader/HomeHeader";
-import ProductTableContainer from "../products/productTable/ProductTableContainer";
+import ProductsByDistance from "../products/productsByDistance/ProductsByDistance";
 import {loadProducts} from "../../actions/products";
 import {loadCategories} from "../../actions/categories";
 import {loadGeolocation} from "../../actions/users";
@@ -36,11 +36,11 @@ class App extends Component {
 			<div className={container}>
 				<HomeHeader/>
 				<main className={main}>
-					<ProductTableContainer>
+					<ProductsByDistance>
 						<div className={addButtonContainer}>
 							<AddIcon/>
 						</div>
-					</ProductTableContainer>
+					</ProductsByDistance>
 				</main>
 				<footer></footer>
 			</div>
