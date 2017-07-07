@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {omit} from "lodash/object";
 import {connect} from "react-redux";
 import ProductDetails from "./ProductDetails";
@@ -15,7 +15,7 @@ class ProductDetailsContainer extends Component {
 	}
 
 	render() {
-		const props = omit(this.props, "loadProduct");
+		const props = omit(this.props, ["loadProduct", "id"]);
 
 		return <ProductDetails {...props}/>;
 	}
@@ -34,11 +34,12 @@ const formatProduct = product => ({
 });
 
 const mapStateToProps = (state, {params: {id}}) => {
-	const {isFetching, item} = getProductById(state, id);
+	const {item} = getProductById(state, id);
 
-	return isFetching
-		? {isFetching, id, product: {}}
-		: {isFetching, id, product: item ? formatProduct(item) : void 0};
+	return {
+		id,
+		product: item ? formatProduct(item) : void 0
+	};
 };
 
 export default connect(mapStateToProps, {

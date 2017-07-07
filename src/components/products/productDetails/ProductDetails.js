@@ -53,12 +53,12 @@ class ProductDetails extends Component {
 	}
 
 	render() {
-		const {isFetching, product} = this.props;
+		const {product} = this.props;
 
 		return (
 			<div styleName="container">
 				<ProductDetailsHeader/>
-				{isFetching ? this.renderSpinner() : this.renderProduct(product)}
+				{product ? this.renderProduct(product) : this.renderSpinner()}
 			</div>
 		);
 	}
@@ -66,12 +66,7 @@ class ProductDetails extends Component {
 
 ProductDetails.propTypes = {
 	product:    PropTypes.object,
-	isFetching: PropTypes.bool,
 	onClick:    PropTypes.func
-};
-
-ProductDetails.defaultProps = {
-	isFetching: false
 };
 
 export default CSSModules(ProductDetails, styles);
