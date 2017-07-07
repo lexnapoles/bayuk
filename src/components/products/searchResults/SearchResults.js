@@ -1,14 +1,14 @@
 import React from "react";
 import {container, main} from "../../layout.css";
 import ResultsHeader from "./resultsHeader/ResultsHeader";
-import ProductTableContainer from "../productTable/ProductTableContainer";
+import SearchedProducts from "../searchedProducts/SearchedProducts";
 
-const SearchResult = () =>
+const SearchResults = () =>
 	<div className={container}>
 		<ResultsHeader/>
 		<main className={main}>
-			<ProductTableContainer/>
+			<SearchedProducts/>
 		</main>
 	</div>;
 
-export default SearchResult;
+export default SearchResults;

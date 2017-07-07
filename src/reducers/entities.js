@@ -10,7 +10,7 @@ export const getProductById = ({products}, id) => getItemById(products, id);
 export const getListOfProductsById = ({products}, ids) => {
 	const isIdsListEmpty = Array.isArray(ids) && !ids.length;
 
-	if	(isIdsListEmpty) {
+	if	(isIdsListEmpty || !ids) {
 		return [];
 	}
 

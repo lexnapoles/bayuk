@@ -14,13 +14,11 @@ const byId = (state = {}, action) => {
 			};
 
 		case FETCH_PRODUCTS.success:
+		case SEARCH_PRODUCTS.success:
 			return {
 				...state,
 				...action.payload.entities.products
 			};
-
-		case SEARCH_PRODUCTS.success:
-			return action.payload.entities.products || {};
 
 		default:
 			return state;
@@ -34,10 +32,8 @@ const allIds = (state = [], action) => {
 			return union(state, [action.payload.id]);
 
 		case FETCH_PRODUCTS.success:
-			return union(state, action.payload.result);
-
 		case SEARCH_PRODUCTS.success:
-			return action.payload.result;
+			return union(state, action.payload.result);
 
 		default:
 			return state;
