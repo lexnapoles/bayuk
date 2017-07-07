@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from "react";
 import Filter from "../filter/Filter";
 import ImageInput from "../../inputs/fileInputs/imageInput/ImageInputContainer";
@@ -35,11 +36,11 @@ const ImageFilter = ({urls, error, maxImages, onAdd, onDelete}) => {
 };
 
 ImageFilter.propTypes = {
-	urls:      React.PropTypes.object,
-	error:      React.PropTypes.string,
-	maxImages: React.PropTypes.number.isRequired,
-	onAdd:     React.PropTypes.func.isRequired,
-	onDelete:  React.PropTypes.func.isRequired
+	urls:      PropTypes.object,
+	error:     PropTypes.string,
+	maxImages: PropTypes.number.isRequired,
+	onAdd:     PropTypes.func.isRequired,
+	onDelete:  PropTypes.func.isRequired
 };
 
 ImageFilter.defaultProps = {

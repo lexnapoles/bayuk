@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from "react";
 import {input} from "./priceInput.css";
 import Input from "./labeledInput/LabeledInput";
@@ -16,9 +17,9 @@ const PriceInput = ({id, description, onChange}) => {
 };
 
 PriceInput.propTypes = {
-	onChange:    React.PropTypes.func.isRequired,
-	id:          React.PropTypes.string.isRequired,
-	description: React.PropTypes.string.isRequired
+	onChange:    PropTypes.func.isRequired,
+	id:          PropTypes.string.isRequired,
+	description: PropTypes.string.isRequired
 };
 
 export default PriceInput;

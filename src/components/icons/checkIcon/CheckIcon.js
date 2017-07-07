@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {checkButton} from "./checkIcon.css";
 import Icon from "react-fa";
@@ -11,7 +12,7 @@ const CheckIcon = ({formId}) => {
 };
 
 CheckIcon.propTypes = {
-	formId: React.PropTypes.string.isRequired
+	formId: PropTypes.string.isRequired
 };
 CheckIcon.defaultProps = {};
 

@@ -5,23 +5,8 @@
 	padding: 3em;
 }
 
-.addButtonContainer {
-	position: fixed;
-	left: 0;
-	bottom: 5%;
-	width: 100%;
-}
-
 .spinner {
 	composes: alignCenter from "../../layout.css";
-}
-
-.addButton {
-	text-decoration: none ;
-	color: black;
-	display: block;
-	width: fit-content;
-	margin: 0 auto;
 }
 
 @media (min-width: 580px) {

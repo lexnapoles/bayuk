@@ -1,38 +1,11 @@
-import React from "react";
-import Filter from "../filter/Filter";
-import Spinner from "../../spinner/Spinner";
-import CategoryInput  from "../../inputs/CategoryInput";
+import {connect} from "react-redux";
+import CheckBoxFilterContainer  from "../checkBoxFilter/CheckBoxFilterContainer";
+import {getAllCategories} from "../../../reducers/root";
 
-const CategoryFilter = ({isFetching, onChange, categories, error}) => {
-	const renderCategories = () => {
-		const categoryNames = Object.keys(categories);
+const mapStateToProps = state => {
+	const {isFetching, items} = getAllCategories(state);
 
-		return categoryNames.map(name =>
-			<CategoryInput key={name}
-											id={name}
-											description={name}
-											checked={categories[name]}
-											onChange={onChange}/>
-		);
-	};
-
-	return (
-		<Filter title="Category" error={error}>
-			{isFetching ? <Spinner/> : renderCategories()}
-		</Filter>
-	);
+	return items.length ? {isFetching, options: items, title: "Categories"} : {isFetching: true, options: [], title: "Categories"};
 };
 
-CategoryFilter.propTypes = {
-	isFetching: React.PropTypes.bool,
-	onChange:   React.PropTypes.func.isRequired,
-	categories: React.PropTypes.object.isRequired,
-	error:      React.PropTypes.string
-};
-
-CategoryFilter.defaultProps = {
-	isFetching: false
-};
-
-export default CategoryFilter;
-
+export default connect(mapStateToProps)(CheckBoxFilterContainer);

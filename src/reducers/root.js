@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import errorMessage from "./errorMessage";
+import errorMessages from "./errorMessages";
 import currentUser from "./currentUser";
 import entities from "./entities";
 import * as fromUser from "./currentUser";
@@ -15,10 +15,10 @@ export const getAllUsers = ({entities}) => fromEntities.getAllUsers(entities);
 
 export const getCurrentUser = ({currentUser}) => fromUser.getCurrentUser(currentUser);
 export const isUserLoggedIn = ({currentUser}) => fromUser.isUserLoggedIn(currentUser);
-
+export const getGeolocation = ({currentUser}) => fromUser.getGeolocation(currentUser);
 
 export default combineReducers({
 	entities,
 	currentUser,
-	errorMessage
+	errorMessages
 });

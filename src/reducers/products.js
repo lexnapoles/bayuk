@@ -1,5 +1,6 @@
+import {union} from "lodash/array";
 import {combineReducers} from "redux";
-import {FETCH_PRODUCTS, FETCH_ONE_PRODUCT, ADD_PRODUCT} from "../constants/actionTypes";
+import {FETCH_PRODUCTS, FETCH_ONE_PRODUCT, SEARCH_PRODUCTS, ADD_PRODUCT} from "../constants/actionTypes";
 import product from "./product";
 import createFetchingReducer from "./isFetching";
 
@@ -18,6 +19,9 @@ const byId = (state = {}, action) => {
 				...action.payload.entities.products
 			};
 
+		case SEARCH_PRODUCTS.success:
+			return action.payload.entities.products || {};
+
 		default:
 			return state;
 	}
@@ -25,11 +29,15 @@ const byId = (state = {}, action) => {
 
 const allIds = (state = [], action) => {
 	switch (action.type) {
+		case FETCH_ONE_PRODUCT.success:
 		case ADD_PRODUCT.success:
-			return [...state, action.payload.id];
+			return union(state, [action.payload.id]);
 
 		case FETCH_PRODUCTS.success:
-			return [...state, ...action.payload.result];
+			return union(state, action.payload.result);
+
+		case SEARCH_PRODUCTS.success:
+			return action.payload.result;
 
 		default:
 			return state;
@@ -39,5 +47,5 @@ const allIds = (state = [], action) => {
 export default combineReducers({
 	byId,
 	allIds,
-	isFetching: createFetchingReducer(FETCH_PRODUCTS.request, FETCH_PRODUCTS.success)
+	isFetching: createFetchingReducer([FETCH_PRODUCTS, FETCH_ONE_PRODUCT, SEARCH_PRODUCTS])
 });

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from "react";
 import FormHeader from "./formHeader/FormHeader";
 import {container, main, formContainer, form} from "./form.css";
@@ -17,11 +18,11 @@ const Form = ({title, formName, onSubmit, children}) => (
 );
 
 Form.propTypes = {
-	title:    React.PropTypes.string,
-	formName: React.PropTypes.string.isRequired,
-	onSubmit: React.PropTypes.func.isRequired,
-	children: React.PropTypes.node
-}
+	title:    PropTypes.string,
+	formName: PropTypes.string.isRequired,
+	onSubmit: PropTypes.func.isRequired,
+	children: PropTypes.node
+};
 
 Form.defaultProps = {
 	title: ""

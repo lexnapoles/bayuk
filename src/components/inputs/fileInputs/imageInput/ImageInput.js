@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from "react";
 import {thumbnailContainer, inputContainer} from "./imageInput.css";
 import FileInput from "../FileInput";
@@ -9,10 +10,10 @@ const ImageInputV2 = ({id, url, onAdd, onDelete}) =>
 		: <FileInput className={inputContainer} id={id} accept="image/*" onChange={onAdd}/>;
 
 ImageInputV2.propTypes = {
-	id:       React.PropTypes.number.isRequired,
-	url:      React.PropTypes.string,
-	onAdd:    React.PropTypes.func.isRequired,
-	onDelete: React.PropTypes.func.isRequired
+	id:       PropTypes.number.isRequired,
+	url:      PropTypes.string,
+	onAdd:    PropTypes.func.isRequired,
+	onDelete: PropTypes.func.isRequired
 };
 
 export default ImageInputV2;

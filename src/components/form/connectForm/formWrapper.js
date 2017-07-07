@@ -1,4 +1,5 @@
-import React, {Component, createElement} from "react";
+import PropTypes from 'prop-types';
+import { Component, createElement } from "react";
 import {createDefaultObjectFrom} from "../../../utils";
 import {omit} from "lodash/object";
 import {some} from "lodash/collection";
@@ -9,14 +10,14 @@ const getChildrenProps = props => {
 	return omit(props, ownProps);
 };
 
-const FormWrapper = (WrappedComponent, options = {}) => {
+const formWrapper = (WrappedComponent, options = {}) => {
 	class FormContainer extends Component {
 		constructor(props) {
 			super(props);
 
-			const elements  = props.elements,
+			const elements        = props.elements,
 						defaultElements = createDefaultObjectFrom(elements, ""),
-						formState = {...defaultElements, ...this.props.defaultFormState};
+						formState       = {...defaultElements, ...this.props.defaultFormState};
 
 			this.state = ({
 				form:     formState,
@@ -52,7 +53,7 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 
 		getHandler(handlerName, elementName) {
 			const customHandler = this.props.handlers[handlerName],
-						handler       = customHandler	? customHandler	: this.defaultHandler;
+						handler       = customHandler ? customHandler : this.defaultHandler;
 
 			return data => this.handlerWrapper(elementName, handler, data);
 		}
@@ -131,16 +132,16 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 	}
 
 	FormContainer.propTypes = {
-		elements:         React.PropTypes.array.isRequired,
-		onSubmit:         React.PropTypes.func.isRequired,
-		errorMessages:    React.PropTypes.object.isRequired,
-		validation:       React.PropTypes.object.isRequired,
-		defaultFormState: React.PropTypes.object,
-		handlers:         React.PropTypes.object
+		elements:         PropTypes.array.isRequired,
+		onSubmit:         PropTypes.func.isRequired,
+		errorMessages:    PropTypes.object.isRequired,
+		validation:       PropTypes.object.isRequired,
+		defaultFormState: PropTypes.object,
+		handlers:         PropTypes.object
 	};
 
 	FormContainer.defaultProps = {
-		handlers:      {}
+		handlers: {}
 	};
 
 	FormContainer.displayName = options.displayName;
@@ -148,4 +149,4 @@ const FormWrapper = (WrappedComponent, options = {}) => {
 	return FormContainer;
 };
 
-export default FormWrapper;
+export default formWrapper;

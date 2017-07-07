@@ -30,7 +30,10 @@ export const register = (req, res) => {
 		.catch(error => {
 			if (error.code === dbErrors.dataAlreadyExists) {
 				sendJsonResponse(res, 409, [userAlreadyExists()]);
+				return;
 			}
+
+			sendJsonResponse(res, 500, [error]);
 		});
 };
 

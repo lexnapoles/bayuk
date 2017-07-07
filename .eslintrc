@@ -21,7 +21,8 @@
 
   "globals": {
     "assert": true,
-    "sinon": true
+    "sinon": true,
+    "google": true
   },
 
   "extends": [

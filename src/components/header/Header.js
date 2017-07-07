@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from "react";
 import {header, nav} from "./header.css";
 
@@ -6,10 +7,10 @@ const Header = ({children}) =>
 		<nav className={nav}>
 			{children}
 		</nav>
-	</header>
+	</header>;
 
 Header.propTypes = {
-	children: React.PropTypes.node
-}
+	children: PropTypes.node
+};
 
 export default Header;

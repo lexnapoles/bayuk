@@ -1,4 +1,5 @@
-import React, {Component} from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import {product} from "./productOverview.css";
 import {getImagePath} from "../../../utils";
 
@@ -17,8 +18,8 @@ class ProductOverview extends Component {
 }
 
 ProductOverview.propTypes = {
-	product: React.PropTypes.object.isRequired,
-	onClick: React.PropTypes.func
+	product: PropTypes.object.isRequired,
+	onClick: PropTypes.func
 };
 
 export default ProductOverview;

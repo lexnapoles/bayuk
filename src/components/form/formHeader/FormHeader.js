@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from "react";
 import {check} from "./formHeader.css";
 import Header from "../../header/Header";
@@ -13,8 +14,8 @@ const FormHeader = ({redirect, formId}) =>
 	</Header>
 
 FormHeader.propTypes = {
-	formId:   React.PropTypes.string.isRequired,
-	redirect: React.PropTypes.string
+	formId:   PropTypes.string.isRequired,
+	redirect: PropTypes.string
 }
 
 FormHeader.defaultProps = {

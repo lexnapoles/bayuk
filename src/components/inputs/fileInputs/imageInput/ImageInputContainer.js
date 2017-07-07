@@ -1,4 +1,5 @@
-import React, {Component} from "react";
+import PropTypes from 'prop-types';
+import React, { Component } from "react";
 import ImageInput from "./ImageInput";
 
 class ImageInputContainer extends Component {
@@ -47,10 +48,10 @@ class ImageInputContainer extends Component {
 }
 
 ImageInputContainer.propTypes = {
-	url:      React.PropTypes.string,
-	id:       React.PropTypes.number.isRequired,
-	onAdd:    React.PropTypes.func.isRequired,
-	onDelete: React.PropTypes.func.isRequired
+	url:      PropTypes.string,
+	id:       PropTypes.number.isRequired,
+	onAdd:    PropTypes.func.isRequired,
+	onDelete: PropTypes.func.isRequired
 };
 
 ImageInputContainer.defaultProps = {

@@ -1,10 +1,8 @@
-import {getErrorMessage} from "../utils";
-
 const errorMessage = (state = null, action) => {
 	const {error} = action;
 
 	if (error) {
-		return getErrorMessage(action.payload);
+		return action.payload.response;
 	}
 
 	return state;

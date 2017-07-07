@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, {Component} from "react";
 import CSSModules from "react-css-modules";
 import Spinner from "../../spinner/Spinner";
@@ -19,7 +20,7 @@ class ProductDetails extends Component {
 			return <NotFound/>
 		}
 
-		const {price, name, description, images, user_id} = product;
+		const {price, name, description, images, owner, latitude, longitude} = product;
 
 		return (
 			<main styleName="productContainer">
@@ -35,9 +36,9 @@ class ProductDetails extends Component {
 						description={description}
 					/>
 					<hr styleName="line"/>
-					<GeolocationInfo styleName="map"/>
+					<GeolocationInfo styleName="map" latitude={latitude} longitude={longitude}/>
 					<hr styleName="line"/>
-					<UserOverviewContainer styleName="infoSection" user={user_id}/>
+					<UserOverviewContainer styleName="infoSection" id={owner}/>
 				</section>
 			</main>
 		);
@@ -45,9 +46,9 @@ class ProductDetails extends Component {
 
 	renderSpinner() {
 		return (
-		<main styleName="productContainer">
-			<Spinner/>
-		</main>
+			<main styleName="productContainer">
+				<Spinner/>
+			</main>
 		);
 	}
 
@@ -64,9 +65,9 @@ class ProductDetails extends Component {
 }
 
 ProductDetails.propTypes = {
-	product:    React.PropTypes.object,
-	isFetching: React.PropTypes.bool,
-	onClick:    React.PropTypes.func
+	product:    PropTypes.object,
+	isFetching: PropTypes.bool,
+	onClick:    PropTypes.func
 };
 
 ProductDetails.defaultProps = {
