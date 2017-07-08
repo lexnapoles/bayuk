@@ -80,7 +80,7 @@ describe("Products", function () {
 		return cleanAllPreviouslyCreatedImages()
 			.then(() => db.none(global.truncateAll))
 			.then(() => addCategories())
-			.then(() => server = stoppable(createServer(), 0));
+			.then(() => server = stoppable(createServer(5000), 0));
 	});
 
 	afterEach(function () {

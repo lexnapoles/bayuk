@@ -8,8 +8,8 @@ export const getUser = (user = {}) => ({
 	email:     faker.internet.email(),
 	name:      faker.name.findName(),
 	password:  faker.internet.password(),
-	latitude:  faker.address.latitude(),
-	longitude: faker.address.longitude(),
+	latitude:  parseFloat(faker.address.latitude()),
+	longitude: parseFloat(faker.address.longitude()),
 	...user
 });
 

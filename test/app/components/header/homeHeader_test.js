@@ -1,6 +1,6 @@
 import React from "react";
 import {shallow, mount} from "enzyme";
-import HomeHeader from "Components/header/homeHeader/HomeHeader";
+import HomeHeader from "Components/app/homeHeader/HomeHeader";
 
 const store = {
 	subscribe: () => void 0,

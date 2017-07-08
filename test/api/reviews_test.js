@@ -75,7 +75,7 @@ describe("Reviews", function () {
 	beforeEach(function () {
 		return db.none(global.truncateAll)
 			.then(() => addCategories())
-			.then(() => server = stoppable(createServer(), 0));
+			.then(() => server = stoppable(createServer(5000), 0));
 	});
 
 	afterEach(function (done) {
