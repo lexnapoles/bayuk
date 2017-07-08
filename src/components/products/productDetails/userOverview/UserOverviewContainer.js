@@ -15,7 +15,7 @@ class UserOverviewContainer extends Component {
 	}
 
 	render() {
-		const props = omit(this.props, "loadUser");
+		const props = omit(this.props, ["loadUser", "id"]);
 
 		return <UserOverview {...props}/>
 	}
@@ -33,11 +33,12 @@ const formatUser = user => ({
 });
 
 const mapStateToProps = (state, {id}) => {
-	const {isFetching, item} = getUserById(state, id);
+	const {item} = getUserById(state, id);
 
-	return isFetching
-		? {isFetching, id, user: {}}
-		: {isFetching, id, user: item ? formatUser(item) : {}};
+	return {
+		id,
+		user: item ? formatUser(item) : void 0
+	}
 };
 
 export default connect(mapStateToProps, {
