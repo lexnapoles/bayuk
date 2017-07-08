@@ -8,7 +8,7 @@ export const updateGeolocation = coords => ({
 });
 
 export const loadUser = userId => (dispatch, getState) => {
-	const user = getUserById(getState(), userId).item;
+	const user = getUserById(getState(), userId);
 
 	if (user) {
 		return null;
@@ -26,4 +26,3 @@ export const loadGeolocation = coords => (dispatch, getState) => {
 
 	return dispatch(updateGeolocation(coords));
 };
-

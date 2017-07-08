@@ -33,7 +33,7 @@ const formatUser = user => ({
 });
 
 const mapStateToProps = (state, {id}) => {
-	const {item} = getUserById(state, id);
+	const item = getUserById(state, id);
 
 	return {
 		id,

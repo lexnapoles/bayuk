@@ -53,15 +53,6 @@ const props = {
 	maxImages: MAX_IMAGES
 };
 
-const mapStateToProps = (state) => {
-	const {rehydrated} = getCurrentUser(state);
-
-	return {
-		isLoggedIn: isUserLoggedIn(state),
-		rehydrated
-	};
-};
-
 const loadData = ({loadCategories}) => loadCategories();
 
 class AddProductContainer extends Component {
@@ -73,6 +64,16 @@ class AddProductContainer extends Component {
 		return createElement(addAuthenticationTo(connectForm(props)(AddProduct)), omit(this.props, "loadCategories"));
 	}
 }
+
+const mapStateToProps = (state) => {
+	const {rehydrated} = getCurrentUser(state);
+
+	return {
+		isLoggedIn: isUserLoggedIn(state),
+		rehydrated
+	};
+};
+
 
 export default connect(mapStateToProps, {
 	onSubmit: addProduct,

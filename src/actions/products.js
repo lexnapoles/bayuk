@@ -18,7 +18,7 @@ export const loadProductsByDistance = (params, nextPage) => (dispatch, getState)
 };
 
 export const loadProduct = (id, params) => (dispatch, getState) => {
-	const product = getProductById(getState(), id).item;
+	const product = getProductById(getState(), id);
 
 	if (product) {
 		return null;

@@ -34,7 +34,7 @@ const formatProduct = product => ({
 });
 
 const mapStateToProps = (state, {params: {id}}) => {
-	const {item} = getProductById(state, id);
+	const item = getProductById(state, id);
 
 	return {
 		id,

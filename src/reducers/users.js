@@ -1,6 +1,5 @@
 import {combineReducers} from "redux";
 import {FETCH_ONE_USER, FETCH_USERS} from "../constants/actionTypes";
-import createFetchingReducer from "./isFetching";
 import user from "./user";
 
 const byId = (state = {}, action) => {
@@ -38,6 +37,5 @@ const allIds = (state = [], action) => {
 
 export default combineReducers({
 	byId,
-	allIds,
-	isFetching: createFetchingReducer([FETCH_USERS, FETCH_ONE_USER])
+	allIds
 });
