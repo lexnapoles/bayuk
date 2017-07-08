@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {container, main} from "../layout.css";
 import HomeHeader from "./homeHeader/HomeHeader";
 import ProductsByDistance from "../products/productsByDistance/ProductsByDistance";
-import {loadProducts} from "../../actions/products";
+import {loadProductsByDistance} from "../../actions/products";
 import {loadCategories} from "../../actions/categories";
 import {loadGeolocation} from "../../actions/users";
 import geolocated from "../geolocated/geolocated";
@@ -12,7 +12,7 @@ import {getGeolocation} from "../../reducers/root";
 import AddIcon from "../icons/addIcon/AddIcon";
 import {addButtonContainer} from "./app.css";
 
-const loadData = ({loadProducts, loadCategories, loadGeolocation, latitude, longitude}) => {
+const loadData = ({loadProductsByDistance, loadCategories, loadGeolocation, latitude, longitude}) => {
 	const query = {
 		sort:   "distance",
 		order:  "descending",
@@ -23,7 +23,7 @@ const loadData = ({loadProducts, loadCategories, loadGeolocation, latitude, long
 
 	loadGeolocation({latitude, longitude});
 	loadCategories();
-	loadProducts(query);
+	loadProductsByDistance(query);
 };
 
 class App extends Component {
@@ -49,10 +49,10 @@ class App extends Component {
 }
 
 App.propTypes = {
-	loadProducts:   PropTypes.func.isRequired,
-	loadCategories: PropTypes.func.isRequired,
-	latitude:       PropTypes.number.isRequired,
-	longitude:      PropTypes.number.isRequired
+	loadProductsByDistance: PropTypes.func.isRequired,
+	loadCategories:         PropTypes.func.isRequired,
+	latitude:               PropTypes.number.isRequired,
+	longitude:              PropTypes.number.isRequired
 };
 
 const mapStateToProps = state => {
@@ -65,7 +65,7 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-	loadProducts,
+	loadProductsByDistance,
 	loadCategories,
 	loadGeolocation
 })(geolocated(App));

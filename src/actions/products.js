@@ -1,17 +1,17 @@
 import {ADD_PRODUCT} from "../constants/actionTypes";
 import {fetchProducts, fetchOneProduct} from "./api";
-import {getAllProducts, getProductById} from "../reducers/root";
+import {getProductsByDistancePagination, getProductById} from "../reducers/root";
 
 export const addProduct = (product) => ({
 	type:    ADD_PRODUCT,
 	payload: {product}
 });
 
-export const loadProducts = params => (dispatch, getState) => {
-	const products = getAllProducts(getState()).items;
+export const loadProductsByDistance = (params, nextPage) => (dispatch, getState) => {
+	const {pageCount} = getProductsByDistancePagination(getState()) || {};
 
-	if (products.length) {
-		return null;
+	if (pageCount > 0 && !nextPage) {
+		return null
 	}
 
 	return dispatch(fetchProducts(params));
@@ -26,4 +26,3 @@ export const loadProduct = (id, params) => (dispatch, getState) => {
 
 	return dispatch(fetchOneProduct(id, params));
 };
-
