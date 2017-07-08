@@ -24,9 +24,9 @@ export const register = (req, res) => {
 	}
 
 	addUser(req.body)
-		.then(({user, token}) => {
+		.then(user => {
 			res.location(`/api/users/${user.id}`);
-			sendJsonResponse(res, 201, token);
+			sendJsonResponse(res, 201, createJwt(transformUser(user)));
 		})
 		.catch(error => {
 			if (error.code === dbErrors.dataAlreadyExists) {

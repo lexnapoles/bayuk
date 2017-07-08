@@ -23,11 +23,7 @@ const addUserToDB = user => db.one(users.add, user);
 export const addUser = user =>
 	setPassword(user.password)
 		.then(credentials => addUserToDB({...omit(user, "password"), ...credentials}))
-		.then(transformUser)
-		.then(user => ({
-			user,
-			token: createJwt(user)
-		}));
+		.then(user => user);
 
 const updateUserFromDB = user => db.one(users.update, user);
 
