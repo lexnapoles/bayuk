@@ -11,12 +11,6 @@ export const createDefaultObjectFrom = (base = {}, defaultValue = "") => {
 	}), {});
 };
 
-export const getImagePath = (entity, imageId) => {
-	imageId = imageId ? imageId : "default";
-
-	return `/image/${entity}/${imageId}.jpg`;
-};
-
 export const isNotEmpty = value => !isEmpty(value);
 
 export const getJwtPayload = jwt => {

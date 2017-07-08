@@ -1,29 +1,47 @@
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import UserMenuThumbnail from "./UserMenuThumbnail";
-import {getCurrentUser, isUserLoggedIn} from "../../../reducers/root";
-import {getImagePath} from "../../../utils";
+import {getCurrentUser, getUserById, isUserLoggedIn} from "../../../reducers/root";
+import {loadUser} from "../../../actions/users";
 
-const mapStateToProps = state => {
-	let image = void 0,
-			name  = "",
-			id    = "";
-
-	const isLoggedIn = isUserLoggedIn(state);
-
+const loadData = ({isLoggedIn, loadUser, id}) => {
 	if (isLoggedIn) {
-		const {id: userId, name: userName, image: userImage} = getCurrentUser(state);
-
-		image = userImage;
-		name = userName;
-		id = userId;
-	}
-
-	return {
-		isLoggedIn,
-		id,
-		image: getImagePath("user", image),
-		name
+		loadUser(id);
 	}
 };
 
-export default connect(mapStateToProps)(UserMenuThumbnail);
+class UserMenuThumbnailContainer extends Component {
+	componentWillReceiveProps(props) {
+		loadData(props);
+	}
+
+	render() {
+		const {user} = this.props;
+
+		return <UserMenuThumbnail user={user}/>
+	}
+}
+
+UserMenuThumbnailContainer.propTypes = {
+	isLoggedIn: PropTypes.bool.isRequired,
+	user:       PropTypes.object,
+	id:         PropTypes.string
+};
+
+
+const mapStateToProps = state => {
+	const isLoggedIn = isUserLoggedIn(state),
+				{id}       = isLoggedIn ? getCurrentUser(state) : {},
+				user       = getUserById(state, id) || {};
+
+	return {
+		isLoggedIn,
+		user,
+		id
+	}
+};
+
+export default connect(mapStateToProps, {
+	loadUser
+})(UserMenuThumbnailContainer);

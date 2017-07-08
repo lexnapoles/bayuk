@@ -6,7 +6,12 @@ const store = {
 	subscribe: () => void 0,
 	dispatch:  () => void 0,
 	getState:  () => ({
-		currentUser: {token: ""}
+		entities: {
+			users: {
+				allIds: [],
+				byId: {}
+		}},
+		currentUser: {}
 	})
 };
 
