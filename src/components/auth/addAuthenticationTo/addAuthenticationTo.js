@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { Component } from "react";
+import {isNotEmpty} from "../../../utils";
+import React, {Component} from "react";
 import Spinner from "../../spinner/Spinner";
 import AuthPage from "../authPage/AuthPage";
 import {alignCenter} from "./addAuthenticationTo.css";
@@ -21,9 +22,9 @@ const addAuthenticationTo = WrappedComponent => {
 		}
 
 		render() {
-			const {rehydrated, isLoggedIn, ...props} = this.props;
+			const {user, isLoggedIn, ...props} = this.props;
 
-			return rehydrated
+			return isNotEmpty(user)
 				? this.renderWrappedComponent(isLoggedIn, props)
 				: this.renderSpinner()
 		}
@@ -31,7 +32,7 @@ const addAuthenticationTo = WrappedComponent => {
 
 	AuthenticatedComponent.propTypes = {
 		isLoggedIn: PropTypes.bool.isRequired,
-		rehydrated: PropTypes.bool.isRequired
+		user:       PropTypes.object.isRequired
 	};
 
 	return AuthenticatedComponent;

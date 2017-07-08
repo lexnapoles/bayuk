@@ -1,11 +1,5 @@
 import {fetchOneUser} from "./api";
-import {UPDATE_GEOLOCATION} from "../constants/actionTypes";
-import {getUserById, getGeolocation} from "../reducers/root";
-
-export const updateGeolocation = coords => ({
-	type:    UPDATE_GEOLOCATION,
-	payload: {coords}
-});
+import {getUserById} from "../reducers/root";
 
 export const loadUser = userId => (dispatch, getState) => {
 	const user = getUserById(getState(), userId);
@@ -15,14 +9,4 @@ export const loadUser = userId => (dispatch, getState) => {
 	}
 
 	return dispatch(fetchOneUser(userId));
-};
-
-export const loadGeolocation = coords => (dispatch, getState) => {
-	const userGeo = getGeolocation(getState());
-
-	if (userGeo) {
-		return null;
-	}
-
-	return dispatch(updateGeolocation(coords));
 };

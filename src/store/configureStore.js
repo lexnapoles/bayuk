@@ -1,5 +1,6 @@
 import {createStore, applyMiddleware} from "redux";
 import {persistStore, autoRehydrate} from 'redux-persist'
+import {createFilter} from 'redux-persist-transform-filter';
 import {apiMiddleware} from "redux-api-middleware";
 import thunkMiddleware from "redux-thunk";
 import addProductMiddleware from "../middlewares/addProductMiddleware";
@@ -21,6 +22,11 @@ if (process.env.NODE_ENV !== "production") {
 	middlewares.push(logger);
 }
 
+const currentUserPersistFilter = createFilter(
+	"currentUser",
+	["id", "token"]
+);
+
 const configureStore = () => {
 	const store = createStore(
 		rootReducer,
@@ -29,7 +35,8 @@ const configureStore = () => {
 	);
 
 	persistStore(store, {
-		whitelist: ["currentUser"]
+		whitelist: ["currentUser"],
+		transforms: [currentUserPersistFilter]
 	});
 
 	return store;

@@ -66,11 +66,11 @@ class AddProductContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-	const {rehydrated} = getCurrentUser(state);
+	const user = getCurrentUser(state) || {};
 
 	return {
 		isLoggedIn: isUserLoggedIn(state),
-		rehydrated
+		user
 	};
 };
 

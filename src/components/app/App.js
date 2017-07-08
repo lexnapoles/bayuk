@@ -6,7 +6,7 @@ import HomeHeader from "./homeHeader/HomeHeader";
 import ProductsByDistance from "../products/productsByDistance/ProductsByDistance";
 import {loadProductsByDistance} from "../../actions/products";
 import {loadCategories} from "../../actions/categories";
-import {loadGeolocation} from "../../actions/users";
+import {loadGeolocation} from "../../actions/location";
 import geolocated from "../geolocated/geolocated";
 import {getGeolocation} from "../../reducers/root";
 import AddIcon from "../icons/addIcon/AddIcon";
@@ -60,7 +60,7 @@ const mapStateToProps = state => {
 
 	return {
 		isAlreadyLocated: Boolean(coords),
-		coords:           coords ? coords : null
+		coords
 	};
 };
 

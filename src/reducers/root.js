@@ -2,10 +2,12 @@ import {combineReducers} from "redux";
 import errorMessages from "./errorMessages";
 import currentUser from "./currentUser";
 import entities from "./entities";
+import location from "./location";
 import pagination from "./pagination";
 import * as fromUser from "./currentUser";
 import * as fromEntities from "./entities";
 import * as fromPagination from "./pagination";
+import * as fromLocation from "./location";
 
 export const getAllCategories = ({entities}) => fromEntities.getAllCategories(entities);
 
@@ -21,11 +23,13 @@ export const getSearchedProductsPagination = ({pagination}) => fromPagination.ge
 
 export const getCurrentUser = ({currentUser}) => fromUser.getCurrentUser(currentUser);
 export const isUserLoggedIn = ({currentUser}) => fromUser.isUserLoggedIn(currentUser);
-export const getGeolocation = ({currentUser}) => fromUser.getGeolocation(currentUser);
+
+export const getGeolocation = ({location}) => fromLocation.getGeolocation(location);
 
 export default combineReducers({
 	entities,
 	currentUser,
 	pagination,
+	location,
 	errorMessages
 });
