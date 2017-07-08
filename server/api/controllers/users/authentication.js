@@ -6,6 +6,7 @@ import {validateRegister, validateLogin} from "./validators";
 import {validateRequest} from "../validators";
 import {userAlreadyExists} from "../../../errors/api/userErrors";
 import dbErrors from "../../../errors/database";
+import {transformUser} from "../../transformers/users";
 
 export const register = (req, res) => {
 	const requestErrors = validateRequest(req, "body");
@@ -60,7 +61,7 @@ export const login = (req, res) => {
 
 		if (user) {
 			res.location(`/api/users/${user.id}`);
-			sendJsonResponse(res, 201, createJwt(user));
+			sendJsonResponse(res, 201, createJwt(transformUser(user)));
 			return;
 		}
 		else {

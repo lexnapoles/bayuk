@@ -3,6 +3,7 @@ import {omit} from "lodash/object";
 import {users} from "../../database/sql/sql";
 import {createJwt, setPassword} from "./authentication";
 import {updateUserImage, deleteUserImageFromDisk} from "./userImages";
+import {transformUser} from "../transformers/users"
 
 export const getUsers = () =>
 	db.any("SELECT * FROM users_with_images")
@@ -22,6 +23,7 @@ const addUserToDB = user => db.one(users.add, user);
 export const addUser = user =>
 	setPassword(user.password)
 		.then(credentials => addUserToDB({...omit(user, "password"), ...credentials}))
+		.then(transformUser)
 		.then(user => ({
 			user,
 			token: createJwt(user)
