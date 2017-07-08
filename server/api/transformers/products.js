@@ -1,7 +1,9 @@
+import {getImagePath} from "../../utils";
+
 export const transformProduct = product => ({
 	id:          product.id,
 	name:        product.name,
-	images:      product.images,
+	images:      product.images.map(getImagePath.bind(void 0, "product")),
 	owner:       product.owner,
 	description: product.description,
 	category:    product.category,

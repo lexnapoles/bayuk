@@ -4,7 +4,6 @@ import {omit} from "lodash/object";
 import {connect} from "react-redux";
 import UserOverview from "./UserOverview";
 import {getUserById} from "../../../../reducers/root";
-import {getImagePath} from "../../../../utils";
 import {loadUser} from "../../../../actions/users";
 
 const loadData = ({loadUser, id}) => loadUser(id);
@@ -27,17 +26,12 @@ UserOverviewContainer.propTypes = {
 };
 
 
-const formatUser = user => ({
-	...user,
-	image: getImagePath("user", user.image)
-});
-
 const mapStateToProps = (state, {id}) => {
-	const item = getUserById(state, id);
+	const user = getUserById(state, id);
 
 	return {
 		id,
-		user: item ? formatUser(item) : void 0
+		user
 	}
 };
 

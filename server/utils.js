@@ -39,3 +39,9 @@ export const generateSingleImageObject = (id, data) => ({id, data});
 export const generateImagesObjs = (ids, data) => mapArraysSequentially(ids, data)(generateSingleImageObject);
 
 export const getFileNameWithNoExtension = file => file.split(".")[0];
+
+export const getImagePath = (entity, imageId) => {
+	imageId = imageId ? imageId : "default";
+
+	return `/image/${entity}/${imageId}.jpg`;
+};

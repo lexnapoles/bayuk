@@ -6,9 +6,11 @@ import {createJwt} from "../../services/authentication";
 import dbErrors from "../../../errors/database";
 import {userDoesNotExist} from "../../../errors/api/userErrors";
 import {getSelectedFields} from "../controller";
+import {transformUser} from "../../transformers/users";
 
 export const readUsers = (req, res) =>
 	getUsers()
+		.then(users => users.map(transformUser))
 		.then(users => sendJsonResponse(res, 200, users))
 		.catch(error => sendJsonResponse(res, 404, {"message": error}));
 
@@ -29,6 +31,7 @@ export const readOneUser = (req, res) => {
 	}
 
 	getUserById(userId)
+		.then(transformUser)
 		.then(user => getSelectedFields(user, req))
 		.then(user => sendJsonResponse(res, 200, user))
 		.catch(error => {
@@ -105,6 +108,7 @@ export const updateOneUser = (req, res) => {
 	}
 
 	updateUser(user)
+		.then(transformUser)
 		.then(user => sendJsonResponse(res, 200, user))
 		.catch(error => sendJsonResponse(res, 500, [error]));
 
