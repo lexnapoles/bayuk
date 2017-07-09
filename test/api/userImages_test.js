@@ -90,7 +90,7 @@ describe("User image services", function () {
 
 		it("should add a user image to DB", function () {
 			return addUser(getUser())
-				.then(({user}) => addUserImageToDB(user.id))
+				.then(({id}) => addUserImageToDB(id))
 				.then(imageId => imageId.should.exist);
 		});
 	});
@@ -100,7 +100,7 @@ describe("User image services", function () {
 			let createdUser = {};
 
 			return addUser(getUser())
-				.then(({user}) => createdUser = user)
+				.then((user) => createdUser = user)
 				.then(() => addUserImageToDB(createdUser.id))
 				.then(deleteUserImageFromDB)
 				.then(() => getImageOfUser(createdUser.id))
