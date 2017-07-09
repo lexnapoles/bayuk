@@ -6,7 +6,7 @@ import stoppable from "stoppable";
 import createServer from "../../server/server";
 import db from "../../server/database/db";
 import {global} from "../../server/database/sql/sql";
-import {addUser} from "../../server/api/services/users";
+import {addUser as addUserService} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {invalidUser, userAlreadyExists, loginFailed, userDoesNotExist} from "../../server/errors/api/userErrors";
 import {unauthorizedAccess, tokenDoesNotMatch} from "../../server/errors/api/authorizationErrors";
@@ -16,6 +16,13 @@ import {createJwt} from "../../server/api/services/authentication"
 chai.should();
 
 let server = {};
+
+const addUser = data =>
+	addUserService(data)
+		.then(user => ({
+			user,
+			token: createJwt(user)
+		}));
 
 const userKeys = ["id", "name", "email", "latitude", "longitude", "image"];
 
