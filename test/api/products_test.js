@@ -1,5 +1,4 @@
 import chai from "chai";
-import chaiFs from "chai-fs";
 import request from "supertest";
 import faker from "faker";
 import stoppable from "stoppable";
@@ -9,7 +8,6 @@ import {times} from "lodash/util";
 import db from "../../server/database/db";
 import {global} from "../../server/database/sql/sql";
 import {addUser} from "../../server/api/services/users"
-import {getProductsImagePath} from "../../server/api/services/productImages";
 import {addProduct} from "../../server/api/services/products"
 import {transformProduct} from "../../server/api/transformers/products";
 import addCategories from "../../server/seeder/database/categoriesTableSeeder";
@@ -21,7 +19,6 @@ import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors"
 import {createJwt} from "../../server/api/services/authentication"
 import {userDoesNotExist} from "../../server/errors/api/userErrors";
 
-chai.use(chaiFs);
 chai.should();
 
 let server = {};
@@ -52,20 +49,20 @@ const getProduct = () => ({
 	]
 });
 
-const getUserToken = () => {
-	return addUser(getRandomUser())
-		.then(({token}) => token);
-};
+
+const getUserToken = () =>
+	addUser(getRandomUser())
+		.then(createJwt);
 
 const addRandomProduct = () => {
 	let token = "";
 
 	return addUser(getRandomUser())
-		.then(userData => {
-			token = userData.token;
+		.then(user => {
+			token = createJwt(user);
 
 			return addProduct({
-				owner: userData.user.id,
+				owner: user.id,
 				...getProduct()
 			})
 		})
@@ -593,7 +590,7 @@ describe("Products", function () {
 				});
 		});
 
-		it("should delete the old images and add the new ones in the filesystem", function () {
+		it("should delete the old images and add the new ones", function () {
 			const base64Image = getProduct().images[0];
 			let oldImagesIds = [];
 
@@ -611,19 +608,14 @@ describe("Products", function () {
 						.expect(200)
 				})
 				.then(response => {
-					const {images: ids}  = response.body,
-								newImage       = getProductsImagePath(ids[0]),
-								firstOldImage  = getProductsImagePath(oldImagesIds[0]),
-								secondOldImage = getProductsImagePath(oldImagesIds[1]);
+					const {images}  = response.body;
 
-					newImage.should.be.a.file();
-
-					firstOldImage.should.not.be.a.path();
-					secondOldImage.should.not.be.a.path();
+					images.should.be.lengthOf(1);
+					images.should.not.have.members(oldImagesIds);
 				});
 		});
 
-		it("should maintain the old images in the filesystem when they are included", function () {
+		it("should maintain the old images when they are included", function () {
 			const base64Image = getProduct().images[0];
 			let oldImagesIds = [];
 
@@ -641,24 +633,19 @@ describe("Products", function () {
 						.expect(200)
 				})
 				.then(response => {
-					const {images: ids}  = response.body,
-								newImage       = getProductsImagePath(ids[0]),
-								firstOldImage  = getProductsImagePath(oldImagesIds[0]),
-								secondOldImage = getProductsImagePath(oldImagesIds[1]);
+					const {images} = response.body;
 
-					newImage.should.be.a.file();
-
-					firstOldImage.should.be.a.file();
-					secondOldImage.should.be.a.file();
+					images.should.include.members(oldImagesIds);
 				});
 		});
 
-		it("should delete the old images in the filesystem that are not included", function () {
+		it("should delete the old images that are not included", function () {
 			let oldImagesIds = [];
 
 			return addRandomProduct()
 				.then(({token, product}) => {
 					oldImagesIds = product.images;
+
 					return request(server)
 						.put(`/api/products/${product.id}`)
 						.set("Authorization", `Bearer ${token}`)
@@ -668,13 +655,12 @@ describe("Products", function () {
 						})
 						.expect(200)
 				})
-				.then(() => {
-					const firstOldImage  = getProductsImagePath(oldImagesIds[0]),
-								secondOldImage = getProductsImagePath(oldImagesIds[1]);
+				.then(response => {
+					const {images} = response.body,
+								deletedImage = oldImagesIds[1];
 
-					firstOldImage.should.be.a.file();
 
-					secondOldImage.should.not.be.a.path();
+					images.should.not.include(deletedImage);
 				});
 		});
 
