@@ -54,7 +54,7 @@ ProductTable.propTypes = {
 	products:    PropTypes.array.isRequired,
 	children:    PropTypes.element,
 	isFetching:  PropTypes.bool,
-	nextPageUrl: PropTypes.bool
+	nextPageUrl: PropTypes.string
 };
 
 ProductTable.defaultProps = {

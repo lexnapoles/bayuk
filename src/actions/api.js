@@ -1,3 +1,4 @@
+import parse from "parse-link-header";
 import {normalize} from "normalizr";
 import * as schema from "../actions/schema";
 import {CALL_API, getJSON} from "redux-api-middleware";
@@ -19,11 +20,31 @@ import {
 
 const apiBaseUrl = `http://localhost:3000/api`;
 
-const normalizeResponse = schema => (action, state, res) => getJSON(res).then((json) => normalize(json, schema));
-
 const stringifyQueryParams = params => Object.keys(params).length ? `?${queryString.stringify(params)}` : "";
 
 const getTypes = ({request, success, failure}) => [request, success, failure];
+
+const processBody = schema => (action, state, res) =>
+	getJSON(res)
+		.then((json) => normalize(json, schema));
+
+const processHeader = (action, state, res) => ({
+	nextPageUrl: parse(res.headers.get("Link")).next.url
+});
+
+const processResponse = (processors = []) =>
+	(action, state, res) =>
+		processors.reduce((promise, processor) => {
+			let payload = void 0;
+
+			return promise
+				.then(previousPayload => payload = previousPayload)
+				.then(() => processor(action, state, res))
+				.then(processedData => ({
+					...payload,
+					...processedData
+				}))
+		}, Promise.resolve({}));
 
 export const fetchCategories = () => ({
 	[CALL_API]: {
@@ -41,7 +62,7 @@ export const fetchProducts = (params = {}) => ({
 			FETCH_PRODUCTS.request,
 			{
 				type:    FETCH_PRODUCTS.success,
-				payload: normalizeResponse(schema.arrayOfProducts)
+				payload: processResponse([processHeader, processBody(schema.arrayOfProducts)])
 			},
 			FETCH_PRODUCTS.failure
 		]
@@ -56,7 +77,7 @@ export const searchProducts = (params = {}) => ({
 			SEARCH_PRODUCTS.request,
 			{
 				type:    SEARCH_PRODUCTS.success,
-				payload: normalizeResponse(schema.arrayOfProducts)
+				payload: processResponse([processHeader, processBody(schema.arrayOfProducts)])
 			},
 			SEARCH_PRODUCTS.failure
 		]
@@ -134,7 +155,7 @@ export const fetchUsers = () => ({
 			FETCH_USERS.request,
 			{
 				type:    FETCH_USERS.success,
-				payload: normalizeResponse(schema.arrayOfUsers)
+				payload: processResponse([processHeader, processBody(schema.arrayOfUsers)])
 			},
 			FETCH_USERS.failure
 		]
