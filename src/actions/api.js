@@ -8,6 +8,7 @@ import {
 	FETCH_ONE_PRODUCT,
 	SEARCH_PRODUCTS,
 	FETCH_ONE_USER,
+	FETCH_CURRENT_USER,
 	FETCH_CATEGORIES,
 	ADD_PRODUCT,
 	UPDATE_PRODUCT,
@@ -145,5 +146,13 @@ export const fetchOneUser = userId => ({
 		endpoint: `${apiBaseUrl}/users/${userId}`,
 		method:   "GET",
 		types:    getTypes(FETCH_ONE_USER)
+	}
+});
+
+export const fetchCurrentUser = userId => ({
+	[CALL_API]: {
+		endpoint: `${apiBaseUrl}/users/${userId}`,
+		method:   "GET",
+		types:    getTypes(FETCH_CURRENT_USER)
 	}
 });

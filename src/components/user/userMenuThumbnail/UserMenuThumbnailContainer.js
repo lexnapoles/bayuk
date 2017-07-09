@@ -3,12 +3,10 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import UserMenuThumbnail from "./UserMenuThumbnail";
 import {getCurrentUser, getUserById, isUserLoggedIn} from "../../../reducers/root";
-import {loadUser} from "../../../actions/users";
+import {loadCurrentUser} from "../../../actions/currentUser";
 
-const loadData = ({isLoggedIn, loadUser, id}) => {
-	if (isLoggedIn) {
-		loadUser(id);
-	}
+const loadData = ({loadCurrentUser}) => {
+	loadCurrentUser();
 };
 
 class UserMenuThumbnailContainer extends Component {
@@ -24,24 +22,21 @@ class UserMenuThumbnailContainer extends Component {
 }
 
 UserMenuThumbnailContainer.propTypes = {
-	isLoggedIn: PropTypes.bool.isRequired,
-	user:       PropTypes.object,
-	id:         PropTypes.string
+	user: PropTypes.object,
+	id:   PropTypes.string
 };
 
 
 const mapStateToProps = state => {
-	const isLoggedIn = isUserLoggedIn(state),
-				{id}       = isLoggedIn ? getCurrentUser(state) : {},
-				user       = getUserById(state, id) || {};
+	const {id} = isUserLoggedIn(state) ? getCurrentUser(state) : {},
+				user = getUserById(state, id) || {};
 
 	return {
-		isLoggedIn,
 		user,
 		id
 	}
 };
 
 export default connect(mapStateToProps, {
-	loadUser
+	loadCurrentUser
 })(UserMenuThumbnailContainer);

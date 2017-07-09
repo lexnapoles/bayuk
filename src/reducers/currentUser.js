@@ -1,4 +1,4 @@
-import {REGISTER_USER, LOGIN_USER} from "../constants/actionTypes";
+import {REGISTER_USER, LOGIN_USER, FETCH_CURRENT_USER} from "../constants/actionTypes";
 import {getJwtPayload, isNotEmpty} from "../utils";
 import {REHYDRATE} from 'redux-persist/constants'
 
@@ -22,6 +22,9 @@ const currentUser = (state = {}, action) => {
 				token
 			};
 		}
+
+		case FETCH_CURRENT_USER.failure:
+			return {};
 
 		default:
 			return state;

@@ -18,6 +18,5 @@ const addAllUsersToDB = users => Promise.all(wrapDataInPromise(users, addUser));
 export default () => {
 	const randomUsers = times(MAX_USERS, getUser);
 
-	return addAllUsersToDB(randomUsers)
-		.then(data => data.map(obj => obj.user));
+	return addAllUsersToDB(randomUsers);
 };
