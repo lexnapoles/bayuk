@@ -50,9 +50,9 @@ const generateReviewData = () => {
 	let usersData = {};
 
 	return Promise.all([addUser(getUser()), addUser(getUser())])
-		.then(users => usersData = {
-			source: users[0],
-			target: users[1]
+		.then(([sourceUser, targetUser]) => usersData = {
+			source: {user: sourceUser, token: createJwt(sourceUser)},
+			target:  {user: targetUser, token: createJwt(targetUser)}
 		})
 		.then(() => addProduct({...product, owner: usersData.target.user.id}))
 		.then((data) => ({
