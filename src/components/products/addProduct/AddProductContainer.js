@@ -7,7 +7,6 @@ import {onCheckBoxChange} from "../../form/formHandlers";
 import {isNotEmpty} from "../../../utils";
 import connectForm from "../../form/connectForm/connectForm";
 import {isUserLoggedIn} from "../../../reducers/root";
-import {getCurrentUser} from "../../../reducers/root";
 import addAuthenticationTo from "../../auth/addAuthenticationTo/addAuthenticationTo";
 import AddProduct from "./AddProduct";
 import errorMsgs from "../../form/errors/errorsMsgs";
@@ -65,14 +64,9 @@ class AddProductContainer extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	const user = getCurrentUser(state) || {};
-
-	return {
-		isLoggedIn: isUserLoggedIn(state),
-		user
-	};
-};
+const mapStateToProps = (state) => ({
+	isLoggedIn: isUserLoggedIn(state)
+});
 
 
 export default connect(mapStateToProps, {
