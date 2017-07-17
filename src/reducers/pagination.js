@@ -9,4 +9,4 @@ export default combineReducers({
 
 export const getProductsByDistance = ({productsByDistance}) => productsByDistance;
 
-export const getSearchedProducts= ({searchedProducts}) => searchedProducts;
+export const getSearchedProducts = ({searchedProducts}) => searchedProducts;

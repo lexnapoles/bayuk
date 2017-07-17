@@ -15,6 +15,7 @@ import {userDoesNotExist} from "../../server/errors/api/userErrors";
 import {dataNotFound, invalidId} from "../../server/errors/api/controllerErrors";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {createJwt} from "../../server/api/services/authentication"
+import {cleanAllPreviouslyCreatedImages} from "../../server/seeder/filesystem/productsImagesSeeder";
 
 chai.should();
 
@@ -52,7 +53,7 @@ const generateReviewData = () => {
 	return Promise.all([addUser(getUser()), addUser(getUser())])
 		.then(([sourceUser, targetUser]) => usersData = {
 			source: {user: sourceUser, token: createJwt(sourceUser)},
-			target:  {user: targetUser, token: createJwt(targetUser)}
+			target: {user: targetUser, token: createJwt(targetUser)}
 		})
 		.then(() => addProduct({...product, owner: usersData.target.user.id}))
 		.then((data) => ({
@@ -73,15 +74,16 @@ const addRandomReview = () =>
 
 describe("Reviews", function () {
 	beforeEach(function () {
-		return db.none(global.truncateAll)
+		return cleanAllPreviouslyCreatedImages()
+			.then(() => db.none(global.truncateAll))
 			.then(() => addCategories())
 			.then(() => server = stoppable(createServer(5000), 0));
 	});
 
-	afterEach(function (done) {
-		db.none(global.truncateAll);
-
-		server.stop(done);
+	afterEach(function () {
+		return cleanAllPreviouslyCreatedImages()
+			.then(() => db.none(global.truncateAll))
+			.then(() => server.stop());
 	});
 
 	describe("GET /reviews/:userId", function () {

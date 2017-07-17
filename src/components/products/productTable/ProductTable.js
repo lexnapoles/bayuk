@@ -8,18 +8,7 @@ import {container, spinner} from "./productTable.css";
 class ProductTable extends Component {
 	renderProducts(products) {
 		return products.map(product =>
-			<ProductOverview key={product.id} product={product}	onClick={() => browserHistory.push(`/product/${product.id}`)}/>
-		);
-	}
-
-	renderProductsTable(products) {
-		return (
-			<div>
-				<div className={container}>
-					{this.renderProducts(products)}
-				</div>
-				{this.props.children}
-			</div>
+			<ProductOverview key={product.id} product={product} onClick={() => browserHistory.push(`/product/${product.id}`)}/>
 		);
 	}
 
@@ -31,8 +20,21 @@ class ProductTable extends Component {
 		);
 	}
 
+	renderLoadMore() {
+		const {isFetching, onLoadMoreClick} = this.props;
+
+		return (
+			<button style={{fontSize: '150%'}}
+							onClick={onLoadMoreClick}
+							disabled={isFetching}>
+				{isFetching ? <Spinner/> : "Load More"}
+			</button>
+		);
+	}
+
+
 	render() {
-		const {isFetching, products, nextPageUrl} = this.props;
+		const {isFetching, products, nextPageUrl, pageCount} = this.props;
 
 		const isEmpty = !products.length;
 
@@ -46,15 +48,27 @@ class ProductTable extends Component {
 			return <h1><i>"Sorry, there's nothing here!"</i></h1>
 		}
 
-		return this.renderProductsTable(products)
+		return (
+			<div>
+				<div>
+					<div className={container}>
+						{this.renderProducts(products)}
+					</div>
+					{pageCount > 0 && !isLastPage && this.renderLoadMore()}
+					{this.props.children}
+				</div>
+			</div>
+		);
 	}
 }
 
 ProductTable.propTypes = {
-	products:    PropTypes.array.isRequired,
-	children:    PropTypes.element,
-	isFetching:  PropTypes.bool,
-	nextPageUrl: PropTypes.string
+	products:        PropTypes.array.isRequired,
+	onLoadMoreClick: PropTypes.func.isRequired,
+	isFetching:      PropTypes.bool.isRequired,
+	children:        PropTypes.element,
+	pageCount:       PropTypes.number,
+	nextPageUrl:     PropTypes.string,
 };
 
 ProductTable.defaultProps = {

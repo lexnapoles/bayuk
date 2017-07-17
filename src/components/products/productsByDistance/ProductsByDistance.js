@@ -10,7 +10,8 @@ const mapStateToProps = state => {
 
 	return {
 		products: filteredProducts,
-		...pagination
+		...pagination,
+		onLoadMoreClick: () => void 0
 	};
 };
 

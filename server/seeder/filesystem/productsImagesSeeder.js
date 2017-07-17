@@ -17,7 +17,7 @@ export const cleanAllPreviouslyCreatedImages = () =>
 		.then(files => files.map(file => getProductsImagePath(getFileNameWithNoExtension(file))))
 		.then(filePaths => filePaths.length
 			? Promise.all(filePaths.map(deleteProductImage))
-			: Promise.resolve(true));
+			: true);
 
 const writeImage = (id, data) => fs.writeFile(getProductsImagePath(id), data);
 
