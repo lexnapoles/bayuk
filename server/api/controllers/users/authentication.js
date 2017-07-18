@@ -26,7 +26,7 @@ export const register = (req, res) => {
 	addUser(req.body)
 		.then(user => {
 			res.location(`/api/users/${user.id}`);
-			sendJsonResponse(res, 201, createJwt(transformUser(user)));
+			sendJsonResponse(res, 201, createJwt(transformUser(req, user)));
 		})
 		.catch(error => {
 			if (error.code === dbErrors.dataAlreadyExists) {
@@ -61,7 +61,7 @@ export const login = (req, res) => {
 
 		if (user) {
 			res.location(`/api/users/${user.id}`);
-			sendJsonResponse(res, 201, createJwt(transformUser(user)));
+			sendJsonResponse(res, 201, createJwt(transformUser(req, user)));
 			return;
 		}
 		else {

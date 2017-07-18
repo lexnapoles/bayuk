@@ -1,9 +1,8 @@
 import db from "../../database/db";
 import {omit} from "lodash/object";
 import {users} from "../../database/sql/sql";
-import {createJwt, setPassword} from "./authentication";
+import {setPassword} from "./authentication";
 import {updateUserImage, deleteUserImageFromDisk} from "./userImages";
-import {transformUser} from "../transformers/users"
 
 export const getUsers = () =>
 	db.any("SELECT * FROM users_with_images")
@@ -42,4 +41,3 @@ export const deleteUser = id => {
 		.then(({image}) => image ? deleteUserImageFromDisk(image) : true)
 		.then(() => db.any("SELECT FROM delete_user($1::uuid)", id));
 };
-

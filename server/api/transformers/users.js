@@ -1,10 +1,23 @@
 import {getImagePath} from "../../utils";
+import {extractFields, getSelectedFields, getBaseUrl} from "./transformer"
 
-export const transformUser = user => ({
-	id:        user.id,
-	name:      user.name,
-	email:     user.email,
-	image:     getImagePath("user", user.image),
-	latitude:  parseFloat(user.latitude),
-	longitude: parseFloat(user.longitude),
-});
+const transform = (req, user) => {
+  const baseUrl  = getBaseUrl(req),
+        imageUrl = `${baseUrl}${getImagePath("user", user.image)}`;
+
+  return ({
+    id:        user.id,
+    name:      user.name,
+    email:     user.email,
+    image:     imageUrl,
+    latitude:  parseFloat(user.latitude),
+    longitude: parseFloat(user.longitude),
+  });
+};
+
+export const transformUser = (req, user) => {
+  const fields = extractFields(req);
+
+  return getSelectedFields(transform(req, user), fields);
+};
+

@@ -1,22 +1,8 @@
 import {getImagePath} from "../../utils";
-import {pick} from "lodash/object";
-import {intersection} from "lodash/array";
+import {extractFields, getSelectedFields, getBaseUrl} from "./transformer";
 
-const extractFields = req => req.query.fields ? req.query.fields.split(",") : void 0;
 
-export const getSelectedFields = (object, fields) => {
-	if (fields) {
-		const fieldsInObject = intersection(Object.keys(object), fields);
-
-		return fieldsInObject.length ? pick(object, fieldsInObject) : object;
-	}
-
-	return object;
-};
-
-const getBaseUrl = req => `${req.protocol}://${req.headers.host}`;
-
-const transform = (product, req) => {
+const transform = (req, product) => {
 	const baseUrl = getBaseUrl(req);
 
 	return ({
@@ -37,5 +23,5 @@ const transform = (product, req) => {
 export const transformProduct = (req, product) => {
 	const fields = extractFields(req);
 
-	return getSelectedFields(transform(product, req), fields);
+	return getSelectedFields(transform(req, product), fields);
 };
