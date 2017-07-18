@@ -1,11 +1,9 @@
 import {pick} from "lodash/object";
 import {intersection} from "lodash/array";
 
-export const getBaseUrl = req => `${req.protocol}://${req.headers.host}`;
+const extractFields = req => req.query.fields ? req.query.fields.split(",") : void 0;
 
-export const extractFields = req => req.query.fields ? req.query.fields.split(",") : void 0;
-
-export const getSelectedFields = (object, fields) => {
+const getSelectedFields = (object, fields) => {
   if (fields) {
     const fieldsInObject = intersection(Object.keys(object), fields);
 
@@ -13,4 +11,10 @@ export const getSelectedFields = (object, fields) => {
   }
 
   return object;
+};
+
+export const transform = (req, resource, transformation) => {
+  const fields = extractFields(req);
+
+  return getSelectedFields(transformation(req, resource), fields);
 };

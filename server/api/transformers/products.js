@@ -1,8 +1,8 @@
 import {getImagePath} from "../../utils";
-import {extractFields, getSelectedFields, getBaseUrl} from "./transformer";
+import {transform} from "./transformer";
+import {getBaseUrl} from "../../utils";
 
-
-const transform = (req, product) => {
+const transformation = (req, product) => {
 	const baseUrl = getBaseUrl(req);
 
 	return ({
@@ -20,8 +20,4 @@ const transform = (req, product) => {
 	});
 };
 
-export const transformProduct = (req, product) => {
-	const fields = extractFields(req);
-
-	return getSelectedFields(transform(req, product), fields);
-};
+export const transformProduct = (req, product) => transform(req, product, transformation);

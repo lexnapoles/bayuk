@@ -1,7 +1,8 @@
 import {getImagePath} from "../../utils";
-import {extractFields, getSelectedFields, getBaseUrl} from "./transformer"
+import {transform} from "./transformer";
+import {getBaseUrl} from "../../utils";
 
-const transform = (req, user) => {
+const transformation = (req, user) => {
   const baseUrl  = getBaseUrl(req),
         imageUrl = `${baseUrl}${getImagePath("user", user.image)}`;
 
@@ -15,9 +16,5 @@ const transform = (req, user) => {
   });
 };
 
-export const transformUser = (req, user) => {
-  const fields = extractFields(req);
-
-  return getSelectedFields(transform(req, user), fields);
-};
+export const transformUser = (req, user) => transform(req, user, transformation);
 
