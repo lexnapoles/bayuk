@@ -217,7 +217,7 @@ describe("Products", function () {
         .then(({headers}) => {
           const nextLink = parse(decodeURI(headers.link)).next;
 
-          return request(server)
+          return request("")
             .get(nextLink.url)
             .expect(200)
         })
