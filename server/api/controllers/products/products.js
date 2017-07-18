@@ -5,7 +5,6 @@ import {productDoesNotExist}  from "../../../errors/api/productErrors";
 import dbErrors  from "../../../errors/database";
 import {validateRequest, validateId} from "../validators";
 import {validateProduct} from "./validators"
-import {getSelectedFields} from "../controller";
 
 const generateLinkHeaders = (products, filters) => {
 	const {id: lastId} = products[products.length - 1];
@@ -81,8 +80,7 @@ export const readProducts = (req, res) => {
 	}
 
 	getProducts(filters)
-		.then(products => products.map(transformProduct))
-		.then(products => products.map(product => getSelectedFields(product, req)))
+		.then(products => products.map(transformProduct.bind(void 0, req)))
 		.then(products => {
 			if (products.length) {
 				res.set("Link", generateLinkHeaders(products, req.query));
@@ -114,8 +112,7 @@ export const readOneProduct = (req, res) => {
 	}
 
 	getProductById(productId)
-		.then(transformProduct)
-		.then(product => getSelectedFields(product, req))
+		.then(transformProduct.bind(void 0, req))
 		.then(product => sendJsonResponse(res, 200, product))
 		.catch(error => {
 			if (error.code === dbErrors.dataNotFound) {
@@ -148,7 +145,7 @@ export const createProduct = (req, res) => {
 	};
 
 	addProduct(product)
-		.then(transformProduct)
+		.then(transformProduct.bind(void 0, req))
 		.then(product => {
 			res.location(`/api/products/${product.id}`);
 			sendJsonResponse(res, 201, product)
@@ -176,7 +173,7 @@ export const updateOneProduct = (req, res) => {
 
 	return getProductById(productId)
 		.then(() => updateProduct(product))
-		.then(transformProduct)
+		.then(transformProduct.bind(void 0, req))
 		.then(product => sendJsonResponse(res, 200, product))
 		.catch(error => sendJsonResponse(res, 500, [error]));
 };
