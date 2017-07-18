@@ -2,7 +2,7 @@ import {getImagePath} from "../../utils";
 import {transform} from "./transformer";
 import {getBaseUrl} from "../../utils";
 
-const transformation = (req, product) => {
+const transformation = (product, req) => {
 	const baseUrl = getBaseUrl(req);
 
 	return ({
