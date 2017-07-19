@@ -56,35 +56,39 @@ export const fetchCategories = endpoint => ({
   }
 });
 
-export const fetchProducts = (endpoint, params = {}) => ({
+const fetchProducts = (endpoint, params, types) => ({
   [CALL_API]: {
     endpoint: `${getApiFullUrl(endpoint)}${stringifyQueryParams(params)}`,
     method:   "GET",
-    types:    [
-      FETCH_PRODUCTS.request,
-      {
-        type:    FETCH_PRODUCTS.success,
-        payload: processResponse([processHeader, processBody(schema.arrayOfProducts)])
-      },
-      FETCH_PRODUCTS.failure
-    ]
+    types
   }
 });
 
-export const searchProducts = (endpoint, params = {}) => ({
-  [CALL_API]: {
-    endpoint: `${getApiFullUrl(endpoint)}${stringifyQueryParams(params)}`,
-    method:   "GET",
-    types:    [
-      SEARCH_PRODUCTS.request,
-      {
-        type:    SEARCH_PRODUCTS.success,
-        payload: processResponse([processHeader, processBody(schema.arrayOfProducts)])
-      },
-      SEARCH_PRODUCTS.failure
-    ]
-  }
-});
+export const fetchProductsByDistance = (endpoint, params = {}) => {
+  const types = [
+    FETCH_PRODUCTS.request,
+    {
+      type:    FETCH_PRODUCTS.success,
+      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)])
+    },
+    FETCH_PRODUCTS.failure
+  ];
+
+  return fetchProducts(endpoint, params, types);
+};
+
+export const fetchSearchedProduct = (endpoint, params = {}) => {
+  const types = [
+    SEARCH_PRODUCTS.request,
+    {
+      type:    SEARCH_PRODUCTS.success,
+      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)])
+    },
+    SEARCH_PRODUCTS.failure
+  ];
+
+  return fetchProducts(endpoint, params, types);
+};
 
 export const fetchOneProduct = (endpoint, params = {}) => ({
   [CALL_API]: {

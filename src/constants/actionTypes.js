@@ -1,7 +1,7 @@
 const asyncActionTypes = actionName => ({
-	request: `${actionName}_REQUEST`,
-	success: `${actionName}_SUCCESS`,
-	failure: `${actionName}_FAILURE`
+  request: `${actionName}_REQUEST`,
+  success: `${actionName}_SUCCESS`,
+  failure: `${actionName}_FAILURE`
 });
 
 const hasNeededKeys = action => action.request && action.success && action.failure;

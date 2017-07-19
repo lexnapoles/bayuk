@@ -5,7 +5,7 @@ import connectForm from "../../form/connectForm/connectForm";
 import {onCheckBoxChange, onRangeChange} from "../../form/formHandlers";
 import SearchProduct from "./SearchProduct";
 import {loadCategories} from "../../../actions/categories";
-import {searchProducts} from "../../../actions/api";
+import {loadSearchedProducts} from "../../../actions/products";
 import getParamsFromSearch from "../../../services/search";
 import {browserHistory} from "react-router";
 
@@ -66,5 +66,5 @@ SearchFormContainer.propTypes = {
 
 export default connect(void 0, {
 	loadCategories,
-	onSubmit: searchProducts.bind(void 0, "products")
+	onSubmit: loadSearchedProducts
 })(SearchFormContainer);
