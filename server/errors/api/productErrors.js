@@ -1,11 +1,9 @@
-export const productDoesNotExist = () => ({
-	code:    "ERR-1000",
-	title:   "Product doesn't exists",
-	details: "Product with the given id doesn't exist"
-});
+import {createError} from "./errors";
 
-export const invalidProduct = (field = "Product", message) => ({
-	code:    "ERR-1001",
-	title:   "Product data is invalid",
-	details: `${field.length ? field : "Product"} ${message}`
-});
+export const productDoesNotExist = () => createError("ERR-1000", "Product doesn't exists", "Product with the given id doesn't exist");
+
+export const invalidProduct = (field = "Product", message) => {
+  const details = `${field.length ? field : "Product"} ${message}`;
+
+  return createError(field, "Product data is invalid", details);
+};

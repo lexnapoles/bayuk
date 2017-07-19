@@ -7,12 +7,14 @@ import {validateRequest, validateId} from "../validators";
 import {validateProduct} from "./validators"
 import getFilters from "./getFilters";
 import addPaginationLink from "./addPaginationLink";
+import {errorBadRequest, errorNotFound, errorInternalError} from "../../../errors/api/errors";
+
 
 export const readProducts = (req, res) => {
   const {filters, errors} = getFilters(req);
 
   if (errors.length) {
-    sendJsonResponse(res, 400, errors);
+    errorBadRequest(res, errors);
     return;
   }
 
@@ -25,7 +27,7 @@ export const readProducts = (req, res) => {
 
       sendJsonResponse(res, 200, products);
     })
-    .catch(error => sendJsonResponse(res, 500, [error]));
+    .catch(error => errorInternalError(res, error));
 };
 
 export const readOneProduct = (req, res) => {
@@ -35,7 +37,7 @@ export const readOneProduct = (req, res) => {
   ];
 
   if (requestErrors.length) {
-    sendJsonResponse(res, 400, requestErrors);
+    errorBadRequest(res, requestErrors);
     return;
   }
 
@@ -44,7 +46,7 @@ export const readOneProduct = (req, res) => {
   const invalidIdError = validateId(productId);
 
   if (invalidIdError.length) {
-    sendJsonResponse(res, 400, invalidIdError);
+    errorBadRequest(res, invalidIdError);
     return;
   }
 
@@ -53,11 +55,11 @@ export const readOneProduct = (req, res) => {
     .then(product => sendJsonResponse(res, 200, product))
     .catch(error => {
       if (error.code === dbErrors.dataNotFound) {
-        sendJsonResponse(res, 404, [productDoesNotExist()]);
+        errorNotFound(res, productDoesNotExist());
         return;
       }
 
-      sendJsonResponse(res, 500, [error]);
+      errorInternalError(res, error);
     });
 };
 
@@ -65,14 +67,14 @@ export const createProduct = (req, res) => {
   const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
-    sendJsonResponse(res, 400, requestErrors);
+    errorBadRequest(res, requestErrors);
     return;
   }
 
   const invalidProductErrors = validateProduct(req.body);
 
   if (invalidProductErrors.length) {
-    sendJsonResponse(res, 400, invalidProductErrors);
+    errorBadRequest(res, invalidProductErrors);
     return;
   }
 
@@ -87,14 +89,14 @@ export const createProduct = (req, res) => {
       res.location(`/api/products/${product.id}`);
       sendJsonResponse(res, 201, product)
     })
-    .catch(error => sendJsonResponse(res, 500, [error]));
+    .catch(error => errorInternalError(error));
 };
 
 export const updateOneProduct = (req, res) => {
   const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
-    sendJsonResponse(res, 400, requestErrors);
+    errorBadRequest(res, requestErrors);
     return;
   }
 
@@ -104,7 +106,7 @@ export const updateOneProduct = (req, res) => {
   const invalidProductErrors = validateProduct(product);
 
   if (invalidProductErrors.length) {
-    sendJsonResponse(res, 400, invalidProductErrors);
+    errorBadRequest(res, invalidProductErrors);
     return;
   }
 
@@ -112,7 +114,7 @@ export const updateOneProduct = (req, res) => {
     .then(() => updateProduct(product))
     .then(transformProduct.bind(void 0, req))
     .then(product => sendJsonResponse(res, 200, product))
-    .catch(error => sendJsonResponse(res, 500, [error]));
+    .catch(error => errorInternalError(res, error));
 };
 
 export const deleteOneProduct = (req, res) => {
@@ -121,5 +123,5 @@ export const deleteOneProduct = (req, res) => {
   return getProductById(productId)
     .then(() => deleteProduct(productId))
     .then(() => sendJsonResponse(res, 204, null))
-    .catch(error => sendJsonResponse(res, 500, [error]));
+    .catch(error => errorInternalError(res, error));
 };

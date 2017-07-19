@@ -6,18 +6,19 @@ import {createJwt} from "../../services/authentication";
 import dbErrors from "../../../errors/database";
 import {userDoesNotExist} from "../../../errors/api/userErrors";
 import {transformUser} from "../../transformers/users";
+import {errorBadRequest, errorNotFound, errorInternalError} from "../../../errors/api/errors";
 
 export const readUsers = (req, res) =>
   getUsers()
     .then(users => users.map(transformUser.bind(void 0, req)))
     .then(users => sendJsonResponse(res, 200, users))
-    .catch(error => sendJsonResponse(res, 404, {"message": error}));
+    .catch(error => errorInternalError(res, error));
 
 export const readOneUser = (req, res) => {
   const noUserIdError = validateRequest(req.params, "userId");
 
   if (noUserIdError.length) {
-    sendJsonResponse(res, 400, noUserIdError);
+    errorBadRequest(res, noUserIdError);
     return;
   }
 
@@ -25,7 +26,7 @@ export const readOneUser = (req, res) => {
         invalidIdError = validateId(userId);
 
   if (invalidIdError.length) {
-    sendJsonResponse(res, 400, invalidIdError);
+    errorBadRequest(res, invalidIdError);
     return;
   }
 
@@ -34,11 +35,11 @@ export const readOneUser = (req, res) => {
     .then(user => sendJsonResponse(res, 200, user))
     .catch(error => {
       if (error.code === dbErrors.dataNotFound) {
-        sendJsonResponse(res, 404, [userDoesNotExist()]);
+        errorNotFound(res, userDoesNotExist());
         return;
       }
 
-      sendJsonResponse(res, 500, [error]);
+      errorInternalError(res, error);
     });
 };
 
@@ -46,7 +47,7 @@ export const updateUserEmail = (req, res) => {
   const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
-    sendJsonResponse(res, 400, requestErrors);
+    errorBadRequest(res, requestErrors);
     return;
   }
 
@@ -56,20 +57,20 @@ export const updateUserEmail = (req, res) => {
   const noEmailError = validateRequest(req.body, "email");
 
   if (noEmailError.length) {
-    sendJsonResponse(res, 400, noEmailError);
+    errorBadRequest(res, noEmailError);
     return
   }
 
   updateEmail(userId, email)
     .then(user => sendJsonResponse(res, 200, createJwt(user)))
-    .catch(error => sendJsonResponse(res, 500, [error]))
+    .catch(error => errorInternalError(res, error));
 };
 
 export const updateUserPassword = (req, res) => {
   const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
-    sendJsonResponse(res, 400, requestErrors);
+    errorBadRequest(res, requestErrors);
     return;
   }
 
@@ -79,20 +80,20 @@ export const updateUserPassword = (req, res) => {
   const noPasswordError = validateRequest(req.body, "password");
 
   if (noPasswordError.length) {
-    sendJsonResponse(res, 400, noPasswordError);
+    errorBadRequest(res, noPasswordError);
     return
   }
 
   updatePassword(userId, password)
     .then(() => sendJsonResponse(res, 204))
-    .catch(error => sendJsonResponse(res, 500, [error]))
+    .catch(error => errorInternalError(res, error));
 };
 
 export const updateOneUser = (req, res) => {
   const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
-    sendJsonResponse(res, 400, requestErrors);
+    errorBadRequest(res, requestErrors);
     return;
   }
 
@@ -101,14 +102,14 @@ export const updateOneUser = (req, res) => {
   const invalidUserErrors = validateUser(user);
 
   if (invalidUserErrors.length) {
-    sendJsonResponse(res, 400, invalidUserErrors);
+    errorBadRequest(res, invalidUserErrors);
     return;
   }
 
   updateUser(user)
     .then(transformUser.bind(void 0, req))
     .then(user => sendJsonResponse(res, 200, user))
-    .catch(error => sendJsonResponse(res, 500, [error]));
+    .catch(error => errorInternalError(res, error));
 
 };
 
@@ -117,6 +118,6 @@ export const deleteOneUser = (req, res) => {
 
   return deleteUser(userId)
     .then(() => sendJsonResponse(res, 204))
-    .catch(error => sendJsonResponse(res, 500, [error]))
+    .catch(error => errorInternalError(res, error));
 };
 
