@@ -66,5 +66,5 @@ SearchFormContainer.propTypes = {
 
 export default connect(void 0, {
 	loadCategories,
-	onSubmit: searchProducts
+	onSubmit: searchProducts.bind(void 0, "products")
 })(SearchFormContainer);

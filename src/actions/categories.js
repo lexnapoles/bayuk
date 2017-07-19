@@ -8,5 +8,5 @@ export const loadCategories = () =>  (dispatch, getState) => {
 		return null;
 	}
 
-	return dispatch(fetchCategories());
+	return dispatch(fetchCategories("categories"));
 };

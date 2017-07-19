@@ -14,7 +14,7 @@ export const loadProductsByDistance = (params, nextPage) => (dispatch, getState)
 		return null
 	}
 
-	return dispatch(fetchProducts(params));
+	return dispatch(fetchProducts("products", params));
 };
 
 export const loadProduct = (id, params) => (dispatch, getState) => {
@@ -24,5 +24,5 @@ export const loadProduct = (id, params) => (dispatch, getState) => {
 		return null;
 	}
 
-	return dispatch(fetchOneProduct(id, params));
+	return dispatch(fetchOneProduct(`products/${id}`, params));
 };
