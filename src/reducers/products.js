@@ -4,42 +4,42 @@ import {FETCH_PRODUCTS, FETCH_ONE_PRODUCT, SEARCH_PRODUCTS, ADD_PRODUCT} from ".
 import product from "./product";
 
 const byId = (state = {}, action) => {
-	switch (action.type) {
-		case FETCH_ONE_PRODUCT.success:
-		case ADD_PRODUCT.success:
-			return {
-				...state,
-				[action.payload.id]: product(void 0, action)
-			};
+  switch (action.type) {
+    case FETCH_ONE_PRODUCT.success:
+    case ADD_PRODUCT.success:
+      return {
+        ...state,
+        [action.payload.id]: product(void 0, action)
+      };
 
-		case FETCH_PRODUCTS.success:
-		case SEARCH_PRODUCTS.success:
-			return {
-				...state,
-				...action.payload.entities.products
-			};
+    case FETCH_PRODUCTS.success:
+    case SEARCH_PRODUCTS.success:
+      return {
+        ...state,
+        ...action.payload.entities.products
+      };
 
-		default:
-			return state;
-	}
+    default:
+      return state;
+  }
 };
 
 const allIds = (state = [], action) => {
-	switch (action.type) {
-		case FETCH_ONE_PRODUCT.success:
-		case ADD_PRODUCT.success:
-			return union(state, [action.payload.id]);
+  switch (action.type) {
+    case FETCH_ONE_PRODUCT.success:
+    case ADD_PRODUCT.success:
+      return union(state, [action.payload.id]);
 
-		case FETCH_PRODUCTS.success:
-		case SEARCH_PRODUCTS.success:
-			return union(state, action.payload.result);
+    case FETCH_PRODUCTS.success:
+    case SEARCH_PRODUCTS.success:
+      return union(state, action.payload.result);
 
-		default:
-			return state;
-	}
+    default:
+      return state;
+  }
 };
 
 export default combineReducers({
-	byId,
-	allIds
+  byId,
+  allIds
 });

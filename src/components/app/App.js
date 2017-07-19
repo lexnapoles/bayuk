@@ -15,7 +15,7 @@ import {addButtonContainer} from "./app.css";
 const loadData = ({loadProductsByDistance, loadCategories, loadGeolocation, latitude, longitude}) => {
 	const query = {
 		sort:   "distance",
-		order:  "descending",
+		sortOrder:  "descending",
 		radius: 99999,
 		latitude,
 		longitude

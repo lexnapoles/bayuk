@@ -1,7 +1,7 @@
 const getParamsFromSearch = data => {
-	let sort   = "",
-			order  = "",
-			radius = 0;
+	let sort      = "",
+      sortOrder = "",
+      radius    = 0;
 
 	const {latitude, longitude}          = data.location,
 				{min: minPrice, max: maxPrice} = data.price;
@@ -9,23 +9,23 @@ const getParamsFromSearch = data => {
 	switch (data.sort) {
 		case "distance":
 			sort = "distance";
-			order = "ascending";
+			sortOrder = "ascending";
 			break;
 		case "Expensive":
 			sort = "price";
-			order = "descending";
+			sortOrder = "descending";
 			break;
 		case "Cheap":
 			sort = "price";
-			order = "ascending";
+			sortOrder = "ascending";
 			break;
 		case "New":
 			sort = "date";
-			order = "ascending";
+			sortOrder = "ascending";
 			break;
 		default:
 			sort = "distance";
-			order = "ascending";
+			sortOrder = "ascending";
 			break;
 	}
 
@@ -49,7 +49,7 @@ const getParamsFromSearch = data => {
 		minPrice,
 		maxPrice,
 		sort,
-		order,
+    sortOrder,
 		radius,
 		latitude,
 		longitude

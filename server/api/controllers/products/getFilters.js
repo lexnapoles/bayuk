@@ -1,10 +1,7 @@
 import {validateRequest} from "../validators";
 
 const getSortingFilters = queryParameters => {
-  const SORT_BY_DISTANCE = "distance",
-        SORT_ORDER       = "descending";
-
-  const errors = validateRequest(queryParameters, ["sort", "order", "radius", "latitude", "longitude"]);
+  const errors = validateRequest(queryParameters, ["sort", "sortOrder", "radius", "latitude", "longitude"]);
 
   if (errors.length) {
     return {
@@ -12,11 +9,11 @@ const getSortingFilters = queryParameters => {
     }
   }
 
-  const {sort, order, radius, latitude, longitude, ...optionalQueryParams} = queryParameters;
+  const {sort, sortOrder, radius, latitude, longitude, ...optionalQueryParams} = queryParameters;
 
   const filters = {
-    sortByDistance: sort === SORT_BY_DISTANCE,
-    descending:     order === SORT_ORDER,
+    sort,
+    sortOrder,
     radius,
     latitude,
     longitude,

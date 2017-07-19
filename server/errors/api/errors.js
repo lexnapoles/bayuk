@@ -1,14 +1,4 @@
 import {sendJsonResponse} from "../../utils";
-import errorSchema from "./schema";
-import validateSchema from "../../schemas/validateSchema";
-
-const validateError = error => validateSchema(error, errorSchema);
-
-const isError = error => {
-  const invalidError = validateError(error);
-
-  return !invalidError.length;
-};
 
 export const createError = (code, title, details) => ({
   code,
@@ -17,16 +7,8 @@ export const createError = (code, title, details) => ({
 });
 
 const sendError = (res, status, errors) => {
-  if (!errors) {
-    throw  new Error("There are no errors to send");
-  }
-
   if (!Array.isArray(errors)) {
     errors = [errors];
-  }
-
-  if (!errors.every(isError)) {
-    throw new Error("Errors don't comply with error format");
   }
 
   sendJsonResponse(res, status, errors);

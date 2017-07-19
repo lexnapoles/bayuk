@@ -99,7 +99,7 @@ describe("Products", function () {
 
       const filters = {
         sort:      "distance",
-        order:     "ascending",
+        sortOrder: "ascending",
         radius:    9000,
         latitude:  -72.2468,
         longitude: 81.4777
@@ -124,7 +124,7 @@ describe("Products", function () {
 
       const filters = {
         sort:      "distance",
-        order:     "descending",
+        sortOrder: "descending",
         radius:    9000,
         latitude:  -72.2468,
         longitude: 81.4777
@@ -153,7 +153,7 @@ describe("Products", function () {
             .get("/api/products")
             .query({
               sort:      "distance",
-              order:     "descending",
+              sortOrder: "descending",
               radius:    9000,
               latitude:  -72.2468,
               longitude: 81.4777
@@ -188,7 +188,7 @@ describe("Products", function () {
         .get("/api/products")
         .query({
           sort:      "distance",
-          order:     "descending",
+          sortOrder: "descending",
           radius:    9000,
           latitude:  -72.2468,
           longitude: 81.4777
@@ -202,7 +202,7 @@ describe("Products", function () {
 
       const filters = {
         sort:      "distance",
-        order:     "descending",
+        sortOrder: "descending",
         radius:    9000,
         latitude:  -72.2468,
         longitude: 81.4777
@@ -289,9 +289,9 @@ describe("Products", function () {
 
     it("should fail if sorting by price or distance doesn't have the obligatory keys", function () {
       const invalidFilters = {
-        sort:   "price",
-        order:  "ascending",
-        radius: 9000
+        sort:      "price",
+        sortOrder: "ascending",
+        radius:    9000
       };
 
       return request(server)

@@ -18,9 +18,13 @@ import {
   LOGIN_USER
 } from "../constants/actionTypes";
 
-const API_ROOT = `http://localhost:3000/api`;
+const API_ROOT = "http://localhost:3000/api";
 
-const getApiFullUrl = endpoint => endpoint.indexOf(API_ROOT === -1) ? `${API_ROOT}/${endpoint}` : endpoint;
+const getApiFullUrl = endpoint => {
+  const isPartialUrl = endpoint.indexOf(API_ROOT) === -1;
+
+  return isPartialUrl ? `${API_ROOT}/${endpoint}` : endpoint;
+};
 
 const stringifyQueryParams = params => Object.keys(params).length ? `?${queryString.stringify(params)}` : "";
 
@@ -28,11 +32,15 @@ const getTypes = ({request, success, failure}) => [request, success, failure];
 
 const processBody = schema => (action, state, res) =>
   getJSON(res)
-    .then((json) => normalize(json, schema));
+    .then((json) => normalize(json, schema))
 
-const processHeader = (action, state, res) => ({
-  nextPageUrl: parse(res.headers.get("Link")).next.url
-});
+const processHeader = (action, state, res) => {
+  const link = res.headers.get("Link");
+
+  return {
+    nextPageUrl: link ? parse(link).next.url : void 0
+  };
+};
 
 const processResponse = (processors = []) =>
   (action, state, res) =>

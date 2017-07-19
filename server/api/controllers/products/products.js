@@ -9,12 +9,11 @@ import getFilters from "./getFilters";
 import addPaginationLink from "./addPaginationLink";
 import {errorBadRequest, errorNotFound, errorInternalError} from "../../../errors/api/errors";
 
-
 export const readProducts = (req, res) => {
-  const {filters, errors} = getFilters(req);
+  const {filters, errors: filterErrors} = getFilters(req);
 
-  if (errors.length) {
-    errorBadRequest(res, errors);
+  if (filterErrors.length) {
+    errorBadRequest(res, filterErrors);
     return;
   }
 
@@ -22,7 +21,7 @@ export const readProducts = (req, res) => {
     .then(products => products.map(transformProduct.bind(void 0, req)))
     .then(products => {
       if (products.length) {
-        addPaginationLink(req, res, products, req.query);
+        addPaginationLink(req, res, products, filters);
       }
 
       sendJsonResponse(res, 200, products);
