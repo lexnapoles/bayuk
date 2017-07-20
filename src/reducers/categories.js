@@ -1,6 +1,4 @@
-import {combineReducers} from "redux";
 import {FETCH_CATEGORIES} from "../constants/actionTypes";
-import createFetchingReducer from "./isFetching";
 
 const categories = (state = [], action) => {
 	switch (action.type) {
@@ -12,12 +10,4 @@ const categories = (state = [], action) => {
 	}
 };
 
-export default combineReducers({
-	items:      categories,
-	isFetching: createFetchingReducer(FETCH_CATEGORIES)
-});
-
-export const getCategories = ({items, isFetching}) => ({
-	items,
-	isFetching
-});
+export default categories;

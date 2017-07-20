@@ -47,24 +47,22 @@ class CheckBoxFilterContainer extends Component {
 	}
 
 	render() {
-		const {title, isFetching, error} = this.props;
+		const {title, error} = this.props;
 
-		return <CheckBoxFilter title={title} isFetching={isFetching} onChange={this.onOptionChange} options={this.state.options} error={error}/>;
+		return <CheckBoxFilter title={title} onChange={this.onOptionChange} options={this.state.options} error={error}/>;
 	}
 }
 
 CheckBoxFilterContainer.propTypes = {
-	title:      PropTypes.string.isRequired,
-	options:    PropTypes.array.isRequired,
-	onChange:   PropTypes.func.isRequired,
-	error:      PropTypes.string,
-	exclusive:  PropTypes.bool,
-	isFetching: PropTypes.bool
+	title:     PropTypes.string.isRequired,
+	options:   PropTypes.array.isRequired,
+	onChange:  PropTypes.func.isRequired,
+	error:     PropTypes.string,
+	exclusive: PropTypes.bool
 };
 
 CheckBoxFilterContainer.defaultProps = {
-	exclusive:  true,
-	isFetching: false
+	exclusive: true
 };
 
 export default CheckBoxFilterContainer;

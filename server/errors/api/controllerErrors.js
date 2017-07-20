@@ -1,11 +1,5 @@
-export const dataNotFound = (field) => ({
-	code:    "ERR-0001",
-	title:   "No data provided",
-	details: `No ${field} has been found in the request`
-});
+import {createError} from "./errors";
 
-export const invalidId = () => ({
-	code:    "ERR-0002",
-	title:   "Id is not valid",
-	details: "Id has to be a valid uuid v4"
-});
+export const dataNotFound = field => createError("ERR-0001", "No data provided", `No ${field} has been found in the request`);
+
+export const invalidId = () => createError("ERR-0002", "Id is not valid", "Id has to be a valid uuid v4");

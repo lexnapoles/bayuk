@@ -5,6 +5,7 @@ import {connect} from "react-redux"
 import {registerUser} from "../../actions/api";
 import AuthFormContainer from "./authForm/AuthFormContainer";
 import geolocated from "../geolocated/geolocated";
+import {getGeolocation} from "../../reducers/root"
 
 class Register extends Component {
 	constructor(props) {
@@ -33,12 +34,21 @@ class Register extends Component {
 	}
 }
 
+const mapStateToProps = state => {
+	const coords = getGeolocation(state);
+
+	return {
+		isAlreadyLocated: Boolean(coords),
+		coords
+	};
+};
+
 Register.propTypes = {
 	latitude:  PropTypes.number.isRequired,
 	longitude: PropTypes.number.isRequired,
 	onSubmit:  PropTypes.func.isRequired
 };
 
-export default connect(void 0, {
+export default connect(mapStateToProps, {
 	onSubmit: registerUser
 })(geolocated(Register));

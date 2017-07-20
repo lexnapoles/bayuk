@@ -7,7 +7,6 @@ import {onCheckBoxChange} from "../../form/formHandlers";
 import {isNotEmpty} from "../../../utils";
 import connectForm from "../../form/connectForm/connectForm";
 import {isUserLoggedIn} from "../../../reducers/root";
-import {getCurrentUser} from "../../../reducers/root";
 import addAuthenticationTo from "../../auth/addAuthenticationTo/addAuthenticationTo";
 import AddProduct from "./AddProduct";
 import errorMsgs from "../../form/errors/errorsMsgs";
@@ -53,15 +52,6 @@ const props = {
 	maxImages: MAX_IMAGES
 };
 
-const mapStateToProps = (state) => {
-	const {rehydrated} = getCurrentUser(state);
-
-	return {
-		isLoggedIn: isUserLoggedIn(state),
-		rehydrated
-	};
-};
-
 const loadData = ({loadCategories}) => loadCategories();
 
 class AddProductContainer extends Component {
@@ -73,6 +63,11 @@ class AddProductContainer extends Component {
 		return createElement(addAuthenticationTo(connectForm(props)(AddProduct)), omit(this.props, "loadCategories"));
 	}
 }
+
+const mapStateToProps = (state) => ({
+	isLoggedIn: isUserLoggedIn(state)
+});
+
 
 export default connect(mapStateToProps, {
 	onSubmit: addProduct,

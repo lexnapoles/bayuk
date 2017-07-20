@@ -5,7 +5,7 @@ import ReturnIcon from "../../../icons/returnIcon/ReturnIcon";
 const ProductDetailsHeader = () =>
 	<Header>
 		<ReturnIcon url="/"/>
-	</Header>
+	</Header>;
 
 export default ProductDetailsHeader;
 

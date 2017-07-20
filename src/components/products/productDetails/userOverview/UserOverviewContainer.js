@@ -4,7 +4,6 @@ import {omit} from "lodash/object";
 import {connect} from "react-redux";
 import UserOverview from "./UserOverview";
 import {getUserById} from "../../../../reducers/root";
-import {getImagePath} from "../../../../utils";
 import {loadUser} from "../../../../actions/users";
 
 const loadData = ({loadUser, id}) => loadUser(id);
@@ -15,7 +14,7 @@ class UserOverviewContainer extends Component {
 	}
 
 	render() {
-		const props = omit(this.props, "loadUser");
+		const props = omit(this.props, ["loadUser", "id"]);
 
 		return <UserOverview {...props}/>
 	}
@@ -27,17 +26,13 @@ UserOverviewContainer.propTypes = {
 };
 
 
-const formatUser = user => ({
-	...user,
-	image: getImagePath("user", user.image)
-});
-
 const mapStateToProps = (state, {id}) => {
-	const {isFetching, item} = getUserById(state, id);
+	const user = getUserById(state, id);
 
-	return isFetching
-		? {isFetching, id, user: {}}
-		: {isFetching, id, user: item ? formatUser(item) : {}};
+	return {
+		id,
+		user
+	}
 };
 
 export default connect(mapStateToProps, {

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from "react";
 import {product} from "./productOverview.css";
-import {getImagePath} from "../../../utils";
 
 class ProductOverview extends Component {
 	render() {
@@ -9,7 +8,7 @@ class ProductOverview extends Component {
 
 		return (
 			<div className={product} onClick={this.props.onClick}>
-				<img src={getImagePath("product", images[0])}/>
+				<img src={images[0]}/>
 				<h2>{parseInt(price)}</h2>
 				<h3>{name}</h3>
 			</div>

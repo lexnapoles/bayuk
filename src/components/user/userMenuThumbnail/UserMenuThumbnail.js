@@ -3,22 +3,25 @@ import React from "react";
 import {browserHistory} from "react-router";
 import {container, userImage, text} from "./thumbnail.css";
 
-const UserMenuThumbnail = ({isLoggedIn, id, name, image}) => {
-	const onClick = () => browserHistory.push(`${isLoggedIn ? `/user/${id}` : "/auth"}`);
+const UserMenuThumbnail = ({user}) => {
+	const {id, name, image} = user,
+				defaultImageUrl   = "image/user/default.jpg",
+				onClick           = () => browserHistory.push(`${id ? `/user/${id}` : "/auth"}`);
 
 	return (
 		<div className={container} onClick={onClick}>
-			<img className={userImage} src={image}/>
-			<p className={text}>{isLoggedIn ? name : "Register or Log In"}</p>
+			<img className={userImage} src={image ? image : defaultImageUrl}/>
+			<p className={text}>{name ? name : "Register or Log In"}</p>
 		</div>
 	);
 };
 
 UserMenuThumbnail.propTypes = {
-	isLoggedIn: PropTypes.bool.isRequired,
-	id:         PropTypes.string,
-	name:       PropTypes.string,
-	image:      PropTypes.string
+	user: PropTypes.shape({
+		id:    PropTypes.string,
+		name:  PropTypes.string,
+		image: PropTypes.string
+	})
 };
 
 export default UserMenuThumbnail;

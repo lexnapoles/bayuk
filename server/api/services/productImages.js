@@ -13,7 +13,6 @@ import {isImageBase64, generateImagesObjs} from "../../utils";
 
 export const getProductsImagePath = id => getImagePath(id, "products");
 
-
 export const getImagesOfProduct = id =>
 	db.one(products.getImages, {id})
 		.then(({images}) => images);
@@ -81,11 +80,12 @@ export const deleteProductImages = (images = []) => {
 		.then(deleteProductImagesFromDisk.bind(void 0, images));
 };
 
-export const updateProductImages = (productId, newImages = []) => {
-	const imagesToAdd = newImages.filter(isImageBase64);
+export const updateProductImages = (productId, images = []) => {
+
+	const imagesToAdd = images.filter(isImageBase64);
 
 	return getImagesOfProduct(productId)
-		.then(getImagesToDelete.bind(void 0, newImages))
+		.then(getImagesToDelete.bind(void 0, images))
 		.then(deleteProductImages)
 		.then(addProductImages.bind(void 0, productId, imagesToAdd));
 };

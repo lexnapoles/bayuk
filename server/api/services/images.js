@@ -3,6 +3,14 @@ import {wrapDataInPromise, isImageBase64, deleteFile} from "../../utils";
 import fs from "fs-promise";
 import path from "path";
 
+export const extractIdsFromImageUrls = urls => {
+	const isUUIDv4 = /[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}/i;
+
+	const getId = url => url.match(isUUIDv4)[0];
+
+	return urls.map(getId);
+};
+
 export const getImagePath = (id, dir) => `${path.join(process.env.IMAGESDIR, `/${dir}`, id)}.jpg`;
 
 export const getDecodedImage = data => {
@@ -36,7 +44,7 @@ export const deleteImagesFromDisk = (images = []) => {
 };
 
 export const getImagesToDelete = (newImages, oldImages) => {
-	const unmodifiedImages = newImages.filter(img => !isImageBase64(img));
+	const unmodifiedImages = extractIdsFromImageUrls(newImages.filter(img => !isImageBase64(img)));
 
 	return oldImages.filter(img => !unmodifiedImages.find(elem => img === elem));
 };

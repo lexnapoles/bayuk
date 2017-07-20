@@ -13,7 +13,7 @@ let server = {};
 describe("Categories", function () {
 	describe("GET /categories", function () {
 		beforeEach(function () {
-			server = stoppable(createServer(), 0);
+			server = stoppable(createServer(5000), 0);
 
 			return db.none(global.truncateAll);
 		});

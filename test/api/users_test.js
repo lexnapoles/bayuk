@@ -6,7 +6,7 @@ import stoppable from "stoppable";
 import createServer from "../../server/server";
 import db from "../../server/database/db";
 import {global} from "../../server/database/sql/sql";
-import {addUser} from "../../server/api/services/users";
+import {addUser as addUserService} from "../../server/api/services/users";
 import {getUser} from "../../server/seeder/database/usersTableSeeder";
 import {invalidUser, userAlreadyExists, loginFailed, userDoesNotExist} from "../../server/errors/api/userErrors";
 import {unauthorizedAccess, tokenDoesNotMatch} from "../../server/errors/api/authorizationErrors";
@@ -17,11 +17,18 @@ chai.should();
 
 let server = {};
 
+const addUser = data =>
+	addUserService(data)
+		.then(user => ({
+			user,
+			token: createJwt(user)
+		}));
+
 const userKeys = ["id", "name", "email", "latitude", "longitude", "image"];
 
 describe("Users", function () {
 	beforeEach(function () {
-		server = stoppable(createServer(), 0);
+		server = stoppable(createServer(5000), 0);
 
 		return db.none(global.truncateAll);
 	});
@@ -38,8 +45,8 @@ describe("Users", function () {
 				email:     faker.internet.email(),
 				name:      faker.name.findName(),
 				password:  faker.internet.password(),
-				latitude:  faker.address.latitude(),
-				longitude: faker.address.longitude()
+				latitude:  parseFloat(faker.address.latitude()),
+				longitude: parseFloat(faker.address.longitude())
 			};
 
 			return request(server)
@@ -79,8 +86,8 @@ describe("Users", function () {
 		it("should fail when any of the required fields is not sent", function () {
 			const user = {
 				password:  faker.internet.password(),
-				latitude:  faker.address.latitude(),
-				longitude: faker.address.longitude()
+				latitude:  parseFloat(faker.address.latitude()),
+				longitude: parseFloat(faker.address.longitude())
 			};
 
 			return request(server)

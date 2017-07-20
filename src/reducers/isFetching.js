@@ -9,7 +9,7 @@ const isFetching = (actions, keys = {request: "request", success: "success"}) =>
 
 	for (const action of actions) {
 		if (!isAsyncActionType(action, keys)) {
-			throw "isFetching error: actions are not async action types";
+			throw new Error("isFetching error: actions are not async action types");
 		}
 	}
 

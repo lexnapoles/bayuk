@@ -8,8 +8,8 @@ export const getUser = (user = {}) => ({
 	email:     faker.internet.email(),
 	name:      faker.name.findName(),
 	password:  faker.internet.password(),
-	latitude:  faker.address.latitude(),
-	longitude: faker.address.longitude(),
+	latitude:  parseFloat(faker.address.latitude()),
+	longitude: parseFloat(faker.address.longitude()),
 	...user
 });
 
@@ -18,6 +18,5 @@ const addAllUsersToDB = users => Promise.all(wrapDataInPromise(users, addUser));
 export default () => {
 	const randomUsers = times(MAX_USERS, getUser);
 
-	return addAllUsersToDB(randomUsers)
-		.then(data => data.map(obj => obj.user));
+	return addAllUsersToDB(randomUsers);
 };

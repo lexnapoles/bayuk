@@ -1,7 +1,7 @@
 import db from "../../database/db";
 import {omit} from "lodash/object";
 import {users} from "../../database/sql/sql";
-import {createJwt, setPassword} from "./authentication";
+import {setPassword} from "./authentication";
 import {updateUserImage, deleteUserImageFromDisk} from "./userImages";
 
 export const getUsers = () =>
@@ -22,10 +22,7 @@ const addUserToDB = user => db.one(users.add, user);
 export const addUser = user =>
 	setPassword(user.password)
 		.then(credentials => addUserToDB({...omit(user, "password"), ...credentials}))
-		.then(user => ({
-			user,
-			token: createJwt(user)
-		}));
+		.then(user => user);
 
 const updateUserFromDB = user => db.one(users.update, user);
 
@@ -44,4 +41,3 @@ export const deleteUser = id => {
 		.then(({image}) => image ? deleteUserImageFromDisk(image) : true)
 		.then(() => db.any("SELECT FROM delete_user($1::uuid)", id));
 };
-

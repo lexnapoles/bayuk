@@ -16,21 +16,16 @@ const renderOptions = (options, onChange) => {
 	);
 };
 
-const OptionsFilter = ({title, isFetching, onChange, options, error}) =>
+const OptionsFilter = ({title, onChange, options, error}) =>
 	<Filter title={title} error={error}>
-		{isFetching ? <Spinner/> : renderOptions(options, onChange)}
+		{Object.keys(options).length ? renderOptions(options, onChange) : <Spinner/> }
 	</Filter>;
 
 OptionsFilter.propTypes = {
-	title:      PropTypes.string.isRequired,
-	isFetching: PropTypes.bool,
-	onChange:   PropTypes.func.isRequired,
-	options:    PropTypes.object.isRequired,
-	error:      PropTypes.string
-};
-
-OptionsFilter.defaultProps = {
-	isFetching: false
+	title:    PropTypes.string.isRequired,
+	onChange: PropTypes.func.isRequired,
+	options:  PropTypes.object.isRequired,
+	error:    PropTypes.string
 };
 
 export default OptionsFilter ;

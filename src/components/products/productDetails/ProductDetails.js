@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, {Component} from "react";
+import React from "react";
 import CSSModules from "react-css-modules";
 import Spinner from "../../spinner/Spinner";
 import styles from "./productDetails.css";
@@ -10,68 +10,50 @@ import GeolocationInfo from "./geolocationInfo/GeolocationInfo";
 import UserOverviewContainer from "./userOverview/UserOverviewContainer";
 import NotFound from "../../notFound/NotFound";
 
-class ProductDetails extends Component {
-	constructor(props) {
-		super(props);
+
+const renderSpinner = () => (
+		<main styleName="productContainer">
+			<Spinner/>
+		</main>
+	);
+
+const renderProduct = product => {
+	if (!product) {
+		return <NotFound/>
 	}
 
-	renderProduct(product) {
-		if (!product) {
-			return <NotFound/>
-		}
+	const {price, name, description, images, owner, latitude, longitude} = product;
 
-		const {price, name, description, images, owner, latitude, longitude} = product;
+	return (
+		<main styleName="productContainer">
+			<Carousel styleName="carousel">
+				{images}
+			</Carousel>
 
-		return (
-			<main styleName="productContainer">
-				<Carousel styleName="carousel">
-					{images}
-				</Carousel>
-
-				<section styleName="info">
-					<Description
-						styleName="infoSection"
-						price={price}
-						name={name}
-						description={description}
-					/>
-					<hr styleName="line"/>
-					<GeolocationInfo styleName="map" latitude={latitude} longitude={longitude}/>
-					<hr styleName="line"/>
-					<UserOverviewContainer styleName="infoSection" id={owner}/>
-				</section>
-			</main>
-		);
-	}
-
-	renderSpinner() {
-		return (
-			<main styleName="productContainer">
-				<Spinner/>
-			</main>
-		);
-	}
-
-	render() {
-		const {isFetching, product} = this.props;
-
-		return (
-			<div styleName="container">
-				<ProductDetailsHeader/>
-				{isFetching ? this.renderSpinner() : this.renderProduct(product)}
-			</div>
-		);
-	}
+			<section styleName="info">
+				<Description
+					styleName="infoSection"
+					price={price}
+					name={name}
+					description={description}
+				/>
+				<hr styleName="line"/>
+				<GeolocationInfo styleName="map" latitude={latitude} longitude={longitude}/>
+				<hr styleName="line"/>
+				<UserOverviewContainer styleName="infoSection" id={owner}/>
+			</section>
+		</main>
+	);
 }
 
-ProductDetails.propTypes = {
-	product:    PropTypes.object,
-	isFetching: PropTypes.bool,
-	onClick:    PropTypes.func
-};
+const ProductDetails = ({product}) =>
+	<div styleName="container">
+		<ProductDetailsHeader/>
+		{product ? renderProduct(product) : renderSpinner()}
+	</div>;
 
-ProductDetails.defaultProps = {
-	isFetching: false
+ProductDetails.propTypes = {
+	product:    PropTypes.object
 };
 
 export default CSSModules(ProductDetails, styles);

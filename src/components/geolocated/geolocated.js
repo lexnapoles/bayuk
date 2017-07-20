@@ -18,6 +18,10 @@ const geolocated = WrappedComponent => {
 		}
 
 		componentWillMount() {
+			if (this.props.isAlreadyLocated) {
+				return;
+			}
+
 			this.getGeolocation()
 		}
 

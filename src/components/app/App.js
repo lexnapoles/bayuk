@@ -3,19 +3,19 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {container, main} from "../layout.css";
 import HomeHeader from "./homeHeader/HomeHeader";
-import ProductTableContainer from "../products/productTable/ProductTableContainer";
-import {loadProducts} from "../../actions/products";
+import ProductsByDistance from "../products/productsByDistance/ProductsByDistance";
+import {loadProductsByDistance} from "../../actions/products";
 import {loadCategories} from "../../actions/categories";
-import {loadGeolocation} from "../../actions/users";
+import {loadGeolocation} from "../../actions/location";
 import geolocated from "../geolocated/geolocated";
 import {getGeolocation} from "../../reducers/root";
 import AddIcon from "../icons/addIcon/AddIcon";
 import {addButtonContainer} from "./app.css";
 
-const loadData = ({loadProducts, loadCategories, loadGeolocation, latitude, longitude}) => {
+const loadData = ({loadProductsByDistance, loadCategories, loadGeolocation, latitude, longitude}) => {
 	const query = {
 		sort:   "distance",
-		order:  "descending",
+		sortOrder:  "descending",
 		radius: 99999,
 		latitude,
 		longitude
@@ -23,7 +23,7 @@ const loadData = ({loadProducts, loadCategories, loadGeolocation, latitude, long
 
 	loadGeolocation({latitude, longitude});
 	loadCategories();
-	loadProducts(query);
+	loadProductsByDistance(query);
 };
 
 class App extends Component {
@@ -36,11 +36,11 @@ class App extends Component {
 			<div className={container}>
 				<HomeHeader/>
 				<main className={main}>
-					<ProductTableContainer>
+					<ProductsByDistance>
 						<div className={addButtonContainer}>
 							<AddIcon/>
 						</div>
-					</ProductTableContainer>
+					</ProductsByDistance>
 				</main>
 				<footer></footer>
 			</div>
@@ -49,10 +49,10 @@ class App extends Component {
 }
 
 App.propTypes = {
-	loadProducts:   PropTypes.func.isRequired,
-	loadCategories: PropTypes.func.isRequired,
-	latitude:       PropTypes.number.isRequired,
-	longitude:      PropTypes.number.isRequired
+	loadProductsByDistance: PropTypes.func.isRequired,
+	loadCategories:         PropTypes.func.isRequired,
+	latitude:               PropTypes.number.isRequired,
+	longitude:              PropTypes.number.isRequired
 };
 
 const mapStateToProps = state => {
@@ -60,12 +60,12 @@ const mapStateToProps = state => {
 
 	return {
 		isAlreadyLocated: Boolean(coords),
-		coords:           coords ? coords : null
+		coords
 	};
 };
 
 export default connect(mapStateToProps, {
-	loadProducts,
+	loadProductsByDistance,
 	loadCategories,
 	loadGeolocation
 })(geolocated(App));

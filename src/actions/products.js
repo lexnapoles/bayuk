@@ -1,29 +1,48 @@
-import {ADD_PRODUCT} from "../constants/actionTypes";
-import {fetchProducts, fetchOneProduct} from "./api";
-import {getAllProducts, getProductById} from "../reducers/root";
+import {ADD_PRODUCT, NEW_SEARCH} from "../constants/actionTypes";
+import {fetchProductsByDistance, fetchOneProduct, fetchSearchedProduct} from "./api";
+import {getProductsByDistancePagination, getSearchedProductsPagination, getProductById} from "../reducers/root";
 
 export const addProduct = (product) => ({
-	type:    ADD_PRODUCT,
-	payload: {product}
+  type:    ADD_PRODUCT,
+  payload: {product}
 });
 
-export const loadProducts = params => (dispatch, getState) => {
-	const products = getAllProducts(getState()).items;
+export const loadProductsByDistance = (params, nextPage) => (dispatch, getState) => {
+  const {
+          nextPageUrl = "products",
+          pageCount   = 0
+        } = getProductsByDistancePagination(getState()) || {};
 
-	if (products.length) {
-		return null;
-	}
+  if (pageCount > 0 && !nextPage) {
+    return null
+  }
 
-	return dispatch(fetchProducts(params));
+  return dispatch(fetchProductsByDistance(nextPageUrl, params));
+};
+
+export const loadSearchedProducts = (params, nextPage) => (dispatch, getState) => {
+  const {
+          nextPageUrl = "products",
+          pageCount   = 0
+        } = getSearchedProductsPagination(getState()) || {};
+
+  if (pageCount > 0 && !nextPage) {
+    return null
+  }
+
+  return dispatch(fetchSearchedProduct(nextPageUrl, params));
 };
 
 export const loadProduct = (id, params) => (dispatch, getState) => {
-	const product = getProductById(getState(), id).item;
+  const product = getProductById(getState(), id);
 
-	if (product) {
-		return null;
-	}
+  if (product) {
+    return null;
+  }
 
-	return dispatch(fetchOneProduct(id, params));
+  return dispatch(fetchOneProduct(`products/${id}`, params));
 };
 
+export const newSearch = () => ({
+  type: NEW_SEARCH
+});

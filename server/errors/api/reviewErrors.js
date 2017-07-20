@@ -1,5 +1,7 @@
-export const invalidReview = (field = "Review", message) => ({
-	code: "ERR-4001",
-	title: "Review data is invalid",
-	details: `${field.length ? field : "Review"} ${message}`
-});
+import {createError} from "./errors";
+
+export const invalidReview = (field = "Review", message) => {
+  const details = `${field.length ? field : "Review"} ${message}`;
+
+  return createError(field, "Review data is invalid", details);
+};

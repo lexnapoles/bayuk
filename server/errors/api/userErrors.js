@@ -1,24 +1,14 @@
-export const invalidUser = (field = "User", message) => ({
-	code: "ERR-2000",
-	title: "User data is invalid",
-	details: `${field.length ? field : "User"} ${message}`
-});
+import {createError} from "./errors";
 
-export const userAlreadyExists = () => ({
-	code:    "ERR-2001",
-	title:   "User already exists",
-	details: `Found a user with the same email`
-});
+export const invalidUser = (field = "User", message) => {
+  const details = `${field.length ? field : "User"} ${message}`;
 
-export const userDoesNotExist = () => ({
-	code:    "ERR-2002",
-	title:   "User doesn't exists",
-	details: `Given user can't be found`
-});
+  return createError(field,  "User data is invalid", details);
+};
 
-export const loginFailed = () => ({
-	code:    "ERR-2003",
-	title:   "Login has failed",
-	details: "Incorrect email or password"
-});
+export const userAlreadyExists = () => createError("ERR-2001", "User already exists", "Found a user with the same email");
+
+export const userDoesNotExist = () => createError("ERR-2002", "User doesn't exists", "Given user can't be found");
+
+export const loginFailed = () => createError("ERR-2003", "Login has failed", "Incorrect email or password");
 
