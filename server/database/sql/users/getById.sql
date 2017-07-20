@@ -1,0 +1,1 @@
+SELECT * from users_with_images WHERE id=$1;

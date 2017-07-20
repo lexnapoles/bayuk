@@ -145,7 +145,7 @@ describe("Products", function () {
     });
 
     it("should get a link to fetch the next products", function () {
-      const PRODUCTS_CREATED = 10;
+      const PRODUCTS_CREATED = 100;
 
       return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
         .then(() =>

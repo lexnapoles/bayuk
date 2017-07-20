@@ -4,40 +4,35 @@ import {users} from "../../database/sql/sql";
 import {setPassword} from "./authentication";
 import {updateUserImage, deleteUserImageFromDisk} from "./userImages";
 
-export const getUsers = () =>
-	db.any("SELECT * FROM users_with_images")
-		.catch(() => Promise.reject("User could not be found"));
+export const getUsers = () => db.any(users.getAll);
 
-export const getUserByEmail = email =>
-	db.one("SELECT * from users_with_images WHERE email=$1", email);
+export const getUserByEmail = email => db.one(users.getByEmail, email);
 
-export const getUserById = id =>
-	db.one("SELECT * from users_with_images WHERE id=$1", id);
+export const getUserById = id => db.one(users.getById, id);
 
-export const getCredentials = email =>
-	db.one("SELECT hash, salt from users WHERE email=$1", email);
+export const getCredentials = email => db.one(users.getCredentials, email);
 
 const addUserToDB = user => db.one(users.add, user);
 
 export const addUser = user =>
-	setPassword(user.password)
-		.then(credentials => addUserToDB({...omit(user, "password"), ...credentials}))
-		.then(user => user);
+  setPassword(user.password)
+    .then(credentials => addUserToDB({...omit(user, "password"), ...credentials}))
+    .then(user => user);
 
 const updateUserFromDB = user => db.one(users.update, user);
 
 export const updateUser = user =>
-	updateUserImage(user.id, user.image)
-		.then(() => updateUserFromDB(user));
+  updateUserImage(user.id, user.image)
+    .then(() => updateUserFromDB(user));
 
 export const updateEmail = (id, email) => db.one(users.updateEmail, {id, email});
 
 export const updatePassword = (id, password) =>
-	setPassword(password)
-		.then(credentials => db.one(users.updatePassword, {id, ...credentials}));
+  setPassword(password)
+    .then(credentials => db.one(users.updatePassword, {id, ...credentials}));
 
 export const deleteUser = id => {
-	return getUserById(id)
-		.then(({image}) => image ? deleteUserImageFromDisk(image) : true)
-		.then(() => db.any("SELECT FROM delete_user($1::uuid)", id));
+  return getUserById(id)
+    .then(({image}) => image ? deleteUserImageFromDisk(image) : true)
+    .then(() => db.any(users.delete, id));
 };
