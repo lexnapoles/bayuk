@@ -5,7 +5,7 @@ import connectForm from "../../form/connectForm/connectForm";
 import {onCheckBoxChange, onRangeChange} from "../../form/formHandlers";
 import SearchProduct from "./SearchProduct";
 import {loadCategories} from "../../../actions/categories";
-import {loadSearchedProducts} from "../../../actions/products";
+import {loadSearchedProducts, newSearch} from "../../../actions/products";
 import getParamsFromSearch from "../../../services/search";
 import {browserHistory} from "react-router";
 
@@ -45,6 +45,8 @@ class SearchFormContainer extends Component {
   onSubmit(data) {
     const search = getParamsFromSearch(data);
 
+    this.props.newSearch();
+
     this.props.onSubmit(search);
 
     browserHistory.push("/results");
@@ -61,10 +63,13 @@ class SearchFormContainer extends Component {
 }
 
 SearchFormContainer.propTypes = {
-  onSubmit: PropTypes.func.isRequired
+  onSubmit:  PropTypes.func.isRequired,
+  newSearch: PropTypes.func.isRequired
 };
 
+
 export default connect(void 0, {
+  onSubmit: loadSearchedProducts,
   loadCategories,
-  onSubmit: loadSearchedProducts
+  newSearch
 })(SearchFormContainer);

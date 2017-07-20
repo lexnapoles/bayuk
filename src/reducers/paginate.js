@@ -2,74 +2,49 @@
 import union from 'lodash/union'
 import {isAsyncActionType} from "../constants/actionTypes";
 
-const paginate = ({type, mapActionToKey}) => {
-	if (!isAsyncActionType(type)) {
-		throw new Error("Type is not an async action type");
-	}
+const paginate = ({type, reset}) => {
+  if (!isAsyncActionType(type)) {
+    throw new Error("Type is not an async action type");
+  }
 
-	const {request: requestType, success: successType, failure: failureType} = type;
+  const {request, success, failure} = type;
 
-	const updatePagination = (state = {
-		isFetching:  false,
-		nextPageUrl: undefined,
-		ids:         [],
-		pageCount:   0
-	}, action) => {
-		switch (action.type) {
-			case requestType:
-				return {
-					...state,
-					isFetching: true
-				};
-			case successType:
-				return {
-					...state,
-					isFetching:  false,
-					ids:         union(state.ids, action.payload.result),
-					nextPageUrl: action.payload.nextPageUrl,
-					pageCount:   state.pageCount + 1
-				};
-			case failureType:
-				return {
-					...state,
-					isFetching: false
-				};
-			default:
-				return state
-		}
-	};
+  const defaultState = {
+    isFetching:  false,
+    nextPageUrl: undefined,
+    ids:         [],
+    pageCount:   0
+  };
 
-	return (state = {}, action) => {
-		switch (action.type) {
-			case requestType:
-			case successType:
-			case failureType: {
-				if (!mapActionToKey) {
-					return {
-						...state,
-						...updatePagination(void 0, action)
-					};
-				}
+  return (state = defaultState, action) => {
+    console.log(action.type);
+    console.log(request);
+    switch (action.type) {
+      case reset:
+        return defaultState;
 
-				if (typeof mapActionToKey !== 'function') {
-					throw new Error('Expected mapActionToKey to be a function.')
-				}
-
-				const key = mapActionToKey(action);
-
-				if (typeof key !== 'string') {
-					throw new Error('Expected key to be a string.')
-				}
-
-				return {
-					...state,
-					[key]: updatePagination(state[key], action)
-				}
-			}
-			default:
-				return state
-		}
-	}
+      case request:
+        return {
+          ...state,
+          isFetching: true
+        };
+      case success:
+        return {
+          ...state,
+          isFetching:  false,
+          ids:         union(state.ids, action.payload.result),
+          nextPageUrl: action.payload.nextPageUrl,
+          pageCount:   state.pageCount + 1
+        };
+      case failure:
+        return {
+          ...state,
+          isFetching: false
+        };
+      default:
+        return state
+    }
+  }
 };
 
 export default paginate;
