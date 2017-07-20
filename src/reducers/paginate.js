@@ -17,8 +17,6 @@ const paginate = ({type, reset}) => {
   };
 
   return (state = defaultState, action) => {
-    console.log(action.type);
-    console.log(request);
     switch (action.type) {
       case reset:
         return defaultState;
