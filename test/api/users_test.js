@@ -24,7 +24,7 @@ const addUser = data =>
       token: createJwt(user)
     }));
 
-const userKeys = ["id", "name", "email", "latitude", "longitude", "image"];
+const userKeys = ["id", "name", "email", "rating", "latitude", "longitude", "image"];
 
 describe("Users", function () {
   beforeEach(function () {
