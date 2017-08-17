@@ -24,7 +24,7 @@ const addUser = data =>
       token: createJwt(user)
     }));
 
-const userKeys = ["id", "name", "email", "latitude", "longitude", "image"];
+const userKeys = ["id", "name", "email", "rating", "latitude", "longitude", "image"];
 
 describe("Users", function () {
   beforeEach(function () {
@@ -142,7 +142,7 @@ describe("Users", function () {
               password: user.password
             })
             .expect(201)
-            .expect("Location", /\/api\/users\/.+/));
+            .expect("Location", /\/api\/users\/.+/))
     });
 
     it("should return a valid jwt with user info when successfully login a user", function () {

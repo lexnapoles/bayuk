@@ -13,6 +13,7 @@ const transformation = (user, req) => {
     image:     imageUrl,
     latitude:  parseFloat(user.latitude),
     longitude: parseFloat(user.longitude),
+    rating:    user.rating,
   });
 };
 

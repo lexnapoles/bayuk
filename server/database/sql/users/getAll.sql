@@ -1,1 +1,1 @@
-SELECT * FROM users_with_images;
+SELECT * FROM users_details;

@@ -1,1 +1,1 @@
-SELECT * from users_with_images WHERE id=$1;
+SELECT * from users_details WHERE id=$1;
