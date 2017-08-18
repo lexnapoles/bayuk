@@ -1,8 +1,18 @@
 const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const CLIENT_DIR = path.resolve(__dirname, 'src');
+
+const htmlWebpackPluginConfig = new HtmlWebpackPlugin({
+  template: 'index.html',
+});
+
+const environmentPluginConfig = new webpack.EnvironmentPlugin({
+  NODE_ENV: 'development',
+  DEBUG: false,
+});
 
 module.exports = {
   context: CLIENT_DIR,
@@ -75,9 +85,7 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development',
-      DEBUG: false,
-    }),
+    htmlWebpackPluginConfig,
+    environmentPluginConfig,
   ],
 };

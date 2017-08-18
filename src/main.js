@@ -1,4 +1,3 @@
-import 'file-loader?name=index.html!./index.html';
 import 'normalize.css/normalize.css';
 import React from 'react';
 import { render } from 'react-dom';
