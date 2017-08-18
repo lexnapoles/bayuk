@@ -93,7 +93,7 @@ describe('<SidebarMenu />', function () {
   it('doesn\'t tell the parent component that the overlay was clicked if it\'s hidden',
     function () {
       const onClick = sinon.spy();
-      const sidebarMenu = getSidebarMenu({ visible: false, onOverlayClicked: onClick });
+      const sidebarMenu = getSidebarMenu({ visible: false, onOverlayClicked: onClick });npm run
       const overlay = sidebarMenu.find(`.${sidebarStyles.overlay}`);
 
       overlay.simulate('click');

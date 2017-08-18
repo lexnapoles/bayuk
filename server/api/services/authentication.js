@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { randomBytes, pbkdf2 } from '../../../lib/promisifiedCrypto';
+import { getSalt, getHash } from '../../../lib/promisifiedCrypto';
 
 const config = {
   hashBytes: 64,
@@ -8,19 +8,20 @@ const config = {
   digest: 'sha512',
 };
 
-const getHash = (password, salt) =>
-  pbkdf2(password, salt, config.iterations, config.hashBytes, config.digest);
+export const setPassword = (password) => {
+  let salt = '';
 
-export const setPassword = password =>
-  randomBytes(config.saltBytes)
-    .then(bytes => bytes.toString('hex'))
-    .then(salt => ({
+  return getSalt(config.saltBytes)
+    .then((createdSalt) => { salt = createdSalt; })
+    .then(() => getHash(password, salt, config))
+    .then(generatedHash => ({
       salt,
-      hash: getHash(password, salt).toString('hex'),
+      hash: generatedHash.toString('hex'),
     }));
+};
 
 export const validPassword = (password, { hash, salt }) =>
-  getHash(password, salt)
+  getHash(password, salt, config)
     .then(calculatedHash => (calculatedHash.toString('hex') === hash ? true : Promise.reject()));
 
 export const createJwt = (payload) => {

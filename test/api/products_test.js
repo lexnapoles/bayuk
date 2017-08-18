@@ -6,6 +6,7 @@
   func-names,
   no-tabs
  */
+
 import chai from 'chai';
 import request from 'supertest';
 import faker from 'faker';
@@ -92,9 +93,7 @@ describe('Products', function () {
     return cleanAllPreviouslyCreatedImages()
       .then(() => db.none(global.truncateAll))
       .then(() => addCategories())
-      .then(() => {
-        server = stoppable(createServer(PORT), 0);
-      });
+      .then(() => { server = stoppable(createServer(PORT), 0); });
   });
 
   afterEach(function () {
@@ -105,7 +104,7 @@ describe('Products', function () {
 
   describe('GET /products', function () {
     it('should get a paginated and sorted list of products', function () {
-      const PRODUCTS_CREATED = 100;
+      const PRODUCTS_CREATED = 30;
 
       const filters = {
         sort: 'distance',
@@ -130,7 +129,7 @@ describe('Products', function () {
     });
 
     it('should get a paginated and sorted list of products', function () {
-      const PRODUCTS_CREATED = 100;
+      const PRODUCTS_CREATED = 30;
 
       const filters = {
         sort: 'distance',
@@ -155,7 +154,7 @@ describe('Products', function () {
     });
 
     it('should get a link to fetch the next products', function () {
-      const PRODUCTS_CREATED = 100;
+      const PRODUCTS_CREATED = 30;
 
       return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
         .then(() =>
@@ -208,7 +207,7 @@ describe('Products', function () {
     });
 
     it('should get the next products with the next link header', function () {
-      const PRODUCTS_CREATED = 100;
+      const PRODUCTS_CREATED = 30;
 
       const filters = {
         sort: 'distance',
