@@ -1,12 +1,19 @@
-import {sendJsonResponse} from "../../../utils";
-import {validateUser} from "./validators"
-import {validateRequest, validateId} from "../validators";
-import {getUsers, getUserById, updateUser, updateEmail, updatePassword, deleteUser} from "../../services/users";
-import {createJwt} from "../../services/authentication";
-import dbErrors from "../../../errors/database";
-import {userDoesNotExist} from "../../../errors/api/userErrors";
-import transformUser from "../../transformers/users";
-import {errorBadRequest, errorNotFound, errorInternalError} from "../../../errors/api/errors";
+import { sendJsonResponse } from '../../../utils';
+import { validateUser } from './validators';
+import { validateRequest, validateId } from '../validators';
+import {
+  getUsers,
+  getUserById,
+  updateUser,
+  updateEmail,
+  updatePassword,
+  deleteUser,
+} from '../../services/users';
+import { createJwt } from '../../services/authentication';
+import dbErrors from '../../../errors/database';
+import { userDoesNotExist } from '../../../errors/api/userErrors';
+import transformUser from '../../transformers/users';
+import { errorBadRequest, errorNotFound, errorInternalError } from '../../../errors/api/errors';
 
 export const readUsers = (req, res) =>
   getUsers()
@@ -15,15 +22,15 @@ export const readUsers = (req, res) =>
     .catch(error => errorInternalError(res, error));
 
 export const readOneUser = (req, res) => {
-  const noUserIdError = validateRequest(req.params, "userId");
+  const noUserIdError = validateRequest(req.params, 'userId');
 
   if (noUserIdError.length) {
     errorBadRequest(res, noUserIdError);
     return;
   }
 
-  const {userId}       = req.params,
-        invalidIdError = validateId(userId);
+  const { userId } = req.params;
+  const invalidIdError = validateId(userId);
 
   if (invalidIdError.length) {
     errorBadRequest(res, invalidIdError);
@@ -33,7 +40,7 @@ export const readOneUser = (req, res) => {
   getUserById(userId)
     .then(transformUser.bind(undefined, req))
     .then(user => sendJsonResponse(res, 200, user))
-    .catch(error => {
+    .catch((error) => {
       if (error.code === dbErrors.dataNotFound) {
         errorNotFound(res, userDoesNotExist());
         return;
@@ -44,21 +51,21 @@ export const readOneUser = (req, res) => {
 };
 
 export const updateUserEmail = (req, res) => {
-  const requestErrors = validateRequest(req, "body");
+  const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
     return;
   }
 
-  const {userId} = req.params,
-        {email}  = req.body;
+  const { userId } = req.params;
+  const { email } = req.body;
 
-  const noEmailError = validateRequest(req.body, "email");
+  const noEmailError = validateRequest(req.body, 'email');
 
   if (noEmailError.length) {
     errorBadRequest(res, noEmailError);
-    return
+    return;
   }
 
   updateEmail(userId, email)
@@ -67,21 +74,21 @@ export const updateUserEmail = (req, res) => {
 };
 
 export const updateUserPassword = (req, res) => {
-  const requestErrors = validateRequest(req, "body");
+  const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
     return;
   }
 
-  const {userId}   = req.params,
-        {password} = req.body;
+  const { userId } = req.params;
+  const { password } = req.body;
 
-  const noPasswordError = validateRequest(req.body, "password");
+  const noPasswordError = validateRequest(req.body, 'password');
 
   if (noPasswordError.length) {
     errorBadRequest(res, noPasswordError);
-    return
+    return;
   }
 
   updatePassword(userId, password)
@@ -90,7 +97,7 @@ export const updateUserPassword = (req, res) => {
 };
 
 export const updateOneUser = (req, res) => {
-  const requestErrors = validateRequest(req, "body");
+  const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
@@ -108,13 +115,12 @@ export const updateOneUser = (req, res) => {
 
   updateUser(user)
     .then(transformUser.bind(undefined, req))
-    .then(user => sendJsonResponse(res, 200, user))
+    .then(updatedUser => sendJsonResponse(res, 200, updatedUser))
     .catch(error => errorInternalError(res, error));
-
 };
 
 export const deleteOneUser = (req, res) => {
-  const {userId} = req.params;
+  const { userId } = req.params;
 
   return deleteUser(userId)
     .then(() => sendJsonResponse(res, 204))

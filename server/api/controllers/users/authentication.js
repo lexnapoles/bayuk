@@ -1,16 +1,16 @@
-import passport from "passport";
-import {sendJsonResponse} from "../../../utils";
-import {addUser} from "../../services/users";
-import {createJwt} from "../../services/authentication";
-import {validateRegister, validateLogin} from "./validators";
-import {validateRequest} from "../validators";
-import {userAlreadyExists} from "../../../errors/api/userErrors";
-import dbErrors from "../../../errors/database";
-import transformUser from "../../transformers/users";
-import {errorBadRequest, errorNotFound, errorUnauthorized, errorInternalError, errorConflict} from "../../../errors/api/errors";
+import passport from 'passport';
+import { sendJsonResponse } from '../../../utils';
+import { addUser } from '../../services/users';
+import { createJwt } from '../../services/authentication';
+import { validateRegister, validateLogin } from './validators';
+import { validateRequest } from '../validators';
+import { userAlreadyExists } from '../../../errors/api/userErrors';
+import dbErrors from '../../../errors/database';
+import transformUser from '../../transformers/users';
+import { errorBadRequest, errorNotFound, errorUnauthorized, errorInternalError, errorConflict } from '../../../errors/api/errors';
 
 export const register = (req, res) => {
-  const requestErrors = validateRequest(req, "body");
+  const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
@@ -25,11 +25,11 @@ export const register = (req, res) => {
   }
 
   addUser(req.body)
-    .then(user => {
+    .then((user) => {
       res.location(`/api/users/${user.id}`);
       sendJsonResponse(res, 201, createJwt(transformUser(req, user)));
     })
-    .catch(error => {
+    .catch((error) => {
       if (error.code === dbErrors.dataAlreadyExists) {
         errorConflict(res, userAlreadyExists());
         return;
@@ -40,7 +40,7 @@ export const register = (req, res) => {
 };
 
 export const login = (req, res) => {
-  const requestErrors = validateRequest(req, "body");
+  const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
@@ -54,7 +54,7 @@ export const login = (req, res) => {
     return;
   }
 
-  passport.authenticate("local", (err, user, info) => {
+  passport.authenticate('local', (err, user, info) => {
     if (err) {
       errorNotFound(res, err);
       return;
@@ -63,11 +63,8 @@ export const login = (req, res) => {
     if (user) {
       res.location(`/api/users/${user.id}`);
       sendJsonResponse(res, 201, createJwt(transformUser(req, user)));
-      return;
-    }
-    else {
+    } else {
       errorUnauthorized(res, info);
-      return;
     }
   })(req, res);
 };

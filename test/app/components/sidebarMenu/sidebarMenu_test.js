@@ -3,7 +3,9 @@
   no-unused-expressions,
   prefer-arrow-callback,
   import/no-extraneous-dependencies,
-  func-names
+  func-names,
+  import/extensions,
+  import/no-unresolved
  */
 
 import React from 'react';
@@ -36,7 +38,9 @@ const renderSidebarMenu = (props = {}, children = 'Test') => {
 
   ReactDOM.render(
     <SidebarMenu
-      ref={(component) => { sidebarMenu = component; }}
+      ref={(component) => {
+        sidebarMenu = component;
+      }}
       onOverlayClicked={() => undefined}
       {...props}
     >

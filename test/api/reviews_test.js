@@ -18,7 +18,7 @@ import { addUser } from '../../server/api/services/users';
 import { addReview } from '../../server/api/services/reviews';
 import addCategories from '../../server/seeder/database/categoriesTableSeeder';
 import { addProduct } from '../../server/api/services/products';
-import { invalidReview } from '../../server/errors/api/reviewErrors';
+import invalidReview from '../../server/errors/api/reviewErrors';
 import { unauthorizedAccess } from '../../server/errors/api/authorizationErrors';
 import { userDoesNotExist } from '../../server/errors/api/userErrors';
 import { dataNotFound, invalidId } from '../../server/errors/api/controllerErrors';

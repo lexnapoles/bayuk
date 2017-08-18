@@ -3,7 +3,9 @@
   no-unused-expressions,
   prefer-arrow-callback,
   import/no-extraneous-dependencies,
-  func-names
+  func-names,
+  import/extensions,
+  import/no-unresolved
  */
 
 import React, { Component } from 'react';
@@ -136,14 +138,14 @@ describe('<formWrapper/>', function () {
     const Children = () => <div />;
     const wrapper = getForm({ elements: ['name', 'email'] }, Children);
 
-    assert.deepEqual(wrapper.find('Children').prop('form'), { name: '', email: '' })
+    assert.deepEqual(wrapper.find('Children').prop('form'), { name: '', email: '' });
   });
 
   it('passes the errors state to the children', function () {
     const Children = () => <div />;
     const wrapper = getForm({ elements: ['name', 'email'] }, Children);
 
-    assert.deepEqual(wrapper.find('Children').prop('errors'), { name: '', email: '' })
+    assert.deepEqual(wrapper.find('Children').prop('errors'), { name: '', email: '' });
   });
 
   it('passes the handlers to the children', function () {

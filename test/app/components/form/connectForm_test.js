@@ -3,7 +3,9 @@
   no-unused-expressions,
   prefer-arrow-callback,
   import/no-extraneous-dependencies,
-  func-names
+  func-names,
+  import/extensions,
+  import/no-unresolved
  */
 
 import React from 'react';
