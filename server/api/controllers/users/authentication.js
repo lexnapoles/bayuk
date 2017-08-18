@@ -6,7 +6,7 @@ import {validateRegister, validateLogin} from "./validators";
 import {validateRequest} from "../validators";
 import {userAlreadyExists} from "../../../errors/api/userErrors";
 import dbErrors from "../../../errors/database";
-import {transformUser} from "../../transformers/users";
+import transformUser from "../../transformers/users";
 import {errorBadRequest, errorNotFound, errorUnauthorized, errorInternalError, errorConflict} from "../../../errors/api/errors";
 
 export const register = (req, res) => {

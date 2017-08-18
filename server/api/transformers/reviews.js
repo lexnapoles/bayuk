@@ -1,3 +1,3 @@
-import {transform} from "./transformer";
+import transform from './transformer';
 
-export const transformReview = (req, review) => transform(req, review);
+export default (req, review) => transform(req, review);

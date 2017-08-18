@@ -1,83 +1,83 @@
-const webpack = require("webpack");
-const path = require("path");
+const webpack = require('webpack');
+const path = require('path');
 
-const DIST_DIR   = path.resolve(__dirname, "dist"),
-			CLIENT_DIR = path.resolve(__dirname, "src");
+const DIST_DIR = path.resolve(__dirname, 'dist');
+const CLIENT_DIR = path.resolve(__dirname, 'src');
 
 module.exports = {
-	context: CLIENT_DIR,
+  context: CLIENT_DIR,
 
-	entry: ["./main"],
+  entry: ['./main'],
 
-	output: {
-		path:       DIST_DIR,
-		filename:   "bundle.js",
-		publicPath: "/"
-	},
+  output: {
+    path: DIST_DIR,
+    filename: 'bundle.js',
+    publicPath: '/',
+  },
 
-	module: {
-		rules: [
-			{
-				test:    /\.js$/,
-				exclude: /node_modules/,
-				use:     [
-					"babel-loader",
-					"eslint-loader"
-				]
-			},
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          'babel-loader',
+          'eslint-loader',
+        ],
+      },
 
-			{
-				test:    /\.css$/,
-				exclude: /src/,
-				use:     [
-					"style-loader",
-					{
-						loader:  "css-loader",
-						options: {
-							importLoaders: 1,
-						}
-					},
-					"postcss-loader"
-				]
-			},
+      {
+        test: /\.css$/,
+        exclude: /src/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          },
+          'postcss-loader',
+        ],
+      },
 
-			{
-				test:    /\.css$/,
-				exclude: /node_modules/,
-				use:     [
-					"style-loader",
-					{
-						loader:  "css-loader",
-						options: {
-							importLoaders:  1,
-							modules:        true,
-							localIdentName: "[name]__[local]___[hash:base64:5]"
-						}
-					},
-					"postcss-loader"
-				]
-			},
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: true,
+              localIdentName: '[name]__[local]___[hash:base64:5]',
+            },
+          },
+          'postcss-loader',
+        ],
+      },
 
-			{
-				test:    /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader:  "url-loader",
-				options: {
-					limit:    10000,
-					mimetype: "application/font-woff"
-				}
-			},
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          mimetype: 'application/font-woff',
+        },
+      },
 
-			{
-				test:   /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-				loader: "file-loader"
-			}
-		]
-	},
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader',
+      },
+    ],
+  },
 
-	plugins: [
-		new webpack.EnvironmentPlugin({
-			NODE_ENV: 'development',
-			DEBUG:    false
-		})
-	]
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      DEBUG: false,
+    }),
+  ],
 };

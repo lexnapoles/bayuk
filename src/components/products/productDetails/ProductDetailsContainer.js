@@ -1,39 +1,39 @@
 import PropTypes from 'prop-types';
-import React, {Component} from "react";
-import {omit} from "lodash/object";
-import {connect} from "react-redux";
-import ProductDetails from "./ProductDetails";
-import {getProductById} from "../../../reducers/root";
-import {loadProduct} from "../../../actions/products";
+import React, { Component } from 'react';
+import { omit } from 'lodash/object';
+import { connect } from 'react-redux';
+import ProductDetails from './ProductDetails';
+import { getProductById } from '../../../reducers/root';
+import { loadProduct } from '../../../actions/products';
 
-const loadData = ({loadProduct, id}) => loadProduct(id);
+const loadData = ({ loadProduct: load, id }) => load(id);
 
 class ProductDetailsContainer extends Component {
-	componentWillMount() {
-		loadData(this.props);
-	}
+  componentWillMount() {
+    loadData(this.props);
+  }
 
-	render() {
-		const props = omit(this.props, ["loadProduct", "id"]);
+  render() {
+    const props = omit(this.props, ['loadProduct', 'id']);
 
-		return <ProductDetails {...props}/>;
-	}
+    return <ProductDetails {...props} />;
+  }
 }
 
 ProductDetailsContainer.propTypes = {
-	id:          PropTypes.string.isRequired,
-	loadProduct: PropTypes.func.isRequired
+  id: PropTypes.string.isRequired,
+  loadProduct: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, {params: {id}}) => {
-	const item = getProductById(state, id);
+const mapStateToProps = (state, { params: { id } }) => {
+  const item = getProductById(state, id);
 
-	return {
-		id,
-		product: item
-	};
+  return {
+    id,
+    product: item,
+  };
 };
 
 export default connect(mapStateToProps, {
-	loadProduct
+  loadProduct,
 })(ProductDetailsContainer);

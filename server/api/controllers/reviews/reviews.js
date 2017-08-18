@@ -6,7 +6,7 @@ import {validateRequest, validateId} from "../validators";
 import {unauthorizedAccess} from "../../../errors/api/authorizationErrors";
 import {userDoesNotExist} from "../../../errors/api/userErrors";
 import dbErrors from "../../../errors/database";
-import {transformReview} from "../../transformers/reviews";
+import transformReview from "../../transformers/reviews";
 import {errorBadRequest, errorNotFound, errorInternalError, errorUnauthorized} from "../../../errors/api/errors";
 
 export const readReviews = (req, res) => {
@@ -21,7 +21,7 @@ export const readReviews = (req, res) => {
 
   getUserById(userId)
     .then(() => getReviews(userId))
-    .then(reviews => reviews.map(transformReview.bind(void 0, req)))
+    .then(reviews => reviews.map(transformReview.bind(undefined, req)))
     .then(reviews => sendJsonResponse(res, 200, reviews))
     .catch(error => {
       if (error.code === dbErrors.dataNotFound) {

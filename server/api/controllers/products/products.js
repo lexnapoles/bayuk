@@ -1,6 +1,6 @@
 import {sendJsonResponse} from "../../../utils";
 import {getProducts, getProductById, addProduct, updateProduct, deleteProduct} from "../../services/products";
-import {transformProduct} from "../../transformers/products";
+import transformProduct from "../../transformers/products";
 import {productDoesNotExist} from "../../../errors/api/productErrors";
 import dbErrors from "../../../errors/database";
 import {validateRequest, validateId} from "../validators";
@@ -18,7 +18,7 @@ export const readProducts = (req, res) => {
   }
 
   getProducts(filters)
-    .then(products => products.map(transformProduct.bind(void 0, req)))
+    .then(products => products.map(transformProduct.bind(undefined, req)))
     .then(products => {
       if (products.length) {
         addPaginationLink(req, res, products, filters);
@@ -50,7 +50,7 @@ export const readOneProduct = (req, res) => {
   }
 
   getProductById(productId)
-    .then(transformProduct.bind(void 0, req))
+    .then(transformProduct.bind(undefined, req))
     .then(product => sendJsonResponse(res, 200, product))
     .catch(error => {
       if (error.code === dbErrors.dataNotFound) {
@@ -83,7 +83,7 @@ export const createProduct = (req, res) => {
   };
 
   addProduct(product)
-    .then(transformProduct.bind(void 0, req))
+    .then(transformProduct.bind(undefined, req))
     .then(product => {
       res.location(`/api/products/${product.id}`);
       sendJsonResponse(res, 201, product)
@@ -111,7 +111,7 @@ export const updateOneProduct = (req, res) => {
 
   return getProductById(productId)
     .then(() => updateProduct(product))
-    .then(transformProduct.bind(void 0, req))
+    .then(transformProduct.bind(undefined, req))
     .then(product => sendJsonResponse(res, 200, product))
     .catch(error => errorInternalError(res, error));
 };

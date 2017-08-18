@@ -1,11 +1,11 @@
 const errorMessage = (state = null, action) => {
-	const {error} = action;
+  const { error } = action;
 
-	if (error) {
-		return action.payload.response;
-	}
+  if (error) {
+    return action.payload.response;
+  }
 
-	return state;
+  return state;
 };
 
 export default errorMessage;

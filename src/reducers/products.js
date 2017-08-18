@@ -1,7 +1,7 @@
-import {union} from "lodash/array";
-import {combineReducers} from "redux";
-import {FETCH_PRODUCTS, FETCH_ONE_PRODUCT, SEARCH_PRODUCTS, ADD_PRODUCT} from "../constants/actionTypes";
-import product from "./product";
+import { union } from 'lodash/array';
+import { combineReducers } from 'redux';
+import { FETCH_PRODUCTS, FETCH_ONE_PRODUCT, SEARCH_PRODUCTS, ADD_PRODUCT } from '../constants/actionTypes';
+import product from './product';
 
 const byId = (state = {}, action) => {
   switch (action.type) {
@@ -9,14 +9,14 @@ const byId = (state = {}, action) => {
     case ADD_PRODUCT.success:
       return {
         ...state,
-        [action.payload.id]: product(void 0, action)
+        [action.payload.id]: product(undefined, action),
       };
 
     case FETCH_PRODUCTS.success:
     case SEARCH_PRODUCTS.success:
       return {
         ...state,
-        ...action.payload.entities.products
+        ...action.payload.entities.products,
       };
 
     default:
@@ -41,5 +41,5 @@ const allIds = (state = [], action) => {
 
 export default combineReducers({
   byId,
-  allIds
+  allIds,
 });

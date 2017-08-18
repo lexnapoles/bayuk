@@ -1,70 +1,82 @@
 import PropTypes from 'prop-types';
-import React, {Component} from "react";
-import {omit} from "lodash/object";
+import React, { Component } from 'react';
+import { omit } from 'lodash/object';
 
 const DEFAULT_MADRID_COORDS = {
-	latitude:  40.416,
-	longitude: 3.7
+  latitude: 40.416,
+  longitude: 3.7,
 };
 
-const geolocated = WrappedComponent => {
-	class Geolocator extends Component {
-		constructor(props) {
-			super(props);
+const propTypes = {
+  isAlreadyLocated: PropTypes.bool,
+  coords: PropTypes.shape({
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired,
+  }),
+};
 
-			this.state = DEFAULT_MADRID_COORDS;
+const defaultProps = {
+  isAlreadyLocated: false,
+  coords: null,
+};
 
-			this.getGeolocation = this.getGeolocation.bind(this);
-		}
+const geolocated = (WrappedComponent) => {
+  class Geolocator extends Component {
+    constructor(props) {
+      super(props);
 
-		componentWillMount() {
-			if (this.props.isAlreadyLocated) {
-				return;
-			}
+      this.state = DEFAULT_MADRID_COORDS;
 
-			this.getGeolocation()
-		}
+      this.getGeolocation = this.getGeolocation.bind(this);
+    }
 
-		getGeolocation() {
-			const success = ({coords: {latitude, longitude}}) => this.setState({latitude, longitude});
+    componentWillMount() {
+      if (this.props.isAlreadyLocated) {
+        return;
+      }
 
-			navigator.geolocation.getCurrentPosition(success);
-		}
+      this.getGeolocation();
+    }
 
-		getAlreadyLocatedCoordsProps({coords: {latitude, longitude}}) {
-			return {
-				...omit(this.props, "isAlreadyLocated"),
-				latitude,
-				longitude
-			};
-		}
+    getGeolocation() {
+      const success = ({ coords: { latitude, longitude } }) =>
+        this.setState({
+          latitude,
+          longitude,
+        });
 
-		getOwnCoordsProps() {
-			return {
-				...omit(this.props, "isAlreadyLocated"),
-				...this.state
-			}
-		}
+      navigator.geolocation.getCurrentPosition(success);
+    }
 
-		render() {
-			const props = this.props.isAlreadyLocated && this.props.coords
-				? this.getAlreadyLocatedCoordsProps(this.props)
-				: this.getOwnCoordsProps();
+    getAlreadyLocatedCoordsProps({ coords: { latitude, longitude } }) {
+      return {
+        ...omit(this.props, 'isAlreadyLocated'),
+        latitude,
+        longitude,
+      };
+    }
 
-			return <WrappedComponent {...props}/>;
-		}
-	}
+    getOwnCoordsProps() {
+      return {
+        ...omit(this.props, 'isAlreadyLocated'),
+        ...this.state,
+      };
+    }
 
-	Geolocator.propTypes = {
-		isAlreadyLocated: PropTypes.bool,
-		coords:           PropTypes.object
-	};
+    render() {
+      const props = this.props.isAlreadyLocated && this.props.coords
+        ? this.getAlreadyLocatedCoordsProps(this.props)
+        : this.getOwnCoordsProps();
 
-	Geolocator.defaultPropTypes = {
-		isAlreadyLocated: false
-	};
+      return <WrappedComponent {...props} />;
+    }
+  }
 
-	return Geolocator;
+  Geolocator.propTypes = propTypes;
+
+  Geolocator.defaultProps = defaultProps;
+
+  return Geolocator;
 };
 
 export default geolocated;

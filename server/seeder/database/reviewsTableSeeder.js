@@ -29,7 +29,7 @@ const getReview = (ids, products, users = {}) => ({
 
 export default (users, products) => {
 	const ids     = Array.from(users, ({id}) => id),
-				reviews = times(MAX_REVIEWS, getReview.bind(void 0, ids, products));
+				reviews = times(MAX_REVIEWS, getReview.bind(undefined, ids, products));
 
 	return Promise.all(wrapDataInPromise(reviews, addReview));
 };

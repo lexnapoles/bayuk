@@ -5,12 +5,12 @@ import {getUsers, getUserById, updateUser, updateEmail, updatePassword, deleteUs
 import {createJwt} from "../../services/authentication";
 import dbErrors from "../../../errors/database";
 import {userDoesNotExist} from "../../../errors/api/userErrors";
-import {transformUser} from "../../transformers/users";
+import transformUser from "../../transformers/users";
 import {errorBadRequest, errorNotFound, errorInternalError} from "../../../errors/api/errors";
 
 export const readUsers = (req, res) =>
   getUsers()
-    .then(users => users.map(transformUser.bind(void 0, req)))
+    .then(users => users.map(transformUser.bind(undefined, req)))
     .then(users => sendJsonResponse(res, 200, users))
     .catch(error => errorInternalError(res, error));
 
@@ -31,7 +31,7 @@ export const readOneUser = (req, res) => {
   }
 
   getUserById(userId)
-    .then(transformUser.bind(void 0, req))
+    .then(transformUser.bind(undefined, req))
     .then(user => sendJsonResponse(res, 200, user))
     .catch(error => {
       if (error.code === dbErrors.dataNotFound) {
@@ -107,7 +107,7 @@ export const updateOneUser = (req, res) => {
   }
 
   updateUser(user)
-    .then(transformUser.bind(void 0, req))
+    .then(transformUser.bind(undefined, req))
     .then(user => sendJsonResponse(res, 200, user))
     .catch(error => errorInternalError(res, error));
 

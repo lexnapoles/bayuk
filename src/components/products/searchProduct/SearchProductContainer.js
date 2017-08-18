@@ -1,34 +1,34 @@
-import {Component, createElement} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import connectForm from "../../form/connectForm/connectForm";
-import {onCheckBoxChange, onRangeChange} from "../../form/formHandlers";
-import SearchProduct from "./SearchProduct";
-import {loadCategories} from "../../../actions/categories";
-import {loadSearchedProducts, newSearch} from "../../../actions/products";
-import getParamsFromSearch from "../../../services/search";
-import {browserHistory} from "react-router";
+import { Component, createElement } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+import connectForm from '../../form/connectForm/connectForm';
+import { onCheckBoxChange, onRangeChange } from '../../form/formHandlers';
+import SearchProduct from './SearchProduct';
+import loadCategories from '../../../actions/categories';
+import { loadSearchedProducts, newSearch } from '../../../actions/products';
+import getParamsFromSearch from '../../../services/search';
 
-const loadData = ({loadCategories}) => loadCategories();
+const loadData = ({ loadCategories: load }) => load();
 
-const elements = ["name", "category", "price", "distance", "location", "sort"];
+const elements = ['name', 'category', 'price', 'distance', 'location', 'sort'];
 
 const defaultFormState = {
-  price: {min: 0, max: 0}
+  price: { min: 0, max: 0 },
 };
 
 const handlers = {
   onCategoryChange: onCheckBoxChange,
   onDistanceChange: onCheckBoxChange,
-  onSortChange:     onCheckBoxChange,
-  onPriceChange:    onRangeChange.bind(void 0, "price"),
-  onLocationChange: coords => coords
+  onSortChange: onCheckBoxChange,
+  onPriceChange: onRangeChange.bind(undefined, 'price'),
+  onLocationChange: coords => coords,
 };
 
-const props = {
+const formTemplate = {
   elements,
   handlers,
-  defaultFormState
+  defaultFormState,
 };
 
 class SearchFormContainer extends Component {
@@ -49,13 +49,13 @@ class SearchFormContainer extends Component {
 
     this.props.onSubmit(search);
 
-    browserHistory.push("/results");
+    browserHistory.push('/results');
   }
 
   render() {
     const formProps = {
-      ...props,
-      onSubmit: this.onSubmit
+      ...formTemplate,
+      onSubmit: this.onSubmit,
     };
 
     return createElement(connectForm(formProps)(SearchProduct));
@@ -63,13 +63,13 @@ class SearchFormContainer extends Component {
 }
 
 SearchFormContainer.propTypes = {
-  onSubmit:  PropTypes.func.isRequired,
-  newSearch: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  newSearch: PropTypes.func.isRequired,
 };
 
 
-export default connect(void 0, {
+export default connect(undefined, {
   onSubmit: loadSearchedProducts,
   loadCategories,
-  newSearch
+  newSearch,
 })(SearchFormContainer);

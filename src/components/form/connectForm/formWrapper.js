@@ -1,152 +1,151 @@
 import PropTypes from 'prop-types';
-import { Component, createElement } from "react";
-import {createDefaultObjectFrom} from "../../../utils";
-import {omit} from "lodash/object";
-import {some} from "lodash/collection";
+import { omit } from 'lodash/object';
+import { some } from 'lodash/collection';
+import { Component, createElement } from 'react';
+import { createDefaultObjectFrom } from '../../../utils';
 
-const getChildrenProps = props => {
-	const ownProps = ["elements", "onSubmit", "errorMessages", "validation", "handlers", "defaultFormState"];
+const getChildrenProps = (props) => {
+  const ownProps = ['elements', 'onSubmit', 'errorMessages', 'validation', 'handlers', 'defaultFormState'];
 
-	return omit(props, ownProps);
+  return omit(props, ownProps);
 };
 
 const formWrapper = (WrappedComponent, options = {}) => {
-	class FormContainer extends Component {
-		constructor(props) {
-			super(props);
+  class FormContainer extends Component {
+    static defaultHandler(event) {
+      return event.target.value;
+    }
 
-			const elements        = props.elements,
-						defaultElements = createDefaultObjectFrom(elements, ""),
-						formState       = {...defaultElements, ...this.props.defaultFormState};
+    static getHandlersNames(elements) {
+      return elements.map((name) => {
+        const upperCaseName = name.replace(/\b[a-z]/g, letter => letter.toUpperCase());
 
-			this.state = ({
-				form:     formState,
-				errors:   defaultElements,
-				handlers: this.getHandlersObj(elements)
-			});
+        return `on${upperCaseName}Change`;
+      });
+    }
 
-			this.handlerWrapper = this.handlerWrapper.bind(this);
-			this.onSubmit = this.onSubmit.bind(this);
-			this.getValidator = this.getValidator.bind(this);
-		}
+    static errorsExist(errors) {
+      return some(errors, error => error.length);
+    }
 
-		defaultHandler(event) {
-			return event.target.value;
-		}
+    constructor(props) {
+      super(props);
 
-		handlerWrapper(elemName, func, data) {
-			const form = {
-				...this.state.form,
-				[elemName]: func(data, this.state.form, getChildrenProps(this.props))
-			};
+      const elements = props.elements;
+      const defaultElements = createDefaultObjectFrom(elements, '');
+      const formState = { ...defaultElements, ...this.props.defaultFormState };
 
-			this.setState({form});
-		}
+      this.state = ({
+        form: formState,
+        errors: defaultElements,
+        handlers: this.getHandlersObj(elements),
+      });
 
-		getHandlersNames(elements) {
-			return elements.map(name => {
-				const upperCaseName = name.replace(/\b[a-z]/g, letter => letter.toUpperCase());
+      this.handlerWrapper = this.handlerWrapper.bind(this);
+      this.onSubmit = this.onSubmit.bind(this);
+      this.getValidator = this.getValidator.bind(this);
+    }
 
-				return `on${upperCaseName}Change`;
-			});
-		}
+    onSubmit(event) {
+      event.preventDefault();
 
-		getHandler(handlerName, elementName) {
-			const customHandler = this.props.handlers[handlerName],
-						handler       = customHandler ? customHandler : this.defaultHandler;
+      const { form } = this.state;
 
-			return data => this.handlerWrapper(elementName, handler, data);
-		}
+      if (!this.validate(form)) {
+        return;
+      }
 
-		getHandlersObj(elements) {
-			const names = this.getHandlersNames(elements);
+      this.props.onSubmit(form);
+    }
 
-			return names.reduce((obj, handlerName, index) => ({
-				...obj,
-				[handlerName]: this.getHandler(handlerName, elements[index])
-			}), {});
-		}
+    getHandlersObj(elements) {
+      const names = FormContainer.getHandlersNames(elements);
 
-		getValidator(validation, prop) {
-			return value => validation[prop](value, this.state.form, getChildrenProps(this.props));
-		}
+      return names.reduce((obj, handlerName, index) => ({
+        ...obj,
+        [handlerName]: this.getHandler(handlerName, elements[index]),
+      }), {});
+    }
 
-		createErrors(formData, validation, errMsg) {
-			const elements = Object.keys(formData);
+    getHandler(handlerName, elementName) {
+      const customHandler = this.props.handlers[handlerName];
+      const handler = customHandler || FormContainer.defaultHandler;
 
-			const errors = elements.reduce((obj, name) => {
-				const value   = formData[name],
-							isValid = validation[name] ? this.getValidator(validation, name)(value) : true;
+      return data => this.handlerWrapper(elementName, handler, data);
+    }
 
-				return {
-					...obj,
-					[name]: isValid ? "" : errMsg[name]
-				};
-			}, {});
+    getValidator(validation, prop) {
+      return value => validation[prop](value, this.state.form, getChildrenProps(this.props));
+    }
 
-			return errors;
-		}
+    handlerWrapper(elemName, func, data) {
+      const form = {
+        ...this.state.form,
+        [elemName]: func(data, this.state.form, getChildrenProps(this.props)),
+      };
 
-		errorsExist(errors) {
-			return some(errors, error => error.length);
-		}
+      this.setState({ form });
+    }
 
-		validate(form) {
-			const {validation, errorMessages} = this.props,
-						errors                      = this.createErrors(form, validation, errorMessages);
+    createErrors(formData, validation, errMsg) {
+      const elements = Object.keys(formData);
 
-			if (this.errorsExist(errors)) {
-				this.setState({errors});
+      return elements.reduce((obj, name) => {
+        const value = formData[name];
+        const isValid = validation[name] ? this.getValidator(validation, name)(value) : true;
 
-				return false;
-			}
+        return {
+          ...obj,
+          [name]: isValid ? '' : errMsg[name],
+        };
+      }, {});
+    }
 
-			return true;
-		}
+    validate(form) {
+      const { validation, errorMessages } = this.props;
+      const errors = this.createErrors(form, validation, errorMessages);
 
-		onSubmit(event) {
-			event.preventDefault();
+      if (FormContainer.errorsExist(errors)) {
+        this.setState({ errors });
 
-			const {form} = this.state;
+        return false;
+      }
 
-			if (!this.validate(form)) {
-				return;
-			}
+      return true;
+    }
 
-			this.props.onSubmit(form);
-		}
+    render() {
+      const { form, errors, handlers } = this.state;
 
-		render() {
-			const {form, errors, handlers} = this.state;
+      const props = {
+        form,
+        errors,
+        onSubmit: this.onSubmit,
+        ...handlers,
+        ...getChildrenProps(this.props),
+      };
 
-			const props = {
-				form,
-				errors,
-				onSubmit: this.onSubmit,
-				...handlers,
-				...getChildrenProps(this.props)
-			};
+      return createElement(WrappedComponent, props);
+    }
+  }
 
-			return createElement(WrappedComponent, props);
-		}
-	}
+  FormContainer.propTypes = {
+    elements: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    errorMessages: PropTypes.objectOf(PropTypes.string).isRequired,
+    validation: PropTypes.objectOf(PropTypes.func).isRequired,
+    handlers: PropTypes.objectOf(PropTypes.func),
+    defaultFormState: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  };
 
-	FormContainer.propTypes = {
-		elements:         PropTypes.array.isRequired,
-		onSubmit:         PropTypes.func.isRequired,
-		errorMessages:    PropTypes.object.isRequired,
-		validation:       PropTypes.object.isRequired,
-		defaultFormState: PropTypes.object,
-		handlers:         PropTypes.object
-	};
+  FormContainer.defaultProps = {
+    defaultFormState: {},
+    handlers: {},
+  };
 
-	FormContainer.defaultProps = {
-		handlers: {}
-	};
+  FormContainer.displayName = options.displayName;
 
-	FormContainer.displayName = options.displayName;
-
-	return FormContainer;
+  return FormContainer;
 };
 
 export default formWrapper;

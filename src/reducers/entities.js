@@ -1,32 +1,32 @@
-import {combineReducers} from "redux";
-import users from "./users";
-import products from "./products"
-import categories from "./categories";
-import {getAllItems, getItemById} from "./normalizedSelectors";
+import { combineReducers } from 'redux';
+import usersReducer from './users';
+import productsReducer from './products';
+import categoriesReducer from './categories';
+import { getAllItems, getItemById } from './normalizedSelectors';
 
-export const getProductById = ({products}, id) => getItemById(products, id);
+export const getProductById = ({ products }, id) => getItemById(products, id);
 
-export const getListOfProductsById = ({products}, ids) => {
-	const isIdsListEmpty = Array.isArray(ids) && !ids.length;
+export const getListOfProductsById = ({ products }, ids) => {
+  const isIdsListEmpty = Array.isArray(ids) && !ids.length;
 
-	if	(isIdsListEmpty || !ids) {
-		return [];
-	}
+  if (isIdsListEmpty || !ids) {
+    return [];
+  }
 
-	const items = getAllItems(products);
+  const items = getAllItems(products);
 
-	return items.filter(({id}) => ids.includes(id));
+  return items.filter(({ id }) => ids.includes(id));
 };
 
-export const getAllProducts = ({products}) => getAllItems(products);
+export const getAllProducts = ({ products }) => getAllItems(products);
 
-export const getUserById = ({users}, id) => getItemById(users, id);
-export const getAllUsers = ({users}) => getAllItems(users);
+export const getUserById = ({ users }, id) => getItemById(users, id);
+export const getAllUsers = ({ users }) => getAllItems(users);
 
-export const getAllCategories = ({categories}) => categories;
+export const getAllCategories = ({ categories }) => categories;
 
 export default combineReducers({
-	products,
-	users,
-	categories
+  products: productsReducer,
+  users: usersReducer,
+  categories: categoriesReducer,
 });

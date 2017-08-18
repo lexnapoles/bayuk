@@ -1,12 +1,12 @@
-import {findKey} from "lodash/object";
+import { findKey } from 'lodash/object';
 
-export const onCheckBoxChange = options => {
-	const checkbox = findKey(options, checkbox => checkbox);
+export const onCheckBoxChange = (options) => {
+  const checkboxKey = findKey(options, checkbox => checkbox);
 
-	return checkbox ? checkbox : ""
+  return checkboxKey || '';
 };
 
-export const onRangeChange =  (key, event, previousState)=> ({
-	...previousState[key],
-	[event.target.id]: parseInt(event.target.value)
+export const onRangeChange = (key, event, previousState) => ({
+  ...previousState[key],
+  [event.target.id]: parseInt(event.target.value, 10),
 });

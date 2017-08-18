@@ -1,29 +1,31 @@
-const isAsyncActionType = (action, {request, success}) => action[request] && action[success];
+const isAsyncActionType = (action, { request, success }) => action[request] && action[success];
 
 const findType = (action, key, type) => type[key] === action.type;
 
-const isFetching = (actions, keys = {request: "request", success: "success"}) => (state = true, action) => {
-	if (!Array.isArray(actions)) {
-		actions = [actions];
-	}
+const defaultKeys = { request: 'request', success: 'success' };
 
-	for (const action of actions) {
-		if (!isAsyncActionType(action, keys)) {
-			throw new Error("isFetching error: actions are not async action types");
-		}
-	}
+const isFetching = (actions, keys = defaultKeys) =>
+  (state = true, action) => {
+    if (!Array.isArray(actions)) {
+      actions = [actions];
+    }
 
-	const request = actions.find(findType.bind(void 0, action, keys.request)),
-				success = actions.find(findType.bind(void 0, action, keys.success));
+    const someActionIsNotAsync = actions.some(anAction => !isAsyncActionType(anAction));
 
-	if (request) {
-		return true
-	}
-	else if (success) {
-		return false;
-	}
+    if (someActionIsNotAsync) {
+      throw new Error('isFetching error: actions are not async action types');
+    }
 
-	return state;
-};
+    const request = actions.find(findType.bind(undefined, action, keys.request));
+    const success = actions.find(findType.bind(undefined, action, keys.success));
+
+    if (request) {
+      return true;
+    } else if (success) {
+      return false;
+    }
+
+    return state;
+  };
 
 export default isFetching;
