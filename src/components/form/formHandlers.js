@@ -1,7 +1,7 @@
 import { findKey } from 'lodash/object';
 
-export const onCheckBoxChange = (options) => {
-  const checkboxKey = findKey(options, checkbox => checkbox);
+export const onCheckBoxChange = (values) => {
+  const checkboxKey = findKey(values, checkbox => checkbox);
 
   return checkboxKey || '';
 };

@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import CheckBoxFilterContainer from '../checkBoxFilter/CheckBoxFilterContainer';
 import { getAllCategories } from '../../../reducers/root';
+import { createDefaultObjectFrom } from '../../../utils';
 
 const mapStateToProps = (state) => {
-  const options = getAllCategories(state);
+  const value = getAllCategories(state);
 
   return {
-    options,
+    value: value ? createDefaultObjectFrom(value, false) : {},
     title: 'Categories',
   };
 };

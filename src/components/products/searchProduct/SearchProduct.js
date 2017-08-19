@@ -4,15 +4,13 @@ import Form from '../../form/Form';
 import TextFilter from '../../filters/textFilter/TextFilter';
 import LocationFilter from '../../filters/locationFilter/LocationFilterContainer';
 import PriceFilter from '../../filters/PriceFilter';
-import CategoryFilter from '../../filters/categoryFilter/CategoryFilter';
-import DistanceFilter from '../../filters/distanceFilter/DistanceFilter';
-import SortFilter from '../../filters/sortFilter/SortFilter';
+import CheckBoxFilterContainer from '../../filters/checkBoxFilter/CheckBoxFilterContainer';
 
 const SearchProduct = ({
   form,
   onSubmit,
   onNameChange,
-  onCategoryChange,
+  onCategoriesChange,
   onPriceChange,
   onDistanceChange,
   onLocationChange,
@@ -25,11 +23,15 @@ const SearchProduct = ({
       onChange={onNameChange}
       required
     />
-    <CategoryFilter onChange={onCategoryChange} />
+    <CheckBoxFilterContainer
+      title="Categories"
+      value={form.categories}
+      onChange={onCategoriesChange}
+    />
     <PriceFilter value={form.price} onChange={onPriceChange} />
-    <DistanceFilter onChange={onDistanceChange} />
+    <CheckBoxFilterContainer title="Distance" value={form.distance} onChange={onDistanceChange} />
     <LocationFilter onChange={onLocationChange} />
-    <SortFilter onChange={onSortChange} />
+    <CheckBoxFilterContainer title="Sort by" value={form.sort} onChange={onSortChange} />
   </Form >
 );
 
@@ -39,13 +41,14 @@ const formPropTypes = PropTypes.shape({
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
   }).isRequired,
+  distance: PropTypes.objectOf(PropTypes.bool).isRequired,
 });
 
 SearchProduct.propTypes = {
   form: formPropTypes.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired,
-  onCategoryChange: PropTypes.func.isRequired,
+  onCategoriesChange: PropTypes.func.isRequired,
   onPriceChange: PropTypes.func.isRequired,
   onDistanceChange: PropTypes.func.isRequired,
   onLocationChange: PropTypes.func.isRequired,

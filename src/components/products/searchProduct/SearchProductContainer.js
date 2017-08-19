@@ -3,17 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import connectForm from '../../form/connectForm/connectForm';
-import { onCheckBoxChange, onRangeChange } from '../../form/formHandlers';
+import { onRangeChange } from '../../form/formHandlers';
 import SearchProduct from './SearchProduct';
 import loadCategories from '../../../actions/categories';
 import { loadSearchedProducts, newSearch } from '../../../actions/products';
 import getParamsFromSearch from '../../../services/search';
+import { getAllCategories } from '../../../reducers/root';
+import { createDefaultObjectFrom } from '../../../utils';
 
 const loadData = ({ loadCategories: load }) => load();
 
-const elements = ['name', 'category', 'price', 'distance', 'location', 'sort'];
+const elements = ['name', 'categories', 'price', 'distance', 'location', 'sort'];
 
-const defaultFormState = {
+const getDefaultFormState = props => ({
   price: { min: 0, max: 999 },
   distance: {
     '1km': true,
@@ -21,20 +23,21 @@ const defaultFormState = {
     '10km': false,
     '>10km': false,
   },
-};
+  sort: {
+    Expensive: false,
+    Cheap: false,
+    Distance: true,
+    New: false,
+  },
+  ...props,
+});
 
 const handlers = {
-  onCategoryChange: onCheckBoxChange,
-  onDistanceChange: onCheckBoxChange,
-  onSortChange: onCheckBoxChange,
+  onCategoriesChange: category => category,
+  onDistanceChange: distance => distance,
+  onSortChange: sort => sort,
   onPriceChange: onRangeChange.bind(undefined, 'price'),
   onLocationChange: coords => coords,
-};
-
-const formTemplate = {
-  elements,
-  handlers,
-  defaultFormState,
 };
 
 class SearchFormContainer extends Component {
@@ -59,8 +62,14 @@ class SearchFormContainer extends Component {
   }
 
   render() {
+    const defaultFormState = getDefaultFormState({
+      categories: createDefaultObjectFrom(this.props.categories, false),
+    });
+
     const formProps = {
-      ...formTemplate,
+      elements,
+      handlers,
+      defaultFormState,
       onSubmit: this.onSubmit,
     };
 
@@ -69,12 +78,20 @@ class SearchFormContainer extends Component {
 }
 
 SearchFormContainer.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.string),
   onSubmit: PropTypes.func.isRequired,
   newSearch: PropTypes.func.isRequired,
 };
 
+SearchFormContainer.defaultProps = {
+  categories: {},
+};
 
-export default connect(undefined, {
+const mapStateToProps = state => ({
+  categories: getAllCategories(state),
+});
+
+export default connect(mapStateToProps, {
   onSubmit: loadSearchedProducts,
   loadCategories,
   newSearch,
