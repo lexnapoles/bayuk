@@ -154,7 +154,7 @@ describe('Products', function () {
     });
 
     it('should get a link to fetch the next products', function () {
-      const PRODUCTS_CREATED = 30;
+      const PRODUCTS_CREATED = 70;
 
       return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
         .then(() =>
@@ -163,7 +163,7 @@ describe('Products', function () {
             .query({
               sort: 'distance',
               sortOrder: 'descending',
-              radius: 9000,
+              radius: 9999,
               latitude: -72.2468,
               longitude: 81.4777,
             })
@@ -207,7 +207,7 @@ describe('Products', function () {
     });
 
     it('should get the next products with the next link header', function () {
-      const PRODUCTS_CREATED = 30;
+      const PRODUCTS_CREATED = 60;
 
       const filters = {
         sort: 'distance',
@@ -599,7 +599,7 @@ describe('Products', function () {
 
           productImages.length.should.not.be.equal(oldImages.length);
           productImages.should.be.lengthOf(1);
-          productImages.productImagesshould.not.include.members(oldImages);
+          productImages.should.not.include.members(oldImages);
         });
     });
 

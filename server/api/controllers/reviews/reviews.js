@@ -1,7 +1,8 @@
 import { sendJsonResponse } from '../../../utils';
 import { getReviews, addReview } from '../../services/reviews';
 import { getUserById } from '../../services/users';
-import validateReview, { validateRequest, validateId } from './validators';
+import validateReview from './validators';
+import { validateRequest, validateId } from '../validators';
 import { unauthorizedAccess } from '../../../errors/api/authorizationErrors';
 import { userDoesNotExist } from '../../../errors/api/userErrors';
 import dbErrors from '../../../errors/database';
