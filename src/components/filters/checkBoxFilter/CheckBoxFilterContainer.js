@@ -7,62 +7,47 @@ class CheckBoxFilterContainer extends Component {
   constructor(props) {
     super(props);
 
-    const { options } = this.props;
-
-    this.state = {
-      options: createDefaultObjectFrom(options, false),
-    };
-
-    this.onOptionChange = this.onOptionChange.bind(this);
+    this.onValueChange = this.onValueChange.bind(this);
   }
 
-  componentWillReceiveProps({ options }) {
-    const noPreviousOptions = !this.props.options.length;
+  onValueChange(event) {
+    const valueKey = event.target.id;
+    const updatedValue = this.getUpdatedValues(valueKey);
 
-    if (noPreviousOptions && options.length) {
-      this.setState({
-        options: createDefaultObjectFrom(options, false),
-      });
+    this.props.onChange(updatedValue);
+  }
+
+  getUpdatedValues(key) {
+    const values = this.props.value;
+
+    let newValues = values;
+
+    if (this.props.exclusive) {
+      newValues = createDefaultObjectFrom(values, false);
     }
-  }
 
-  onOptionChange(event) {
-    const option = event.target.id;
-    const updatedOptions = this.getUpdatedOptions(option);
+    newValues[key] = !values[key];
 
-    this.setState({
-      options: updatedOptions,
-    });
-
-    this.props.onChange(updatedOptions);
-  }
-
-  getUpdatedOptions(category) {
-    const { options } = this.state;
-    const newOptions = this.props.exclusive
-      ? createDefaultObjectFrom(options, false)
-      : { ...options };
-
-    newOptions[category] = !options[category];
-
-    return newOptions;
+    return newValues;
   }
 
   render() {
-    const { title, error } = this.props;
+    const { title, error, value } = this.props;
 
-    return (<CheckBoxFilter
-      title={title}
-      onChange={this.onOptionChange}
-      options={this.state.options}
-      error={error}
-    />);
+    return (
+      <CheckBoxFilter
+        title={title}
+        onChange={this.onValueChange}
+        value={value}
+        error={error}
+      />
+    );
   }
 }
 
 CheckBoxFilterContainer.propTypes = {
   title: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  value: PropTypes.objectOf(PropTypes.bool).isRequired,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
   exclusive: PropTypes.bool,

@@ -1,38 +1,39 @@
-
 import PropTypes from 'prop-types';
 import React from 'react';
 import Filter from '../filter/Filter';
 import Spinner from '../../spinner/Spinner';
 import CheckBoxInput from '../../inputs/CheckBoxInput';
 
-const renderOptions = (options, onChange) => {
-  const optionNames = Object.keys(options);
+const renderValues = (values, onChange) => {
+  const names = Object.keys(values);
 
-  return optionNames.map(name =>
-    (<CheckBoxInput
+  return names.map(name => (
+    <CheckBoxInput
       key={name}
       id={name}
       description={name}
-      checked={options[name]}
+      checked={values[name]}
       onChange={onChange}
-    />));
+    />
+  ));
 };
 
-const OptionsFilter = ({ title, onChange, options, error }) =>
-  (<Filter title={title} error={error} >
-    {Object.keys(options).length ? renderOptions(options, onChange) : <Spinner />}
-  </Filter >);
+const CheckBoxFilter = ({ title, onChange, value, error }) => (
+  <Filter title={title} error={error} >
+    {Object.keys(value).length ? renderValues(value, onChange) : <Spinner />}
+  </Filter >
+);
 
-OptionsFilter.propTypes = {
+CheckBoxFilter.propTypes = {
   title: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  options: PropTypes.objectOf(PropTypes.bool).isRequired,
+  value: PropTypes.objectOf(PropTypes.bool).isRequired,
   error: PropTypes.string,
 };
 
-OptionsFilter.defaultProps = {
+CheckBoxFilter.defaultProps = {
   error: '',
 };
 
-export default OptionsFilter;
+export default CheckBoxFilter;
 

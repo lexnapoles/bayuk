@@ -1,4 +1,4 @@
-const getParamsFromSearch = (data) => {
+export default (data) => {
   let sort = '';
   let sortOrder = '';
   let radius = 0;
@@ -43,9 +43,11 @@ const getParamsFromSearch = (data) => {
       radius = 99999;
   }
 
+  const category = data.categories.find(value => value);
+
   return {
     name: data.name,
-    category: data.category,
+    category,
     minPrice,
     maxPrice,
     sort,
@@ -55,5 +57,3 @@ const getParamsFromSearch = (data) => {
     longitude,
   };
 };
-
-export default getParamsFromSearch;

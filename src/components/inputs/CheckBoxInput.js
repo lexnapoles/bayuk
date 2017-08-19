@@ -8,12 +8,14 @@ const CheckBoxInput = ({ id, description, onChange, checked }) => {
     checked,
   };
 
-  return (<Input
-    id={id}
-    description={description}
-    onChange={onChange}
-    inputConf={inputConf}
-  />);
+  return (
+    <Input
+      id={id}
+      description={description}
+      onChange={onChange}
+      inputConf={inputConf}
+    />
+  );
 };
 
 CheckBoxInput.propTypes = {

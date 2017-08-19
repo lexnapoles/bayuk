@@ -25,7 +25,6 @@ class ImageInputContainer extends Component {
     this.onDelete = this.onDelete.bind(this);
   }
 
-
   onAdd(event) {
     const selectedFile = event.target.files[0];
 
@@ -33,7 +32,7 @@ class ImageInputContainer extends Component {
       return;
     }
 
-    this.loadImage(selectedFile)
+    ImageInputContainer.loadImage(selectedFile)
       .then((url) => {
         this.props.onAdd(url);
       });

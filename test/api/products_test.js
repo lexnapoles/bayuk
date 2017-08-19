@@ -207,7 +207,7 @@ describe('Products', function () {
     });
 
     it('should get the next products with the next link header', function () {
-      const PRODUCTS_CREATED = 60;
+      const PRODUCTS_CREATED = 70;
 
       const filters = {
         sort: 'distance',
