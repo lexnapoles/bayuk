@@ -14,7 +14,13 @@ const loadData = ({ loadCategories: load }) => load();
 const elements = ['name', 'category', 'price', 'distance', 'location', 'sort'];
 
 const defaultFormState = {
-  price: { min: 0, max: 0 },
+  price: { min: 0, max: 999 },
+  distance: {
+    '1km': true,
+    '5km': false,
+    '10km': false,
+    '>10km': false,
+  },
 };
 
 const handlers = {

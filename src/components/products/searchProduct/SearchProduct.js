@@ -26,17 +26,23 @@ const SearchProduct = ({
       required
     />
     <CategoryFilter onChange={onCategoryChange} />
-    <PriceFilter onChange={onPriceChange} />
+    <PriceFilter value={form.price} onChange={onPriceChange} />
     <DistanceFilter onChange={onDistanceChange} />
     <LocationFilter onChange={onLocationChange} />
     <SortFilter onChange={onSortChange} />
   </Form >
 );
 
-SearchProduct.propTypes = {
-  form: PropTypes.shape({
-    name: PropTypes.string,
+const formPropTypes = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  price: PropTypes.shape({
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
   }).isRequired,
+});
+
+SearchProduct.propTypes = {
+  form: formPropTypes.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired,
   onCategoryChange: PropTypes.func.isRequired,
