@@ -1,18 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {checkButton} from "./checkIcon.css";
-import Icon from "react-fa";
+import Icon from 'react-fa';
+import { checkButton } from './checkIcon.css';
 
-const CheckIcon = ({formId}) => {
-	return (
-		<button className={checkButton} form={formId}>
-			<Icon name="check" size="lg"/>
-		</button>
-	);
-};
+const CheckIcon = ({ formId }) => (
+  <button className={checkButton} form={formId} >
+    <Icon name="check" size="lg" />
+  </button >
+);
 
 CheckIcon.propTypes = {
-	formId: PropTypes.string.isRequired
+  formId: PropTypes.string.isRequired,
 };
 CheckIcon.defaultProps = {};
 

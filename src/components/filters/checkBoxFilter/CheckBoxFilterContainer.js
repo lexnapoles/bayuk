@@ -1,68 +1,76 @@
 import PropTypes from 'prop-types';
-import React, {Component} from "react";
-import CheckBoxFilter  from "./CheckBoxFilter";
-import {createDefaultObjectFrom} from "../../../utils";
+import React, { Component } from 'react';
+import CheckBoxFilter from './CheckBoxFilter';
+import { createDefaultObjectFrom } from '../../../utils';
 
 class CheckBoxFilterContainer extends Component {
-	componentWillReceiveProps({options}) {
-		const noPreviousOptions = !this.props.options.length;
+  constructor(props) {
+    super(props);
 
-		if (noPreviousOptions && options.length) {
-			this.setState({
-				options: createDefaultObjectFrom(options, false)
-			});
-		}
-	}
+    const { options } = this.props;
 
-	constructor(props) {
-		super(props);
+    this.state = {
+      options: createDefaultObjectFrom(options, false),
+    };
 
-		const {options} = this.props;
+    this.onOptionChange = this.onOptionChange.bind(this);
+  }
 
-		this.state = {
-			options: createDefaultObjectFrom(options, false)
-		};
+  componentWillReceiveProps({ options }) {
+    const noPreviousOptions = !this.props.options.length;
 
-		this.onOptionChange = this.onOptionChange.bind(this);
-	}
+    if (noPreviousOptions && options.length) {
+      this.setState({
+        options: createDefaultObjectFrom(options, false),
+      });
+    }
+  }
 
-	getUpdatedOptions(category) {
-		const {options}  = this.state,
-					newOptions = this.props.exclusive ? createDefaultObjectFrom(options, false) : {...options};
+  onOptionChange(event) {
+    const option = event.target.id;
+    const updatedOptions = this.getUpdatedOptions(option);
 
-		newOptions[category] = !options[category];
+    this.setState({
+      options: updatedOptions,
+    });
 
-		return newOptions;
-	}
+    this.props.onChange(updatedOptions);
+  }
 
-	onOptionChange(event) {
-		const option         = event.target.id,
-					updatedOptions = this.getUpdatedOptions(option);
+  getUpdatedOptions(category) {
+    const { options } = this.state;
+    const newOptions = this.props.exclusive
+      ? createDefaultObjectFrom(options, false)
+      : { ...options };
 
-		this.setState({
-			options: updatedOptions
-		});
+    newOptions[category] = !options[category];
 
-		this.props.onChange(updatedOptions);
-	}
+    return newOptions;
+  }
 
-	render() {
-		const {title, error} = this.props;
+  render() {
+    const { title, error } = this.props;
 
-		return <CheckBoxFilter title={title} onChange={this.onOptionChange} options={this.state.options} error={error}/>;
-	}
+    return (<CheckBoxFilter
+      title={title}
+      onChange={this.onOptionChange}
+      options={this.state.options}
+      error={error}
+    />);
+  }
 }
 
 CheckBoxFilterContainer.propTypes = {
-	title:     PropTypes.string.isRequired,
-	options:   PropTypes.array.isRequired,
-	onChange:  PropTypes.func.isRequired,
-	error:     PropTypes.string,
-	exclusive: PropTypes.bool
+  title: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  exclusive: PropTypes.bool,
 };
 
 CheckBoxFilterContainer.defaultProps = {
-	exclusive: true
+  exclusive: true,
+  error: '',
 };
 
 export default CheckBoxFilterContainer;

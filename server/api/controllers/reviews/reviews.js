@@ -1,16 +1,21 @@
-import {sendJsonResponse} from "../../../utils";
-import {getReviews, addReview} from "../../services/reviews";
-import {getUserById} from "../../services/users";
-import {validateReview} from "./validators";
-import {validateRequest, validateId} from "../validators";
-import {unauthorizedAccess} from "../../../errors/api/authorizationErrors";
-import {userDoesNotExist} from "../../../errors/api/userErrors";
-import dbErrors from "../../../errors/database";
-import {transformReview} from "../../transformers/reviews";
-import {errorBadRequest, errorNotFound, errorInternalError, errorUnauthorized} from "../../../errors/api/errors";
+import { sendJsonResponse } from '../../../utils';
+import { getReviews, addReview } from '../../services/reviews';
+import { getUserById } from '../../services/users';
+import validateReview from './validators';
+import { validateRequest, validateId } from '../validators';
+import { unauthorizedAccess } from '../../../errors/api/authorizationErrors';
+import { userDoesNotExist } from '../../../errors/api/userErrors';
+import dbErrors from '../../../errors/database';
+import transformReview from '../../transformers/reviews';
+import {
+  errorBadRequest,
+  errorNotFound,
+  errorInternalError,
+  errorUnauthorized,
+} from '../../../errors/api/errors';
 
 export const readReviews = (req, res) => {
-  const {userId} = req.params;
+  const { userId } = req.params;
 
   const invalidIdError = validateId(userId);
 
@@ -21,9 +26,9 @@ export const readReviews = (req, res) => {
 
   getUserById(userId)
     .then(() => getReviews(userId))
-    .then(reviews => reviews.map(transformReview.bind(void 0, req)))
+    .then(reviews => reviews.map(transformReview.bind(undefined, req)))
     .then(reviews => sendJsonResponse(res, 200, reviews))
-    .catch(error => {
+    .catch((error) => {
       if (error.code === dbErrors.dataNotFound) {
         errorNotFound(res, userDoesNotExist());
         return;
@@ -34,7 +39,7 @@ export const readReviews = (req, res) => {
 };
 
 export const createReview = (req, res) => {
-  const requestErrors = validateRequest(req, "body");
+  const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
@@ -58,7 +63,7 @@ export const createReview = (req, res) => {
   }
 
   addReview(review)
-    .then(createdReview => {
+    .then((createdReview) => {
       res.location(`/api/reviews/${createdReview.target}`);
       sendJsonResponse(res, 201, createdReview);
     })

@@ -1,12 +1,12 @@
-import {fetchOneUser} from "./api";
-import {getUserById} from "../reducers/root";
+import { fetchOneUser } from './api';
+import { getUserById } from '../reducers/root';
 
-export const loadUser = userId => (dispatch, getState) => {
-	const user = getUserById(getState(), userId);
+export default userId => (dispatch, getState) => {
+  const user = getUserById(getState(), userId);
 
-	if (user) {
-		return null;
-	}
+  if (user) {
+    return null;
+  }
 
-	return dispatch(fetchOneUser(userId));
+  return dispatch(fetchOneUser(userId));
 };

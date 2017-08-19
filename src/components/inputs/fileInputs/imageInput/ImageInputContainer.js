@@ -1,61 +1,69 @@
 import PropTypes from 'prop-types';
-import React, { Component } from "react";
-import ImageInput from "./ImageInput";
+import React, { Component } from 'react';
+import ImageInput from './ImageInput';
 
 class ImageInputContainer extends Component {
-	constructor(props) {
-		super(props);
+  static isAnImage(file) {
+    return /^image\//.test(file.type);
+  }
 
-		this.onAdd = this.onAdd.bind(this);
-		this.onDelete = this.onDelete.bind(this);
-	}
+  static loadImage(img) {
+    return new Promise(((resolve, reject) => {
+      const reader = new FileReader();
 
-	isAnImage(file) {
-		return /^image\//.test(file.type);
-	}
+      reader.onload = event => resolve(event.target.result);
+      reader.onerror = event => reject(event.target.error);
 
-	loadImage(img) {
-		return new Promise(function (resolve, reject) {
-			const reader = new FileReader();
+      reader.readAsDataURL(img);
+    }));
+  }
 
-			reader.onload = event => resolve(event.target.result);
-			reader.onerror = event => reject(event.target.error);
+  constructor(props) {
+    super(props);
 
-			reader.readAsDataURL(img);
-		})
-	}
+    this.onAdd = this.onAdd.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+  }
 
-	onAdd(event) {
-		const selectedFile = event.target.files[0];
 
-		if (!this.isAnImage(selectedFile)) {
-			return;
-		}
+  onAdd(event) {
+    const selectedFile = event.target.files[0];
 
-		this.loadImage(selectedFile)
-			.then(url => {
-				this.props.onAdd(url);
-			});
-	}
+    if (!ImageInputContainer.isAnImage(selectedFile)) {
+      return;
+    }
 
-	onDelete() {
-		this.props.onDelete();
-	}
+    this.loadImage(selectedFile)
+      .then((url) => {
+        this.props.onAdd(url);
+      });
+  }
 
-	render() {
-		return <ImageInput url={this.props.url} onAdd={this.onAdd} onDelete={this.onDelete} id={this.props.id}/>
-	}
+  onDelete() {
+    this.props.onDelete();
+  }
+
+  render() {
+    return (
+      <ImageInput
+        url={this.props.url}
+        onAdd={this.onAdd}
+        onDelete={this.onDelete}
+        id={this.props.id}
+      />
+    );
+  }
 }
 
 ImageInputContainer.propTypes = {
-	url:      PropTypes.string,
-	id:       PropTypes.number.isRequired,
-	onAdd:    PropTypes.func.isRequired,
-	onDelete: PropTypes.func.isRequired
+  url: PropTypes.string,
+  id: PropTypes.number.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 ImageInputContainer.defaultProps = {
-	url: ""
+  url: '',
 };
 
 export default ImageInputContainer;

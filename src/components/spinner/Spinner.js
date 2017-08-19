@@ -1,6 +1,6 @@
 import React from 'react';
-import Spinkit from "react-spinkit";
+import Spinkit from 'react-spinkit';
 
-const Spinner = () => <Spinkit spinnerName="circle"/>;
+const Spinner = () => <Spinkit spinnerName="circle" />;
 
 export default Spinner;

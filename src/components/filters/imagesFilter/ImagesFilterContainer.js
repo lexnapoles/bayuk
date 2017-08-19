@@ -1,55 +1,61 @@
 import PropTypes from 'prop-types';
-import React, { Component } from "react";
-import ImagesFilter from "./ImagesFilter";
+import React, { Component } from 'react';
+import ImagesFilter from './ImagesFilter';
 
 class ImagesFilterContainer extends Component {
-	constructor(props) {
-		super(props);
+  static getImagesFrom(obj) {
+    const keys = Object.keys(obj);
 
-		this.state = {
-			images: {}
-		};
+    return keys.map(key => obj[key]);
+  }
 
-		this.onAddImage = this.onAddImage.bind(this);
-		this.onDeleteImage = this.onDeleteImage.bind(this);
-	}
+  constructor(props) {
+    super(props);
 
-	getImagesFrom(obj) {
-		const keys = Object.keys(obj);
+    this.state = {
+      images: {},
+    };
 
-		return keys.map(key => obj[key]);
-	}
+    this.onAddImage = this.onAddImage.bind(this);
+    this.onDeleteImage = this.onDeleteImage.bind(this);
+  }
 
-	onAddImage(position, image) {
-		const newState = {...this.state.images, [position]: image},
-					images   = this.getImagesFrom(newState);
+  onAddImage(position, image) {
+    const newState = { ...this.state.images, [position]: image };
+    const images = ImagesFilterContainer.getImagesFrom(newState);
 
-		this.setState({images: newState});
+    this.setState({ images: newState });
 
-		this.props.onChange(images);
-	}
+    this.props.onChange(images);
+  }
 
-	onDeleteImage(position) {
-		const state = {...this.state.images};
+  onDeleteImage(position) {
+    const state = { ...this.state.images };
 
-		Reflect.deleteProperty(state, position);
+    Reflect.deleteProperty(state, position);
 
-		this.setState({images: state});
+    this.setState({ images: state });
 
-		const images = this.getImagesFrom(state);
+    const images = ImagesFilterContainer.getImagesFrom(state);
 
-		this.props.onChange(images);
-	}
+    this.props.onChange(images);
+  }
 
-	render() {
-		return <ImagesFilter urls={this.state.images} error={this.props.error} maxImages={this.props.maxImages} onAdd={this.onAddImage} onDelete={this.onDeleteImage}/>;
-	}
+  render() {
+    return (<ImagesFilter
+      urls={this.state.images}
+      error={this.props.error}
+      maxImages={this.props.maxImages}
+      onAdd={this.onAddImage}
+      onDelete={this.onDeleteImage}
+    />);
+  }
 }
 
 ImagesFilterContainer.propTypes = {
-	maxImages: PropTypes.number.isRequired,
-	onChange:  PropTypes.func.isRequired,
-	error:     PropTypes.string.isRequired
+  maxImages: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired,
 };
 
 export default ImagesFilterContainer;

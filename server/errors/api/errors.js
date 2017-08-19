@@ -1,9 +1,9 @@
-import {sendJsonResponse} from "../../utils";
+import { sendJsonResponse } from '../../utils';
 
 export const createError = (code, title, details) => ({
   code,
   title,
-  details
+  details,
 });
 
 const sendError = (res, status, errors) => {

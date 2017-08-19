@@ -1,25 +1,27 @@
 import PropTypes from 'prop-types';
-import React from "react";
-import {input} from "./priceInput.css";
-import Input from "./labeledInput/LabeledInput";
+import React from 'react';
+import { input } from './priceInput.css';
+import Input from './labeledInput/LabeledInput';
 
-const PriceInput = ({id, description, onChange}) => {
-	const inputConf = {
-		type:      "number",
-		min:       "0",
-		className: input
-	};
+const PriceInput = ({ id, description, onChange }) => {
+  const inputConf = {
+    type: 'number',
+    min: '0',
+    className: input,
+  };
 
-	return <Input id={id}
-								description={description}
-								onChange={onChange}
-								inputConf={inputConf}/>
+  return (<Input
+    id={id}
+    description={description}
+    onChange={onChange}
+    inputConf={inputConf}
+  />);
 };
 
 PriceInput.propTypes = {
-	onChange:    PropTypes.func.isRequired,
-	id:          PropTypes.string.isRequired,
-	description: PropTypes.string.isRequired
+  onChange: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
 };
 
 export default PriceInput;

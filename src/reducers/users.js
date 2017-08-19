@@ -1,32 +1,32 @@
-import {combineReducers} from "redux";
-import {omit} from "lodash/object";
-import {union} from "lodash/array";
-import {getJwtPayload} from "../utils";
-import {FETCH_ONE_USER, FETCH_USERS, REGISTER_USER, LOGIN_USER} from "../constants/actionTypes";
-import user from "./user";
+import { combineReducers } from 'redux';
+import { omit } from 'lodash/object';
+import { union } from 'lodash/array';
+import { getJwtPayload } from '../utils';
+import { FETCH_ONE_USER, FETCH_USERS, REGISTER_USER, LOGIN_USER } from '../constants/actionTypes';
+import user from './user';
 
 const byId = (state = {}, action) => {
   switch (action.type) {
     case FETCH_ONE_USER.success:
       return {
         ...state,
-        [action.payload.id]: user(void 0, action)
+        [action.payload.id]: user(undefined, action),
       };
 
     case FETCH_USERS.success:
       return {
         ...state,
-        ...action.payload.entities.users
+        ...action.payload.entities.users,
       };
 
     case REGISTER_USER.success:
     case LOGIN_USER.success: {
-      const token = action.payload,
-            user  = omit(getJwtPayload(token), ["exp", "iat"]);
+      const token = action.payload;
+      const userFromToken = omit(getJwtPayload(token), ['exp', 'iat']);
 
       return {
         ...state,
-        [user.id]: user
+        [userFromToken.id]: userFromToken,
       };
     }
 
@@ -47,8 +47,8 @@ const allIds = (state = [], action) => {
 
     case REGISTER_USER.success:
     case LOGIN_USER.success: {
-      const token = action.payload,
-            {id}  = getJwtPayload(token);
+      const token = action.payload;
+      const { id } = getJwtPayload(token);
 
       return [...state, id];
     }
@@ -60,5 +60,5 @@ const allIds = (state = [], action) => {
 
 export default combineReducers({
   byId,
-  allIds
+  allIds,
 });

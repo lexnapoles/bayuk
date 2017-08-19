@@ -1,37 +1,27 @@
 import PropTypes from 'prop-types';
-import React, {Component} from "react";
-import Spinner from "../../spinner/Spinner";
-import AuthPage from "../authPage/AuthPage";
-import {alignCenter} from "./addAuthenticationTo.css";
+import React, { Component } from 'react';
+import AuthPage from '../authPage/AuthPage';
 
-const addAuthenticationTo = WrappedComponent => {
-	class AuthenticatedComponent extends Component {
-		renderSpinner() {
-			return (
-				<main className={alignCenter}>
-					<Spinner/>
-				</main>
-			);
-		}
+const addAuthenticationTo = (WrappedComponent) => {
+  class AuthenticatedComponent extends Component {
+    static renderWrappedComponent(isLoggedIn, props) {
+      return isLoggedIn
+        ? <WrappedComponent {...props} />
+        : <AuthPage />;
+    }
 
-		renderWrappedComponent(isLoggedIn, props) {
-			return isLoggedIn
-				? <WrappedComponent {...props}/>
-				: <AuthPage/>
-		}
+    render() {
+      const { isLoggedIn, ...props } = this.props;
 
-		render() {
-			const {isLoggedIn, ...props} = this.props;
+      return addAuthenticationTo.renderWrappedComponent(isLoggedIn, props);
+    }
+  }
 
-			return this.renderWrappedComponent(isLoggedIn, props);
-		}
-	}
+  AuthenticatedComponent.propTypes = {
+    isLoggedIn: PropTypes.bool.isRequired,
+  };
 
-	AuthenticatedComponent.propTypes = {
-		isLoggedIn: PropTypes.bool.isRequired
-	};
-
-	return AuthenticatedComponent;
+  return AuthenticatedComponent;
 };
 
 export default addAuthenticationTo;

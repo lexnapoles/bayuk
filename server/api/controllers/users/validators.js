@@ -1,6 +1,6 @@
-import {invalidUser} from "../../../errors/api/userErrors";
-import validateSchema from "../../../schemas/validateSchema";
-import {register, login, user as userSchema} from "../../../schemas/user";
+import { invalidUser } from '../../../errors/api/userErrors';
+import validateSchema from '../../../schemas/validateSchema';
+import { register, login, user as userSchema } from '../../../schemas/user';
 
 export const validateRegister = user => validateSchema(user, register, invalidUser);
 
