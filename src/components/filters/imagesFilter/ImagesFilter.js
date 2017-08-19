@@ -9,18 +9,15 @@ const getImages = ({ urls, maxImages, onAdd, onDelete }) => {
     return undefined;
   }
 
-  const images = [];
-
-  for (let i = 0; i < maxImages; i + 1) {
-    images.push(
-      <ImageInput
-        key={i}
-        url={urls[i] ? urls[i] : ''}
-        id={i}
-        onAdd={image => onAdd(i, image)}
-        onDelete={() => onDelete(i)}
-      />);
-  }
+  const images = Array.from({ length: maxImages }, (elem, index) => (
+    <ImageInput
+      key={index}
+      url={urls[index] ? urls[index] : ''}
+      id={index}
+      onAdd={image => onAdd(index, image)}
+      onDelete={() => onDelete(index)}
+    />
+  ));
 
   return images;
 };

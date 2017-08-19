@@ -7,7 +7,7 @@ import { onRangeChange } from '../../form/formHandlers';
 import SearchProduct from './SearchProduct';
 import loadCategories from '../../../actions/categories';
 import { loadSearchedProducts, newSearch } from '../../../actions/products';
-import getParamsFromSearch from '../../../services/search';
+import getParamsFromForm from '../../../services/getParamsFromSearchForm';
 import { getAllCategories } from '../../../reducers/root';
 import { createDefaultObjectFrom } from '../../../utils';
 
@@ -52,7 +52,7 @@ class SearchFormContainer extends Component {
   }
 
   onSubmit(data) {
-    const search = getParamsFromSearch(data);
+    const search = getParamsFromForm(data);
 
     this.props.newSearch();
 

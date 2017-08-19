@@ -13,7 +13,7 @@ const addAuthenticationTo = (WrappedComponent) => {
     render() {
       const { isLoggedIn, ...props } = this.props;
 
-      return addAuthenticationTo.renderWrappedComponent(isLoggedIn, props);
+      return AuthenticatedComponent.renderWrappedComponent(isLoggedIn, props);
     }
   }
 

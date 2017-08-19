@@ -3,12 +3,6 @@ import React, { Component } from 'react';
 import ImagesFilter from './ImagesFilter';
 
 class ImagesFilterContainer extends Component {
-  static getImagesFrom(obj) {
-    const keys = Object.keys(obj);
-
-    return keys.map(key => obj[key]);
-  }
-
   constructor(props) {
     super(props);
 
@@ -21,34 +15,33 @@ class ImagesFilterContainer extends Component {
   }
 
   onAddImage(position, image) {
-    const newState = { ...this.state.images, [position]: image };
-    const images = ImagesFilterContainer.getImagesFrom(newState);
+    const images = { ...this.state.images, [position]: image };
 
-    this.setState({ images: newState });
+    this.setState({ images });
 
-    this.props.onChange(images);
+    this.props.onChange(Object.values(images));
   }
 
   onDeleteImage(position) {
-    const state = { ...this.state.images };
+    const images = { ...this.state.images };
 
-    Reflect.deleteProperty(state, position);
+    Reflect.deleteProperty(images, position);
 
-    this.setState({ images: state });
+    this.setState({ images });
 
-    const images = ImagesFilterContainer.getImagesFrom(state);
-
-    this.props.onChange(images);
+    this.props.onChange(Object.values(images));
   }
 
   render() {
-    return (<ImagesFilter
-      urls={this.state.images}
-      error={this.props.error}
-      maxImages={this.props.maxImages}
-      onAdd={this.onAddImage}
-      onDelete={this.onDeleteImage}
-    />);
+    return (
+      <ImagesFilter
+        urls={this.state.images}
+        error={this.props.error}
+        maxImages={this.props.maxImages}
+        onAdd={this.onAddImage}
+        onDelete={this.onDeleteImage}
+      />
+    );
   }
 }
 

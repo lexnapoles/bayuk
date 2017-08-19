@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Form from '../../form/Form';
 import TextFilter from '../../filters/textFilter/TextFilter';
-import CategoryFilter from '../../filters/categoryFilter/CategoryFilter';
 import Filter from '../../filters/filter/Filter';
 import ImagesFilter from '../../filters/imagesFilter/ImagesFilterContainer';
+import CheckBoxFilterContainer from '../../filters/checkBoxFilter/CheckBoxFilterContainer';
 
 const AddProduct = ({
   form,
@@ -14,7 +14,7 @@ const AddProduct = ({
   onNameChange,
   onImagesChange,
   onDescriptionChange,
-  onCategoryChange,
+  onCategoriesChange,
   onPriceChange,
 }) => (
   <Form formName="addForm" onSubmit={onSubmit} >
@@ -36,7 +36,12 @@ const AddProduct = ({
       required
     />
 
-    <CategoryFilter error={errors.category} onChange={onCategoryChange} />
+    <CheckBoxFilterContainer
+      title="Categories"
+      value={form.categories}
+      error={errors.categories}
+      onChange={onCategoriesChange}
+    />
 
     <Filter title="Price" error={errors.price} >
       <input type="number" min="0" placeholder="0" onChange={onPriceChange} />
@@ -45,11 +50,7 @@ const AddProduct = ({
 );
 
 const formPropTypes = PropTypes.shape({
-  name: PropTypes.string,
-  description: PropTypes.string,
-  category: PropTypes.string,
-  price: PropTypes.number,
-  images: PropTypes.objectOf(PropTypes.string),
+  categories: PropTypes.objectOf(PropTypes.bool).isRequired,
 });
 
 AddProduct.propTypes = {
@@ -60,7 +61,7 @@ AddProduct.propTypes = {
   onNameChange: PropTypes.func.isRequired,
   onImagesChange: PropTypes.func.isRequired,
   onDescriptionChange: PropTypes.func.isRequired,
-  onCategoryChange: PropTypes.func.isRequired,
+  onCategoriesChange: PropTypes.func.isRequired,
   onPriceChange: PropTypes.func.isRequired,
 };
 
