@@ -1,0 +1,5 @@
+# Default behavior.
+* text=auto
+
+# Files that will always have LF line endings on checkout.
+*.js text eol=lf
