@@ -63,13 +63,13 @@ describe('<formWrapper/>', function () {
   it('creates the onChange handlers names with the syntax on[elementName]Change', function () {
     const elements = ['name', 'email'];
 
-    const handlers = getFormComponent().prototype.getHandlersNames(elements);
+    const handlers = getFormComponent().getHandlersNames(elements);
 
     assert.sameMembers(handlers, ['onNameChange', 'onEmailChange']);
   });
 
   it('reads the event\'s target value by default when an onChange event is raise', function () {
-    const defaultHandler = getFormComponent().prototype.defaultHandler;
+    const defaultHandler = getFormComponent().defaultHandler;
     const value = 'George';
 
     const event = {
@@ -164,7 +164,7 @@ describe('<formWrapper/>', function () {
 
   it('doesn\'t pass own properties to children', function () {
     const Children = () => <div />;
-    const wrapper = getForm({ validation: { prop: 'unnecessary' } }, Children);
+    const wrapper = getForm({ validation: { prop: () => 'unnecessary' } }, Children);
 
     assert.isUndefined(wrapper.find('Children').prop('validation'));
   });

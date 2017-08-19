@@ -23,6 +23,15 @@ class SidebarMenu extends Component {
     }
   }
 
+  getSidebarStyle() {
+    const width = this.state.sidebarWidth;
+    const left = this.props.visible ? 0 : -width;
+
+    return width
+      ? { left, width }
+      : {};
+  }
+
   setSidebarWidth() {
     this.setState({
       sidebarWidth: this.sidebar.getBoundingClientRect().width,
@@ -50,7 +59,9 @@ class SidebarMenu extends Component {
         <div
           className={sidebar}
           style={this.getSidebarStyle()}
-          ref={(div) => { this.sidebar = div; }}
+          ref={(div) => {
+            this.sidebar = div;
+          }}
         >
           {this.props.children}
         </div >
