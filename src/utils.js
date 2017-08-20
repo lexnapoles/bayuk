@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash/lang';
+import { findKey } from 'lodash/object';
 
 export const createDefaultObjectFrom = (base = {}, defaultValue = '') => {
   const keys = Array.isArray(base)
@@ -18,3 +19,5 @@ export const getJwtPayload = (jwt) => {
 
   return JSON.parse(atob(sections[1]));
 };
+
+export const isCheckBoxChecked = values => findKey(values, value => value);

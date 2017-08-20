@@ -8,6 +8,7 @@ import CheckBoxFilterContainer from '../../filters/checkBoxFilter/CheckBoxFilter
 
 const SearchProduct = ({
   form,
+  errors,
   onSubmit,
   onNameChange,
   onCategoriesChange,
@@ -19,19 +20,35 @@ const SearchProduct = ({
   <Form formName="searchProduct" onSubmit={onSubmit} >
     <TextFilter
       name={form.name}
+      error={errors.name}
       placeholder="What are you looking for?"
       onChange={onNameChange}
-      required
     />
+
     <CheckBoxFilterContainer
       title="Categories"
       value={form.categories}
+      error={errors.categories}
       onChange={onCategoriesChange}
     />
-    <PriceFilter value={form.price} onChange={onPriceChange} />
-    <CheckBoxFilterContainer title="Distance" value={form.distance} onChange={onDistanceChange} />
-    <LocationFilter onChange={onLocationChange} />
-    <CheckBoxFilterContainer title="Sort by" value={form.sort} onChange={onSortChange} />
+
+    <PriceFilter value={form.price} error={errors.price} onChange={onPriceChange} />
+
+    <CheckBoxFilterContainer
+      title="Distance"
+      value={form.distance}
+      error={errors.distance}
+      onChange={onDistanceChange}
+    />
+
+    <LocationFilter onChange={onLocationChange} error={errors.location} />
+
+    <CheckBoxFilterContainer
+      title="Sort by"
+      value={form.sort}
+      error={errors.sort}
+      onChange={onSortChange}
+    />
   </Form >
 );
 
@@ -46,6 +63,7 @@ const formPropTypes = PropTypes.shape({
 
 SearchProduct.propTypes = {
   form: formPropTypes.isRequired,
+  errors: PropTypes.objectOf(PropTypes.string).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired,
   onCategoriesChange: PropTypes.func.isRequired,

@@ -25,12 +25,18 @@ class LocationFilterContainer extends Component {
   }
 
   render() {
-    return <LocationFilter onChange={this.onLocationChange} />;
+    return <LocationFilter onChange={this.onLocationChange} error={this.props.error} />;
   }
 }
 
+
 LocationFilterContainer.propTypes = {
   onChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
+};
+
+LocationFilterContainer.defaultProps = {
+  error: '',
 };
 
 export default LocationFilterContainer;

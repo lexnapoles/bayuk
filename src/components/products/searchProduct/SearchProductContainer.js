@@ -9,11 +9,47 @@ import loadCategories from '../../../actions/categories';
 import { loadSearchedProducts, newSearch } from '../../../actions/products';
 import getParamsFromForm from '../../../services/getParamsFromSearchForm';
 import { getAllCategories } from '../../../reducers/root';
-import { createDefaultObjectFrom } from '../../../utils';
+import { createDefaultObjectFrom, isCheckBoxChecked, isNotEmpty } from '../../../utils';
+import errorMsgs from '../../form/errors/errorsMsgs';
+import {
+  NO_NAME_FILLED,
+  NO_CATEGORY_FILLED,
+  NO_LOCATION_SELECTED,
+  NO_DISTANCE_SELECTED,
+  NO_SORT_SELECTED, NO_PRICE_FILLED,
+} from '../../form/errors/errorConstants';
 
 const loadData = ({ loadCategories: load }) => load();
 
 const elements = ['name', 'categories', 'price', 'distance', 'location', 'sort'];
+
+const isPriceRangeDefined = ({ min, max }) => min && max;
+
+const validation = {
+  name: isNotEmpty,
+  categories: isCheckBoxChecked,
+  distance: isCheckBoxChecked,
+  sort: isCheckBoxChecked,
+  location: ({ latitude, longitude }) => latitude && longitude,
+  price: isPriceRangeDefined,
+};
+
+const errorMessages = {
+  name: errorMsgs[NO_NAME_FILLED],
+  categories: errorMsgs[NO_CATEGORY_FILLED],
+  distance: errorMsgs[NO_DISTANCE_SELECTED],
+  sort: errorMsgs[NO_SORT_SELECTED],
+  location: errorMsgs[NO_LOCATION_SELECTED],
+  price: errorMsgs[NO_PRICE_FILLED],
+};
+
+const handlers = {
+  onCategoriesChange: category => category,
+  onDistanceChange: distance => distance,
+  onSortChange: sort => sort,
+  onPriceChange: onRangeChange.bind(undefined, 'price'),
+  onLocationChange: coords => coords,
+};
 
 const getDefaultFormState = props => ({
   price: { min: 0, max: 999 },
@@ -31,14 +67,6 @@ const getDefaultFormState = props => ({
   },
   ...props,
 });
-
-const handlers = {
-  onCategoriesChange: category => category,
-  onDistanceChange: distance => distance,
-  onSortChange: sort => sort,
-  onPriceChange: onRangeChange.bind(undefined, 'price'),
-  onLocationChange: coords => coords,
-};
 
 class SearchFormContainer extends Component {
   constructor(props) {
@@ -69,6 +97,8 @@ class SearchFormContainer extends Component {
     const formProps = {
       elements,
       handlers,
+      validation,
+      errorMessages,
       defaultFormState,
       onSubmit: this.onSubmit,
     };

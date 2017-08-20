@@ -1,10 +1,10 @@
 import { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
-import { omit, findKey } from 'lodash/object';
+import { omit } from 'lodash/object';
 import { connect } from 'react-redux';
 import loadCategories from '../../../actions/categories';
 import { addProduct } from '../../../actions/api';
-import { createDefaultObjectFrom, isNotEmpty } from '../../../utils';
+import { createDefaultObjectFrom, isNotEmpty, isCheckBoxChecked } from '../../../utils';
 import connectForm from '../../form/connectForm/connectForm';
 import { getAllCategories, isUserLoggedIn } from '../../../reducers/root';
 import addAuthenticationTo from '../../auth/addAuthenticationTo/addAuthenticationTo';
@@ -24,12 +24,10 @@ const MAX_IMAGES = 3;
 
 const elements = ['name', 'description', 'categories', 'price', 'images'];
 
-const isCategoryChecked = values => findKey(values, value => value);
-
 const validation = {
   name: isNotEmpty,
   description: isNotEmpty,
-  categories: isCategoryChecked,
+  categories: isCheckBoxChecked,
   images: isNotEmpty,
   price: price => price > 0,
 };
@@ -51,8 +49,8 @@ const errorMessages = {
 const formTemplate = {
   elements,
   validation,
-  handlers,
   errorMessages,
+  handlers,
   maxImages: MAX_IMAGES,
 };
 
@@ -70,7 +68,6 @@ class AddProductContainer extends Component {
   }
 
   onSubmit(data) {
-    console.log('submit');
     const productToAdd = getParamsFromForm(data);
 
     this.props.onSubmit(productToAdd);

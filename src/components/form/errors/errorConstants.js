@@ -5,3 +5,6 @@ export const NO_CATEGORY_FILLED = Symbol('NO_CATEGORY_FILLED');
 export const NO_IMAGES_FILLED = Symbol('NO_IMAGES_FILLED');
 export const NO_PASSWORD_FILLED = Symbol('NO_PASSWORD_FILLED');
 export const NO_EMAIL_FILLED = Symbol('NO_EMAIL_FILLED');
+export const NO_LOCATION_SELECTED = Symbol('NO_LOCATION_SELECTED');
+export const NO_SORT_SELECTED = Symbol('NO_SORT_SELECTED');
+export const NO_DISTANCE_SELECTED = Symbol('NO_DISTANCE_SELECTED');

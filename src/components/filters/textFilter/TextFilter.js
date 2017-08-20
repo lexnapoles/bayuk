@@ -4,12 +4,13 @@ import { container } from './textFilter.css';
 import Filter from '../filter/Filter';
 import TextInput from '../../inputs/textInput/TextInput';
 
-const TextFilter = ({ name, error, placeholder, onChange }) =>
-  (<Filter error={error} >
+const TextFilter = ({ name, error, placeholder, onChange }) => (
+  <Filter error={error} >
     <div className={container} >
       <TextInput value={name} placeholder={placeholder} onChange={onChange} />
     </div >
-  </Filter >);
+  </Filter >
+);
 
 TextFilter.propTypes = {
   name: PropTypes.string.isRequired,

@@ -1,10 +1,13 @@
-export default (data) => {
+import { findKey } from 'lodash/object';
+
+const getPrice = ({ price: { min, max } }) => ({
+  minPrice: Math.min(min, max),
+  maxPrice: Math.max(min, max),
+});
+
+const getSort = (data) => {
   let sort = '';
   let sortOrder = '';
-  let radius = 0;
-
-  const { latitude, longitude } = data.location;
-  const { min: minPrice, max: maxPrice } = data.price;
 
   switch (data.sort) {
     case 'distance':
@@ -29,31 +32,34 @@ export default (data) => {
       break;
   }
 
-  switch (data.distance) {
-    case '1km':
-      radius = 1;
-      break;
-    case '5km':
-      radius = 5;
-      break;
-    case '10km':
-      radius = 10;
-      break;
-    default:
-      radius = 99999;
-  }
-
-  const category = data.categories.find(value => value);
-
   return {
-    name: data.name,
-    category,
-    minPrice,
-    maxPrice,
     sort,
     sortOrder,
-    radius,
-    latitude,
-    longitude,
+  };
+};
+
+const getRadius = (data) => {
+  switch (data.distance) {
+    case '1km':
+      return 1;
+    case '5km':
+      return 5;
+    case '10km':
+      return 10;
+    default:
+      return 99999;
+  }
+};
+
+export default (data) => {
+  const category = findKey(data.categories, value => value);
+
+  return {
+    category,
+    name: data.name,
+    radius: getRadius(data),
+    ...data.location,
+    ...getPrice(data),
+    ...getSort(data),
   };
 };
