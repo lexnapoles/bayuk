@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 import Spinner from '../../spinner/Spinner';
 import ProductOverview from '../productOverview/ProductOverview';
 import { container, spinner } from './productTable.css';
+import LoadMore from '../../loadMore/LoadMore';
 
 class ProductTable extends Component {
   static renderProducts(products) {
@@ -24,23 +25,8 @@ class ProductTable extends Component {
     );
   }
 
-  renderLoadMore() {
-    const { isFetching, onLoadMoreClick } = this.props;
-
-    return (
-      <button
-        style={{ fontSize: '150%' }}
-        onClick={onLoadMoreClick}
-        disabled={isFetching}
-      >
-        {isFetching ? <Spinner /> : 'Load More'}
-      </button >
-    );
-  }
-
-
   render() {
-    const { isFetching, products, nextPageUrl, pageCount } = this.props;
+    const { isFetching, onLoadMoreClick, products, nextPageUrl, pageCount, children } = this.props;
 
     const isEmpty = !products.length;
 
@@ -60,8 +46,12 @@ class ProductTable extends Component {
           <div className={container} >
             {ProductTable.renderProducts(products)}
           </div >
-          {pageCount > 0 && !isLastPage && this.renderLoadMore()}
-          {this.props.children}
+          {
+            pageCount > 0
+            && !isLastPage
+            && <LoadMore isFetching={isFetching} onLoadMoreClick={onLoadMoreClick} />
+          }
+          {children}
         </div >
       </div >
     );
