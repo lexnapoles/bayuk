@@ -1,33 +1,33 @@
-.container{
-	composes: container from "../layout.css";
+.container {
+    composes: container from "../layout.css";
 }
 
-.main{
-	composes: main from "../layout.css";
+.main {
+    composes: main from "../layout.css";
 }
 
 .formContainer {
-	composes: container;
+    composes: container;
 }
 
 .form {
-	composes: container;
-	padding: 2rem;
+    composes: container;
+    padding: 2rem;
 }
 
 @media (min-width: 600px) {
-	.form {
-		width: 80%;
-	}
+    .form {
+        width: 80%;
+    }
 
-	.formContainer {
-		align-itrems: center;
-		justify-content: center;
-	}
+    .formContainer {
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 @media (min-width: 1000px) {
-	.form {
-		width: 50%;
-	}
+    .form {
+        width: 50%;
+    }
 }
