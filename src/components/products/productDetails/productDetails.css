@@ -15,7 +15,7 @@
 }
 
 .lineStyle {
-	margin: 5em 0;
+	margin: 5rem 0;
 	border: 0;
 	height: 0;
 }
@@ -32,7 +32,7 @@
 		flex-flow: row nowrap;
 		align-self: center;
 		max-width: 80%;
-		padding: 5em 0;
+		padding: 5rem 0;
 	}
 
 	.line {
@@ -41,7 +41,7 @@
 
 	.info {
 		flex: 1;
-		margin-left: 2em;
+		margin-left: 2rem;
 	}
 
 	.infoSection {
@@ -53,7 +53,7 @@
 
 	.map {
 		composes: infoSection;
-		margin: 2em 0;
+		margin: 2rem 0;
 	}
 
 	.carousel {

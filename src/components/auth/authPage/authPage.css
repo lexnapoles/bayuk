@@ -10,12 +10,12 @@
 
 .auth {
 	width: 100%;
-	padding: 1em;
+	padding: 1rem;
 }
 
 .message {
 	text-align: center;
-	margin-bottom: 4em;
+	margin-bottom: 4rem;
 }
 
 .buttonsContainer {
@@ -24,7 +24,7 @@
 
 .button {
 	height: 50px;
-	margin-bottom: 1em;
+	margin-bottom: 1rem;
 }
 
 @media (min-width: 600px) {
@@ -35,14 +35,14 @@
 
 	.button {
 		width: 300px;
-		margin: 0 1em;
+		margin: 0 1rem;
 	}
 }
 
 @media (min-width: 800px) {
 	.auth {
 		width: 80%;
-		padding: 4em 1em 5em 1em;
+		padding: 4rem 1rem 5rem 1rem;
 		border: 2px solid lightgrey;
 		border-radius: 10px;
 		overflow: hidden;

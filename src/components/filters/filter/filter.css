@@ -1,11 +1,11 @@
 .filter {
 	composes: well from "../../global.css";
-	margin-bottom: 2em;
-	padding: 1em;
+	margin-bottom: 2rem;
+	padding: 1rem;
 }
 
 .filter hr {
-	margin-bottom: 1em;
+	margin-bottom: 1rem;
 }
 
 .invalid {

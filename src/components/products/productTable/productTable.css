@@ -2,7 +2,7 @@
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
-	padding: 3em;
+	padding: 3rem;
 }
 
 .spinner {

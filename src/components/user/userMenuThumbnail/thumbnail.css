@@ -1,11 +1,11 @@
 .container {
 	display: flex;
-	padding: 1em;
+	padding: 1rem;
 }
 
 .text {
 	composes: alignCenter from "../../layout.css";
-	padding: 1em;
+	padding: 1rem;
 }
 
 .userImage {

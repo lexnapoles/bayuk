@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Icon from 'react-fa';
-import { logo } from './homeHeader.css';
+import { logo, toolbar, addProduct } from './homeHeader.css';
 import SearchIcon from '../../icons/searchIcon/SearchIcon';
 import SidebarMenu from '../../sidebarMenu/SidebarMenu';
 import Header from '../../header/Header';
 import UserMenuThumbnailContainer from '../../user/userMenuThumbnail/UserMenuThumbnailContainer';
+import AddProductBtn from '../../addProductBtn/AddProductBtn';
 
 class HomeHeader extends Component {
   constructor(props) {
@@ -28,7 +29,10 @@ class HomeHeader extends Component {
         >
           <UserMenuThumbnailContainer />
         </SidebarMenu >
-        <Icon name="bars" size="lg" onClick={this.toggleSidebarVisibility} />
+        <div className={toolbar} >
+          <Icon name="bars" size="lg" onClick={this.toggleSidebarVisibility} />
+          <AddProductBtn className={addProduct} />
+        </div >
         <div className={logo} >Bayuk</div >
         <SearchIcon />
       </Header >

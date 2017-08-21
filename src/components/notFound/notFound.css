@@ -1,5 +1,5 @@
 .container {
 	composes: alignCenter from "../layout.css";
-	padding: 5em 1em 1em 5em;
+	padding: 5rem 1rem 1rem 5rem;
 }
 

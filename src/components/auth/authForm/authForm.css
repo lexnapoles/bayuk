@@ -5,24 +5,24 @@
 }
 
 .formContainer {
-	padding: 1em;
+	padding: 1rem;
 }
 
 .inputsContainer {
-	padding: 2em 0;
+	padding: 2rem 0;
 }
 
 .auth {
 	width: 100%;
-	padding: 1em;
+	padding: 1rem;
 }
 
 .title {
-	margin: -0.5em;
+	margin: -0.5rem;
 }
 
 .inputs {
-	padding-top: 3em;
+	padding-top: 3rem;
 }
 
 h1 {
@@ -32,7 +32,7 @@ h1 {
 .submitButton {
 	width: 100%;
 	height: 50px;
-	margin-top: 2em;
+	margin-top: 2rem;
 }
 
 @media (min-width: 600px) {
@@ -43,14 +43,14 @@ h1 {
 
 	.button {
 		width: 300px;
-		margin: 0 1em;
+		margin: 0 1rem;
 	}
 }
 
 @media (min-width: 800px) {
 	.auth {
 		width: 50%;
-		padding: 2em;
+		padding: 2rem;
 		border: 2px solid lightgrey;
 		border-radius: 10px;
 		overflow: hidden;
@@ -59,7 +59,7 @@ h1 {
 
 @media (min-width: 1200px) {
 	.auth {
-		padding: 6em;
+		padding: 6rem;
 		width: 30%;
 	}
 }

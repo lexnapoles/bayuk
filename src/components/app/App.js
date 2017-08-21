@@ -8,8 +8,6 @@ import loadCategories from '../../actions/categories';
 import { loadGeolocation } from '../../actions/location';
 import geolocated from '../geolocated/geolocated';
 import { getGeolocation } from '../../reducers/root';
-import AddIcon from '../icons/addIcon/AddIcon';
-import { addButtonContainer } from './app.css';
 
 const loadData = (props) => {
   const { latitude, longitude } = props;
@@ -37,11 +35,7 @@ class App extends Component {
       <div className={container} >
         <HomeHeader />
         <main className={main} >
-          <ProductsByDistance >
-            <div className={addButtonContainer} >
-              <AddIcon />
-            </div >
-          </ProductsByDistance >
+          <ProductsByDistance />
         </main >
         <footer />
       </div >

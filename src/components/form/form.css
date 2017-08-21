@@ -12,7 +12,7 @@
 
 .form {
 	composes: container;
-	padding: 2em;
+	padding: 2rem;
 }
 
 @media (min-width: 600px) {
@@ -21,7 +21,7 @@
 	}
 
 	.formContainer {
-		align-items: center;
+		align-itrems: center;
 		justify-content: center;
 	}
 }

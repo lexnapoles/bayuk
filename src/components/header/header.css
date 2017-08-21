@@ -1,8 +1,8 @@
 .header {
-	padding: 1em;
-	background: #FFE981;
+    padding: 1rem;
+    background: #FFE981;
 }
 
 .nav {
-	display: flex;
+    display: flex;
 }
