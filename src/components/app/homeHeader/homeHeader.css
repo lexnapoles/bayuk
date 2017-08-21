@@ -8,11 +8,11 @@
 }
 
 .addProduct {
+    composes: button from '../../global.css';
     display: flex;
-    background-color: #46BEBC;
     flex-flow: row nowrap;
     margin: -.35rem 0 0 .5rem;
-    border: 1px solid lightgray;
     padding: .2rem .6rem;
-    border-radius: 1rem;
+    background-color: #46BEBC;
 }
+

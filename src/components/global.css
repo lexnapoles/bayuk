@@ -29,4 +29,8 @@ html {
     display: block;
 }
 
+.button {
+    border-radius: 1rem;
+    border: 1px solid lightgray;
+}
 
