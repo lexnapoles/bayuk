@@ -25,8 +25,20 @@ class ProductTable extends Component {
     );
   }
 
+  constructor(props) {
+    super(props);
+
+    this.onLoadMoreClick = this.onLoadMoreClick.bind(this);
+  }
+
+  onLoadMoreClick(event) {
+    event.preventDefault();
+
+    this.props.onLoadMoreClick();
+  }
+
   render() {
-    const { isFetching, onLoadMoreClick, products, nextPageUrl, pageCount, children } = this.props;
+    const { isFetching, products, nextPageUrl, pageCount, children } = this.props;
 
     const isEmpty = !products.length;
 
@@ -49,7 +61,7 @@ class ProductTable extends Component {
           {
             pageCount > 0
             && !isLastPage
-            && <LoadMore isFetching={isFetching} onLoadMoreClick={onLoadMoreClick} />
+            && <LoadMore isFetching={isFetching} onLoadMoreClick={this.onLoadMoreClick} />
           }
           {children}
         </div >

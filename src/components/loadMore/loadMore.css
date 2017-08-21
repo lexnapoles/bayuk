@@ -1,0 +1,5 @@
+.button {
+    composes: button from '../global.css';
+    font-size: 150%;
+    padding: .5rem;
+}
