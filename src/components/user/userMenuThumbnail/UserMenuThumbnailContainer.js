@@ -8,8 +8,8 @@ import loadCurrentUser from '../../../actions/currentUser';
 const loadData = ({ loadCurrentUser: load }) => load();
 
 class UserMenuThumbnailContainer extends Component {
-  componentWillReceiveProps(props) {
-    loadData(props);
+  componentWillMount() {
+    loadData(this.props);
   }
 
   render() {
@@ -37,7 +37,6 @@ const mapStateToProps = (state) => {
 
   return {
     user,
-    id,
   };
 };
 

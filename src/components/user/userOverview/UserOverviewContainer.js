@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { omit } from 'lodash/object';
 import { connect } from 'react-redux';
 import UserOverview from './UserOverview';
-import { getUserById } from '../../../../reducers/root';
-import loadUser from '../../../../actions/users';
+import { getUserById } from '../../../reducers/root';
+import loadUser from '../../../actions/users';
 
 const loadData = ({ loadUser: load, id }) => load(id);
 

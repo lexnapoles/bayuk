@@ -5,7 +5,7 @@
 }
 
 .userImage {
-	composes: userImage from "../../../layout.css";
+	composes: userImage from "../../layout.css";
 	width: 75px;
 	height:75px;
 }

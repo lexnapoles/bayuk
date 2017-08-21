@@ -3,7 +3,7 @@ import React from 'react';
 import Icon from 'react-fa';
 import { times } from 'lodash/util';
 import { container, userImage, rating as ratingClassName } from './userOverview.css';
-import Spinner from '../../../spinner/Spinner';
+import Spinner from '../../spinner/Spinner';
 
 const renderOnStars = (rating, maxRating) => times(
   parseInt(rating, 10),

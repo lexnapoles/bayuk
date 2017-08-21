@@ -1,3 +1,4 @@
+import { REHYDRATE } from 'redux-persist/constants';
 import { combineReducers } from 'redux';
 import { omit } from 'lodash/object';
 import { union } from 'lodash/array';
@@ -7,6 +8,16 @@ import user from './user';
 
 const byId = (state = {}, action) => {
   switch (action.type) {
+    case REHYDRATE: {
+      const { token } = action.payload.currentUser;
+      const userFromToken = omit(getJwtPayload(token), ['exp', 'iat']);
+
+      return {
+        ...state,
+        [userFromToken.id]: userFromToken,
+      };
+    }
+
     case FETCH_ONE_USER.success:
       return {
         ...state,
@@ -30,7 +41,6 @@ const byId = (state = {}, action) => {
       };
     }
 
-
     default: {
       return state;
     }
@@ -39,6 +49,13 @@ const byId = (state = {}, action) => {
 
 const allIds = (state = [], action) => {
   switch (action.type) {
+    case REHYDRATE: {
+      const { token } = action.payload.currentUser;
+      const { id } = omit(getJwtPayload(token), ['exp', 'iat']);
+
+      return [...state, id];
+    }
+
     case FETCH_ONE_USER.success:
       return [...state, action.payload.id];
 

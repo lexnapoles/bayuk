@@ -7,7 +7,7 @@ import ProductDetailsHeader from './productDetailsHeader/ProductDetailsHeader';
 import Carousel from '../../carousel/Carousel';
 import Description from './productDescription/ProductDescription';
 import GeolocationInfo from './geolocationInfo/GeolocationInfo';
-import UserOverviewContainer from './userOverview/UserOverviewContainer';
+import UserOverviewContainer from '../../user/userOverview/UserOverviewContainer';
 import NotFound from '../../notFound/NotFound';
 
 

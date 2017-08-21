@@ -8,7 +8,7 @@ import Register from '../components/auth/Register';
 import LogIn from '../components/auth/LogIn';
 import AuthPage from '../components/auth/authPage/AuthPage';
 import SearchResults from '../components/products/searchResults/SearchResults';
-import UserProfile from '../components/user/UserProfile';
+import UserProfileContainer from '../components/user/userProfile/UserProfileContainer';
 
 const routes = (
   <Router history={browserHistory} >
@@ -20,7 +20,7 @@ const routes = (
     <Route path="login" component={LogIn} />
     <Route path="auth" component={AuthPage} />
     <Route path="results" component={SearchResults} />
-    <Route path="user/:id" component={UserProfile} />
+    <Route path="user/:id" component={UserProfileContainer} />
   </Router >
 );
 
