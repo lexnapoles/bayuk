@@ -1,0 +1,43 @@
+.container {
+    composes: container from '../../layout.css';
+    height: 100vh;
+}
+
+.profile {
+    composes: main from '../../layout.css';
+}
+
+.alignCenter {
+    composes: alignCenter from '../../layout.css';
+}
+
+.profileSection {
+    composes: alignCenter;
+    margin-bottom: 3rem;
+}
+
+.userTable {
+    composes: profileSection;
+    flex-direction: column;
+}
+
+.navigator {
+    display: flex;
+    box-shadow: 0 4px 10px darkgray;
+    border-radius: 5px;
+    width:100%;
+    padding: 1rem;
+}
+
+.navigatorItem {
+    composes: alignCenter;
+    flex: 1;
+    height: 40px;
+    text-align: center;
+}
+
+.navigatorCenterItem {
+    composes: navigatorItem;
+    border-left: 1px solid darkgray;
+    border-right: 1px solid darkgray;
+}

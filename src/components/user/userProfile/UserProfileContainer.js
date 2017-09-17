@@ -17,7 +17,7 @@ class UserProfileContainer extends Component {
     const { user } = this.props;
 
     return user
-      ? <UserProfile user={user} />
+      ? <UserProfile user={user} > </UserProfile>
       : <Spinner />;
   }
 }

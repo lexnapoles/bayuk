@@ -1,6 +1,10 @@
 import { ADD_PRODUCT, NEW_SEARCH } from '../constants/actionTypes';
 import { fetchProductsByDistance, fetchOneProduct, fetchSearchedProduct } from './api';
-import { getProductsByDistancePagination, getSearchedProductsPagination, getProductById } from '../reducers/root';
+import {
+  getProductsByDistancePagination,
+  getSearchedProductsPagination,
+  getProductById,
+} from '../reducers/root';
 
 export const addProduct = product => ({
   type: ADD_PRODUCT,
