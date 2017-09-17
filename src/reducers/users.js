@@ -6,16 +6,26 @@ import { getJwtPayload } from '../utils';
 import { FETCH_ONE_USER, FETCH_USERS, REGISTER_USER, LOGIN_USER } from '../constants/actionTypes';
 import user from './user';
 
+const currentUserExists = (action) => {
+  const { currentUser } = action.payload;
+
+  return currentUser && currentUser.token;
+};
+
 const byId = (state = {}, action) => {
   switch (action.type) {
     case REHYDRATE: {
-      const { token } = action.payload.currentUser;
-      const userFromToken = omit(getJwtPayload(token), ['exp', 'iat']);
+      if (currentUserExists(action)) {
+        const { token } = action.payload.currentUser;
+        const userFromToken = omit(getJwtPayload(token), ['exp', 'iat']);
 
-      return {
-        ...state,
-        [userFromToken.id]: userFromToken,
-      };
+        return {
+          ...state,
+          [userFromToken.id]: userFromToken,
+        };
+      }
+
+      return state;
     }
 
     case FETCH_ONE_USER.success:
@@ -50,10 +60,14 @@ const byId = (state = {}, action) => {
 const allIds = (state = [], action) => {
   switch (action.type) {
     case REHYDRATE: {
-      const { token } = action.payload.currentUser;
-      const { id } = omit(getJwtPayload(token), ['exp', 'iat']);
+      if (currentUserExists(action)) {
+        const { token } = action.payload.currentUser;
+        const { id } = omit(getJwtPayload(token), ['exp', 'iat']);
 
-      return [...state, id];
+        return [...state, id];
+      }
+
+      return state;
     }
 
     case FETCH_ONE_USER.success:
