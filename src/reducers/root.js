@@ -17,11 +17,14 @@ export const getAllProducts = ({ entities }) => fromEntities.getAllProducts(enti
 export const getUserById = ({ entities }, id) => fromEntities.getUserById(entities, id);
 export const getAllUsers = ({ entities }) => fromEntities.getAllUsers(entities);
 
-export const getProductsByDistancePagination = ({ pagination }) =>
-  fromPagination.getProductsByDistance(pagination);
+export const getProductsByFilter = ({ pagination }, filter) =>
+  fromPagination.getProductsByFilter(pagination, filter);
 
-export const getSearchedProductsPagination = ({ pagination }) =>
-  fromPagination.getSearchedProducts(pagination);
+export const getProductsSoldByUser = ({ pagination }, user) =>
+  fromPagination.getProductsSoldByUser(pagination, user);
+
+export const getProductsOnSellByUser = ({ pagination }, user) =>
+  fromPagination.getProductsOnSellByUser(pagination, user);
 
 export const getCurrentUser = ({ currentUser }) => fromUser.getCurrentUser(currentUser);
 export const isUserLoggedIn = ({ currentUser }) => fromUser.isUserLoggedIn(currentUser);

@@ -1,6 +1,6 @@
 import { union } from 'lodash/array';
 import { combineReducers } from 'redux';
-import { FETCH_PRODUCTS, FETCH_ONE_PRODUCT, SEARCH_PRODUCTS, ADD_PRODUCT } from '../constants/actionTypes';
+import { FETCH_PRODUCTS, FETCH_ONE_PRODUCT, ADD_PRODUCT } from '../constants/actionTypes';
 import product from './product';
 
 const byId = (state = {}, action) => {
@@ -13,7 +13,6 @@ const byId = (state = {}, action) => {
       };
 
     case FETCH_PRODUCTS.success:
-    case SEARCH_PRODUCTS.success:
       return {
         ...state,
         ...action.payload.entities.products,
@@ -31,7 +30,6 @@ const allIds = (state = [], action) => {
       return union(state, [action.payload.id]);
 
     case FETCH_PRODUCTS.success:
-    case SEARCH_PRODUCTS.success:
       return union(state, action.payload.result);
 
     default:

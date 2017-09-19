@@ -7,7 +7,6 @@ import {
   FETCH_PRODUCTS,
   FETCH_USERS,
   FETCH_ONE_PRODUCT,
-  SEARCH_PRODUCTS,
   FETCH_ONE_USER,
   FETCH_CURRENT_USER,
   FETCH_CATEGORIES,
@@ -49,7 +48,9 @@ const processResponse = (processors = []) =>
       let payload;
 
       return promise
-        .then((previousPayload) => { payload = previousPayload; })
+        .then((previousPayload) => {
+          payload = previousPayload;
+        })
         .then(() => processor(action, state, res))
         .then(processedData => ({
           ...payload,
@@ -73,27 +74,23 @@ const fetchProducts = (endpoint, params, types) => ({
   },
 });
 
-export const fetchProductsByDistance = (endpoint, params = {}) => {
+export const fetchProductsByFilter = (endpoint, params = {}, filter) => {
+  const meta = filter ? { filter } : undefined;
+
   const types = [
-    FETCH_PRODUCTS.request,
+    {
+      type: FETCH_PRODUCTS.request,
+      meta,
+    },
     {
       type: FETCH_PRODUCTS.success,
       payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
+      meta,
     },
-    FETCH_PRODUCTS.failure,
-  ];
-
-  return fetchProducts(endpoint, params, types);
-};
-
-export const fetchSearchedProduct = (endpoint, params = {}) => {
-  const types = [
-    SEARCH_PRODUCTS.request,
     {
-      type: SEARCH_PRODUCTS.success,
-      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
+      type: FETCH_PRODUCTS.failure,
+      meta,
     },
-    SEARCH_PRODUCTS.failure,
   ];
 
   return fetchProducts(endpoint, params, types);
