@@ -14,6 +14,8 @@ import {
   navigatorCenterItem,
 } from './userProfile.css';
 import Header from '../../header/Header';
+import ProductsSoldByUser from '../../products/productsByUser/ProductsSoldByUser';
+import ProductsOnSellByUser from '../../products/productsByUser/ProductsOnSellByUser';
 
 const UserProfile = ({ user }) => (
   <div className={container} >
@@ -30,16 +32,16 @@ const UserProfile = ({ user }) => (
       <section className={userTable} >
         <Tabs >
           <TabList className={navigator} >
-            <Tab className={navigatorItem} >On Sell</Tab >
-            <Tab className={navigatorCenterItem} >Sold</Tab >
+            <Tab className={navigatorCenterItem} >On Sell</Tab >
+            <Tab className={navigatorItem} >Sold</Tab >
             <Tab className={navigatorItem} >Reviews</Tab >
           </TabList >
 
           <TabPanel >
-            <h2 >Any content 1</h2 >
+            <ProductsOnSellByUser user={user.id} />
           </TabPanel >
           <TabPanel >
-            <h2 >Any content 2</h2 >
+            <ProductsSoldByUser user={user.id} />
           </TabPanel >
           <TabPanel >
             <h2 >Any content 3</h2 >
