@@ -10,8 +10,13 @@
   },
   "rules": {
     "no-param-reassign": "warn",
-    "react/jsx-filename-extension": "off"
-
+    "react/jsx-filename-extension": "off",
+    "import/no-extraneous-dependencies": [
+      2,
+      {
+        "devDependencies": true
+      }
+    ]
   },
   "env": {
     "browser": true,

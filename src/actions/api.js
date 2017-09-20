@@ -15,6 +15,7 @@ import {
   DELETE_PRODUCT,
   REGISTER_USER,
   LOGIN_USER,
+  FETCH_PRODUCTS_SOLD, FETCH_PRODUCTS_ON_SELL,
 } from '../constants/actionTypes';
 
 const API_ROOT = 'http://localhost:3000/api';
@@ -89,6 +90,50 @@ export const fetchProductsByFilter = (endpoint, params = {}, filter) => {
     },
     {
       type: FETCH_PRODUCTS.failure,
+      meta,
+    },
+  ];
+
+  return fetchProducts(endpoint, params, types);
+};
+
+export const fetchProductsSoldByUser = (endpoint, params = {}, user) => {
+  const meta = user ? { user } : undefined;
+
+  const types = [
+    {
+      type: FETCH_PRODUCTS_SOLD.request,
+      meta,
+    },
+    {
+      type: FETCH_PRODUCTS_SOLD.success,
+      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
+      meta,
+    },
+    {
+      type: FETCH_PRODUCTS_SOLD.failure,
+      meta,
+    },
+  ];
+
+  return fetchProducts(endpoint, params, types);
+};
+
+export const fetchProductsOnSellByUser = (endpoint, params = {}, user) => {
+  const meta = user ? { user } : undefined;
+
+  const types = [
+    {
+      type: FETCH_PRODUCTS_ON_SELL.request,
+      meta,
+    },
+    {
+      type: FETCH_PRODUCTS_ON_SELL.success,
+      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
+      meta,
+    },
+    {
+      type: FETCH_PRODUCTS_ON_SELL.failure,
       meta,
     },
   ];
