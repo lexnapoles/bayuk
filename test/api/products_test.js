@@ -128,31 +128,6 @@ describe('Products', function () {
         });
     });
 
-    it('should get a paginated and sorted list of products', function () {
-      const PRODUCTS_CREATED = 30;
-
-      const filters = {
-        sort: 'distance',
-        sortOrder: 'descending',
-        radius: 9000,
-        latitude: -72.2468,
-        longitude: 81.4777,
-      };
-
-      return Promise.all(times(PRODUCTS_CREATED, addRandomProduct))
-        .then(() =>
-          request(server)
-            .get('/api/products')
-            .query(filters)
-            .expect(200))
-        .then((response) => {
-          const products = response.body;
-
-          products.should.not.have.lengthOf(0);
-          products.length.should.be.below(PRODUCTS_CREATED);
-        });
-    });
-
     it('should get a link to fetch the next products', function () {
       const PRODUCTS_CREATED = 70;
 

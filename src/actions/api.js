@@ -26,8 +26,11 @@ const getApiFullUrl = (endpoint) => {
   return isPartialUrl ? `${API_ROOT}/${endpoint}` : endpoint;
 };
 
-const stringifyQueryParams = params => (Object.keys(params).length ? `?${queryString.stringify(
-  params)}` : '');
+const stringifyQueryParams = params => (
+  Object.keys(params).length
+    ? `?${queryString.stringify(params)}`
+    : ''
+);
 
 const getTypes = ({ request, success, failure }) => [request, success, failure];
 
@@ -141,13 +144,8 @@ export const fetchProductsOnSellByUser = (endpoint, params = {}, user) => {
   return fetchProducts(endpoint, params, types);
 };
 
-export const fetchOneProduct = (endpoint, params = {}) => ({
-  [CALL_API]: {
-    endpoint: `${getApiFullUrl(endpoint)}${stringifyQueryParams(params)}`,
-    method: 'GET',
-    types: getTypes(FETCH_ONE_PRODUCT),
-  },
-});
+export const fetchOneProduct = (endpoint, params = {}) =>
+  fetchProducts(endpoint, params, getTypes(FETCH_ONE_PRODUCT));
 
 export const addProduct = product => ({
   [CALL_API]: {
