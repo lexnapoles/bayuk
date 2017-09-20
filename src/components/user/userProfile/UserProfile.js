@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import UserOverview from '../userOverview/UserOverview';
 import GeolocationInfo from '../../products/productDetails/geolocationInfo/GeolocationInfo';
+
 import {
   container,
   profile,
@@ -13,7 +15,7 @@ import {
 } from './userProfile.css';
 import Header from '../../header/Header';
 
-const UserProfile = ({ user, children }) => (
+const UserProfile = ({ user }) => (
   <div className={container} >
     <Header />
     <main className={profile} >
@@ -26,14 +28,24 @@ const UserProfile = ({ user, children }) => (
       </section >
 
       <section className={userTable} >
-        <nav className={navigator} >
-          <div className={navigatorItem} >On sell</div >
-          <div className={navigatorCenterItem} >Sold</div >
-          <div className={navigatorItem} >Reviews</div >
-        </nav >
-        <div >
-          {children}
-        </div >
+        <Tabs >
+          <TabList className={navigator} >
+            <Tab className={navigatorItem} >On Sell</Tab >
+            <Tab className={navigatorCenterItem} >Sold</Tab >
+            <Tab className={navigatorItem} >Reviews</Tab >
+          </TabList >
+
+          <TabPanel >
+            <h2 >Any content 1</h2 >
+          </TabPanel >
+          <TabPanel >
+            <h2 >Any content 2</h2 >
+          </TabPanel >
+          <TabPanel >
+            <h2 >Any content 3</h2 >
+          </TabPanel >
+        </Tabs >
+        );
       </section >
     </main >
   </div >
@@ -45,7 +57,6 @@ UserProfile.propTypes = {
     name: PropTypes.string,
     image: PropTypes.string,
   }),
-  children: PropTypes.node,
 };
 
 UserProfile.defaultProps = {

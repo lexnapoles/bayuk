@@ -8,31 +8,24 @@ export const addProduct = product => ({
   payload: { product },
 });
 
-export const loadProductsByDistance = (params, nextPage) => (dispatch, getState) => {
+export const loadProductsByFilter = (params, nextPage, filter) => (dispatch, getState) => {
   const {
     nextPageUrl = 'products',
     pageCount = 0,
-  } = getProductsByFilter(getState(), DISTANCE_FILTER) || {};
+  } = getProductsByFilter(getState(), filter) || {};
 
   if (pageCount > 0 && !nextPage) {
     return null;
   }
 
-  return dispatch(fetchProductsByFilter(nextPageUrl, params, DISTANCE_FILTER));
+  return dispatch(fetchProductsByFilter(nextPageUrl, params, filter));
 };
 
-export const loadSearchedProducts = (params, nextPage) => (dispatch, getState) => {
-  const {
-    nextPageUrl = 'products',
-    pageCount = 0,
-  } = getProductsByFilter(getState(), CUSTOM_FILTER) || {};
+export const loadProductsByDistance = (params, nextPage) =>
+  loadProductsByFilter(params, nextPage, DISTANCE_FILTER);
 
-  if (pageCount > 0 && !nextPage) {
-    return null;
-  }
-
-  return dispatch(fetchProductsByFilter(nextPageUrl, params, CUSTOM_FILTER));
-};
+export const loadSearchedProducts = (params, nextPage) =>
+  loadProductsByFilter(params, nextPage, CUSTOM_FILTER);
 
 export const loadProduct = (id, params) => (dispatch, getState) => {
   const product = getProductById(getState(), id);

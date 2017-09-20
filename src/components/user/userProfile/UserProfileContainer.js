@@ -17,13 +17,18 @@ class UserProfileContainer extends Component {
     const { user } = this.props;
 
     return user
-      ? <UserProfile user={user} > </UserProfile>
+      ? <UserProfile user={user} />
       : <Spinner />;
   }
 }
 
 UserProfileContainer.propTypes = {
-  user: PropTypes.shape({}),
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+  }),
 };
 
 UserProfileContainer.defaultProps = {
