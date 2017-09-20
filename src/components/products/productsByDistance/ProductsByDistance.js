@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import ProductTable from '../productTable/ProductTable';
-import { getListOfProductsById, getProductsByDistancePagination } from '../../../reducers/root';
+import { getListOfProductsById, getProductsByFilter } from '../../../reducers/root';
 import { loadProductsByDistance } from '../../../actions/products';
+import { DISTANCE_FILTER } from '../../../constants/productFilters';
 
 const mapStateToProps = (state) => {
-  const pagination = getProductsByDistancePagination(state);
+  const pagination = getProductsByFilter(state, DISTANCE_FILTER) || {};
 
   const filteredProducts = getListOfProductsById(state, pagination.ids);
 
