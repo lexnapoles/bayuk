@@ -20,7 +20,8 @@ export const isAsyncActionType = action =>
 
 export const ADD_PRODUCT = asyncActionTypes('ADD_PRODUCT');
 export const FETCH_PRODUCTS = asyncActionTypes('FETCH_PRODUCTS');
-export const SEARCH_PRODUCTS = asyncActionTypes('SEARCH_PRODUCTS');
+export const FETCH_PRODUCTS_SOLD = asyncActionTypes('FETCH_PRODUCTS_SOLD');
+export const FETCH_PRODUCTS_ON_SELL = asyncActionTypes('FETCH_PRODUCTS_ON_SELL');
 export const FETCH_ONE_PRODUCT = asyncActionTypes('FETCH_ONE_PRODUCT');
 export const DELETE_PRODUCT = asyncActionTypes('DELETE_PRODUCT');
 export const UPDATE_PRODUCT = asyncActionTypes('UPDATE_PRODUCT');

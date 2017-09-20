@@ -7,7 +7,6 @@ import {
   FETCH_PRODUCTS,
   FETCH_USERS,
   FETCH_ONE_PRODUCT,
-  SEARCH_PRODUCTS,
   FETCH_ONE_USER,
   FETCH_CURRENT_USER,
   FETCH_CATEGORIES,
@@ -16,6 +15,7 @@ import {
   DELETE_PRODUCT,
   REGISTER_USER,
   LOGIN_USER,
+  FETCH_PRODUCTS_SOLD, FETCH_PRODUCTS_ON_SELL,
 } from '../constants/actionTypes';
 
 const API_ROOT = 'http://localhost:3000/api';
@@ -26,8 +26,11 @@ const getApiFullUrl = (endpoint) => {
   return isPartialUrl ? `${API_ROOT}/${endpoint}` : endpoint;
 };
 
-const stringifyQueryParams = params => (Object.keys(params).length ? `?${queryString.stringify(
-  params)}` : '');
+const stringifyQueryParams = params => (
+  Object.keys(params).length
+    ? `?${queryString.stringify(params)}`
+    : ''
+);
 
 const getTypes = ({ request, success, failure }) => [request, success, failure];
 
@@ -49,7 +52,9 @@ const processResponse = (processors = []) =>
       let payload;
 
       return promise
-        .then((previousPayload) => { payload = previousPayload; })
+        .then((previousPayload) => {
+          payload = previousPayload;
+        })
         .then(() => processor(action, state, res))
         .then(processedData => ({
           ...payload,
@@ -73,39 +78,74 @@ const fetchProducts = (endpoint, params, types) => ({
   },
 });
 
-export const fetchProductsByDistance = (endpoint, params = {}) => {
+export const fetchProductsByFilter = (endpoint, params = {}, filter) => {
+  const meta = filter ? { filter } : undefined;
+
   const types = [
-    FETCH_PRODUCTS.request,
+    {
+      type: FETCH_PRODUCTS.request,
+      meta,
+    },
     {
       type: FETCH_PRODUCTS.success,
       payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
+      meta,
     },
-    FETCH_PRODUCTS.failure,
-  ];
-
-  return fetchProducts(endpoint, params, types);
-};
-
-export const fetchSearchedProduct = (endpoint, params = {}) => {
-  const types = [
-    SEARCH_PRODUCTS.request,
     {
-      type: SEARCH_PRODUCTS.success,
-      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
+      type: FETCH_PRODUCTS.failure,
+      meta,
     },
-    SEARCH_PRODUCTS.failure,
   ];
 
   return fetchProducts(endpoint, params, types);
 };
 
-export const fetchOneProduct = (endpoint, params = {}) => ({
-  [CALL_API]: {
-    endpoint: `${getApiFullUrl(endpoint)}${stringifyQueryParams(params)}`,
-    method: 'GET',
-    types: getTypes(FETCH_ONE_PRODUCT),
-  },
-});
+export const fetchProductsSoldByUser = (endpoint, params = {}, user) => {
+  const meta = user ? { user } : undefined;
+
+  const types = [
+    {
+      type: FETCH_PRODUCTS_SOLD.request,
+      meta,
+    },
+    {
+      type: FETCH_PRODUCTS_SOLD.success,
+      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
+      meta,
+    },
+    {
+      type: FETCH_PRODUCTS_SOLD.failure,
+      meta,
+    },
+  ];
+
+  return fetchProducts(endpoint, params, types);
+};
+
+export const fetchProductsOnSellByUser = (endpoint, params = {}, user) => {
+  const meta = user ? { user } : undefined;
+
+  const types = [
+    {
+      type: FETCH_PRODUCTS_ON_SELL.request,
+      meta,
+    },
+    {
+      type: FETCH_PRODUCTS_ON_SELL.success,
+      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
+      meta,
+    },
+    {
+      type: FETCH_PRODUCTS_ON_SELL.failure,
+      meta,
+    },
+  ];
+
+  return fetchProducts(endpoint, params, types);
+};
+
+export const fetchOneProduct = (endpoint, params = {}) =>
+  fetchProducts(endpoint, params, getTypes(FETCH_ONE_PRODUCT));
 
 export const addProduct = product => ({
   [CALL_API]: {

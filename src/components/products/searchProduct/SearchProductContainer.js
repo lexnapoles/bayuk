@@ -18,12 +18,13 @@ import {
   NO_DISTANCE_SELECTED,
   NO_SORT_SELECTED, NO_PRICE_FILLED,
 } from '../../form/errors/errorConstants';
+import { CUSTOM_FILTER } from '../../../constants/productFilters';
 
 const loadData = ({ loadCategories: load }) => load();
 
 const elements = ['name', 'categories', 'price', 'distance', 'location', 'sort'];
 
-const isPriceRangeDefined = ({ min, max }) => min && max;
+const isPriceRangeDefined = ({ min, max }) => Number.isInteger(min) && Number.isInteger(max);
 
 const validation = {
   name: isNotEmpty,
@@ -124,5 +125,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onSubmit: loadSearchedProducts,
   loadCategories,
-  newSearch,
+  newSearch: newSearch.bind(undefined, CUSTOM_FILTER),
 })(SearchFormContainer);

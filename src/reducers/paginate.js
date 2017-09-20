@@ -2,9 +2,13 @@
 import union from 'lodash/union';
 import { isAsyncActionType } from '../constants/actionTypes';
 
-const paginate = ({ type, reset }) => {
+const paginate = ({ type, reset, mapActionToKey }) => {
   if (!isAsyncActionType(type)) {
     throw new Error('Type is not an async action type');
+  }
+
+  if (typeof mapActionToKey !== 'function') {
+    throw new Error('Expected mapActionToKey to be a function.');
   }
 
   const { request, success, failure } = type;
@@ -16,7 +20,7 @@ const paginate = ({ type, reset }) => {
     pageCount: 0,
   };
 
-  return (state = defaultState, action) => {
+  const updatePagination = (state = defaultState, action) => {
     switch (action.type) {
       case reset:
         return defaultState;
@@ -39,6 +43,28 @@ const paginate = ({ type, reset }) => {
           ...state,
           isFetching: false,
         };
+      default:
+        return state;
+    }
+  };
+
+  return (state = {}, action) => {
+    switch (action.type) {
+      case request:
+      case success:
+      case failure:
+      case reset: {
+        const key = mapActionToKey(action);
+
+        if (typeof key !== 'string') {
+          throw new Error('Expected key to be a string.');
+        }
+
+        return {
+          ...state,
+          [key]: updatePagination(state[key], action),
+        };
+      }
       default:
         return state;
     }
