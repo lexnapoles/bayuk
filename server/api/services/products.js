@@ -10,17 +10,17 @@ import { generateImagesObjs } from '../../utils';
 
 export const getProducts = (filters) => {
   const byOwnerParameters = {
-    sold: null,
-    lastId: '',
+    sold: undefined,
+    lastId: undefined,
     ...filters,
   };
 
   const sortingParameters = {
-    lastId: '',
-    category: '',
     minPrice: 0,
     maxPrice: 99999,
-    sold: false,
+    lastId: undefined,
+    category: undefined,
+    sold: undefined,
     ...filters,
   };
 

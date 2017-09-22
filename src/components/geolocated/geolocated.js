@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { omit } from 'lodash/object';
 
 const DEFAULT_MADRID_COORDS = {
-  latitude: 40.416,
-  longitude: 3.7,
+  latitude: 40.416775,
+  longitude: -3.70379,
 };
 
 const propTypes = {

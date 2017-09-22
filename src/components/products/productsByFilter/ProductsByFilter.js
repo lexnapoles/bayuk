@@ -15,7 +15,7 @@ const mapStateToProps = (state, { filter }) => {
 };
 
 const mapDispatchToProps = (dispatch, { filter }) => ({
-  onLoadMoreClick: () => dispatch(loadProductsByFilter({}, true, filter)),
+  onLoadMoreClick: () => dispatch(loadProductsByFilter(filter, {}, true)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductTable);

@@ -28,10 +28,10 @@ export const loadProductsByFilter = (filter, params, nextPage) => (dispatch, get
 };
 
 export const loadProductsByDistance = (params, nextPage) =>
-  loadProductsByFilter(params, nextPage, DISTANCE_FILTER);
+  loadProductsByFilter(DISTANCE_FILTER, params, nextPage);
 
 export const loadSearchedProducts = (params, nextPage) =>
-  loadProductsByFilter(params, nextPage, CUSTOM_FILTER);
+  loadProductsByFilter(CUSTOM_FILTER, params, nextPage);
 
 export const loadProductsSoldByUser = (user, params, nextPage) => (dispatch, getState) => {
   const {
@@ -47,7 +47,6 @@ export const loadProductsSoldByUser = (user, params, nextPage) => (dispatch, get
 };
 
 export const loadProductsOnSellByUser = (user, params, nextPage) => (dispatch, getState) => {
-  console.log('on sell');
   const {
     nextPageUrl = 'products',
     pageCount = 0,
