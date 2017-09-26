@@ -1,30 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import UserOverview from '../userOverview/UserOverview';
 import GeolocationInfo from '../../products/productDetails/geolocationInfo/GeolocationInfo';
-
 import {
   container,
   profile,
   profileSection,
   userTable,
-  navigatorContainer,
-  navigator,
-  navigatorItem,
-  navigatorCenterItem,
-  navigatorItemActive,
 } from './userProfile.css';
 import Header from '../../header/Header';
-import ProductsSoldByUser from '../../products/productsByUser/ProductsSoldByUser';
-import ProductsOnSellByUser from '../../products/productsByUser/ProductsOnSellByUser';
 import ReturnIcon from '../../icons/returnIcon/ReturnIcon';
+import UserNavigator from '../userNavigator/UserNavigator';
 
 const UserProfile = ({ user }) => (
   <div className={container} >
     <Header >
       <ReturnIcon url={'/'} />
-    </Header>
+    </Header >
     <main className={profile} >
       <section className={profileSection} >
         <UserOverview user={user} />
@@ -35,28 +27,7 @@ const UserProfile = ({ user }) => (
       </section >
 
       <section className={userTable} >
-        <Tabs
-          className={navigatorContainer}
-          selectedTabClassName={navigatorItemActive}
-        >
-          <TabList className={navigator} >
-            <Tab className={navigatorItem} >On Sell</Tab >
-            <Tab className={navigatorCenterItem} >Sold</Tab >
-            <Tab className={navigatorItem} >Reviews</Tab >
-          </TabList >
-
-          <div >
-            <TabPanel >
-              <ProductsOnSellByUser user={user.id} />
-            </TabPanel >
-            <TabPanel >
-              <ProductsSoldByUser user={user.id} />
-            </TabPanel >
-            <TabPanel >
-              <h2 >Reviews coming soon!</h2 >
-            </TabPanel >
-          </div >
-        </Tabs >
+        <UserNavigator userId={user.id} />
       </section >
     </main >
   </div >
