@@ -18,10 +18,13 @@ import {
 import Header from '../../header/Header';
 import ProductsSoldByUser from '../../products/productsByUser/ProductsSoldByUser';
 import ProductsOnSellByUser from '../../products/productsByUser/ProductsOnSellByUser';
+import ReturnIcon from '../../icons/returnIcon/ReturnIcon';
 
 const UserProfile = ({ user }) => (
   <div className={container} >
-    <Header />
+    <Header >
+      <ReturnIcon url={'/'} />
+    </Header>
     <main className={profile} >
       <section className={profileSection} >
         <UserOverview user={user} />
