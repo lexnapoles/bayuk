@@ -2,28 +2,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import UserOverview from '../userOverview/UserOverview';
 import GeolocationInfo from '../../products/productDetails/geolocationInfo/GeolocationInfo';
+import {
+  container,
+  profile,
+  profileSection,
+  userTable,
+} from './userProfile.css';
+import Header from '../../header/Header';
+import ReturnIcon from '../../icons/returnIcon/ReturnIcon';
+import UserNavigator from '../userNavigator/UserNavigator';
 
 const UserProfile = ({ user }) => (
-  <main >
-    <section >
-      <UserOverview user={user} />
-    </section >
+  <div className={container} >
+    <Header >
+      <ReturnIcon url={'/'} />
+    </Header >
+    <main className={profile} >
+      <section className={profileSection} >
+        <UserOverview user={user} />
+      </section >
 
-    <section >
-      <GeolocationInfo latitude={user.latitude} longitude={user.longitude} />
-    </section >
+      <section className={profileSection} >
+        <GeolocationInfo latitude={user.latitude} longitude={user.longitude} />
+      </section >
 
-    <nav >
-      On sell
-      Sold
-      Reviews
-    </nav >
-
-    <section >
-      Table of products or reviews
-    </section >
-  </main >
-
+      <section className={userTable} >
+        <UserNavigator userId={user.id} />
+      </section >
+    </main >
+  </div >
 );
 
 UserProfile.propTypes = {
@@ -36,6 +43,7 @@ UserProfile.propTypes = {
 
 UserProfile.defaultProps = {
   user: {},
+  children: [],
 };
 
 export default UserProfile;

@@ -5,13 +5,14 @@ import Header from '../../header/Header';
 import ReturnIcon from '../../icons/returnIcon/ReturnIcon';
 import CheckIcon from '../../icons/checkIcon/CheckIcon';
 
-const FormHeader = ({ redirect, formId }) =>
-  (<Header>
+const FormHeader = ({ redirect, formId }) => (
+  <Header >
     <ReturnIcon url={redirect} />
-    <div className={check}>
+    <div className={check} >
       <CheckIcon formId={formId} />
-    </div>
-  </Header>);
+    </div >
+  </Header >
+);
 
 FormHeader.propTypes = {
   formId: PropTypes.string.isRequired,

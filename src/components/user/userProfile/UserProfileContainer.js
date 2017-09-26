@@ -23,7 +23,12 @@ class UserProfileContainer extends Component {
 }
 
 UserProfileContainer.propTypes = {
-  user: PropTypes.shape({}),
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+  }),
 };
 
 UserProfileContainer.defaultProps = {

@@ -8,7 +8,7 @@ const config = {
   digest: 'sha512',
 };
 
-export const setPassword = (password) => {
+export const createCredentials = (password) => {
   let salt = '';
 
   return getSalt(config.saltBytes)
