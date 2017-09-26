@@ -9,9 +9,11 @@ import {
   profile,
   profileSection,
   userTable,
+  navigatorContainer,
   navigator,
   navigatorItem,
   navigatorCenterItem,
+  navigatorItemActive,
 } from './userProfile.css';
 import Header from '../../header/Header';
 import ProductsSoldByUser from '../../products/productsByUser/ProductsSoldByUser';
@@ -30,24 +32,28 @@ const UserProfile = ({ user }) => (
       </section >
 
       <section className={userTable} >
-        <Tabs >
+        <Tabs
+          className={navigatorContainer}
+          selectedTabClassName={navigatorItemActive}
+        >
           <TabList className={navigator} >
-            <Tab className={navigatorCenterItem} >On Sell</Tab >
-            <Tab className={navigatorItem} >Sold</Tab >
+            <Tab className={navigatorItem} >On Sell</Tab >
+            <Tab className={navigatorCenterItem} >Sold</Tab >
             <Tab className={navigatorItem} >Reviews</Tab >
           </TabList >
 
-          <TabPanel >
-            <ProductsOnSellByUser user={user.id} />
-          </TabPanel >
-          <TabPanel >
-            <ProductsSoldByUser user={user.id} />
-          </TabPanel >
-          <TabPanel >
-            <h2 >Any content 3</h2 >
-          </TabPanel >
+          <div >
+            <TabPanel >
+              <ProductsOnSellByUser user={user.id} />
+            </TabPanel >
+            <TabPanel >
+              <ProductsSoldByUser user={user.id} />
+            </TabPanel >
+            <TabPanel >
+              <h2 >Reviews coming soon!</h2 >
+            </TabPanel >
+          </div >
         </Tabs >
-        );
       </section >
     </main >
   </div >
