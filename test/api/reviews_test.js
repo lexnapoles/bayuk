@@ -135,6 +135,25 @@ describe('Reviews', function () {
         });
     });
 
+    it('should embed target user information if it is specified in the include field',
+      function () {
+        const includeField = 'targetUser';
+
+        return addRandomReview()
+          .then(({ target }) =>
+            request(server)
+              .get(`/api/reviews/${target}`)
+              .query({
+                include: includeField,
+              })
+              .expect(500))
+          .then((response) => {
+            console.log(response)
+            const review = response.body[0];
+
+            review.should.have.all.deep.keys(includeField);
+          });
+      });
 
     it('should fail when the user id is not valid', function () {
       const userId = undefined;
