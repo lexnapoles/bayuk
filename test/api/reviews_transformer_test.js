@@ -40,7 +40,7 @@ describe.only('review transformer', function () {
   });
 
   it('should extract the include fields', function () {
-    const includeFields = ['targetUser', 'sourceUser'];
+    const includeFields = ['target', 'source'];
 
     const req = {
       query: {
@@ -61,30 +61,5 @@ describe.only('review transformer', function () {
     };
 
     transformReview(req, review).should.be.deep.equal(transformedReview);
-  });
-
-  it('should accept an object defining how to get the data from the include fields ', function () {
-    const field = 'targetUser';
-    const data = 'data';
-    const includeFields = [field];
-
-    const req = {
-      query: {
-        include: includeFields.toString(),
-      },
-    };
-
-    const accessors = {
-      [field]: () => data,
-    };
-
-    const reviewWithTargetUser = {
-      ...transformedReview,
-      [field]: data,
-    };
-
-    return transformReview(req, review, accessors)
-      .then(transformedReviewWithTargetUser =>
-        transformedReviewWithTargetUser.should.be.deep.equal(reviewWithTargetUser));
   });
 });

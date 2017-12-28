@@ -1,3 +1,4 @@
+import { merge } from 'lodash/object';
 import transform, { extractFields, item } from './transformer';
 import { getUserById } from '../services/users';
 import transformUser from '../transformers/users';
@@ -7,8 +8,8 @@ const getUserFromReview = (req, id) =>
     .then(user => item(user, transformUser(req, user)));
 
 const fieldGetters = {
-  targetUser: (req, { target }) => getUserFromReview(req, target),
-  sourceUser: (req, { source }) => getUserFromReview(req, source),
+  target: (req, { target }) => getUserFromReview(req, target),
+  source: (req, { source }) => getUserFromReview(req, source),
 };
 
 const areValidFields = (fields = []) => {
@@ -30,11 +31,7 @@ const getFields = (req, fields, review, embeddedDataAccessors) => {
   const fetchAllFields = fields.map(field => fetchField(req, field, review, embeddedDataAccessors));
 
   return Promise.all(fetchAllFields)
-    .then(receivedFields =>
-      fields.reduce((prevReview, field, index) => ({
-        ...prevReview,
-        [field]: receivedFields[index],
-      }), review));
+    .then(embeddedData => merge(...embeddedData));
 };
 
 const transformation = ({
@@ -45,7 +42,6 @@ const transformation = ({
   description,
   product,
   created_at,
-  ...rest,
 }) =>
   ({
     id,
@@ -55,7 +51,6 @@ const transformation = ({
     description,
     product,
     createdAt: created_at,
-    ...rest,
   });
 
 export default (req, review, embeddedDataAccessors = fieldGetters) => {
@@ -63,7 +58,10 @@ export default (req, review, embeddedDataAccessors = fieldGetters) => {
 
   if (includeFields) {
     return getFields(req, includeFields, review, embeddedDataAccessors)
-      .then(reviewWithEmbeddedData => transform(req, reviewWithEmbeddedData, transformation));
+      .then(embeddedData => ({
+        ...transform(req, review, transformation),
+        ...embeddedData,
+      }));
   }
 
   return transform(req, review, transformation);
