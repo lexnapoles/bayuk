@@ -76,10 +76,6 @@ describe('User image services', function () {
   });
 
   describe('deleteUserImageFromDisk', function () {
-    afterEach(function () {
-      return clearImages();
-    });
-
     it('should delete an image from disk', function () {
       const image = {
         id: faker.random.uuid(),
@@ -109,7 +105,9 @@ describe('User image services', function () {
       let createdUser = {};
 
       return addUser(getUser())
-        .then((user) => { createdUser = user; })
+        .then((user) => {
+          createdUser = user;
+        })
         .then(() => addUserImageToDB(createdUser.id))
         .then(deleteUserImageFromDB)
         .then(() => getImageOfUser(createdUser.id))

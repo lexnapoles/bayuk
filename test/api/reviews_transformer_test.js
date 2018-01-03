@@ -32,7 +32,7 @@ const transformedReview = {
   createdAt: '2017-03-23 13:46:41.327',
 };
 
-describe.only('review transformer', function () {
+describe('review transformer', function () {
   it('should transform a review', function () {
     const req = { query: {} };
 
