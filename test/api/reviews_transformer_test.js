@@ -36,7 +36,8 @@ describe('review transformer', function () {
   it('should transform a review', function () {
     const req = { query: {} };
 
-    transformReview(req, review).should.be.deep.equal(transformedReview);
+    transformReview(req, review)
+      .then(response => response.should.be.deep.equal(transformedReview));
   });
 
   it('should extract the include fields', function () {
@@ -60,6 +61,28 @@ describe('review transformer', function () {
       },
     };
 
-    transformReview(req, review).should.be.deep.equal(transformedReview);
+    transformReview(req, review)
+      .then(response => response.should.be.deep.equal(transformedReview));
+  });
+
+  it('should accept an object defining how to get the embedded fields', function () {
+    const field = 'target';
+    const includeFields = [field];
+
+    const req = {
+      query: {
+        include: includeFields.toString(),
+      },
+    };
+
+    const accessors = {
+      [field]: () => 'data',
+    };
+
+    transformReview(req, review, accessors)
+      .then(data => data.should.be.deep.equal({
+        ...transformedReview,
+        users: ['data'],
+      }));
   });
 });

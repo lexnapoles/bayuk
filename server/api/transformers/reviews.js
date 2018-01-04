@@ -7,15 +7,15 @@ const getUserFromReview = (req, id) =>
   getUserById(id)
     .then(user => item(user, transformUser(req, user)));
 
-const fieldGetters = {
+const defaultEmbeddedDataAccessors = {
   target: (req, { target }) => getUserFromReview(req, target),
   source: (req, { source }) => getUserFromReview(req, source),
 };
 
 const areValidFields = (fields = []) => {
-  const getters = Object.keys(fieldGetters);
+  const accessors = Object.keys(defaultEmbeddedDataAccessors);
 
-  return fields.every(field => getters.includes(field));
+  return fields.every(field => accessors.includes(field));
 };
 
 export const extractIncludeFields = (req) => {
@@ -24,18 +24,22 @@ export const extractIncludeFields = (req) => {
   return areValidFields(fields) ? fields : undefined;
 };
 
-const fetchField = (req, field, review, embeddedDataAccessors) =>
-  embeddedDataAccessors[field](req, review);
+async function getFields(req, fields, review, embeddedDataAccessors) {
+  const target = await embeddedDataAccessors.target(req, review);
 
-const getFields = (req, fields, review, embeddedDataAccessors) => {
-  const fetchAllFields = fields.map(field => fetchField(req, field, review, embeddedDataAccessors));
+  return {
+    users: [target],
+  };
 
-  return Promise.all(fetchAllFields)
-    .then(embeddedData => merge(...embeddedData));
+  // const fetchAllFields = fields.map(field => fetchField(req, field, review, embeddedDataAccessors));
+
+  // return Promise.all(fetchAllFields)
+  //   .then(embeddedData => merge(...embeddedData));
 };
 
 const transformation = ({
   id,
+
   source,
   target,
   rating,
@@ -53,16 +57,18 @@ const transformation = ({
     createdAt: created_at,
   });
 
-export default (req, review, embeddedDataAccessors = fieldGetters) => {
+export default async function (req, review, embeddedDataAccessors = defaultEmbeddedDataAccessors) {
   const includeFields = extractIncludeFields(req);
+  const transformedReview = await transform(req, review, transformation);
 
   if (includeFields) {
-    return getFields(req, includeFields, review, embeddedDataAccessors)
-      .then(embeddedData => ({
-        ...transform(req, review, transformation),
-        ...embeddedData,
-      }));
+    const embeddedData = await getFields(req, includeFields, review, embeddedDataAccessors);
+
+    return {
+      ...transformedReview,
+      ...embeddedData,
+    };
   }
 
-  return transform(req, review, transformation);
-};
+  return transformedReview;
+}
