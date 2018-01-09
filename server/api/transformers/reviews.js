@@ -1,45 +1,39 @@
-import { merge } from 'lodash/object';
-import transform, { extractFields, item } from './transformer';
-import { getUserById } from '../services/users';
-import transformUser from '../transformers/users';
+import transform, { extractFields } from './transformer';
+import defaultEmbeddedDataAccessors from './reviews/embeddedDataAccessors';
 
-const getUserFromReview = (req, id) =>
-  getUserById(id)
-    .then(user => item(user, transformUser(req, user)));
+const validFields = ['target', 'source'];
 
-const defaultEmbeddedDataAccessors = {
-  target: (req, { target }) => getUserFromReview(req, target),
-  source: (req, { source }) => getUserFromReview(req, source),
-};
+const areValidFields = (fields = []) => fields.every(field => validFields.includes(field));
 
-const areValidFields = (fields = []) => {
-  const accessors = Object.keys(defaultEmbeddedDataAccessors);
-
-  return fields.every(field => accessors.includes(field));
-};
-
-export const extractIncludeFields = (req) => {
+export const extractIncludeFields = (req, embeddedDataAccessors) => {
   const fields = extractFields(req, 'include');
 
-  return areValidFields(fields) ? fields : undefined;
+  return areValidFields(fields, embeddedDataAccessors) ? fields : undefined;
 };
+
+const hasUserFields = fields => fields.includes('source') || fields.includes('target');
+
+const getUsers = (req, fields, review, embeddedDataAccessors) => {
+  if (!hasUserFields(fields)) {
+    return [];
+  }
+
+  const userFields = fields.filter(field => field === 'source' || field === 'target');
+
+  return Promise.all(userFields.map(field => embeddedDataAccessors[field](req, review)));
+};
+
 
 async function getFields(req, fields, review, embeddedDataAccessors) {
-  const target = await embeddedDataAccessors.target(req, review);
+  const users = await getUsers(req, fields, review, embeddedDataAccessors);
 
   return {
-    users: [target],
+    users: users.length ? users : undefined,
   };
-
-  // const fetchAllFields = fields.map(field => fetchField(req, field, review, embeddedDataAccessors));
-
-  // return Promise.all(fetchAllFields)
-  //   .then(embeddedData => merge(...embeddedData));
-};
+}
 
 const transformation = ({
   id,
-
   source,
   target,
   rating,

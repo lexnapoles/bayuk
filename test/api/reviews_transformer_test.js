@@ -33,11 +33,12 @@ const transformedReview = {
 };
 
 describe('review transformer', function () {
-  it('should transform a review', function () {
+  it('should transform a review', async function () {
     const req = { query: {} };
 
-    transformReview(req, review)
-      .then(response => response.should.be.deep.equal(transformedReview));
+    const data = await transformReview(req, review);
+
+    data.should.be.deep.equal(transformedReview);
   });
 
   it('should extract the include fields', function () {
@@ -52,7 +53,7 @@ describe('review transformer', function () {
     extractIncludeFields(req).should.be.deep.equal(includeFields);
   });
 
-  it('should not embed additional fields if invalid include fields are used', function () {
+  it('should not embed additional fields if invalid include fields are used', async function () {
     const includeFields = ['invalid1', 'invalid2'];
 
     const req = {
@@ -61,11 +62,12 @@ describe('review transformer', function () {
       },
     };
 
-    transformReview(req, review)
-      .then(response => response.should.be.deep.equal(transformedReview));
+    const data = await transformReview(req, review);
+
+    data.should.be.deep.equal(transformedReview);
   });
 
-  it('should accept an object defining how to get the embedded fields', function () {
+  it('should accept an object defining how to get the embedded fields', async function () {
     const field = 'target';
     const includeFields = [field];
 
@@ -79,10 +81,33 @@ describe('review transformer', function () {
       [field]: () => 'data',
     };
 
-    transformReview(req, review, accessors)
-      .then(data => data.should.be.deep.equal({
-        ...transformedReview,
-        users: ['data'],
-      }));
+    const data = await transformReview(req, review, accessors);
+
+    data.should.be.deep.equal({
+      ...transformedReview,
+      users: ['data'],
+    });
+  });
+
+  it('should embed source and target users in a users property', async function () {
+    const includeFields = ['target', 'source'];
+
+    const req = {
+      query: {
+        include: includeFields.toString(),
+      },
+    };
+
+    const accessors = {
+      target: () => 'target',
+      source: () => 'source',
+    };
+
+    const data = await transformReview(req, review, accessors);
+
+    data.should.be.deep.equal({
+      ...transformedReview,
+      users: ['target', 'source'],
+    });
   });
 });
