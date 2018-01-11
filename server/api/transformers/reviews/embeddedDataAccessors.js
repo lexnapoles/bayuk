@@ -4,7 +4,7 @@ import { item } from '../transformer';
 
 const getUserFromReview = (req, id) =>
   getUserById(id)
-    .then(user => item(user, transformUser(req, user)));
+    .then(user => item(user, transformUser.bind(null, req)));
 
 export default {
   target: (req, { target }) => getUserFromReview(req, target),

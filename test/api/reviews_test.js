@@ -144,6 +144,24 @@ describe('Reviews', function () {
         });
     });
 
+    it('should embed included user fields', function () {
+      const includeFields = ['source', 'target'];
+
+      return addRandomReview()
+        .then(({ target }) =>
+          request(server)
+            .get(`/api/reviews/${target}`)
+            .query({
+              include: includeFields.join(),
+            })
+            .expect(200))
+        .then((response) => {
+          const review = response.body[0];
+
+          review.should.have.property('users');
+        });
+    });
+
     it('should fail when the user id is not valid', function () {
       const userId = undefined;
 

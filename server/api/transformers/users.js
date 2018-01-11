@@ -16,5 +16,5 @@ const transformation = (user, req) => {
   });
 };
 
-export default (req, user) => transform(req, user, transformation);
+export default (req, user) => transform(req, user, transformation)
 
