@@ -65,7 +65,7 @@ ProductDetails.propTypes = {
 };
 
 ProductDetails.defaultProps = {
-  product: {},
+  product: undefined,
 };
 
 export default CSSModules(ProductDetails, styles);
