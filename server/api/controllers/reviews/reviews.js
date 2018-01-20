@@ -13,6 +13,7 @@ import {
   errorInternalError,
   errorUnauthorized,
 } from '../../../errors/api/errors';
+import { collection, item } from '../../transformers/transformer';
 
 export const readReviews = (req, res) => {
   const { userId } = req.params;
@@ -26,7 +27,7 @@ export const readReviews = (req, res) => {
 
   getUserById(userId)
     .then(() => getReviews(userId))
-    .then(reviews => reviews.map(transformReview.bind(undefined, req)))
+    .then(reviews => collection(reviews, transformReview.bind(undefined, req)))
     .then(reviews => sendJsonResponse(res, 200, reviews))
     .catch((error) => {
       if (error.code === dbErrors.dataNotFound) {
@@ -63,6 +64,7 @@ export const createReview = (req, res) => {
   }
 
   addReview(review)
+    .then(createdReview => item(createdReview, transformReview.bind(undefined, req)))
     .then((createdReview) => {
       res.location(`/api/reviews/${createdReview.target}`);
       sendJsonResponse(res, 201, createdReview);

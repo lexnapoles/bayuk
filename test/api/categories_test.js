@@ -40,7 +40,7 @@ describe('Categories', function () {
             .expect(200))
         .then((response) => {
           response.body.should.be.instanceOf(Array);
-          response.body.should.be.deep.equal(categories);
+          response.body.should.have.members(categories);
         });
     });
   });

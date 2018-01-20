@@ -10,11 +10,10 @@ import GeolocationInfo from './geolocationInfo/GeolocationInfo';
 import UserOverviewContainer from '../../user/userOverview/UserOverviewContainer';
 import NotFound from '../../notFound/NotFound';
 
-
 const renderSpinner = () => (
-  <main styleName="productContainer" >
+  <main styleName="productContainer">
     <Spinner />
-  </main >
+  </main>
 );
 
 const renderProduct = (product) => {
@@ -25,12 +24,12 @@ const renderProduct = (product) => {
   const { price, name, description, images, owner, latitude, longitude } = product;
 
   return (
-    <main styleName="productContainer" >
-      <Carousel styleName="carousel" >
+    <main styleName="productContainer">
+      <Carousel styleName="carousel">
         {images}
-      </Carousel >
+      </Carousel>
 
-      <section styleName="info" >
+      <section styleName="info">
         <Description
           styleName="infoSection"
           price={price}
@@ -41,16 +40,16 @@ const renderProduct = (product) => {
         <GeolocationInfo styleName="map" latitude={latitude} longitude={longitude} />
         <hr styleName="line" />
         <UserOverviewContainer styleName="infoSection" id={owner} />
-      </section >
-    </main >
+      </section>
+    </main>
   );
 };
 
 const ProductDetails = ({ product }) => (
-  <div styleName="container" >
+  <div styleName="container">
     <ProductDetailsHeader />
     {product ? renderProduct(product) : renderSpinner()}
-  </div >
+  </div>
 );
 
 ProductDetails.propTypes = {
@@ -63,6 +62,10 @@ ProductDetails.propTypes = {
     owner: PropTypes.string,
     images: PropTypes.arrayOf(PropTypes.string),
   }),
+};
+
+ProductDetails.defaultProps = {
+  product: undefined,
 };
 
 export default CSSModules(ProductDetails, styles);

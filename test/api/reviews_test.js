@@ -62,11 +62,20 @@ const generateReviewData = () => {
   return Promise.all([addUser(getUser()), addUser(getUser())])
     .then(([sourceUser, targetUser]) => {
       usersData = {
-        source: { user: sourceUser, token: createJwt(sourceUser) },
-        target: { user: targetUser, token: createJwt(targetUser) },
+        source: {
+          user: sourceUser,
+          token: createJwt(sourceUser),
+        },
+        target: {
+          user: targetUser,
+          token: createJwt(targetUser),
+        },
       };
     })
-    .then(() => addProduct({ ...product, owner: usersData.target.user.id }))
+    .then(() => addProduct({
+      ...product,
+      owner: usersData.target.user.id,
+    }))
     .then(data => ({
       ...usersData,
       product: data.id,
@@ -135,6 +144,23 @@ describe('Reviews', function () {
         });
     });
 
+    it('should embed included user fields', function () {
+      const includeFields = ['source', 'target'];
+
+      return addRandomReview()
+        .then(({ target }) =>
+          request(server)
+            .get(`/api/reviews/${target}`)
+            .query({
+              include: includeFields.join(),
+            })
+            .expect(200))
+        .then((response) => {
+          const review = response.body[0];
+
+          review.should.have.property('users');
+        });
+    });
 
     it('should fail when the user id is not valid', function () {
       const userId = undefined;
