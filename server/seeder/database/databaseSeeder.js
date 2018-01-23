@@ -5,18 +5,21 @@ import seedProductsTable from './productsTableSeeder';
 import seedReviewsTable from './reviewsTableSeeder';
 import seedProductImagesTable from './productImagesSeeder';
 
-export default () => {
+export default async function () {
   if (process.env.NODE_ENV === 'production') {
     return undefined;
   }
 
-  let users = [];
+  await db.none(
+    'TRUNCATE users, products, product_images, reviews, categories RESTART IDENTITY CASCADE');
 
-  return db.none('TRUNCATE users, products, product_images, reviews, categories RESTART IDENTITY CASCADE')
-    .then(seedCategoriesTable)
-    .then(seedUsersTable)
-    .then((createdUsers) => { users = createdUsers; })
-    .then(() => seedProductsTable(users))
-    .then(products => seedReviewsTable(users, products).then(() => products))
-    .then(seedProductImagesTable);
-};
+  await seedCategoriesTable();
+  await seedUsersTable();
+
+  const users = await seedUsersTable();
+  const products = await seedProductsTable(users);
+
+  await seedReviewsTable(users, products);
+
+  return seedProductImagesTable(products);
+}
