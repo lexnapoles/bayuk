@@ -4,10 +4,18 @@ import { getCredentials, getUserByEmail } from './services/users';
 import { validPassword } from './services/authentication';
 import { loginFailed } from '../errors/api/userErrors';
 
-passport.use(new Strategy({ usernameField: 'email' }, (email, password, done) => {
-  getCredentials(email)
-    .then(validPassword.bind(undefined, password))
-    .then(getUserByEmail.bind(undefined, email))
-    .then(user => done(null, user))
-    .catch(() => done(null, false, loginFailed()));
-}));
+const authenticate = async function authenticate(email, password, done) {
+  try {
+    const userCredentials = await getCredentials(email);
+
+    await validPassword(password, userCredentials);
+
+    const user = await getUserByEmail(email);
+
+    done(null, user);
+  } catch (e) {
+    done(null, false, loginFailed());
+  }
+};
+
+passport.use(new Strategy({ usernameField: 'email' }, authenticate));
