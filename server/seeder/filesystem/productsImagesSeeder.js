@@ -8,7 +8,7 @@ const writeImage = (id, data) => fs.writeFile(getProductsImagePath(id), data);
 
 const getProductImagesIds = () =>
   db.any('SELECT image_id from product_images')
-    .then(result => result.map(({ image_id: image }) => image));
+    .then(result => result.map(({ image_id: imageId }) => imageId));
 
 const PLACEHOLDER_IMAGE = getProductsImagePath('placeholder');
 
@@ -28,7 +28,7 @@ export const cleanAllPreviouslyCreatedImages = async function cleanAllPreviously
 async function writeAllImages(ids) {
   const fd = await fs.open(PLACEHOLDER_IMAGE, 'r');
 
-  const data = fs.readFile(fd);
+  const data = await fs.readFile(fd);
 
   return Promise.all(ids.map(id => writeImage(id, data)));
 }
