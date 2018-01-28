@@ -49,7 +49,7 @@ export const addProductImagesToDB = (id, imagesCount) =>
 
 export const addProductImages = async function addProductImages(productId, imagesToAdd = []) {
   if (!imagesToAdd.length) {
-    return undefined;
+    return Promise.resolve();
   }
 
   try {
@@ -85,11 +85,12 @@ export const deleteProductImagesFromDisk = (imagesIds = []) => {
 
 export const deleteProductImages = async function deleteProductImages(images = []) {
   if (!images.length) {
-    return;
+    return Promise.resolve();
   }
 
   await deleteProductImagesFromDB(images);
-  await deleteProductImagesFromDisk(images);
+
+  return deleteProductImagesFromDisk(images);
 };
 
 export const updateProductImages = async function updateProductImages(productId, newImages = []) {

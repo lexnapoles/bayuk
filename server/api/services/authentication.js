@@ -9,13 +9,18 @@ const config = {
 };
 
 export const createCredentials = async function createCredentials(password) {
-  const salt = await getSalt(config.saltBytes);
-  const hash = await getHash(password, salt, config);
+  try {
+    const salt = await getSalt(config.saltBytes);
+    const hash = await getHash(password, salt, config);
 
-  return {
-    salt,
-    hash: hash.toString('hex'),
-  };
+    return {
+      salt,
+      hash: hash.toString('hex'),
+    };
+  } catch (e) {
+    throw new Error(e);
+  }
+
 };
 
 export const validPassword = async function validPassword(providedPassword, { hash, salt }) {

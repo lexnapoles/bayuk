@@ -11,17 +11,23 @@ import { isImageBase64, generateSingleImageObject } from '../../utils';
 
 export const getUserImagePath = id => getImagePath(id, 'users');
 
-export const getImageOfUser = id =>
-  db.one(users.getImage, { id })
-    .then(({ image }) => image);
+export const getImageOfUser = async function getImageOfUser(id) {
+  try {
+    const { image } = await db.one(users.getImage, { id });
 
-export const writeUserImageToDisk = (image) => {
+    return image;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const writeUserImageToDisk = async function writeUserImageToDisk(image) {
   if (!image) {
-    return Promise.reject('No image has been passed');
+    throw new Error('No image has been passed');
   }
 
   if (!isImageObjValid(image)) {
-    return Promise.reject('Incorrect image format');
+    throw new Error('Incorrect image format');
   }
 
   const imageToWrite = {
@@ -29,61 +35,93 @@ export const writeUserImageToDisk = (image) => {
     data: getDecodedImage(image.data),
   };
 
-  return writeImagesToDisk([imageToWrite]);
+  try {
+    return writeImagesToDisk([imageToWrite]);
+  } catch (e) {
+    throw new Error(e);
+  }
 };
 
+export const addUserImageToDB = async function addUserImageToDB(id) {
+  try {
+    const { image } = await db.one(users.addImage, { id });
 
-export const addUserImageToDB = id =>
-  db.one(users.addImage, { id })
-    .then(({ image }) => image);
+    return image;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
 
 export const addUserImage = async function addUserImage(userId, imageToAdd = '') {
   if (!imageToAdd.length) {
     return Promise.resolve();
   }
 
-  const imageId = await addUserImageToDB(userId);
+  try {
+    const imageId = await addUserImageToDB(userId);
 
-  const image = generateSingleImageObject(imageId, imageToAdd);
+    const image = generateSingleImageObject(imageId, imageToAdd);
 
-  await writeUserImageToDisk(image);
+    await writeUserImageToDisk(image);
 
-  return imageId;
+    return imageId;
+  } catch (e) {
+    throw new Error(e);
+  }
 };
 
-export const deleteUserImageFromDB = (image = '') => {
+export const deleteUserImageFromDB = async function deleteUserImageFromDB(image = '') {
   if (!image.length) {
-    return Promise.reject('Cannot delete image from DB, no image has been passed');
+    throw new Error('Cannot delete image from DB, no image has been passed');
   }
 
-  return db.any('SELECT FROM delete_user_image($1::uuid)', image);
+  try {
+    return db.any('SELECT FROM delete_user_image($1::uuid)', image);
+  } catch (e) {
+    throw new Error(e);
+  }
 };
 
-export const deleteUserImageFromDisk = (imageId = '') => {
+export const deleteUserImageFromDisk = async function deleteUserImageFromDisk(imageId = '') {
   if (!imageId.length) {
-    return Promise.reject('Cannot delete images from disk, no image has been passed');
+    throw new Error('Cannot delete images from disk, no image has been passed');
   }
 
   const imagePath = getUserImagePath(imageId);
 
-  return deleteImagesFromDisk([imagePath]);
+  try {
+    return deleteImagesFromDisk([imagePath]);
+  } catch (e) {
+    throw new Error(e);
+  }
 };
 
-export const deleteUserImage = (image = '') => {
+export const deleteUserImage = async function deleteUserImage(image = '') {
   if (image === null || !image.length) {
     return Promise.resolve();
   }
 
-  return deleteUserImageFromDB(image)
-    .then(deleteUserImageFromDisk.bind(undefined, image));
+  try {
+    await deleteUserImageFromDB(image);
+
+    return deleteUserImageFromDisk(image);
+  } catch (e) {
+    throw new Error(e);
+  }
 };
 
-export const updateUserImage = (userId, image = '') => {
+export const updateUserImage = async function updateUserImage(userId, image = '') {
   if (image === null || !image.length || !isImageBase64(image)) {
     return Promise.resolve();
   }
 
-  return getImageOfUser(userId)
-    .then(deleteUserImage)
-    .then(addUserImage.bind(undefined, userId, image));
+  try {
+    const oldUserImage = await getImageOfUser(userId);
+
+    await deleteUserImage(oldUserImage);
+
+    return addUserImage(userId, image);
+  } catch (e) {
+    throw new Error(e);
+  }
 };

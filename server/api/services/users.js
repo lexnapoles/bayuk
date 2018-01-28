@@ -14,22 +14,49 @@ export const getCredentials = email => db.one(users.getCredentials, email);
 
 const addUserToDB = user => db.one(users.add, user);
 
-export const addUser = user =>
-  createCredentials(user.password)
-    .then(credentials => addUserToDB({ ...omit(user, 'password'), ...credentials }));
+export const addUser = async function addUser(user) {
+  try {
+    const newUserCredentials = await createCredentials(user.password);
+
+    return addUserToDB({ ...omit(user, 'password'), ...newUserCredentials });
+  } catch (e) {
+    throw new Error(e);
+  }
+};
 
 const updateUserFromDB = user => db.one(users.update, user);
 
-export const updateUser = user =>
-  updateUserImage(user.id, user.image)
-    .then(() => updateUserFromDB(user));
+export const updateUser = async function updateUser(user) {
+  try {
+    await updateUserImage(user.id, user.image);
+    return updateUserFromDB(user);
+  } catch (e) {
+    throw new Error(e);
+  }
+};
 
-export const updateEmail = (id, email) => db.one(users.updateEmail, { id, email });
+export const updateEmail = (id, email) =>
+  db.one(users.updateEmail, {
+    id,
+    email,
+  });
 
-export const updatePassword = (id, password) =>
-  createCredentials(password)
-    .then(credentials => db.one(users.updatePassword, { id, ...credentials }));
+export const updatePassword = async function updatePassword(id, password) {
+  const newCredentials = await createCredentials(password);
 
-export const deleteUser = id => getUserById(id)
-  .then(({ image }) => (image ? deleteUserImageFromDisk(image) : true))
-  .then(() => db.any(users.delete, id));
+  return db.one(users.updatePassword, { id, ...newCredentials });
+};
+
+export const deleteUser = async function deleteUser(id) {
+  const { image } = await getUserById(id);
+
+  try {
+    if (image) {
+      await deleteUserImageFromDisk(image);
+    }
+
+    return db.any(users.delete, id);
+  } catch (e) {
+    throw new Error(e);
+  }
+};
