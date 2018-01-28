@@ -37,23 +37,33 @@ const addProductToDB = product =>
     images_count: product.images.length,
   });
 
-export const addProduct = product =>
-  addProductToDB(product)
-    .then((createdProduct) => {
-      const imagesIds = createdProduct.images;
-      const imagesData = product.images;
-      const images = generateImagesObjs(imagesIds, imagesData);
+export const addProduct = async function addProduct(product) {
+  try {
+    const createdProduct = await addProductToDB(product);
 
-      writeProductImagesToDisk(images);
+    const imagesIds = createdProduct.images;
+    const imagesData = product.images;
+    const images = generateImagesObjs(imagesIds, imagesData);
 
-      return createdProduct;
-    });
+    await writeProductImagesToDisk(images);
+
+    return createdProduct;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
 
 const updateProductFromDB = product => db.one(products.update, product);
 
-export const updateProduct = product =>
-  updateProductImages(product.id, product.images)
-    .then(() => updateProductFromDB(product));
+export const updateProduct = async function updateProduct(product) {
+  try {
+    await updateProductImages(product.id, product.images);
+
+    return updateProductFromDB(product);
+  } catch (e) {
+    throw new Error(e);
+  }
+};
 
 const deleteProductFromDB = productId => db.proc('delete_product', productId);
 

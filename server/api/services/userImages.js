@@ -1,6 +1,12 @@
 import db from '../../database/db';
 import { users } from '../../database/sql/sql';
-import { getImagePath, isImageObjValid, writeImagesToDisk, deleteImagesFromDisk, getDecodedImage } from './images';
+import {
+  getImagePath,
+  isImageObjValid,
+  writeImagesToDisk,
+  deleteImagesFromDisk,
+  getDecodedImage,
+} from './images';
 import { isImageBase64, generateSingleImageObject } from '../../utils';
 
 export const getUserImagePath = id => getImagePath(id, 'users');
@@ -31,18 +37,18 @@ export const addUserImageToDB = id =>
   db.one(users.addImage, { id })
     .then(({ image }) => image);
 
-export const addUserImage = (userId, imageToAdd = '') => {
+export const addUserImage = async function addUserImage(userId, imageToAdd = '') {
   if (!imageToAdd.length) {
     return Promise.resolve();
   }
 
-  return addUserImageToDB(userId)
-    .then((imageId) => {
-      const image = generateSingleImageObject(imageId, imageToAdd);
+  const imageId = await addUserImageToDB(userId);
 
-      return writeUserImageToDisk(image)
-        .then(() => imageId);
-    });
+  const image = generateSingleImageObject(imageId, imageToAdd);
+
+  await writeUserImageToDisk(image);
+
+  return imageId;
 };
 
 export const deleteUserImageFromDB = (image = '') => {
