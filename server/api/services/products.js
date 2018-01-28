@@ -57,9 +57,16 @@ export const updateProduct = product =>
 
 const deleteProductFromDB = productId => db.proc('delete_product', productId);
 
-export const deleteProduct = productId =>
-  getImagesOfProduct(productId)
-    .then(deleteProductImagesFromDisk)
-    .then(deleteProductFromDB.bind(undefined, productId));
+export const deleteProduct = async function deleteProduct(productId) {
+  try {
+    const productImages = await getImagesOfProduct(productId);
+
+    await deleteProductImagesFromDisk(productImages);
+
+    return deleteProductFromDB(productId);
+  } catch (e) {
+    throw new Error(e);
+  }
+};
 
 export const addProductWithAllFields = product => db.one(products.addWithAllFields, product);
