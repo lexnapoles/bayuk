@@ -15,7 +15,7 @@ import getFilters from './getFilters';
 import addPaginationLink from './addPaginationLink';
 import { errorBadRequest, errorNotFound, errorInternalError } from '../../../errors/api/errors';
 
-export const readProducts = (req, res) => {
+export const readProducts = async function readProducts(req, res) {
   const { filters, errors: filterErrors } = getFilters(req);
 
   if (filterErrors.length) {
@@ -23,19 +23,23 @@ export const readProducts = (req, res) => {
     return;
   }
 
-  getProducts(filters)
-    .then(products => products.map(transformProduct.bind(undefined, req)))
-    .then((products) => {
-      if (products.length) {
-        addPaginationLink(req, res, products, filters);
-      }
+  try {
+    const products = await getProducts(filters);
+    const transformedProducts = products.map(transformProduct.bind(undefined, req));
 
-      sendJsonResponse(res, 200, products);
-    })
-    .catch(error => errorInternalError(res, error));
+    await Promise.all(transformedProducts);
+
+    if (transformedProducts.length) {
+      addPaginationLink(req, res, transformedProducts, filters);
+    }
+
+    sendJsonResponse(res, 200, transformedProducts);
+  } catch (error) {
+    errorInternalError(res, error);
+  }
 };
 
-export const readOneProduct = (req, res) => {
+export const readOneProduct = async function readOneProduct(req, res) {
   const requestErrors = [
     ...validateRequest(req, 'params'),
     ...validateRequest(req.params, 'productId'),
@@ -55,20 +59,21 @@ export const readOneProduct = (req, res) => {
     return;
   }
 
-  getProductById(productId)
-    .then(transformProduct.bind(undefined, req))
-    .then(product => sendJsonResponse(res, 200, product))
-    .catch((error) => {
-      if (error.code === dbErrors.dataNotFound) {
-        errorNotFound(res, productDoesNotExist());
-        return;
-      }
+  try {
+    const product = await getProductById(productId);
+    const transformedProduct = await transformProduct(req, product);
 
+    sendJsonResponse(res, 200, transformedProduct);
+  } catch (error) {
+    if (error.code === dbErrors.dataNotFound) {
+      errorNotFound(res, productDoesNotExist());
+    } else {
       errorInternalError(res, error);
-    });
+    }
+  }
 };
 
-export const createProduct = (req, res) => {
+export const createProduct = async function createProduct(req, res) {
   const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
@@ -83,26 +88,29 @@ export const createProduct = (req, res) => {
     return;
   }
 
+
   const product = {
     ...req.body,
     owner: req.user.id,
   };
 
-  addProduct(product)
-    .then(transformProduct.bind(undefined, req))
-    .then((addedProduct) => {
-      res.location(`/api/products/${addedProduct.id}`);
-      sendJsonResponse(res, 201, addedProduct);
-    })
-    .catch(error => errorInternalError(error));
+  try {
+    const addedProduct = await addProduct(product);
+    const transformedProduct = await transformProduct(req, addedProduct);
+
+    res.location(`/api/products/${transformedProduct.id}`);
+    sendJsonResponse(res, 201, transformedProduct);
+  } catch (error) {
+    errorInternalError(error);
+  }
 };
 
-export const updateOneProduct = (req, res) => {
+export const updateOneProduct = async function updateOneProduct(req, res) {
   const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
-    return undefined;
+    return;
   }
 
   const { productId } = req.params;
@@ -112,21 +120,30 @@ export const updateOneProduct = (req, res) => {
 
   if (invalidProductErrors.length) {
     errorBadRequest(res, invalidProductErrors);
-    return undefined;
+    return;
   }
 
-  return getProductById(productId)
-    .then(() => updateProduct(product))
-    .then(transformProduct.bind(undefined, req))
-    .then(updatedProduct => sendJsonResponse(res, 200, updatedProduct))
-    .catch(error => errorInternalError(res, error));
+  try {
+    await getProductById(productId);
+
+    const updatedProduct = await updateProduct(product);
+    const transformedProduct = await transformProduct(req, updatedProduct);
+
+    sendJsonResponse(res, 200, transformedProduct);
+  } catch (error) {
+    errorInternalError(res, error);
+  }
 };
 
-export const deleteOneProduct = (req, res) => {
+export const deleteOneProduct = async function deleteOneProduct(req, res) {
   const { productId } = req.params;
 
-  return getProductById(productId)
-    .then(() => deleteProduct(productId))
-    .then(() => sendJsonResponse(res, 204, null))
-    .catch(error => errorInternalError(res, error));
+  try {
+    await getProductById(productId);
+    await deleteProduct(productId);
+
+    sendJsonResponse(res, 204, null);
+  } catch (error) {
+    errorInternalError(res, error);
+  }
 };
