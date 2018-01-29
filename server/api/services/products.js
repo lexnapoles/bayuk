@@ -48,8 +48,8 @@ export const addProduct = async function addProduct(product) {
     await writeProductImagesToDisk(images);
 
     return createdProduct;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -60,8 +60,8 @@ export const updateProduct = async function updateProduct(product) {
     await updateProductImages(product.id, product.images);
 
     return updateProductFromDB(product);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -74,8 +74,8 @@ export const deleteProduct = async function deleteProduct(productId) {
     await deleteProductImagesFromDisk(productImages);
 
     return deleteProductFromDB(productId);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 

@@ -19,8 +19,8 @@ export const addUser = async function addUser(user) {
     const newUserCredentials = await createCredentials(user.password);
 
     return addUserToDB({ ...omit(user, 'password'), ...newUserCredentials });
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -30,8 +30,8 @@ export const updateUser = async function updateUser(user) {
   try {
     await updateUserImage(user.id, user.image);
     return updateUserFromDB(user);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -56,7 +56,7 @@ export const deleteUser = async function deleteUser(id) {
     }
 
     return db.any(users.delete, id);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };

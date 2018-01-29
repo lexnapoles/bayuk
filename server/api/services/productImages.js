@@ -33,8 +33,8 @@ export const writeProductImagesToDisk = async function writeProductImagesToDisk(
 
   try {
     await writeImagesToDisk(imagesToWrite);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 
   return images.map(({ id }) => id);
@@ -60,8 +60,8 @@ export const addProductImages = async function addProductImages(productId, image
     await writeProductImagesToDisk(images);
 
     return imagesIds;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -102,7 +102,7 @@ export const updateProductImages = async function updateProductImages(productId,
 
     const imagesToAdd = newImages.filter(isImageBase64);
     return addProductImages(productId, imagesToAdd);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };

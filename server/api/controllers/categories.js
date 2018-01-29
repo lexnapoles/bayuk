@@ -1,10 +1,16 @@
 import { sendJsonResponse } from '../../utils';
 import { getCategories } from '../services/categories';
 import transformCategories from '../transformers/categories';
+import { collection } from '../transformers/transformer';
 import { errorInternalError } from '../../errors/api/errors';
 
-export default (req, res) =>
-  getCategories()
-    .then(categories => categories.map(transformCategories))
-    .then(categories => sendJsonResponse(res, 200, categories))
-    .catch(error => errorInternalError(res, error));
+export default async function getAllCategories(req, res) {
+  try {
+    const categories = await getCategories();
+    const transformedCategories = await collection(categories, transformCategories);
+
+    sendJsonResponse(res, 200, transformedCategories);
+  } catch (error) {
+    errorInternalError(res, error);
+  }
+}

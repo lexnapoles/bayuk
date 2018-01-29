@@ -16,8 +16,8 @@ export const getImageOfUser = async function getImageOfUser(id) {
     const { image } = await db.one(users.getImage, { id });
 
     return image;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -37,8 +37,8 @@ export const writeUserImageToDisk = async function writeUserImageToDisk(image) {
 
   try {
     return writeImagesToDisk([imageToWrite]);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -47,8 +47,8 @@ export const addUserImageToDB = async function addUserImageToDB(id) {
     const { image } = await db.one(users.addImage, { id });
 
     return image;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -65,8 +65,8 @@ export const addUserImage = async function addUserImage(userId, imageToAdd = '')
     await writeUserImageToDisk(image);
 
     return imageId;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -77,8 +77,8 @@ export const deleteUserImageFromDB = async function deleteUserImageFromDB(image 
 
   try {
     return db.any('SELECT FROM delete_user_image($1::uuid)', image);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -91,8 +91,8 @@ export const deleteUserImageFromDisk = async function deleteUserImageFromDisk(im
 
   try {
     return deleteImagesFromDisk([imagePath]);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -105,8 +105,8 @@ export const deleteUserImage = async function deleteUserImage(image = '') {
     await deleteUserImageFromDB(image);
 
     return deleteUserImageFromDisk(image);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 
@@ -121,7 +121,7 @@ export const updateUserImage = async function updateUserImage(userId, image = ''
     await deleteUserImage(oldUserImage);
 
     return addUserImage(userId, image);
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error);
   }
 };
