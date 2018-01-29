@@ -5,9 +5,12 @@ import { userDoesNotExist } from '../errors/api/userErrors';
 import dbErrors from '../errors/database';
 import { unauthorizedAccess, tokenDoesNotMatch } from '../errors/api/authorizationErrors';
 
-const invalidTokenInUserRoutes = req => has(req, 'params') && has(req.params, 'userId') && req.params.userId !== req.user.id;
+const invalidTokenInUserRoutes = req =>
+  has(req, 'params') &&
+  has(req.params, 'userId') &&
+  req.params.userId !== req.user.id;
 
-export default (req, res, next) => {
+export default async function (req, res, next) {
   if (!has(req, 'user') || !has(req.user, 'id')) {
     sendJsonResponse(res, 401, [unauthorizedAccess()]);
     return;
@@ -18,14 +21,16 @@ export default (req, res, next) => {
     return;
   }
 
-  getUserById(req.user.id)
-    .then(() => next())
-    .catch((error) => {
-      if (error.code === dbErrors.dataNotFound) {
-        sendJsonResponse(res, 404, [userDoesNotExist()]);
-        return;
-      }
+  try {
+    await getUserById(req.user.id);
 
-      sendJsonResponse(res, 500, [error]);
-    });
-};
+    next();
+  } catch (error) {
+    if (error.code === dbErrors.dataNotFound) {
+      sendJsonResponse(res, 404, [userDoesNotExist()]);
+      return;
+    }
+
+    sendJsonResponse(res, 500, [error]);
+  }
+}
