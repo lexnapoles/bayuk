@@ -37,29 +37,46 @@ const addProductToDB = product =>
     images_count: product.images.length,
   });
 
-export const addProduct = product =>
-  addProductToDB(product)
-    .then((createdProduct) => {
-      const imagesIds = createdProduct.images;
-      const imagesData = product.images;
-      const images = generateImagesObjs(imagesIds, imagesData);
+export const addProduct = async function addProduct(product) {
+  try {
+    const createdProduct = await addProductToDB(product);
 
-      writeProductImagesToDisk(images);
+    const imagesIds = createdProduct.images;
+    const imagesData = product.images;
+    const images = generateImagesObjs(imagesIds, imagesData);
 
-      return createdProduct;
-    });
+    await writeProductImagesToDisk(images);
+
+    return createdProduct;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
 const updateProductFromDB = product => db.one(products.update, product);
 
-export const updateProduct = product =>
-  updateProductImages(product.id, product.images)
-    .then(() => updateProductFromDB(product));
+export const updateProduct = async function updateProduct(product) {
+  try {
+    await updateProductImages(product.id, product.images);
+
+    return updateProductFromDB(product);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
 const deleteProductFromDB = productId => db.proc('delete_product', productId);
 
-export const deleteProduct = productId =>
-  getImagesOfProduct(productId)
-    .then(deleteProductImagesFromDisk)
-    .then(deleteProductFromDB.bind(undefined, productId));
+export const deleteProduct = async function deleteProduct(productId) {
+  try {
+    const productImages = await getImagesOfProduct(productId);
+
+    await deleteProductImagesFromDisk(productImages);
+
+    return deleteProductFromDB(productId);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
 export const addProductWithAllFields = product => db.one(products.addWithAllFields, product);

@@ -13,15 +13,21 @@ import { createJwt } from '../../services/authentication';
 import dbErrors from '../../../errors/database';
 import { userDoesNotExist } from '../../../errors/api/userErrors';
 import transformUser from '../../transformers/users';
+import { collection, item } from '../../transformers/transformer';
 import { errorBadRequest, errorNotFound, errorInternalError } from '../../../errors/api/errors';
 
-export const readUsers = (req, res) =>
-  getUsers()
-    .then(users => users.map(transformUser.bind(undefined, req)))
-    .then(users => sendJsonResponse(res, 200, users))
-    .catch(error => errorInternalError(res, error));
+export const readUsers = async function readUsers(req, res) {
+  try {
+    const users = await getUsers();
+    const transformedUsers = await collection(users, transformUser.bind(undefined, req));
 
-export const readOneUser = (req, res) => {
+    sendJsonResponse(res, 200, transformedUsers);
+  } catch (error) {
+    errorInternalError(res, error);
+  }
+};
+
+export const readOneUser = async function readOneUser(req, res) {
   const noUserIdError = validateRequest(req.params, 'userId');
 
   if (noUserIdError.length) {
@@ -37,20 +43,21 @@ export const readOneUser = (req, res) => {
     return;
   }
 
-  getUserById(userId)
-    .then(transformUser.bind(undefined, req))
-    .then(user => sendJsonResponse(res, 200, user))
-    .catch((error) => {
-      if (error.code === dbErrors.dataNotFound) {
-        errorNotFound(res, userDoesNotExist());
-        return;
-      }
+  try {
+    const user = await getUserById(userId);
+    const transformedUser = await item(user, transformUser.bind(undefined, req));
 
-      errorInternalError(res, error);
-    });
+    sendJsonResponse(res, 200, transformedUser);
+  } catch (error) {
+    if (error.code === dbErrors.dataNotFound) {
+      errorNotFound(res, userDoesNotExist());
+      return;
+    }
+    errorInternalError(res, error);
+  }
 };
 
-export const updateUserEmail = (req, res) => {
+export const updateUserEmail = async function updateUserEmail(req, res) {
   const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
@@ -68,12 +75,16 @@ export const updateUserEmail = (req, res) => {
     return;
   }
 
-  updateEmail(userId, email)
-    .then(user => sendJsonResponse(res, 200, createJwt(user)))
-    .catch(error => errorInternalError(res, error));
+  try {
+    const user = await updateEmail(userId, email);
+
+    sendJsonResponse(res, 200, createJwt(user));
+  } catch (error) {
+    errorInternalError(res, error);
+  }
 };
 
-export const updateUserPassword = (req, res) => {
+export const updateUserPassword = async function updateUserPassword(req, res) {
   const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
@@ -91,12 +102,16 @@ export const updateUserPassword = (req, res) => {
     return;
   }
 
-  updatePassword(userId, password)
-    .then(() => sendJsonResponse(res, 204))
-    .catch(error => errorInternalError(res, error));
+  try {
+    await updatePassword(userId, password);
+
+    sendJsonResponse(res, 204);
+  } catch (error) {
+    errorInternalError(res, error);
+  }
 };
 
-export const updateOneUser = (req, res) => {
+export const updateOneUser = async function updateOneUser(req, res) {
   const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
@@ -113,17 +128,25 @@ export const updateOneUser = (req, res) => {
     return;
   }
 
-  updateUser(user)
-    .then(transformUser.bind(undefined, req))
-    .then(updatedUser => sendJsonResponse(res, 200, updatedUser))
-    .catch(error => errorInternalError(res, error));
+  try {
+    const updatedUser = await updateUser(user);
+    const transformedUser = await item(updatedUser, transformUser.bind(undefined, req));
+
+    sendJsonResponse(res, 200, transformedUser);
+  } catch (error) {
+    errorInternalError(res, error);
+  }
 };
 
-export const deleteOneUser = (req, res) => {
+export const deleteOneUser = async function deleteOneUser(req, res) {
   const { userId } = req.params;
 
-  return deleteUser(userId)
-    .then(() => sendJsonResponse(res, 204))
-    .catch(error => errorInternalError(res, error));
+  try {
+    await deleteUser(userId);
+
+    sendJsonResponse(res, 204);
+  } catch (error) {
+    errorInternalError(res, error);
+  }
 };
 

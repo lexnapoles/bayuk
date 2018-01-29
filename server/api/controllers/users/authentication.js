@@ -7,9 +7,16 @@ import { validateRequest } from '../validators';
 import { userAlreadyExists } from '../../../errors/api/userErrors';
 import dbErrors from '../../../errors/database';
 import transformUser from '../../transformers/users';
-import { errorBadRequest, errorNotFound, errorUnauthorized, errorInternalError, errorConflict } from '../../../errors/api/errors';
+import { item } from '../../transformers/transformer';
+import {
+  errorBadRequest,
+  errorNotFound,
+  errorUnauthorized,
+  errorInternalError,
+  errorConflict,
+} from '../../../errors/api/errors';
 
-export const register = (req, res) => {
+export const register = async function register(req, res) {
   const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
@@ -24,19 +31,19 @@ export const register = (req, res) => {
     return;
   }
 
-  addUser(req.body)
-    .then((user) => {
-      res.location(`/api/users/${user.id}`);
-      sendJsonResponse(res, 201, createJwt(transformUser(req, user)));
-    })
-    .catch((error) => {
-      if (error.code === dbErrors.dataAlreadyExists) {
-        errorConflict(res, userAlreadyExists());
-        return;
-      }
+  try {
+    const user = await addUser(req.body);
+    const transformedUser = await item(user, transformUser.bind(undefined, req));
 
+    res.location(`/api/users/${transformedUser.id}`);
+    sendJsonResponse(res, 201, createJwt(transformedUser));
+  } catch (error) {
+    if (error.code === dbErrors.dataAlreadyExists) {
+      errorConflict(res, userAlreadyExists());
+    } else {
       errorInternalError(res, error);
-    });
+    }
+  }
 };
 
 export const login = (req, res) => {
@@ -54,15 +61,17 @@ export const login = (req, res) => {
     return;
   }
 
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', async function authenticate(err, user, info) {
     if (err) {
       errorNotFound(res, err);
       return;
     }
 
     if (user) {
+      const transformedUser = await item(user, transformUser.bind(undefined, req));
       res.location(`/api/users/${user.id}`);
-      sendJsonResponse(res, 201, createJwt(transformUser(req, user)));
+
+      sendJsonResponse(res, 201, createJwt(transformedUser));
     } else {
       errorUnauthorized(res, info);
     }

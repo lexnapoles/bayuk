@@ -35,7 +35,7 @@ export const writeImagesToDisk = (images = []) => {
 
 export const deleteImagesFromDisk = (images = []) => {
   if (!Array.isArray(images) || !images.length) {
-    return Promise.reject('Cannot delete images from disk, no images has been passed');
+    return Promise.reject('Cannot delete images from disk, no images have been passed');
   }
 
   const promises = wrapDataInPromise(images, deleteFile);

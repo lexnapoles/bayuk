@@ -16,7 +16,10 @@ const pickUsersForReview = (ids) => {
   }
   while (target === source);
 
-  return { source, target };
+  return {
+    source,
+    target,
+  };
 };
 
 const getReview = (ids, products, users = {}) => ({

@@ -8,21 +8,28 @@ const config = {
   digest: 'sha512',
 };
 
-export const createCredentials = (password) => {
-  let salt = '';
+export const createCredentials = async function createCredentials(password) {
+  try {
+    const salt = await getSalt(config.saltBytes);
+    const hash = await getHash(password, salt, config);
 
-  return getSalt(config.saltBytes)
-    .then((createdSalt) => { salt = createdSalt; })
-    .then(() => getHash(password, salt, config))
-    .then(generatedHash => ({
+    return {
       salt,
-      hash: generatedHash.toString('hex'),
-    }));
+      hash: hash.toString('hex'),
+    };
+  } catch (e) {
+    throw new Error(e);
+  }
+
 };
 
-export const validPassword = (password, { hash, salt }) =>
-  getHash(password, salt, config)
-    .then(calculatedHash => (calculatedHash.toString('hex') === hash ? true : Promise.reject()));
+export const validPassword = async function validPassword(providedPassword, { hash, salt }) {
+  const providedPasswordHash = await getHash(providedPassword, salt, config);
+
+  if (providedPasswordHash.toString('hex') !== hash) {
+    throw new Error('Invalid password');
+  }
+};
 
 export const createJwt = (payload) => {
   const expiry = new Date();

@@ -17,13 +17,13 @@ export const getImagesOfProduct = id =>
   db.one(products.getImages, { id })
     .then(({ images }) => images);
 
-export const writeProductImagesToDisk = (images = []) => {
+export const writeProductImagesToDisk = async function writeProductImagesToDisk(images = []) {
   if (!Array.isArray(images) || !images.length) {
-    return Promise.reject('No images has been passed');
+    throw new Error('No images have been passed');
   }
 
   if (!every(images, isImageObjValid)) {
-    return Promise.reject('Incorrect images format');
+    throw new Error('Incorrect images format');
   }
 
   const imagesToWrite = images.map(({ id, data }) => ({
@@ -31,31 +31,43 @@ export const writeProductImagesToDisk = (images = []) => {
     data: getDecodedImage(data),
   }));
 
-  return writeImagesToDisk(imagesToWrite)
-    .then(() => images.map(({ id }) => id));
+  try {
+    await writeImagesToDisk(imagesToWrite);
+  } catch (error) {
+    throw new Error(error);
+  }
+
+  return images.map(({ id }) => id);
 };
 
 export const addProductImagesToDB = (id, imagesCount) =>
-  db.one(products.addImages, { id, imagesCount })
+  db.one(products.addImages, {
+    id,
+    imagesCount,
+  })
     .then(({ images }) => images);
 
-export const addProductImages = (productId, imagesToAdd = []) => {
+export const addProductImages = async function addProductImages(productId, imagesToAdd = []) {
   if (!imagesToAdd.length) {
     return Promise.resolve();
   }
 
-  return addProductImagesToDB(productId, imagesToAdd.length)
-    .then((imagesIds) => {
-      const images = generateImagesObjs(imagesIds, imagesToAdd);
+  try {
+    const imagesIds = await addProductImagesToDB(productId, imagesToAdd.length);
 
-      return writeProductImagesToDisk(images)
-        .then(() => imagesIds);
-    });
+    const images = generateImagesObjs(imagesIds, imagesToAdd);
+
+    await writeProductImagesToDisk(images);
+
+    return imagesIds;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const deleteProductImagesFromDB = (images = []) => {
   if (!Array.isArray(images) || !images.length) {
-    return Promise.reject('Cannot delete images from DB, no images has been passed');
+    return Promise.reject('Cannot delete images from DB, no images have been passed');
   }
 
   return db.any('SELECT FROM delete_product_images($1::uuid[])', [images]);
@@ -63,7 +75,7 @@ export const deleteProductImagesFromDB = (images = []) => {
 
 export const deleteProductImagesFromDisk = (imagesIds = []) => {
   if (!Array.isArray(imagesIds) || !imagesIds.length) {
-    return Promise.reject('Cannot delete images from disk, no images has been passed');
+    return Promise.reject('Cannot delete images from disk, no images have been passed');
   }
 
   const imagePaths = imagesIds.map(getProductsImagePath);
@@ -71,20 +83,26 @@ export const deleteProductImagesFromDisk = (imagesIds = []) => {
   return deleteImagesFromDisk(imagePaths);
 };
 
-export const deleteProductImages = (images = []) => {
+export const deleteProductImages = async function deleteProductImages(images = []) {
   if (!images.length) {
     return Promise.resolve();
   }
 
-  return deleteProductImagesFromDB(images)
-    .then(deleteProductImagesFromDisk.bind(undefined, images));
+  await deleteProductImagesFromDB(images);
+
+  return deleteProductImagesFromDisk(images);
 };
 
-export const updateProductImages = (productId, images = []) => {
-  const imagesToAdd = images.filter(isImageBase64);
+export const updateProductImages = async function updateProductImages(productId, newImages = []) {
+  try {
+    const productImages = await getImagesOfProduct(productId);
 
-  return getImagesOfProduct(productId)
-    .then(getImagesToDelete.bind(undefined, images))
-    .then(deleteProductImages)
-    .then(addProductImages.bind(undefined, productId, imagesToAdd));
+    const imagesToDelete = await getImagesToDelete(newImages, productImages);
+    await deleteProductImages(imagesToDelete);
+
+    const imagesToAdd = newImages.filter(isImageBase64);
+    return addProductImages(productId, imagesToAdd);
+  } catch (error) {
+    throw new Error(error);
+  }
 };
