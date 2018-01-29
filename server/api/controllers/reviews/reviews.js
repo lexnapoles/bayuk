@@ -15,7 +15,7 @@ import {
 } from '../../../errors/api/errors';
 import { collection, item } from '../../transformers/transformer';
 
-export const readReviews = (req, res) => {
+export const readReviews = async function readReviews(req, res) {
   const { userId } = req.params;
 
   const invalidIdError = validateId(userId);
@@ -25,21 +25,24 @@ export const readReviews = (req, res) => {
     return;
   }
 
-  getUserById(userId)
-    .then(() => getReviews(userId))
-    .then(reviews => collection(reviews, transformReview.bind(undefined, req)))
-    .then(reviews => sendJsonResponse(res, 200, reviews))
-    .catch((error) => {
-      if (error.code === dbErrors.dataNotFound) {
-        errorNotFound(res, userDoesNotExist());
-        return;
-      }
+  try {
+    await getUserById(userId);
 
-      errorInternalError(res, [error]);
-    });
+    const reviews = await getReviews(userId);
+    const transformedReviews = await collection(reviews, transformReview.bind(undefined, req));
+
+    sendJsonResponse(res, 200, transformedReviews);
+  } catch (error) {
+    if (error.code === dbErrors.dataNotFound) {
+      errorNotFound(res, userDoesNotExist());
+      return;
+    }
+
+    errorInternalError(res, [error]);
+  }
 };
 
-export const createReview = (req, res) => {
+export const createReview = async function createReview(req, res) {
   const requestErrors = validateRequest(req, 'body');
 
   if (requestErrors.length) {
@@ -63,11 +66,14 @@ export const createReview = (req, res) => {
     return;
   }
 
-  addReview(review)
-    .then(createdReview => item(createdReview, transformReview.bind(undefined, req)))
-    .then((createdReview) => {
-      res.location(`/api/reviews/${createdReview.target}`);
-      sendJsonResponse(res, 201, createdReview);
-    })
-    .catch(error => errorInternalError(res, error));
+  try {
+    const createdReview = await addReview(review);
+
+    const transformedReview = await item(createdReview, transformReview.bind(undefined, req));
+
+    res.location(`/api/reviews/${transformedReview.target}`);
+    sendJsonResponse(res, 201, transformedReview);
+  } catch (error) {
+    errorInternalError(res, error);
+  }
 };
