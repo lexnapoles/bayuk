@@ -7,6 +7,6 @@ const getUserFromReview = (req, id) =>
     .then(user => item(user, transformUser.bind(null, req)));
 
 export default {
-  target: (req, { target }) => getUserFromReview(req, target),
-  source: (req, { source }) => getUserFromReview(req, source),
+  target: (req, { target_id }) => getUserFromReview(req, target_id),
+  source: (req, { source_id }) => getUserFromReview(req, source_id),
 };

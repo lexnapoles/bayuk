@@ -59,9 +59,9 @@ export const createReview = async function createReview(req, res) {
     return;
   }
 
-  const source = req.user.id;
+  const sourceId = req.user.id;
 
-  if (source !== review.source) {
+  if (sourceId !== review.sourceId) {
     errorUnauthorized(res, unauthorizedAccess());
     return;
   }
@@ -71,7 +71,7 @@ export const createReview = async function createReview(req, res) {
 
     const transformedReview = await item(createdReview, transformReview.bind(undefined, req));
 
-    res.location(`/api/reviews/${transformedReview.target}`);
+    res.location(`/api/reviews/${transformedReview.targetId}`);
     sendJsonResponse(res, 201, transformedReview);
   } catch (error) {
     errorInternalError(res, error);

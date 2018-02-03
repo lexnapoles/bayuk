@@ -7,18 +7,18 @@ import { MAX_REVIEWS, MAX_USER_RATING } from '../config';
 import { wrapDataInPromise } from '../../utils';
 
 const pickUsersForReview = (ids) => {
-  const source = sample(ids);
+  const sourceId = sample(ids);
 
-  let target = 0;
+  let targetId = 0;
 
   do {
-    target = sample(ids);
+    targetId = sample(ids);
   }
-  while (target === source);
+  while (targetId === sourceId);
 
   return {
-    source,
-    target,
+    sourceId,
+    targetId,
   };
 };
 

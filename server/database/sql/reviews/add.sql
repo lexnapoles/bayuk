@@ -1,1 +1,1 @@
-SELECT * FROM add_review(${rating}, ${description}, ${source}, ${target}, ${productId});
+SELECT * FROM add_review(${rating}, ${description}, ${sourceId}, ${targetId}, ${productId});

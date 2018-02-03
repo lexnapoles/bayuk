@@ -87,8 +87,8 @@ const addRandomReview = () =>
     .then(({ source, target, productId }) => addReview({
       rating: 5,
       description: faker.lorem.sentences(),
-      source: source.user.id,
-      target: target.user.id,
+      sourceId: source.user.id,
+      targetId: target.user.id,
       productId,
     }));
 
@@ -111,9 +111,9 @@ describe('Reviews', function () {
   describe('GET /reviews/:userId', function () {
     it('should get the user reviews', function () {
       return addRandomReview()
-        .then(({ target }) =>
+        .then(({ target_id }) =>
           request(server)
-            .get(`/api/reviews/${target}`)
+            .get(`/api/reviews/${target_id}`)
             .expect(200))
         .then((response) => {
           const reviews = response.body;
@@ -122,17 +122,17 @@ describe('Reviews', function () {
           reviews.should.be.instanceOf(Array);
           reviews.should.not.be.empty;
 
-          review.should.include.all.keys(['id', 'rating', 'description', 'source', 'target', 'productId']);
+          review.should.include.all.keys(['id', 'rating', 'description', 'sourceId', 'targetId', 'productId']);
         });
     });
 
     it('should get selected fields', function () {
-      const selectedFields = ['rating', 'source', 'target'];
+      const selectedFields = ['rating', 'sourceId', 'targetId'];
 
       return addRandomReview()
-        .then(({ target }) =>
+        .then(({ target_id }) =>
           request(server)
-            .get(`/api/reviews/${target}`)
+            .get(`/api/reviews/${target_id}`)
             .query({
               fields: selectedFields.join(),
             })
@@ -145,20 +145,22 @@ describe('Reviews', function () {
     });
 
     it('should embed included user fields', function () {
-      const includeFields = ['source', 'target'];
+      const source = 'source';
+      const target = 'target';
 
       return addRandomReview()
-        .then(({ target }) =>
+        .then(({ target_id }) =>
           request(server)
-            .get(`/api/reviews/${target}`)
+            .get(`/api/reviews/${target_id}`)
             .query({
-              include: includeFields.join(),
+              include: [source, target].join(),
             })
             .expect(200))
         .then((response) => {
           const review = response.body[0];
 
-          review.should.have.property('users');
+          review.should.have.property(source);
+          review.should.have.property(target);
         });
     });
 
@@ -192,8 +194,8 @@ describe('Reviews', function () {
             .post('/api/reviews')
             .set('Authorization', `Bearer ${token}`)
             .send({
-              source: buyerId,
-              target: sellerId,
+              sourceId: buyerId,
+              targetId: sellerId,
               rating: 4,
               description: 'Good seller, product in good condition',
               productId,
@@ -204,7 +206,7 @@ describe('Reviews', function () {
         .then((response) => {
           const review = response.body;
 
-          review.should.include.all.keys(['id', 'rating', 'description', 'source', 'target', 'productId']);
+          review.should.include.all.keys(['id', 'rating', 'description', 'sourceId', 'targetId', 'productId']);
         });
     });
 
@@ -234,8 +236,8 @@ describe('Reviews', function () {
             .post('/api/reviews')
             .set('Authorization', `Bearer ${token}`)
             .send({
-              source: buyerId,
-              target: 'Invalid seller',
+              sourceId: buyerId,
+              targetId: 'Invalid seller',
               rating: 'A rating',
               description: 'Good seller',
               productId,
@@ -245,7 +247,7 @@ describe('Reviews', function () {
         .then((response) => {
           const errors = response.body;
           const ratingError = invalidReview('rating', 'should be integer');
-          const targetError = invalidReview('target', 'should match format "uuid"');
+          const targetError = invalidReview('targetId', 'should match format "uuid"');
 
           errors.should.be.instanceOf(Array);
           errors.should.not.be.empty;
@@ -289,8 +291,8 @@ describe('Reviews', function () {
             .post('/api/reviews')
             .set('Authorization', `Bearer ${token}`)
             .send({
-              target: sellerId,
-              source: faker.random.uuid(),
+              targetId: sellerId,
+              sourceId: faker.random.uuid(),
               rating: 4,
               description: 'Good seller, product in good condition',
               productId,
