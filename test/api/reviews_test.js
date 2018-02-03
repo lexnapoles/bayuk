@@ -78,18 +78,18 @@ const generateReviewData = () => {
     }))
     .then(data => ({
       ...usersData,
-      product: data.id,
+      productId: data.id,
     }));
 };
 
 const addRandomReview = () =>
   generateReviewData()
-    .then(({ source, target, product: reviewProduct }) => addReview({
+    .then(({ source, target, productId }) => addReview({
       rating: 5,
       description: faker.lorem.sentences(),
       source: source.user.id,
       target: target.user.id,
-      product: reviewProduct,
+      productId,
     }));
 
 describe('Reviews', function () {
@@ -122,7 +122,7 @@ describe('Reviews', function () {
           reviews.should.be.instanceOf(Array);
           reviews.should.not.be.empty;
 
-          review.should.include.all.keys(['id', 'rating', 'description', 'source', 'target', 'product']);
+          review.should.include.all.keys(['id', 'rating', 'description', 'source', 'target', 'productId']);
         });
     });
 
@@ -184,7 +184,7 @@ describe('Reviews', function () {
   describe('POST /reviews', function () {
     it('should add a new review', function () {
       return generateReviewData()
-        .then(({ source, target, product: reviewProduct }) => {
+        .then(({ source, target, productId }) => {
           const { user: { id: buyerId }, token } = source;
           const { user: { id: sellerId } } = target;
 
@@ -196,7 +196,7 @@ describe('Reviews', function () {
               target: sellerId,
               rating: 4,
               description: 'Good seller, product in good condition',
-              product: reviewProduct,
+              productId,
             })
             .expect(201)
             .expect('Location', `/api/reviews/${sellerId}`);
@@ -204,7 +204,7 @@ describe('Reviews', function () {
         .then((response) => {
           const review = response.body;
 
-          review.should.include.all.keys(['id', 'rating', 'description', 'source', 'target', 'product']);
+          review.should.include.all.keys(['id', 'rating', 'description', 'source', 'target', 'productId']);
         });
     });
 
@@ -227,7 +227,7 @@ describe('Reviews', function () {
 
     it('should fail when invalid data has been sent', function () {
       return generateReviewData()
-        .then(({ source, product: reviewProduct }) => {
+        .then(({ source, productId }) => {
           const { user: { id: buyerId }, token } = source;
 
           return request(server)
@@ -238,7 +238,7 @@ describe('Reviews', function () {
               target: 'Invalid seller',
               rating: 'A rating',
               description: 'Good seller',
-              product: reviewProduct,
+              productId,
             })
             .expect(400);
         })
@@ -281,7 +281,7 @@ describe('Reviews', function () {
 
     it('should fail when the token user is not the one to write the review', function () {
       return generateReviewData()
-        .then(({ source, target, product: reviewProduct }) => {
+        .then(({ source, target, productId }) => {
           const { token } = source;
           const { user: { id: sellerId } } = target;
 
@@ -293,7 +293,7 @@ describe('Reviews', function () {
               source: faker.random.uuid(),
               rating: 4,
               description: 'Good seller, product in good condition',
-              product: reviewProduct,
+              productId,
             })
             .expect(401);
         })

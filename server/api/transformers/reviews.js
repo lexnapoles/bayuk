@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import transform, { extractFields } from './transformer';
 import defaultEmbeddedDataAccessors from './reviews/embeddedDataAccessors';
 
@@ -38,18 +40,17 @@ const transformation = ({
   target,
   rating,
   description,
-  product,
+  product_id,
   created_at,
-}) =>
-  ({
-    id,
-    source,
-    target,
-    rating,
-    description,
-    product,
-    createdAt: created_at,
-  });
+}) => ({
+  id,
+  source,
+  target,
+  rating,
+  description,
+  productId: product_id,
+  createdAt: created_at,
+});
 
 export default async function (req, review, embeddedDataAccessors = defaultEmbeddedDataAccessors) {
   const includeFields = extractIncludeFields(req);

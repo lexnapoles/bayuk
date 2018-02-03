@@ -24,10 +24,10 @@ export default {
       maxItems: 5,
     },
 
-    product: {
+    productId: {
       type: 'string',
       format: 'uuid',
     },
   },
-  required: ['source', 'target', 'description', 'rating', 'product'],
+  required: ['source', 'target', 'description', 'rating', 'productId'],
 };

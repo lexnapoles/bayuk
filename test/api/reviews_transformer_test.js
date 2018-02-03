@@ -18,7 +18,7 @@ const review = {
   target: '06548ec9-e448-49f3-8250-78301f865d5d',
   rating: 5,
   description: 'Great seller',
-  product: '61a71082-a00d-44af-b99c-5e10f7cf4878',
+  product_id: '61a71082-a00d-44af-b99c-5e10f7cf4878',
   created_at: '2017-03-23 13:46:41.327',
 };
 
@@ -28,7 +28,7 @@ const transformedReview = {
   target: '06548ec9-e448-49f3-8250-78301f865d5d',
   rating: 5,
   description: 'Great seller',
-  product: '61a71082-a00d-44af-b99c-5e10f7cf4878',
+  productId: '61a71082-a00d-44af-b99c-5e10f7cf4878',
   createdAt: '2017-03-23 13:46:41.327',
 };
 

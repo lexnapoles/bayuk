@@ -25,7 +25,7 @@ const pickUsersForReview = (ids) => {
 const getReview = (ids, products, users = {}) => ({
   rating: random(MAX_USER_RATING),
   description: faker.lorem.sentence(),
-  product: sample(products).uuid,
+  productId: sample(products).uuid,
   ...pickUsersForReview(ids),
   ...users,
 });
