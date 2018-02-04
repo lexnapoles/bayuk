@@ -31,6 +31,7 @@ export const LOGIN_USER = asyncActionTypes('LOGIN_USER');
 export const FETCH_USERS = asyncActionTypes('FETCH_USERS');
 export const FETCH_ONE_USER = asyncActionTypes('FETCH_ONE_USER');
 export const FETCH_CURRENT_USER = asyncActionTypes('FETCH_CURRENT_USER');
+export const FETCH_REVIEWS = asyncActionTypes('FETCH_REVIEWS');
 
 export const NEW_SEARCH = 'NEW_SEARCH';
 export const UPDATE_GEOLOCATION = 'UPDATE_GEOLOCATION';

@@ -111,4 +111,25 @@ describe('review transformer', function () {
       source: 'source',
     });
   });
+
+  it('should embed the product', async function () {
+    const includeFields = ['product'];
+
+    const req = {
+      query: {
+        include: includeFields.toString(),
+      },
+    };
+
+    const accessors = {
+      product: () => 'product',
+    };
+
+    const data = await transformReview(req, review, accessors);
+
+    data.should.be.deep.equal({
+      ...transformedReview,
+      product: 'product',
+    });
+  });
 });

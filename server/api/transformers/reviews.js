@@ -3,7 +3,7 @@
 import transform, { extractFields } from './transformer';
 import defaultEmbeddedDataAccessors from './reviews/embeddedDataAccessors';
 
-const validFields = ['target', 'source'];
+const validFields = ['target', 'source', 'product'];
 
 const areValidFields = (fields = []) => fields.every(field => validFields.includes(field));
 

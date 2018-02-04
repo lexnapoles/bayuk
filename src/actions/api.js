@@ -16,6 +16,7 @@ import {
   REGISTER_USER,
   LOGIN_USER,
   FETCH_PRODUCTS_SOLD, FETCH_PRODUCTS_ON_SELL,
+  FETCH_REVIEWS,
 } from '../constants/actionTypes';
 
 const API_ROOT = 'http://localhost:3000/api';
@@ -230,5 +231,13 @@ export const fetchCurrentUser = userId => ({
     endpoint: `${API_ROOT}/users/${userId}`,
     method: 'GET',
     types: getTypes(FETCH_CURRENT_USER),
+  },
+});
+
+export const fetchReviews = (endpoint, params) => ({
+  [CALL_API]: {
+    endpoint: `${getApiFullUrl(endpoint)}${stringifyQueryParams(params)}`,
+    method: 'GET',
+    types: getTypes(FETCH_REVIEWS),
   },
 });

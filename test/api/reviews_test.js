@@ -126,7 +126,7 @@ describe('Reviews', function () {
         });
     });
 
-    it('should get selected fields', function () {
+    it('should show only selected fields', function () {
       const selectedFields = ['rating', 'sourceId', 'targetId'];
 
       return addRandomReview()
@@ -144,7 +144,7 @@ describe('Reviews', function () {
         });
     });
 
-    it('should embed included user fields', function () {
+    it('should embed included users', function () {
       const source = 'source';
       const target = 'target';
 
@@ -161,6 +161,29 @@ describe('Reviews', function () {
 
           review.should.have.property(source);
           review.should.have.property(target);
+        });
+    });
+
+    it('should embed included product', function () {
+      return addRandomReview()
+        .then(({ target_id }) =>
+          request(server)
+            .get(`/api/reviews/${target_id}`)
+            .query({
+              include: 'product',
+            })
+            .expect(200))
+        .then((response) => {
+          const review = response.body[0];
+
+          review.should.have.property('product');
+
+          const { product: reviewedProduct } = review;
+
+          reviewedProduct.should.include.all.keys([
+            'id', 'name', 'images', 'owner', 'description',
+            'category', 'createdAt', 'price', 'latitude',
+            'longitude', 'sold']);
         });
     });
 
