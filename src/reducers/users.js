@@ -3,7 +3,10 @@ import { combineReducers } from 'redux';
 import { omit } from 'lodash/object';
 import { union } from 'lodash/array';
 import { getJwtPayload } from '../utils';
-import { FETCH_ONE_USER, FETCH_USERS, REGISTER_USER, LOGIN_USER } from '../constants/actionTypes';
+import {
+  FETCH_ONE_USER, FETCH_USERS, REGISTER_USER, LOGIN_USER,
+  FETCH_REVIEWS,
+} from '../constants/actionTypes';
 import user from './user';
 
 const currentUserExists = (action) => {
@@ -26,6 +29,34 @@ const byId = (state = {}, action) => {
       }
 
       return state;
+    }
+
+    case FETCH_REVIEWS.success: {
+      const { entities: { reviews = [] } } = action.payload;
+      const { result: reviewsIds = [] } = action.payload;
+
+      const nextState = reviewsIds.reduce((obj, reviewId) => {
+        const { source } = reviews[reviewId];
+
+        if (source) {
+          return {
+            ...obj,
+            [source.id]: user(
+              undefined,
+              {
+                ...action,
+                payload: source,
+              }),
+          };
+        }
+
+        return obj;
+      }, {});
+
+      return {
+        ...state,
+        ...nextState,
+      };
     }
 
     case FETCH_ONE_USER.success:
@@ -75,6 +106,19 @@ const allIds = (state = [], action) => {
 
     case FETCH_USERS.success:
       return union(state, action.payload.result);
+
+    case FETCH_REVIEWS.success: {
+      const { entities: { reviews = [] } } = action.payload;
+      const { result: reviewsIds = [] } = action.payload;
+
+      const users = reviewsIds.reduce((arr, id) => {
+        const { source: reviewer } = reviews[id];
+
+        return reviewer ? [...arr, reviewer.id] : arr;
+      }, []);
+
+      return union(state, users);
+    }
 
     case REGISTER_USER.success:
     case LOGIN_USER.success: {
