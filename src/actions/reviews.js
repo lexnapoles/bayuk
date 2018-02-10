@@ -1,12 +1,15 @@
 import { fetchReviews } from './api';
-import { getUserById } from '../reducers/root';
+import { getReviews } from '../reducers/root';
 
-export const loadReviews = (userId, params) => (dispatch, getState) => {
-  const product = getUserById(getState(), userId);
+export const loadReviews = (userId, params, nextPage) => (dispatch, getState) => {
+  const {
+    nextPageUrl = `reviews/${userId}`,
+    pageCount = 0,
+  } = getReviews(getState(), userId) || {};
 
-  if (product) {
+  if (pageCount > 0 && !nextPage) {
     return null;
   }
 
-  return dispatch(fetchReviews(`reviews/${userId}`, params));
+  return dispatch(fetchReviews(nextPageUrl, params, userId));
 };
