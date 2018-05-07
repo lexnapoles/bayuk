@@ -1,15 +1,15 @@
-import db from '../../database/db';
-import { users } from '../../database/sql/sql';
+import db from "../../database/db";
+import { users } from "../../database/sql/sql";
 import {
   getImagePath,
   isImageObjValid,
   writeImagesToDisk,
   deleteImagesFromDisk,
-  getDecodedImage,
-} from './images';
-import { isImageBase64, generateSingleImageObject } from '../../utils';
+  getDecodedImage
+} from "./images";
+import { isImageBase64, generateSingleImageObject } from "../../utils";
 
-export const getUserImagePath = id => getImagePath(id, 'users');
+export const getUserImagePath = id => getImagePath(id, "users");
 
 export const getImageOfUser = async function getImageOfUser(id) {
   try {
@@ -23,16 +23,16 @@ export const getImageOfUser = async function getImageOfUser(id) {
 
 export const writeUserImageToDisk = async function writeUserImageToDisk(image) {
   if (!image) {
-    throw new Error('No image has been passed');
+    throw new Error("No image has been passed");
   }
 
   if (!isImageObjValid(image)) {
-    throw new Error('Incorrect image format');
+    throw new Error("Incorrect image format");
   }
 
   const imageToWrite = {
     path: getUserImagePath(image.id),
-    data: getDecodedImage(image.data),
+    data: getDecodedImage(image.data)
   };
 
   try {
@@ -52,7 +52,10 @@ export const addUserImageToDB = async function addUserImageToDB(id) {
   }
 };
 
-export const addUserImage = async function addUserImage(userId, imageToAdd = '') {
+export const addUserImage = async function addUserImage(
+  userId,
+  imageToAdd = ""
+) {
   if (!imageToAdd.length) {
     return Promise.resolve();
   }
@@ -70,21 +73,25 @@ export const addUserImage = async function addUserImage(userId, imageToAdd = '')
   }
 };
 
-export const deleteUserImageFromDB = async function deleteUserImageFromDB(image = '') {
+export const deleteUserImageFromDB = async function deleteUserImageFromDB(
+  image = ""
+) {
   if (!image.length) {
-    throw new Error('Cannot delete image from DB, no image has been passed');
+    throw new Error("Cannot delete image from DB, no image has been passed");
   }
 
   try {
-    return db.any('SELECT FROM delete_user_image($1::uuid)', image);
+    return db.any("SELECT FROM delete_user_image($1::uuid)", image);
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const deleteUserImageFromDisk = async function deleteUserImageFromDisk(imageId = '') {
+export const deleteUserImageFromDisk = async function deleteUserImageFromDisk(
+  imageId = ""
+) {
   if (!imageId.length) {
-    throw new Error('Cannot delete images from disk, no image has been passed');
+    throw new Error("Cannot delete images from disk, no image has been passed");
   }
 
   const imagePath = getUserImagePath(imageId);
@@ -96,7 +103,7 @@ export const deleteUserImageFromDisk = async function deleteUserImageFromDisk(im
   }
 };
 
-export const deleteUserImage = async function deleteUserImage(image = '') {
+export const deleteUserImage = async function deleteUserImage(image = "") {
   if (image === null || !image.length) {
     return Promise.resolve();
   }
@@ -110,7 +117,10 @@ export const deleteUserImage = async function deleteUserImage(image = '') {
   }
 };
 
-export const updateUserImage = async function updateUserImage(userId, image = '') {
+export const updateUserImage = async function updateUserImage(
+  userId,
+  image = ""
+) {
   if (image === null || !image.length || !isImageBase64(image)) {
     return Promise.resolve();
   }

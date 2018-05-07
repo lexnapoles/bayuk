@@ -1,9 +1,9 @@
-import { getGeolocation } from '../reducers/root';
-import { UPDATE_GEOLOCATION } from '../constants/actionTypes';
+import { getGeolocation } from "../reducers/root";
+import { UPDATE_GEOLOCATION } from "../constants/actionTypes";
 
 export const updateGeolocation = coords => ({
   type: UPDATE_GEOLOCATION,
-  payload: { coords },
+  payload: { coords }
 });
 
 export const loadGeolocation = coords => (dispatch, getState) => {

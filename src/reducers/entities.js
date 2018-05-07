@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux';
-import usersReducer from './users';
-import productsReducer from './products';
-import categoriesReducer from './categories';
-import { getAllItems, getItemById } from './normalizedSelectors';
+import { combineReducers } from "redux";
+import usersReducer from "./users";
+import productsReducer from "./products";
+import categoriesReducer from "./categories";
+import { getAllItems, getItemById } from "./normalizedSelectors";
 
 export const getProductById = ({ products }, id) => getItemById(products, id);
 
@@ -28,5 +28,5 @@ export const getAllCategories = ({ categories }) => categories;
 export default combineReducers({
   products: productsReducer,
   users: usersReducer,
-  categories: categoriesReducer,
+  categories: categoriesReducer
 });

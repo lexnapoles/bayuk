@@ -1,5 +1,5 @@
-import { fetchOneUser } from './api';
-import { getUserById } from '../reducers/root';
+import { fetchOneUser } from "./api";
+import { getUserById } from "../reducers/root";
 
 export default userId => (dispatch, getState) => {
   const user = getUserById(getState(), userId);

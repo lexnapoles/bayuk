@@ -1,12 +1,17 @@
-import { REHYDRATE } from 'redux-persist/constants';
-import { combineReducers } from 'redux';
-import { omit } from 'lodash/object';
-import { union } from 'lodash/array';
-import { getJwtPayload } from '../utils';
-import { FETCH_ONE_USER, FETCH_USERS, REGISTER_USER, LOGIN_USER } from '../constants/actionTypes';
-import user from './user';
+import { REHYDRATE } from "redux-persist/constants";
+import { combineReducers } from "redux";
+import { omit } from "lodash/object";
+import { union } from "lodash/array";
+import { getJwtPayload } from "../utils";
+import {
+  FETCH_ONE_USER,
+  FETCH_USERS,
+  REGISTER_USER,
+  LOGIN_USER
+} from "../constants/actionTypes";
+import user from "./user";
 
-const currentUserExists = (action) => {
+const currentUserExists = action => {
   const { currentUser } = action.payload;
 
   return currentUser && currentUser.token;
@@ -17,11 +22,11 @@ const byId = (state = {}, action) => {
     case REHYDRATE: {
       if (currentUserExists(action)) {
         const { token } = action.payload.currentUser;
-        const userFromToken = omit(getJwtPayload(token), ['exp', 'iat']);
+        const userFromToken = omit(getJwtPayload(token), ["exp", "iat"]);
 
         return {
           ...state,
-          [userFromToken.id]: userFromToken,
+          [userFromToken.id]: userFromToken
         };
       }
 
@@ -31,23 +36,23 @@ const byId = (state = {}, action) => {
     case FETCH_ONE_USER.success:
       return {
         ...state,
-        [action.payload.id]: user(undefined, action),
+        [action.payload.id]: user(undefined, action)
       };
 
     case FETCH_USERS.success:
       return {
         ...state,
-        ...action.payload.entities.users,
+        ...action.payload.entities.users
       };
 
     case REGISTER_USER.success:
     case LOGIN_USER.success: {
       const token = action.payload;
-      const userFromToken = omit(getJwtPayload(token), ['exp', 'iat']);
+      const userFromToken = omit(getJwtPayload(token), ["exp", "iat"]);
 
       return {
         ...state,
-        [userFromToken.id]: userFromToken,
+        [userFromToken.id]: userFromToken
       };
     }
 
@@ -62,7 +67,7 @@ const allIds = (state = [], action) => {
     case REHYDRATE: {
       if (currentUserExists(action)) {
         const { token } = action.payload.currentUser;
-        const { id } = omit(getJwtPayload(token), ['exp', 'iat']);
+        const { id } = omit(getJwtPayload(token), ["exp", "iat"]);
 
         return [...state, id];
       }
@@ -91,5 +96,5 @@ const allIds = (state = [], action) => {
 
 export default combineReducers({
   byId,
-  allIds,
+  allIds
 });

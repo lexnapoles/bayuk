@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
-import Spinner from '../../spinner/Spinner';
-import ProductOverview from '../productOverview/ProductOverview';
-import { container, spinner } from './productTable.css';
-import LoadMore from '../../loadMore/LoadMore';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { browserHistory } from "react-router";
+import Spinner from "../../spinner/Spinner";
+import ProductOverview from "../productOverview/ProductOverview";
+import { container, spinner } from "./productTable.css";
+import LoadMore from "../../loadMore/LoadMore";
 
 class ProductTable extends Component {
   static renderProducts(products) {
@@ -19,9 +19,9 @@ class ProductTable extends Component {
 
   static renderSpinner() {
     return (
-      <main className={spinner} >
+      <main className={spinner}>
         <Spinner />
-      </main >
+      </main>
     );
   }
 
@@ -38,7 +38,13 @@ class ProductTable extends Component {
   }
 
   render() {
-    const { isFetching, products, nextPageUrl, pageCount, children } = this.props;
+    const {
+      isFetching,
+      products,
+      nextPageUrl,
+      pageCount,
+      children
+    } = this.props;
 
     const isEmpty = !products.length;
 
@@ -49,23 +55,29 @@ class ProductTable extends Component {
     const isLastPage = !nextPageUrl;
 
     if (isEmpty && isLastPage) {
-      return <h1 ><i >{'Sorry, there\'s nothing here!'}</i ></h1 >;
+      return (
+        <h1>
+          <i>Sorry, there&apos;s nothing here!</i>
+        </h1>
+      );
     }
 
     return (
-      <div >
-        <div >
-          <div className={container} >
+      <div>
+        <div>
+          <div className={container}>
             {ProductTable.renderProducts(products)}
-          </div >
-          {
-            pageCount > 0
-            && !isLastPage
-            && <LoadMore isFetching={isFetching} onLoadMoreClick={this.onLoadMoreClick} />
-          }
+          </div>
+          {pageCount > 0 &&
+            !isLastPage && (
+              <LoadMore
+                isFetching={isFetching}
+                onLoadMoreClick={this.onLoadMoreClick}
+              />
+            )}
           {children}
-        </div >
-      </div >
+        </div>
+      </div>
     );
   }
 }
@@ -73,7 +85,7 @@ class ProductTable extends Component {
 const productPropTypes = PropTypes.shape({
   images: PropTypes.arrayOf(PropTypes.string),
   name: PropTypes.string,
-  price: PropTypes.number,
+  price: PropTypes.number
 });
 
 ProductTable.propTypes = {
@@ -82,15 +94,14 @@ ProductTable.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   children: PropTypes.element,
   pageCount: PropTypes.number,
-  nextPageUrl: PropTypes.string,
+  nextPageUrl: PropTypes.string
 };
 
 ProductTable.defaultProps = {
   products: [],
-  isFetching: false,
   children: undefined,
   nextPageUrl: undefined,
-  pageCount: 0,
+  pageCount: 0
 };
 
 export default ProductTable;

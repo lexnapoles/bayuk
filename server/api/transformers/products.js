@@ -1,13 +1,15 @@
-import { getBaseUrl, getImagePath } from '../../utils';
-import transform from './transformer';
+import { getBaseUrl, getImagePath } from "../../utils";
+import transform from "./transformer";
 
 const transformation = (product, req) => {
   const baseUrl = getBaseUrl(req);
 
-  return ({
+  return {
     id: product.id,
     name: product.name,
-    images: product.images.map(id => `${baseUrl}${getImagePath('product', id)}`),
+    images: product.images.map(
+      id => `${baseUrl}${getImagePath("product", id)}`
+    ),
     owner: product.owner,
     description: product.description,
     category: product.category,
@@ -15,8 +17,8 @@ const transformation = (product, req) => {
     price: parseInt(product.price, 10),
     latitude: parseFloat(product.latitude),
     longitude: parseFloat(product.longitude),
-    sold: product.sold,
-  });
+    sold: product.sold
+  };
 };
 
 export default (req, product) => transform(req, product, transformation);

@@ -1,5 +1,5 @@
-import { fetchCategories } from './api';
-import { getAllCategories } from '../reducers/root';
+import { fetchCategories } from "./api";
+import { getAllCategories } from "../reducers/root";
 
 export default () => (dispatch, getState) => {
   const categories = getAllCategories(getState());
@@ -8,5 +8,5 @@ export default () => (dispatch, getState) => {
     return null;
   }
 
-  return dispatch(fetchCategories('categories'));
+  return dispatch(fetchCategories("categories"));
 };

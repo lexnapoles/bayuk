@@ -1,8 +1,8 @@
-import faker from 'faker';
-import { times } from 'lodash/util';
-import { MAX_USERS } from '../config';
-import { addUser } from '../../api/services/users';
-import { wrapDataInPromise } from '../../utils';
+import faker from "faker";
+import { times } from "lodash/util";
+import { MAX_USERS } from "../config";
+import { addUser } from "../../api/services/users";
+import { wrapDataInPromise } from "../../utils";
 
 export const getUser = (user = {}) => ({
   email: faker.internet.email(),
@@ -10,7 +10,7 @@ export const getUser = (user = {}) => ({
   password: faker.internet.password(),
   latitude: parseFloat(faker.address.latitude()),
   longitude: parseFloat(faker.address.longitude()),
-  ...user,
+  ...user
 });
 
 const addAllUsersToDB = users => Promise.all(wrapDataInPromise(users, addUser));

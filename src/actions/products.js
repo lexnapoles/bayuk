@@ -1,24 +1,29 @@
-import { ADD_PRODUCT, NEW_SEARCH } from '../constants/actionTypes';
+import { ADD_PRODUCT, NEW_SEARCH } from "../constants/actionTypes";
 import {
-  fetchOneProduct, fetchProductsByFilter, fetchProductsOnSellByUser,
-  fetchProductsSoldByUser,
-} from './api';
+  fetchOneProduct,
+  fetchProductsByFilter,
+  fetchProductsOnSellByUser,
+  fetchProductsSoldByUser
+} from "./api";
 import {
-  getProductById, getProductsByFilter, getProductsOnSellByUser,
-  getProductsSoldByUser,
-} from '../reducers/root';
-import { CUSTOM_FILTER, DISTANCE_FILTER } from '../constants/productFilters';
+  getProductById,
+  getProductsByFilter,
+  getProductsOnSellByUser,
+  getProductsSoldByUser
+} from "../reducers/root";
+import { CUSTOM_FILTER, DISTANCE_FILTER } from "../constants/productFilters";
 
 export const addProduct = product => ({
   type: ADD_PRODUCT,
-  payload: { product },
+  payload: { product }
 });
 
-export const loadProductsByFilter = (filter, params, nextPage) => (dispatch, getState) => {
-  const {
-    nextPageUrl = 'products',
-    pageCount = 0,
-  } = getProductsByFilter(getState(), filter) || {};
+export const loadProductsByFilter = (filter, params, nextPage) => (
+  dispatch,
+  getState
+) => {
+  const { nextPageUrl = "products", pageCount = 0 } =
+    getProductsByFilter(getState(), filter) || {};
 
   if (pageCount > 0 && !nextPage) {
     return null;
@@ -33,11 +38,12 @@ export const loadProductsByDistance = (params, nextPage) =>
 export const loadSearchedProducts = (params, nextPage) =>
   loadProductsByFilter(CUSTOM_FILTER, params, nextPage);
 
-export const loadProductsSoldByUser = (user, params, nextPage) => (dispatch, getState) => {
-  const {
-    nextPageUrl = 'products',
-    pageCount = 0,
-  } = getProductsSoldByUser(getState(), user) || {};
+export const loadProductsSoldByUser = (user, params, nextPage) => (
+  dispatch,
+  getState
+) => {
+  const { nextPageUrl = "products", pageCount = 0 } =
+    getProductsSoldByUser(getState(), user) || {};
 
   if (pageCount > 0 && !nextPage) {
     return null;
@@ -46,11 +52,12 @@ export const loadProductsSoldByUser = (user, params, nextPage) => (dispatch, get
   return dispatch(fetchProductsSoldByUser(nextPageUrl, params, user));
 };
 
-export const loadProductsOnSellByUser = (user, params, nextPage) => (dispatch, getState) => {
-  const {
-    nextPageUrl = 'products',
-    pageCount = 0,
-  } = getProductsOnSellByUser(getState(), user) || {};
+export const loadProductsOnSellByUser = (user, params, nextPage) => (
+  dispatch,
+  getState
+) => {
+  const { nextPageUrl = "products", pageCount = 0 } =
+    getProductsOnSellByUser(getState(), user) || {};
 
   if (pageCount > 0 && !nextPage) {
     return null;
@@ -72,7 +79,6 @@ export const loadProduct = (id, params) => (dispatch, getState) => {
 export const newSearch = filter => ({
   type: NEW_SEARCH,
   meta: {
-    filter,
-  },
+    filter
+  }
 });
-

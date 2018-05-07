@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { overlay, sidebar } from './sidebarMenu.css';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { overlay, sidebar } from "./sidebarMenu.css";
 
 class SidebarMenu extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      sidebarWidth: 0,
+      sidebarWidth: 0
     };
 
     this.onOverlayClicked = this.onOverlayClicked.bind(this);
@@ -27,26 +27,24 @@ class SidebarMenu extends Component {
     const width = this.state.sidebarWidth;
     const left = this.props.visible ? 0 : -width;
 
-    return width
-      ? { left, width }
-      : {};
+    return width ? { left, width } : {};
   }
 
   setSidebarWidth() {
     this.setState({
-      sidebarWidth: this.sidebar.getBoundingClientRect().width,
+      sidebarWidth: this.sidebar.getBoundingClientRect().width
     });
   }
 
   getOverlayStyle() {
     if (this.state.sidebarWidth) {
-      const visible = this.props.visible;
+      const { visible } = this.props;
 
       return {
         left: visible ? this.state.sidebarWidth : 0,
         right: visible ? 0 : null,
-        visibility: visible ? 'visible' : 'hidden',
-        opacity: visible ? 0.8 : 0,
+        visibility: visible ? "visible" : "hidden",
+        opacity: visible ? 0.8 : 0
       };
     }
 
@@ -55,26 +53,26 @@ class SidebarMenu extends Component {
 
   render() {
     return (
-      <div >
+      <div>
         <div
           className={sidebar}
           style={this.getSidebarStyle()}
-          ref={(div) => {
+          ref={div => {
             this.sidebar = div;
           }}
         >
           {this.props.children}
-        </div >
+        </div>
         <div
           className={overlay}
           style={this.getOverlayStyle()}
           onClick={this.onOverlayClicked}
+          onKeyDown={this.onOverlayClicked}
           role="switch"
           aria-checked="false"
           tabIndex="0"
         />
-      </div >
-
+      </div>
     );
   }
 }
@@ -82,13 +80,12 @@ class SidebarMenu extends Component {
 SidebarMenu.propTypes = {
   visible: PropTypes.bool,
   onOverlayClicked: PropTypes.func.isRequired,
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 SidebarMenu.defaultProps = {
   visible: false,
-  children: [],
+  children: []
 };
 
 export default SidebarMenu;
-

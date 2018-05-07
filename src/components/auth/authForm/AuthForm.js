@@ -1,8 +1,8 @@
 /* eslint-disable react/forbid-prop-types */
 
-import PropTypes from 'prop-types';
-import React from 'react';
-import TextInput from '../../inputs/textInput/TextInput';
+import PropTypes from "prop-types";
+import React from "react";
+import TextInput from "../../inputs/textInput/TextInput";
 import {
   authContainer,
   auth,
@@ -10,8 +10,8 @@ import {
   title,
   inputsContainer,
   inputs,
-  submitButton,
-} from './authForm.css';
+  submitButton
+} from "./authForm.css";
 
 const AuthForm = ({
   form,
@@ -21,23 +21,24 @@ const AuthForm = ({
   onPasswordChange,
   onSubmit,
   errors,
-  logIn,
-}) =>
-  (<div className={authContainer} >
-    <div className={auth} >
-      <form className={formContainer} onSubmit={onSubmit} >
-        <h1 className={title} >{formName}</h1 >
-        <div className={inputsContainer} >
-          {logIn
-            ? undefined
-            : <TextInput
+  logIn
+}) => (
+  <div className={authContainer}>
+    <div className={auth}>
+      <form className={formContainer} onSubmit={onSubmit}>
+        <h1 className={title}>{formName}</h1>
+        <div className={inputsContainer}>
+          {logIn ? (
+            undefined
+          ) : (
+            <TextInput
               value={form.name}
               placeholder="Name"
               onChange={onNameChange}
               className={inputs}
               error={errors.name}
             />
-          }
+          )}
 
           <TextInput
             value={form.email}
@@ -54,12 +55,14 @@ const AuthForm = ({
             className={inputs}
             error={errors.password}
           />
-        </div >
-        <button type="submit" className={submitButton} >{formName}</button >
-      </form >
-    </div >
-  </div >);
-
+        </div>
+        <button type="submit" className={submitButton}>
+          {formName}
+        </button>
+      </form>
+    </div>
+  </div>
+);
 
 AuthForm.propTypes = {
   formName: PropTypes.string.isRequired,
@@ -69,12 +72,12 @@ AuthForm.propTypes = {
   errors: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   onNameChange: PropTypes.func,
-  logIn: PropTypes.bool,
+  logIn: PropTypes.bool
 };
 
 AuthForm.defaultProps = {
   logIn: false,
-  onNameChange: () => undefined,
+  onNameChange: () => undefined
 };
 
 export default AuthForm;

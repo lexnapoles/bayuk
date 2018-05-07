@@ -1,4 +1,4 @@
-import { FETCH_ONE_USER } from '../constants/actionTypes';
+import { FETCH_ONE_USER } from "../constants/actionTypes";
 
 const user = (state, action) => {
   switch (action.type) {

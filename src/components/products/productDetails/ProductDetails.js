@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import CSSModules from 'react-css-modules';
-import Spinner from '../../spinner/Spinner';
-import styles from './productDetails.css';
-import ProductDetailsHeader from './productDetailsHeader/ProductDetailsHeader';
-import Carousel from '../../carousel/Carousel';
-import Description from './productDescription/ProductDescription';
-import GeolocationInfo from './geolocationInfo/GeolocationInfo';
-import UserOverviewContainer from '../../user/userOverview/UserOverviewContainer';
-import NotFound from '../../notFound/NotFound';
+import PropTypes from "prop-types";
+import React from "react";
+import CSSModules from "react-css-modules";
+import Spinner from "../../spinner/Spinner";
+import styles from "./productDetails.css";
+import ProductDetailsHeader from "./productDetailsHeader/ProductDetailsHeader";
+import Carousel from "../../carousel/Carousel";
+import Description from "./productDescription/ProductDescription";
+import GeolocationInfo from "./geolocationInfo/GeolocationInfo";
+import UserOverviewContainer from "../../user/userOverview/UserOverviewContainer";
+import NotFound from "../../notFound/NotFound";
 
 const renderSpinner = () => (
   <main styleName="productContainer">
@@ -16,18 +16,24 @@ const renderSpinner = () => (
   </main>
 );
 
-const renderProduct = (product) => {
+const renderProduct = product => {
   if (!product) {
     return <NotFound />;
   }
 
-  const { price, name, description, images, owner, latitude, longitude } = product;
+  const {
+    price,
+    name,
+    description,
+    images,
+    owner,
+    latitude,
+    longitude
+  } = product;
 
   return (
     <main styleName="productContainer">
-      <Carousel styleName="carousel">
-        {images}
-      </Carousel>
+      <Carousel styleName="carousel">{images}</Carousel>
 
       <section styleName="info">
         <Description
@@ -37,7 +43,11 @@ const renderProduct = (product) => {
           description={description}
         />
         <hr styleName="line" />
-        <GeolocationInfo styleName="map" latitude={latitude} longitude={longitude} />
+        <GeolocationInfo
+          styleName="map"
+          latitude={latitude}
+          longitude={longitude}
+        />
         <hr styleName="line" />
         <UserOverviewContainer styleName="infoSection" id={owner} />
       </section>
@@ -60,12 +70,12 @@ ProductDetails.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     owner: PropTypes.string,
-    images: PropTypes.arrayOf(PropTypes.string),
-  }),
+    images: PropTypes.arrayOf(PropTypes.string)
+  })
 };
 
 ProductDetails.defaultProps = {
-  product: undefined,
+  product: undefined
 };
 
 export default CSSModules(ProductDetails, styles);

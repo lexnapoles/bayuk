@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 function addHoverTo(WrappedComponent) {
   return class Hover extends Component {
@@ -6,7 +6,7 @@ function addHoverTo(WrappedComponent) {
       super(props);
 
       this.state = {
-        hover: false,
+        hover: false
       };
 
       this.hoverOn = this.hoverOn.bind(this);
@@ -15,13 +15,13 @@ function addHoverTo(WrappedComponent) {
 
     hoverOn() {
       this.setState({
-        hover: true,
+        hover: true
       });
     }
 
     hoverOff() {
       this.setState({
-        hover: false,
+        hover: false
       });
     }
 
@@ -34,6 +34,5 @@ function addHoverTo(WrappedComponent) {
     }
   };
 }
-
 
 export default addHoverTo;

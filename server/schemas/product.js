@@ -1,37 +1,37 @@
 export default {
-  $schema: 'http://json-schema.org/schema#',
-  id: 'http://bayuk.com/schemas/myschema.json',
-  title: 'Product',
-  type: 'object',
+  $schema: "http://json-schema.org/schema#",
+  id: "http://bayuk.com/schemas/myschema.json",
+  title: "Product",
+  type: "object",
   properties: {
     name: {
-      type: 'string',
+      type: "string"
     },
 
     description: {
-      type: 'string',
+      type: "string"
     },
 
     images: {
-      type: 'array',
+      type: "array",
       minItems: 1,
-      maxItems: 3,
+      maxItems: 3
     },
 
     category: {
-      type: 'string',
+      type: "string"
     },
 
     price: {
-      type: 'integer',
-      minimum: 0,
+      type: "integer",
+      minimum: 0
     },
 
     sold: {
-      type: 'boolean',
-      default: 'false',
-    },
+      type: "boolean",
+      default: "false"
+    }
   },
 
-  required: ['name', 'description', 'images', 'category', 'price'],
+  required: ["name", "description", "images", "category", "price"]
 };

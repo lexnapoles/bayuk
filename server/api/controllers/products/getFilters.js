@@ -1,15 +1,28 @@
-import { validateRequest } from '../validators';
+import { validateRequest } from "../validators";
 
-const getSortingFilters = (queryParameters) => {
-  const errors = validateRequest(queryParameters, ['sort', 'sortOrder', 'radius', 'latitude', 'longitude']);
+const getSortingFilters = queryParameters => {
+  const errors = validateRequest(queryParameters, [
+    "sort",
+    "sortOrder",
+    "radius",
+    "latitude",
+    "longitude"
+  ]);
 
   if (errors.length) {
     return {
-      errors,
+      errors
     };
   }
 
-  const { sort, sortOrder, radius, latitude, longitude, ...optionalQueryParams } = queryParameters;
+  const {
+    sort,
+    sortOrder,
+    radius,
+    latitude,
+    longitude,
+    ...optionalQueryParams
+  } = queryParameters;
 
   const filters = {
     sort,
@@ -17,29 +30,29 @@ const getSortingFilters = (queryParameters) => {
     radius,
     latitude,
     longitude,
-    ...optionalQueryParams,
+    ...optionalQueryParams
   };
 
   return {
     filters,
-    errors: [],
+    errors: []
   };
 };
 
-const getOwnerFilters = (queryParameters) => {
+const getOwnerFilters = queryParameters => {
   const { owner, sold, lastId } = queryParameters;
 
   const filters = { owner, sold, lastId };
 
   return {
     filters,
-    errors: [],
+    errors: []
   };
 };
 
-export default (req) => {
+export default req => {
   const query = req.query.cursor
-    ? JSON.parse(Buffer.from(decodeURI(req.query.cursor), 'base64').toString())
+    ? JSON.parse(Buffer.from(decodeURI(req.query.cursor), "base64").toString())
     : req.query;
 
   if (query.owner) {

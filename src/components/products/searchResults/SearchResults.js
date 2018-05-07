@@ -1,16 +1,16 @@
-import React from 'react';
-import { container, main } from '../../layout.css';
-import ResultsHeader from './resultsHeader/ResultsHeader';
-import ProductsByFilter from '../productsByFilter/ProductsByFilter';
-import { CUSTOM_FILTER } from '../../../constants/productFilters';
+import React from "react";
+import { container, main } from "../../layout.css";
+import ResultsHeader from "./resultsHeader/ResultsHeader";
+import ProductsByFilter from "../productsByFilter/ProductsByFilter";
+import { CUSTOM_FILTER } from "../../../constants/productFilters";
 
 const SearchResults = () => (
-  <div className={container} >
+  <div className={container}>
     <ResultsHeader />
-    <main className={main} >
+    <main className={main}>
       <ProductsByFilter filter={CUSTOM_FILTER} />
-    </main >
-  </div >
+    </main>
+  </div>
 );
 
 export default SearchResults;

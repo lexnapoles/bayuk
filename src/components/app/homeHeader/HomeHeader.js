@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import Icon from 'react-fa';
-import { logo, toolbar, addProduct } from './homeHeader.css';
-import SearchIcon from '../../icons/searchIcon/SearchIcon';
-import SidebarMenu from '../../sidebarMenu/SidebarMenu';
-import Header from '../../header/Header';
-import UserMenuThumbnailContainer from '../../user/userMenuThumbnail/UserMenuThumbnailContainer';
-import AddProductBtn from '../../addProductBtn/AddProductBtn';
+import React, { Component } from "react";
+import Icon from "react-fa";
+import { logo, toolbar, addProduct } from "./homeHeader.css";
+import SearchIcon from "../../icons/searchIcon/SearchIcon";
+import SidebarMenu from "../../sidebarMenu/SidebarMenu";
+import Header from "../../header/Header";
+import UserMenuThumbnailContainer from "../../user/userMenuThumbnail/UserMenuThumbnailContainer";
+import AddProductBtn from "../../addProductBtn/AddProductBtn";
 
 class HomeHeader extends Component {
   constructor(props) {
@@ -22,20 +22,20 @@ class HomeHeader extends Component {
 
   render() {
     return (
-      <Header >
+      <Header>
         <SidebarMenu
           visible={this.state.sidebarVisible}
           onOverlayClicked={this.toggleSidebarVisibility}
         >
           <UserMenuThumbnailContainer />
-        </SidebarMenu >
-        <div className={toolbar} >
+        </SidebarMenu>
+        <div className={toolbar}>
           <Icon name="bars" size="lg" onClick={this.toggleSidebarVisibility} />
           <AddProductBtn className={addProduct} />
-        </div >
-        <div className={logo} >Bayuk</div >
+        </div>
+        <div className={logo}>Bayuk</div>
         <SearchIcon />
-      </Header >
+      </Header>
     );
   }
 }

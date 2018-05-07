@@ -1,23 +1,23 @@
-import passport from 'passport';
-import { sendJsonResponse } from '../../../utils';
-import { addUser } from '../../services/users';
-import { createJwt } from '../../services/authentication';
-import { validateRegister, validateLogin } from './validators';
-import { validateRequest } from '../validators';
-import { userAlreadyExists } from '../../../errors/api/userErrors';
-import dbErrors from '../../../errors/database';
-import transformUser from '../../transformers/users';
-import { item } from '../../transformers/transformer';
+import passport from "passport";
+import { sendJsonResponse } from "../../../utils";
+import { addUser } from "../../services/users";
+import { createJwt } from "../../services/authentication";
+import { validateRegister, validateLogin } from "./validators";
+import { validateRequest } from "../validators";
+import { userAlreadyExists } from "../../../errors/api/userErrors";
+import dbErrors from "../../../errors/database";
+import transformUser from "../../transformers/users";
+import { item } from "../../transformers/transformer";
 import {
   errorBadRequest,
   errorNotFound,
   errorUnauthorized,
   errorInternalError,
-  errorConflict,
-} from '../../../errors/api/errors';
+  errorConflict
+} from "../../../errors/api/errors";
 
 export const register = async function register(req, res) {
-  const requestErrors = validateRequest(req, 'body');
+  const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
@@ -33,7 +33,10 @@ export const register = async function register(req, res) {
 
   try {
     const user = await addUser(req.body);
-    const transformedUser = await item(user, transformUser.bind(undefined, req));
+    const transformedUser = await item(
+      user,
+      transformUser.bind(undefined, req)
+    );
 
     res.location(`/api/users/${transformedUser.id}`);
     sendJsonResponse(res, 201, createJwt(transformedUser));
@@ -47,7 +50,7 @@ export const register = async function register(req, res) {
 };
 
 export const login = (req, res) => {
-  const requestErrors = validateRequest(req, 'body');
+  const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
@@ -61,14 +64,17 @@ export const login = (req, res) => {
     return;
   }
 
-  passport.authenticate('local', async function authenticate(err, user, info) {
+  passport.authenticate("local", async function authenticate(err, user, info) {
     if (err) {
       errorNotFound(res, err);
       return;
     }
 
     if (user) {
-      const transformedUser = await item(user, transformUser.bind(undefined, req));
+      const transformedUser = await item(
+        user,
+        transformUser.bind(undefined, req)
+      );
       res.location(`/api/users/${user.id}`);
 
       sendJsonResponse(res, 201, createJwt(transformedUser));

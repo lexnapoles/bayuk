@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import CheckBoxFilter from './CheckBoxFilter';
-import { createDefaultObjectFrom } from '../../../utils';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import CheckBoxFilter from "./CheckBoxFilter";
+import { createDefaultObjectFrom } from "../../../utils";
 
 class CheckBoxFilterContainer extends Component {
   constructor(props) {
@@ -50,12 +50,12 @@ CheckBoxFilterContainer.propTypes = {
   value: PropTypes.objectOf(PropTypes.bool).isRequired,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
-  exclusive: PropTypes.bool,
+  exclusive: PropTypes.bool
 };
 
 CheckBoxFilterContainer.defaultProps = {
   exclusive: true,
-  error: '',
+  error: ""
 };
 
 export default CheckBoxFilterContainer;

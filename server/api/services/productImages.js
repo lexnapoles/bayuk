@@ -1,34 +1,35 @@
-import { every } from 'lodash/collection';
-import db from '../../database/db';
-import { products } from '../../database/sql/sql';
+import { every } from "lodash/collection";
+import db from "../../database/db";
+import { products } from "../../database/sql/sql";
 import {
   getImagePath,
   getImagesToDelete,
   isImageObjValid,
   writeImagesToDisk,
   deleteImagesFromDisk,
-  getDecodedImage,
-} from './images';
-import { isImageBase64, generateImagesObjs } from '../../utils';
+  getDecodedImage
+} from "./images";
+import { isImageBase64, generateImagesObjs } from "../../utils";
 
-export const getProductsImagePath = id => getImagePath(id, 'products');
+export const getProductsImagePath = id => getImagePath(id, "products");
 
 export const getImagesOfProduct = id =>
-  db.one(products.getImages, { id })
-    .then(({ images }) => images);
+  db.one(products.getImages, { id }).then(({ images }) => images);
 
-export const writeProductImagesToDisk = async function writeProductImagesToDisk(images = []) {
+export const writeProductImagesToDisk = async function writeProductImagesToDisk(
+  images = []
+) {
   if (!Array.isArray(images) || !images.length) {
-    throw new Error('No images have been passed');
+    throw new Error("No images have been passed");
   }
 
   if (!every(images, isImageObjValid)) {
-    throw new Error('Incorrect images format');
+    throw new Error("Incorrect images format");
   }
 
   const imagesToWrite = images.map(({ id, data }) => ({
     path: getProductsImagePath(id),
-    data: getDecodedImage(data),
+    data: getDecodedImage(data)
   }));
 
   try {
@@ -41,13 +42,17 @@ export const writeProductImagesToDisk = async function writeProductImagesToDisk(
 };
 
 export const addProductImagesToDB = (id, imagesCount) =>
-  db.one(products.addImages, {
-    id,
-    imagesCount,
-  })
+  db
+    .one(products.addImages, {
+      id,
+      imagesCount
+    })
     .then(({ images }) => images);
 
-export const addProductImages = async function addProductImages(productId, imagesToAdd = []) {
+export const addProductImages = async function addProductImages(
+  productId,
+  imagesToAdd = []
+) {
   if (!imagesToAdd.length) {
     return Promise.resolve();
   }
@@ -67,15 +72,19 @@ export const addProductImages = async function addProductImages(productId, image
 
 export const deleteProductImagesFromDB = (images = []) => {
   if (!Array.isArray(images) || !images.length) {
-    return Promise.reject('Cannot delete images from DB, no images have been passed');
+    return Promise.reject(
+      "Cannot delete images from DB, no images have been passed"
+    );
   }
 
-  return db.any('SELECT FROM delete_product_images($1::uuid[])', [images]);
+  return db.any("SELECT FROM delete_product_images($1::uuid[])", [images]);
 };
 
 export const deleteProductImagesFromDisk = (imagesIds = []) => {
   if (!Array.isArray(imagesIds) || !imagesIds.length) {
-    return Promise.reject('Cannot delete images from disk, no images have been passed');
+    return Promise.reject(
+      "Cannot delete images from disk, no images have been passed"
+    );
   }
 
   const imagePaths = imagesIds.map(getProductsImagePath);
@@ -83,7 +92,9 @@ export const deleteProductImagesFromDisk = (imagesIds = []) => {
   return deleteImagesFromDisk(imagePaths);
 };
 
-export const deleteProductImages = async function deleteProductImages(images = []) {
+export const deleteProductImages = async function deleteProductImages(
+  images = []
+) {
   if (!images.length) {
     return Promise.resolve();
   }
@@ -93,7 +104,10 @@ export const deleteProductImages = async function deleteProductImages(images = [
   return deleteProductImagesFromDisk(images);
 };
 
-export const updateProductImages = async function updateProductImages(productId, newImages = []) {
+export const updateProductImages = async function updateProductImages(
+  productId,
+  newImages = []
+) {
   try {
     const productImages = await getImagesOfProduct(productId);
 

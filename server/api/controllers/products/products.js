@@ -1,19 +1,23 @@
-import { sendJsonResponse } from '../../../utils';
+import { sendJsonResponse } from "../../../utils";
 import {
   getProducts,
   getProductById,
   addProduct,
   updateProduct,
-  deleteProduct,
-} from '../../services/products';
-import transformProduct from '../../transformers/products';
-import { productDoesNotExist } from '../../../errors/api/productErrors';
-import dbErrors from '../../../errors/database';
-import { validateRequest, validateId } from '../validators';
-import validateProduct from './validators';
-import getFilters from './getFilters';
-import addPaginationLink from './addPaginationLink';
-import { errorBadRequest, errorNotFound, errorInternalError } from '../../../errors/api/errors';
+  deleteProduct
+} from "../../services/products";
+import transformProduct from "../../transformers/products";
+import { productDoesNotExist } from "../../../errors/api/productErrors";
+import dbErrors from "../../../errors/database";
+import { validateRequest, validateId } from "../validators";
+import validateProduct from "./validators";
+import getFilters from "./getFilters";
+import addPaginationLink from "./addPaginationLink";
+import {
+  errorBadRequest,
+  errorNotFound,
+  errorInternalError
+} from "../../../errors/api/errors";
 
 export const readProducts = async function readProducts(req, res) {
   const { filters, errors: filterErrors } = getFilters(req);
@@ -25,7 +29,9 @@ export const readProducts = async function readProducts(req, res) {
 
   try {
     const products = await getProducts(filters);
-    const transformedProducts = products.map(transformProduct.bind(undefined, req));
+    const transformedProducts = products.map(
+      transformProduct.bind(undefined, req)
+    );
 
     await Promise.all(transformedProducts);
 
@@ -41,8 +47,8 @@ export const readProducts = async function readProducts(req, res) {
 
 export const readOneProduct = async function readOneProduct(req, res) {
   const requestErrors = [
-    ...validateRequest(req, 'params'),
-    ...validateRequest(req.params, 'productId'),
+    ...validateRequest(req, "params"),
+    ...validateRequest(req.params, "productId")
   ];
 
   if (requestErrors.length) {
@@ -74,7 +80,7 @@ export const readOneProduct = async function readOneProduct(req, res) {
 };
 
 export const createProduct = async function createProduct(req, res) {
-  const requestErrors = validateRequest(req, 'body');
+  const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
@@ -88,10 +94,9 @@ export const createProduct = async function createProduct(req, res) {
     return;
   }
 
-
   const product = {
     ...req.body,
-    owner: req.user.id,
+    owner: req.user.id
   };
 
   try {
@@ -106,7 +111,7 @@ export const createProduct = async function createProduct(req, res) {
 };
 
 export const updateOneProduct = async function updateOneProduct(req, res) {
-  const requestErrors = validateRequest(req, 'body');
+  const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);

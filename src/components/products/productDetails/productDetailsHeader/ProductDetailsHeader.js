@@ -1,11 +1,11 @@
-import React from 'react';
-import Header from '../../../header/Header';
-import ReturnIcon from '../../../icons/returnIcon/ReturnIcon';
+import React from "react";
+import Header from "../../../header/Header";
+import ReturnIcon from "../../../icons/returnIcon/ReturnIcon";
 
-const ProductDetailsHeader = () =>
-  (<Header>
+const ProductDetailsHeader = () => (
+  <Header>
     <ReturnIcon url="/" />
-  </Header>);
+  </Header>
+);
 
 export default ProductDetailsHeader;
-
