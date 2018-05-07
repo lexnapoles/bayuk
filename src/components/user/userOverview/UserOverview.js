@@ -41,6 +41,7 @@ const renderUser = (user, className, style) => {
       className={`${container} ${className}`}
       style={style}
       onClick={onClick}
+      onKeyDown={onClick}
     >
       <img
         className={userImage}
