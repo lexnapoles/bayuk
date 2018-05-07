@@ -1,10 +1,10 @@
-import { findKey } from 'lodash/object';
+import { findKey } from "lodash/object";
 
 export default ({ categories, ...restOfParams }) => {
   const checkedCategory = findKey(categories, checked => checked);
 
   return {
     category: checkedCategory,
-    ...restOfParams,
+    ...restOfParams
   };
 };

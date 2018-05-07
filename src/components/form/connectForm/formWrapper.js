@@ -1,11 +1,18 @@
-import PropTypes from 'prop-types';
-import { omit } from 'lodash/object';
-import { some } from 'lodash/collection';
-import { Component, createElement } from 'react';
-import { createDefaultObjectFrom } from '../../../utils';
+import PropTypes from "prop-types";
+import { omit } from "lodash/object";
+import { some } from "lodash/collection";
+import { Component, createElement } from "react";
+import { createDefaultObjectFrom } from "../../../utils";
 
-const getChildrenProps = (props) => {
-  const ownProps = ['elements', 'onSubmit', 'errorMessages', 'validation', 'handlers', 'defaultFormState'];
+const getChildrenProps = props => {
+  const ownProps = [
+    "elements",
+    "onSubmit",
+    "errorMessages",
+    "validation",
+    "handlers",
+    "defaultFormState"
+  ];
 
   return omit(props, ownProps);
 };
@@ -17,8 +24,10 @@ const formWrapper = (WrappedComponent, options = {}) => {
     }
 
     static getHandlersNames(elements) {
-      return elements.map((name) => {
-        const upperCaseName = name.replace(/\b[a-z]/g, letter => letter.toUpperCase());
+      return elements.map(name => {
+        const upperCaseName = name.replace(/\b[a-z]/g, letter =>
+          letter.toUpperCase()
+        );
 
         return `on${upperCaseName}Change`;
       });
@@ -31,15 +40,15 @@ const formWrapper = (WrappedComponent, options = {}) => {
     constructor(props) {
       super(props);
 
-      const elements = props.elements;
-      const defaultElements = createDefaultObjectFrom(elements, '');
+      const { elements } = props;
+      const defaultElements = createDefaultObjectFrom(elements, "");
       const formState = { ...defaultElements, ...this.props.defaultFormState };
 
-      this.state = ({
+      this.state = {
         form: formState,
         errors: defaultElements,
-        handlers: this.getHandlersObj(elements),
-      });
+        handlers: this.getHandlersObj(elements)
+      };
 
       this.handlerWrapper = this.handlerWrapper.bind(this);
       this.onSubmit = this.onSubmit.bind(this);
@@ -61,10 +70,13 @@ const formWrapper = (WrappedComponent, options = {}) => {
     getHandlersObj(elements) {
       const names = FormContainer.getHandlersNames(elements);
 
-      return names.reduce((obj, handlerName, index) => ({
-        ...obj,
-        [handlerName]: this.getHandler(handlerName, elements[index]),
-      }), {});
+      return names.reduce(
+        (obj, handlerName, index) => ({
+          ...obj,
+          [handlerName]: this.getHandler(handlerName, elements[index])
+        }),
+        {}
+      );
     }
 
     getHandler(handlerName, elementName) {
@@ -75,13 +87,14 @@ const formWrapper = (WrappedComponent, options = {}) => {
     }
 
     getValidator(validation, prop) {
-      return value => validation[prop](value, this.state.form, getChildrenProps(this.props));
+      return value =>
+        validation[prop](value, this.state.form, getChildrenProps(this.props));
     }
 
     handlerWrapper(elemName, func, data) {
       const form = {
         ...this.state.form,
-        [elemName]: func(data, this.state.form, getChildrenProps(this.props)),
+        [elemName]: func(data, this.state.form, getChildrenProps(this.props))
       };
 
       this.setState({ form });
@@ -92,11 +105,13 @@ const formWrapper = (WrappedComponent, options = {}) => {
 
       return elements.reduce((obj, name) => {
         const value = formData[name];
-        const isValid = validation[name] ? this.getValidator(validation, name)(value) : true;
+        const isValid = validation[name]
+          ? this.getValidator(validation, name)(value)
+          : true;
 
         return {
           ...obj,
-          [name]: isValid ? '' : errMsg[name],
+          [name]: isValid ? "" : errMsg[name]
         };
       }, {});
     }
@@ -122,7 +137,7 @@ const formWrapper = (WrappedComponent, options = {}) => {
         errors,
         onSubmit: this.onSubmit,
         ...handlers,
-        ...getChildrenProps(this.props),
+        ...getChildrenProps(this.props)
       };
 
       return createElement(WrappedComponent, props);
@@ -135,12 +150,12 @@ const formWrapper = (WrappedComponent, options = {}) => {
     errorMessages: PropTypes.objectOf(PropTypes.string).isRequired,
     validation: PropTypes.objectOf(PropTypes.func).isRequired,
     handlers: PropTypes.objectOf(PropTypes.func),
-    defaultFormState: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    defaultFormState: PropTypes.object // eslint-disable-line react/forbid-prop-types
   };
 
   FormContainer.defaultProps = {
     defaultFormState: {},
-    handlers: {},
+    handlers: {}
   };
 
   FormContainer.displayName = options.displayName;

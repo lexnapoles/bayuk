@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import Icon from 'react-fa';
-import { inputFile } from './fileInput.css';
+import PropTypes from "prop-types";
+import React from "react";
+import Icon from "react-fa";
+import { inputFile } from "./fileInput.css";
 
 const FileInput = ({ className, style, id, accept, onChange, children }) => {
   const inputId = `file${id}`;
 
   return (
-    <div className={className} style={style} >
+    <div className={className} style={style}>
       <input
         type="file"
         name={inputId}
@@ -16,10 +16,10 @@ const FileInput = ({ className, style, id, accept, onChange, children }) => {
         className={inputFile}
         onChange={onChange}
       />
-      <label htmlFor={inputId} >
+      <label htmlFor={inputId}>
         {children || <Icon name="plus-circle" size="2x" />}
-      </label >
-    </div >
+      </label>
+    </div>
   );
 };
 
@@ -29,13 +29,13 @@ FileInput.propTypes = {
   id: PropTypes.number.isRequired,
   accept: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 FileInput.defaultProps = {
   style: {},
-  className: '',
-  children: '',
+  className: "",
+  children: ""
 };
 
 export default FileInput;

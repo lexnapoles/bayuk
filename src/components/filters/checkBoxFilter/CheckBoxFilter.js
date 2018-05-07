@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import Filter from '../filter/Filter';
-import Spinner from '../../spinner/Spinner';
-import CheckBoxInput from '../../inputs/CheckBoxInput';
+import PropTypes from "prop-types";
+import React from "react";
+import Filter from "../filter/Filter";
+import Spinner from "../../spinner/Spinner";
+import CheckBoxInput from "../../inputs/CheckBoxInput";
 
 const renderValues = (values, onChange) => {
   const names = Object.keys(values);
@@ -19,21 +19,20 @@ const renderValues = (values, onChange) => {
 };
 
 const CheckBoxFilter = ({ title, onChange, value, error }) => (
-  <Filter title={title} error={error} >
+  <Filter title={title} error={error}>
     {Object.keys(value).length ? renderValues(value, onChange) : <Spinner />}
-  </Filter >
+  </Filter>
 );
 
 CheckBoxFilter.propTypes = {
   title: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.objectOf(PropTypes.bool).isRequired,
-  error: PropTypes.string,
+  error: PropTypes.string
 };
 
 CheckBoxFilter.defaultProps = {
-  error: '',
+  error: ""
 };
 
 export default CheckBoxFilter;
-

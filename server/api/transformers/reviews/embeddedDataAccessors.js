@@ -5,8 +5,7 @@ import transformProduct from '../products';
 import { item } from '../transformer';
 
 const getUserFromReview = (req, id) =>
-  getUserById(id)
-    .then(user => item(user, transformUser.bind(null, req)));
+  getUserById(id).then(user => item(user, transformUser.bind(null, req)));
 
 const getProductFromReview = (req, id) =>
   getProductById(id)

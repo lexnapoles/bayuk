@@ -1,14 +1,14 @@
 export const productsByDistanceQuery = (latitude, longitude) => ({
-  sort: 'distance',
-  sortOrder: 'descending',
+  sort: "distance",
+  sortOrder: "descending",
   radius: 99999,
   latitude,
-  longitude,
+  longitude
 });
 
 const productsByUser = (owner, sold) => ({
   owner,
-  sold,
+  sold
 });
 
 export const productsSoldByUserQuery = owner => productsByUser(owner, true);

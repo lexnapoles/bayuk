@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { container, main } from '../layout.css';
-import HomeHeader from './homeHeader/HomeHeader';
-import { loadProductsByDistance } from '../../actions/products';
-import loadCategories from '../../actions/categories';
-import { loadGeolocation } from '../../actions/location';
-import geolocated from '../geolocated/geolocated';
-import { getGeolocation } from '../../reducers/root';
-import ProductsByFilter from '../products/productsByFilter/ProductsByFilter';
-import { DISTANCE_FILTER } from '../../constants/productFilters';
-import { productsByDistanceQuery } from '../../apiQueries';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { container, main } from "../layout.css";
+import HomeHeader from "./homeHeader/HomeHeader";
+import { loadProductsByDistance } from "../../actions/products";
+import loadCategories from "../../actions/categories";
+import { loadGeolocation } from "../../actions/location";
+import geolocated from "../geolocated/geolocated";
+import { getGeolocation } from "../../reducers/root";
+import ProductsByFilter from "../products/productsByFilter/ProductsByFilter";
+import { DISTANCE_FILTER } from "../../constants/productFilters";
+import { productsByDistanceQuery } from "../../apiQueries";
 
-const loadData = (props) => {
+const loadData = props => {
   const { latitude, longitude } = props;
 
   props.loadGeolocation({ latitude, longitude });
@@ -28,28 +28,28 @@ class App extends Component {
 
   render() {
     return (
-      <div className={container} >
+      <div className={container}>
         <HomeHeader />
-        <main className={main} >
+        <main className={main}>
           <ProductsByFilter filter={DISTANCE_FILTER} />
-        </main >
+        </main>
         <footer />
-      </div >
+      </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const coords = getGeolocation(state);
 
   return {
     isAlreadyLocated: Boolean(coords),
-    coords,
+    coords
   };
 };
 
 export default connect(mapStateToProps, {
   loadProductsByDistance,
   loadCategories,
-  loadGeolocation,
+  loadGeolocation
 })(geolocated(App));

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import UserProfile from './UserProfile';
-import loadUser from '../../../actions/users';
-import { getUserById } from '../../../reducers/root';
-import Spinner from '../../spinner/Spinner';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import UserProfile from "./UserProfile";
+import loadUser from "../../../actions/users";
+import { getUserById } from "../../../reducers/root";
+import Spinner from "../../spinner/Spinner";
 
 const loadData = ({ id, loadUser: load }) => load(id);
 
@@ -16,9 +16,7 @@ class UserProfileContainer extends Component {
   render() {
     const { user } = this.props;
 
-    return user
-      ? <UserProfile user={user} />
-      : <Spinner />;
+    return user ? <UserProfile user={user} /> : <Spinner />;
   }
 }
 
@@ -27,20 +25,19 @@ UserProfileContainer.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     rating: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-  }),
+    image: PropTypes.string.isRequired
+  })
 };
 
 UserProfileContainer.defaultProps = {
-  user: null,
+  user: null
 };
 
 const mapStateToProps = (state, { params: { id } }) => ({
   user: getUserById(state, id),
-  id,
+  id
 });
 
 export default connect(mapStateToProps, {
-  loadUser,
+  loadUser
 })(UserProfileContainer);
-

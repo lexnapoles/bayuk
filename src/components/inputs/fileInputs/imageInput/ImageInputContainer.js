@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import ImageInput from './ImageInput';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import ImageInput from "./ImageInput";
 
 class ImageInputContainer extends Component {
   static isAnImage(file) {
@@ -8,14 +8,14 @@ class ImageInputContainer extends Component {
   }
 
   static loadImage(img) {
-    return new Promise(((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
       reader.onload = event => resolve(event.target.result);
       reader.onerror = event => reject(event.target.error);
 
       reader.readAsDataURL(img);
-    }));
+    });
   }
 
   constructor(props) {
@@ -32,10 +32,9 @@ class ImageInputContainer extends Component {
       return;
     }
 
-    ImageInputContainer.loadImage(selectedFile)
-      .then((url) => {
-        this.props.onAdd(url);
-      });
+    ImageInputContainer.loadImage(selectedFile).then(url => {
+      this.props.onAdd(url);
+    });
   }
 
   onDelete() {
@@ -58,11 +57,11 @@ ImageInputContainer.propTypes = {
   url: PropTypes.string,
   id: PropTypes.number.isRequired,
   onAdd: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 
 ImageInputContainer.defaultProps = {
-  url: '',
+  url: ""
 };
 
 export default ImageInputContainer;

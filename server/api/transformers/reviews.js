@@ -1,11 +1,10 @@
-/* eslint-disable camelcase */
-
-import transform, { extractFields } from './transformer';
-import defaultEmbeddedDataAccessors from './reviews/embeddedDataAccessors';
+import transform, { extractFields } from "./transformer";
+import defaultEmbeddedDataAccessors from "./reviews/embeddedDataAccessors";
 
 const validFields = ['target', 'source', 'product'];
 
-const areValidFields = (fields = []) => fields.every(field => validFields.includes(field));
+const areValidFields = (fields = []) =>
+  fields.every(field => validFields.includes(field));
 
 export const extractIncludeFields = (req) => {
   const fields = extractFields(req, 'include');
@@ -47,16 +46,25 @@ const transformation = ({
   createdAt: created_at,
 });
 
-export default async function (req, review, embeddedDataAccessors = defaultEmbeddedDataAccessors) {
+export default async function(
+  req,
+  review,
+  embeddedDataAccessors = defaultEmbeddedDataAccessors
+) {
   const includeFields = extractIncludeFields(req);
   const transformedReview = await transform(req, review, transformation);
 
   if (includeFields) {
-    const embeddedData = await getFields(req, includeFields, review, embeddedDataAccessors);
+    const embeddedData = await getFields(
+      req,
+      includeFields,
+      review,
+      embeddedDataAccessors
+    );
 
     return {
       ...transformedReview,
-      ...embeddedData,
+      ...embeddedData
     };
   }
 

@@ -1,19 +1,19 @@
-const getSchemaErrorMessageAndField = (error) => {
-  let field = '';
-  let message = '';
+const getSchemaErrorMessageAndField = error => {
+  let field = "";
+  let message = "";
 
   if (error.params.missingProperty) {
     const messageWithNoField = error.message.match(/([a-zA-Z ]+)/)[1];
 
     message = `${messageWithNoField}${error.params.missingProperty}`;
   } else {
-    field = error.dataPath.split('.')[1];
+    field = error.dataPath.split(".")[1];
     message = error.message;
   }
 
   return {
     message,
-    field,
+    field
   };
 };
 

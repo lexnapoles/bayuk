@@ -1,12 +1,10 @@
-import { pick } from 'lodash/object';
+import { pick } from "lodash/object";
 
-export const extractFields = (req, fieldsProp) => (
-  req.query[fieldsProp]
-    ? req.query[fieldsProp].split(',')
-    : undefined
-);
+export const extractFields = (req, fieldsProp) =>
+  req.query[fieldsProp] ? req.query[fieldsProp].split(",") : undefined;
 
-const getSelectedFields = (object, fields = []) => (fields.length ? pick(object, fields) : object);
+const getSelectedFields = (object, fields = []) =>
+  fields.length ? pick(object, fields) : object;
 
 export const collection = (arr, transformer) => {
   const transformItems = arr.map(item => transformer(item));
@@ -17,7 +15,7 @@ export const collection = (arr, transformer) => {
 export const item = (obj, transformer) => transformer(obj);
 
 export default (req, resource, transformation = () => resource) => {
-  const fields = extractFields(req, 'fields');
+  const fields = extractFields(req, "fields");
 
   return getSelectedFields(transformation(resource, req), fields);
 };

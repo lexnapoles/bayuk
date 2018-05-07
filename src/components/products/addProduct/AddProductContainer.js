@@ -1,41 +1,45 @@
-import { Component, createElement } from 'react';
-import PropTypes from 'prop-types';
-import { omit } from 'lodash/object';
-import { connect } from 'react-redux';
-import loadCategories from '../../../actions/categories';
-import { addProduct } from '../../../actions/api';
-import { createDefaultObjectFrom, isNotEmpty, isCheckBoxChecked } from '../../../utils';
-import connectForm from '../../form/connectForm/connectForm';
-import { getAllCategories, isUserLoggedIn } from '../../../reducers/root';
-import addAuthenticationTo from '../../auth/addAuthenticationTo/addAuthenticationTo';
-import AddProduct from './AddProduct';
-import errorMsgs from '../../form/errors/errorsMsgs';
+import { Component, createElement } from "react";
+import PropTypes from "prop-types";
+import { omit } from "lodash/object";
+import { connect } from "react-redux";
+import loadCategories from "../../../actions/categories";
+import { addProduct } from "../../../actions/api";
+import {
+  createDefaultObjectFrom,
+  isNotEmpty,
+  isCheckBoxChecked
+} from "../../../utils";
+import connectForm from "../../form/connectForm/connectForm";
+import { getAllCategories, isUserLoggedIn } from "../../../reducers/root";
+import addAuthenticationTo from "../../auth/addAuthenticationTo/addAuthenticationTo";
+import AddProduct from "./AddProduct";
+import errorMsgs from "../../form/errors/errorsMsgs";
 import {
   NO_NAME_FILLED,
   NO_DESCRIPTION_FILLED,
   NO_CATEGORY_FILLED,
   NO_PRICE_FILLED,
-  NO_IMAGES_FILLED,
-} from '../../form/errors/errorConstants';
+  NO_IMAGES_FILLED
+} from "../../form/errors/errorConstants";
 
-import getParamsFromForm from '../../../services/getParamsFromAddForm';
+import getParamsFromForm from "../../../services/getParamsFromAddForm";
 
 const MAX_IMAGES = 3;
 
-const elements = ['name', 'description', 'categories', 'price', 'images'];
+const elements = ["name", "description", "categories", "price", "images"];
 
 const validation = {
   name: isNotEmpty,
   description: isNotEmpty,
   categories: isCheckBoxChecked,
   images: isNotEmpty,
-  price: price => price > 0,
+  price: price => price > 0
 };
 
 const handlers = {
   onPriceChange: event => parseInt(event.target.value, 10),
   onImagesChange: images => images,
-  onCategoriesChange: categories => categories,
+  onCategoriesChange: categories => categories
 };
 
 const errorMessages = {
@@ -43,7 +47,7 @@ const errorMessages = {
   description: errorMsgs[NO_DESCRIPTION_FILLED],
   categories: errorMsgs[NO_CATEGORY_FILLED],
   images: errorMsgs[NO_IMAGES_FILLED],
-  price: errorMsgs[NO_PRICE_FILLED],
+  price: errorMsgs[NO_PRICE_FILLED]
 };
 
 const formTemplate = {
@@ -51,7 +55,7 @@ const formTemplate = {
   validation,
   errorMessages,
   handlers,
-  maxImages: MAX_IMAGES,
+  maxImages: MAX_IMAGES
 };
 
 const loadData = ({ loadCategories: load }) => load();
@@ -75,38 +79,38 @@ class AddProductContainer extends Component {
 
   render() {
     const { categories } = this.props;
-    const props = omit(this.props, ['loadCategories', 'onSubmit']);
+    const props = omit(this.props, ["loadCategories", "onSubmit"]);
 
     const form = {
       ...formTemplate,
       onSubmit: this.onSubmit,
       defaultFormState: {
-        categories: createDefaultObjectFrom(categories, false),
-      },
+        categories: createDefaultObjectFrom(categories, false)
+      }
     };
 
     return createElement(
       addAuthenticationTo(connectForm(form)(AddProduct)),
-      props);
+      props
+    );
   }
 }
 
 AddProductContainer.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.string),
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired
 };
 
 AddProductContainer.defaultProps = {
-  categories: [],
+  categories: []
 };
 
 const mapStateToProps = state => ({
   isLoggedIn: isUserLoggedIn(state),
-  categories: getAllCategories(state),
+  categories: getAllCategories(state)
 });
-
 
 export default connect(mapStateToProps, {
   onSubmit: addProduct,
-  loadCategories,
+  loadCategories
 })(AddProductContainer);

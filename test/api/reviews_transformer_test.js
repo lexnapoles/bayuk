@@ -7,8 +7,10 @@
   no-tabs
  */
 
-import chai from 'chai';
-import transformReview, { extractIncludeFields } from '../../server/api/transformers/reviews';
+import chai from "chai";
+import transformReview, {
+  extractIncludeFields
+} from "../../server/api/transformers/reviews";
 
 chai.should();
 
@@ -32,8 +34,8 @@ const transformedReview = {
   createdAt: '2017-03-23 13:46:41.327',
 };
 
-describe('review transformer', function () {
-  it('should transform a review', async function () {
+describe("review transformer", function() {
+  it("should transform a review", async function() {
     const req = { query: {} };
 
     const data = await transformReview(req, review);
@@ -41,25 +43,25 @@ describe('review transformer', function () {
     data.should.be.deep.equal(transformedReview);
   });
 
-  it('should extract the include fields', function () {
-    const includeFields = ['target', 'source'];
+  it("should extract the include fields", function() {
+    const includeFields = ["target", "source"];
 
     const req = {
       query: {
-        include: includeFields.toString(),
-      },
+        include: includeFields.toString()
+      }
     };
 
     extractIncludeFields(req).should.be.deep.equal(includeFields);
   });
 
-  it('should not embed additional fields if invalid include fields are used', async function () {
-    const includeFields = ['invalid1', 'invalid2'];
+  it("should not embed additional fields if invalid include fields are used", async function() {
+    const includeFields = ["invalid1", "invalid2"];
 
     const req = {
       query: {
-        include: includeFields.toString(),
-      },
+        include: includeFields.toString()
+      }
     };
 
     const data = await transformReview(req, review);
@@ -67,18 +69,18 @@ describe('review transformer', function () {
     data.should.be.deep.equal(transformedReview);
   });
 
-  it('should accept an object defining how to get the embedded fields', async function () {
-    const field = 'target';
+  it("should accept an object defining how to get the embedded fields", async function() {
+    const field = "target";
     const includeFields = [field];
 
     const req = {
       query: {
-        include: includeFields.toString(),
-      },
+        include: includeFields.toString()
+      }
     };
 
     const accessors = {
-      [field]: () => 'data',
+      [field]: () => "data"
     };
 
     const data = await transformReview(req, review, accessors);
@@ -94,13 +96,13 @@ describe('review transformer', function () {
 
     const req = {
       query: {
-        include: includeFields.toString(),
-      },
+        include: includeFields.toString()
+      }
     };
 
     const accessors = {
-      target: () => 'target',
-      source: () => 'source',
+      target: () => "target",
+      source: () => "source"
     };
 
     const data = await transformReview(req, review, accessors);

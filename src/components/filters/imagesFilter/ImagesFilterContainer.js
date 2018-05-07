@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import ImagesFilter from './ImagesFilter';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import ImagesFilter from "./ImagesFilter";
 
 class ImagesFilterContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      images: {},
+      images: {}
     };
 
     this.onAddImage = this.onAddImage.bind(this);
@@ -48,7 +48,7 @@ class ImagesFilterContainer extends Component {
 ImagesFilterContainer.propTypes = {
   maxImages: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
-  error: PropTypes.string.isRequired,
+  error: PropTypes.string.isRequired
 };
 
 export default ImagesFilterContainer;

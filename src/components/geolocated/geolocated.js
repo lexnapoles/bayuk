@@ -1,26 +1,26 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { omit } from 'lodash/object';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { omit } from "lodash/object";
 
 const DEFAULT_MADRID_COORDS = {
   latitude: 40.416775,
-  longitude: -3.70379,
+  longitude: -3.70379
 };
 
 const propTypes = {
   isAlreadyLocated: PropTypes.bool,
   coords: PropTypes.shape({
     latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired,
-  }),
+    longitude: PropTypes.number.isRequired
+  })
 };
 
 const defaultProps = {
   isAlreadyLocated: false,
-  coords: null,
+  coords: null
 };
 
-const geolocated = (WrappedComponent) => {
+const geolocated = WrappedComponent => {
   class Geolocator extends Component {
     constructor(props) {
       super(props);
@@ -42,7 +42,7 @@ const geolocated = (WrappedComponent) => {
       const success = ({ coords: { latitude, longitude } }) =>
         this.setState({
           latitude,
-          longitude,
+          longitude
         });
 
       navigator.geolocation.getCurrentPosition(success);
@@ -50,23 +50,24 @@ const geolocated = (WrappedComponent) => {
 
     getAlreadyLocatedCoordsProps({ coords: { latitude, longitude } }) {
       return {
-        ...omit(this.props, 'isAlreadyLocated'),
+        ...omit(this.props, "isAlreadyLocated"),
         latitude,
-        longitude,
+        longitude
       };
     }
 
     getOwnCoordsProps() {
       return {
-        ...omit(this.props, 'isAlreadyLocated'),
-        ...this.state,
+        ...omit(this.props, "isAlreadyLocated"),
+        ...this.state
       };
     }
 
     render() {
-      const props = this.props.isAlreadyLocated && this.props.coords
-        ? this.getAlreadyLocatedCoordsProps(this.props)
-        : this.getOwnCoordsProps();
+      const props =
+        this.props.isAlreadyLocated && this.props.coords
+          ? this.getAlreadyLocatedCoordsProps(this.props)
+          : this.getOwnCoordsProps();
 
       return <WrappedComponent {...props} />;
     }

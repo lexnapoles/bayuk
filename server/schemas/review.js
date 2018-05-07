@@ -1,8 +1,8 @@
 export default {
-  $schema: 'http://json-schema.org/schema#',
-  id: 'http://bayuk.com/schemas/myschema.json',
-  type: 'object',
-  title: 'Review',
+  $schema: "http://json-schema.org/schema#",
+  id: "http://bayuk.com/schemas/myschema.json",
+  type: "object",
+  title: "Review",
   properties: {
     sourceId: {
       type: 'string',
@@ -15,13 +15,13 @@ export default {
     },
 
     description: {
-      type: 'string',
+      type: "string"
     },
 
     rating: {
-      type: 'integer',
+      type: "integer",
       minItems: 1,
-      maxItems: 5,
+      maxItems: 5
     },
 
     productId: {

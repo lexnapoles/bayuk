@@ -1,4 +1,4 @@
-import { UPDATE_GEOLOCATION } from '../constants/actionTypes';
+import { UPDATE_GEOLOCATION } from "../constants/actionTypes";
 
 const location = (state = {}, action) => {
   switch (action.type) {
@@ -8,7 +8,7 @@ const location = (state = {}, action) => {
       return {
         ...state,
         latitude,
-        longitude,
+        longitude
       };
     }
     default:
@@ -17,10 +17,6 @@ const location = (state = {}, action) => {
 };
 
 export const getGeolocation = ({ latitude, longitude }) =>
-  (
-    latitude && longitude
-      ? { latitude, longitude }
-      : null
-  );
+  latitude && longitude ? { latitude, longitude } : null;
 
 export default location;

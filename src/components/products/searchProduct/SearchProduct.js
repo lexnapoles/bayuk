@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import Form from '../../form/Form';
-import TextFilter from '../../filters/textFilter/TextFilter';
-import LocationFilter from '../../filters/locationFilter/LocationFilterContainer';
-import PriceFilter from '../../filters/PriceFilter';
-import CheckBoxFilterContainer from '../../filters/checkBoxFilter/CheckBoxFilterContainer';
+import PropTypes from "prop-types";
+import React from "react";
+import Form from "../../form/Form";
+import TextFilter from "../../filters/textFilter/TextFilter";
+import LocationFilter from "../../filters/locationFilter/LocationFilterContainer";
+import PriceFilter from "../../filters/PriceFilter";
+import CheckBoxFilterContainer from "../../filters/checkBoxFilter/CheckBoxFilterContainer";
 
 const SearchProduct = ({
   form,
@@ -15,9 +15,9 @@ const SearchProduct = ({
   onPriceChange,
   onDistanceChange,
   onLocationChange,
-  onSortChange,
+  onSortChange
 }) => (
-  <Form formName="searchProduct" onSubmit={onSubmit} >
+  <Form formName="searchProduct" onSubmit={onSubmit}>
     <TextFilter
       name={form.name}
       error={errors.name}
@@ -32,7 +32,11 @@ const SearchProduct = ({
       onChange={onCategoriesChange}
     />
 
-    <PriceFilter value={form.price} error={errors.price} onChange={onPriceChange} />
+    <PriceFilter
+      value={form.price}
+      error={errors.price}
+      onChange={onPriceChange}
+    />
 
     <CheckBoxFilterContainer
       title="Distance"
@@ -49,16 +53,16 @@ const SearchProduct = ({
       error={errors.sort}
       onChange={onSortChange}
     />
-  </Form >
+  </Form>
 );
 
 const formPropTypes = PropTypes.shape({
   name: PropTypes.string.isRequired,
   price: PropTypes.shape({
     min: PropTypes.number.isRequired,
-    max: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired
   }).isRequired,
-  distance: PropTypes.objectOf(PropTypes.bool).isRequired,
+  distance: PropTypes.objectOf(PropTypes.bool).isRequired
 });
 
 SearchProduct.propTypes = {
@@ -70,7 +74,7 @@ SearchProduct.propTypes = {
   onPriceChange: PropTypes.func.isRequired,
   onDistanceChange: PropTypes.func.isRequired,
   onLocationChange: PropTypes.func.isRequired,
-  onSortChange: PropTypes.func.isRequired,
+  onSortChange: PropTypes.func.isRequired
 };
 
 export default SearchProduct;

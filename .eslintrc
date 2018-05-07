@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb",
+  "extends": ["airbnb", "plugin:prettier/recommended"],
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module",
@@ -11,6 +11,11 @@
   "rules": {
     "no-param-reassign": "warn",
     "react/jsx-filename-extension": "off",
+    "jsx-a11y/anchor-is-valid": 1,
+    "jsx-a11y/label-has-for": [ 2, {
+      "components": [ "Label" ],
+      "allowChildren": true
+    }],
     "import/no-extraneous-dependencies": [
       2,
       {

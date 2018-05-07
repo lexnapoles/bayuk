@@ -9,26 +9,25 @@ import {
   navigator,
   navigatorItem,
   navigatorCenterItem,
-  navigatorItemActive,
-} from './userNavigator.css';
-
+  navigatorItemActive
+} from "./userNavigator.css";
 
 const UserNavigator = ({ userId }) => (
   <Tabs
     className={navigatorContainer}
     selectedTabClassName={navigatorItemActive}
   >
-    <TabList className={navigator} >
-      <Tab className={navigatorItem} >On Sell</Tab >
-      <Tab className={navigatorCenterItem} >Sold</Tab >
-      <Tab className={navigatorItem} >Reviews</Tab >
-    </TabList >
+    <TabList className={navigator}>
+      <Tab className={navigatorItem}>On Sell</Tab>
+      <Tab className={navigatorCenterItem}>Sold</Tab>
+      <Tab className={navigatorItem}>Reviews</Tab>
+    </TabList>
 
-    <div >
-      <TabPanel >
+    <div>
+      <TabPanel>
         <ProductsOnSellByUser user={userId} />
-      </TabPanel >
-      <TabPanel >
+      </TabPanel>
+      <TabPanel>
         <ProductsSoldByUser user={userId} />
       </TabPanel >
       <TabPanel >
@@ -39,7 +38,7 @@ const UserNavigator = ({ userId }) => (
 );
 
 UserNavigator.propTypes = {
-  userId: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired
 };
 
 export default UserNavigator;

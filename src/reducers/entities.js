@@ -42,5 +42,5 @@ export default combineReducers({
   products: productsReducer,
   reviews: reviewsReducer,
   users: usersReducer,
-  categories: categoriesReducer,
+  categories: categoriesReducer
 });

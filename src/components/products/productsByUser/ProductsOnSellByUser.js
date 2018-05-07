@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import ProductTable from '../productTable/ProductTable';
-import { getListOfProductsById, getProductsOnSellByUser } from '../../../reducers/root';
-import { loadProductsOnSellByUser } from '../../../actions/products';
-import { productsOnSellByUserQuery } from '../../../apiQueries';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import ProductTable from "../productTable/ProductTable";
+import {
+  getListOfProductsById,
+  getProductsOnSellByUser
+} from "../../../reducers/root";
+import { loadProductsOnSellByUser } from "../../../actions/products";
+import { productsOnSellByUserQuery } from "../../../apiQueries";
 
-const loadData = (props) => {
+const loadData = props => {
   const userId = props.user;
   const query = productsOnSellByUserQuery(userId);
 
@@ -29,13 +32,16 @@ const mapStateToProps = (state, { user }) => {
 
   return {
     products: filteredProducts,
-    ...pagination,
+    ...pagination
   };
 };
 
 const mapDispatchToProps = (dispatch, { user }) => ({
-  loadProductsOnSellByUser: (...data) => dispatch(loadProductsOnSellByUser(...data)),
-  onLoadMoreClick: () => dispatch(loadProductsOnSellByUser(user, {}, true)),
+  loadProductsOnSellByUser: (...data) =>
+    dispatch(loadProductsOnSellByUser(...data)),
+  onLoadMoreClick: () => dispatch(loadProductsOnSellByUser(user, {}, true))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductsOnSellByUser);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  ProductsOnSellByUser
+);

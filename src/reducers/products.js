@@ -1,5 +1,5 @@
-import { union } from 'lodash/array';
-import { combineReducers } from 'redux';
+import { union } from "lodash/array";
+import { combineReducers } from "redux";
 import {
   FETCH_PRODUCTS, FETCH_ONE_PRODUCT, ADD_PRODUCT,
   FETCH_PRODUCTS_ON_SELL, FETCH_PRODUCTS_SOLD, FETCH_REVIEWS,
@@ -12,7 +12,7 @@ const byId = (state = {}, action) => {
     case ADD_PRODUCT.success:
       return {
         ...state,
-        [action.payload.id]: product(undefined, action),
+        [action.payload.id]: product(undefined, action)
       };
 
     case FETCH_REVIEWS.success: {
@@ -48,7 +48,7 @@ const byId = (state = {}, action) => {
     case FETCH_PRODUCTS_SOLD.success:
       return {
         ...state,
-        ...action.payload.entities.products,
+        ...action.payload.entities.products
       };
 
     default:
@@ -87,5 +87,5 @@ const allIds = (state = [], action) => {
 
 export default combineReducers({
   byId,
-  allIds,
+  allIds
 });

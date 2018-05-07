@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import UserMenuThumbnail from './UserMenuThumbnail';
-import { getCurrentUser, getUserById, isUserLoggedIn } from '../../../reducers/root';
-import loadCurrentUser from '../../../actions/currentUser';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import UserMenuThumbnail from "./UserMenuThumbnail";
+import {
+  getCurrentUser,
+  getUserById,
+  isUserLoggedIn
+} from "../../../reducers/root";
+import loadCurrentUser from "../../../actions/currentUser";
 
 const loadData = ({ loadCurrentUser: load }) => load();
 
@@ -23,23 +27,23 @@ UserMenuThumbnailContainer.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
-    image: PropTypes.string,
-  }),
+    image: PropTypes.string
+  })
 };
 
 UserMenuThumbnailContainer.defaultProps = {
-  user: {},
+  user: {}
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { id } = isUserLoggedIn(state) ? getCurrentUser(state) : {};
   const user = getUserById(state, id);
 
   return {
-    user,
+    user
   };
 };
 
 export default connect(mapStateToProps, {
-  loadCurrentUser,
+  loadCurrentUser
 })(UserMenuThumbnailContainer);

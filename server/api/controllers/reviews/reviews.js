@@ -1,19 +1,19 @@
-import { sendJsonResponse } from '../../../utils';
-import { getReviews, addReview } from '../../services/reviews';
-import { getUserById } from '../../services/users';
-import validateReview from './validators';
-import { validateRequest, validateId } from '../validators';
-import { unauthorizedAccess } from '../../../errors/api/authorizationErrors';
-import { userDoesNotExist } from '../../../errors/api/userErrors';
-import dbErrors from '../../../errors/database';
-import transformReview from '../../transformers/reviews';
+import { sendJsonResponse } from "../../../utils";
+import { getReviews, addReview } from "../../services/reviews";
+import { getUserById } from "../../services/users";
+import validateReview from "./validators";
+import { validateRequest, validateId } from "../validators";
+import { unauthorizedAccess } from "../../../errors/api/authorizationErrors";
+import { userDoesNotExist } from "../../../errors/api/userErrors";
+import dbErrors from "../../../errors/database";
+import transformReview from "../../transformers/reviews";
 import {
   errorBadRequest,
   errorNotFound,
   errorInternalError,
-  errorUnauthorized,
-} from '../../../errors/api/errors';
-import { collection, item } from '../../transformers/transformer';
+  errorUnauthorized
+} from "../../../errors/api/errors";
+import { collection, item } from "../../transformers/transformer";
 
 export const readReviews = async function readReviews(req, res) {
   const { userId } = req.params;
@@ -29,7 +29,10 @@ export const readReviews = async function readReviews(req, res) {
     await getUserById(userId);
 
     const reviews = await getReviews(userId);
-    const transformedReviews = await collection(reviews, transformReview.bind(undefined, req));
+    const transformedReviews = await collection(
+      reviews,
+      transformReview.bind(undefined, req)
+    );
 
     sendJsonResponse(res, 200, transformedReviews);
   } catch (error) {
@@ -43,7 +46,7 @@ export const readReviews = async function readReviews(req, res) {
 };
 
 export const createReview = async function createReview(req, res) {
-  const requestErrors = validateRequest(req, 'body');
+  const requestErrors = validateRequest(req, "body");
 
   if (requestErrors.length) {
     errorBadRequest(res, requestErrors);
@@ -69,7 +72,10 @@ export const createReview = async function createReview(req, res) {
   try {
     const createdReview = await addReview(review);
 
-    const transformedReview = await item(createdReview, transformReview.bind(undefined, req));
+    const transformedReview = await item(
+      createdReview,
+      transformReview.bind(undefined, req)
+    );
 
     res.location(`/api/reviews/${transformedReview.targetId}`);
     sendJsonResponse(res, 201, transformedReview);

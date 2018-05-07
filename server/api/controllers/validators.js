@@ -1,7 +1,7 @@
-import { has } from 'lodash/object';
-import { isEmpty } from 'lodash/lang';
-import validateUUID from 'uuid-validate';
-import { dataNotFound, invalidId } from '../../errors/api/controllerErrors';
+import { has } from "lodash/object";
+import { isEmpty } from "lodash/lang";
+import validateUUID from "uuid-validate";
+import { dataNotFound, invalidId } from "../../errors/api/controllerErrors";
 
 const validateObject = (obj, properties = [], validator, error) => {
   if (!Array.isArray(properties)) {
@@ -10,10 +10,11 @@ const validateObject = (obj, properties = [], validator, error) => {
 
   return properties.reduce(
     (errorMessages, property) =>
-      (validator(obj, property)
+      validator(obj, property)
         ? [...errorMessages, error(property)]
-        : errorMessages)
-    , []);
+        : errorMessages,
+    []
+  );
 };
 
 export const validateRequest = (req, fields) =>
@@ -21,6 +22,7 @@ export const validateRequest = (req, fields) =>
     req,
     fields,
     (request, field) => !has(request, field) || isEmpty(request[field]),
-    dataNotFound);
+    dataNotFound
+  );
 
 export const validateId = id => (validateUUID(id) ? [] : [invalidId()]);

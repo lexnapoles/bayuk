@@ -1,9 +1,13 @@
-import React from 'react';
-import { container } from './notFound.css';
+import React from "react";
+import { container } from "./notFound.css";
 
-const NotFound = (message = '') => (
+const NotFound = (message = "") => (
   <div className={container}>
-    {message.length ? <h1>message</h1> : <h1>Sorry, this product could not be found</h1>}
+    {message.length ? (
+      <h1>message</h1>
+    ) : (
+      <h1>Sorry, this product could not be found</h1>
+    )}
   </div>
 );
 

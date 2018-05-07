@@ -1,7 +1,7 @@
-const errorMessage = (state = null, action) => {
+const errorMessage = (state = "", action) => {
   const { error, payload } = action;
 
-  if (error && payload) {
+  if (error && payload.response) {
     return payload.response;
   }
 

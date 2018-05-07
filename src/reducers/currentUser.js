@@ -1,13 +1,17 @@
-import { REHYDRATE } from 'redux-persist/constants';
-import { REGISTER_USER, LOGIN_USER, FETCH_CURRENT_USER } from '../constants/actionTypes';
-import { getJwtPayload, isNotEmpty } from '../utils';
+import { REHYDRATE } from "redux-persist/constants";
+import {
+  REGISTER_USER,
+  LOGIN_USER,
+  FETCH_CURRENT_USER
+} from "../constants/actionTypes";
+import { getJwtPayload, isNotEmpty } from "../utils";
 
 const currentUser = (state = {}, action) => {
   switch (action.type) {
     case REHYDRATE: {
       return {
         ...state,
-        ...action.payload.currentUser,
+        ...action.payload.currentUser
       };
     }
 
@@ -19,7 +23,7 @@ const currentUser = (state = {}, action) => {
       return {
         ...state,
         id,
-        token,
+        token
       };
     }
 
@@ -33,6 +37,7 @@ const currentUser = (state = {}, action) => {
 
 export const getCurrentUser = user => ({ ...user });
 
-export const isUserLoggedIn = user => (isNotEmpty(user) ? Boolean(user.token) : false);
+export const isUserLoggedIn = user =>
+  isNotEmpty(user) ? Boolean(user.token) : false;
 
 export default currentUser;

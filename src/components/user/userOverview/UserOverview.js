@@ -6,18 +6,23 @@ import { browserHistory } from 'react-router';
 import { container, userImage, rating as ratingClassName } from './userOverview.css';
 import Spinner from '../../spinner/Spinner';
 
-const renderOnStars = (rating, maxRating) => times(
-  parseInt(rating, 10),
-  iteration => <Icon key={`${maxRating}-${iteration}`} name="star" size="lg" />);
+const renderOnStars = (rating, maxRating) =>
+  times(parseInt(rating, 10), iteration => (
+    <Icon key={`${maxRating}-${iteration}`} name="star" size="lg" />
+  ));
 
-const renderOffStars = (rating, maxRating) => times(
-  maxRating - parseInt(rating, 10),
-  iteration => <Icon key={`${maxRating - rating}-${iteration}`} name="star-o" size="lg" />);
+const renderOffStars = (rating, maxRating) =>
+  times(maxRating - parseInt(rating, 10), iteration => (
+    <Icon key={`${maxRating - rating}-${iteration}`} name="star-o" size="lg" />
+  ));
 
 const renderRating = (rating = 0) => {
   const MAX_RATING = 5;
 
-  return [...renderOnStars(rating, MAX_RATING), ...renderOffStars(rating, MAX_RATING)];
+  return [
+    ...renderOnStars(rating, MAX_RATING),
+    ...renderOffStars(rating, MAX_RATING)
+  ];
 };
 
 const renderUser = (user, className, style) => {
@@ -56,16 +61,16 @@ UserOverview.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     rating: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired
   }),
   style: PropTypes.objectOf(PropTypes.string),
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 UserOverview.defaultProps = {
   user: undefined,
   style: {},
-  className: '',
+  className: ""
 };
 
 export default UserOverview;
