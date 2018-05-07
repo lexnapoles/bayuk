@@ -1,4 +1,8 @@
-import { FETCH_ONE_PRODUCT, ADD_PRODUCT, FETCH_REVIEWS } from '../constants/actionTypes';
+import {
+  FETCH_ONE_PRODUCT,
+  ADD_PRODUCT,
+  FETCH_REVIEWS
+} from "../constants/actionTypes";
 
 const product = (state, action) => {
   switch (action.type) {

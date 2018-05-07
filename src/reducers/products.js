@@ -1,10 +1,14 @@
 import { union } from "lodash/array";
 import { combineReducers } from "redux";
 import {
-  FETCH_PRODUCTS, FETCH_ONE_PRODUCT, ADD_PRODUCT,
-  FETCH_PRODUCTS_ON_SELL, FETCH_PRODUCTS_SOLD, FETCH_REVIEWS,
-} from '../constants/actionTypes';
-import product from './product';
+  FETCH_PRODUCTS,
+  FETCH_ONE_PRODUCT,
+  ADD_PRODUCT,
+  FETCH_PRODUCTS_ON_SELL,
+  FETCH_PRODUCTS_SOLD,
+  FETCH_REVIEWS
+} from "../constants/actionTypes";
+import product from "./product";
 
 const byId = (state = {}, action) => {
   switch (action.type) {
@@ -16,7 +20,9 @@ const byId = (state = {}, action) => {
       };
 
     case FETCH_REVIEWS.success: {
-      const { entities: { reviews = [] } } = action.payload;
+      const {
+        entities: { reviews = [] }
+      } = action.payload;
       const { result: reviewsIds = [] } = action.payload;
 
       const nextState = reviewsIds.reduce((obj, reviewId) => {
@@ -25,12 +31,10 @@ const byId = (state = {}, action) => {
         if (reviewProduct) {
           return {
             ...obj,
-            [reviewProduct.id]: product(
-              undefined,
-              {
-                ...action,
-                payload: reviewProduct,
-              }),
+            [reviewProduct.id]: product(undefined, {
+              ...action,
+              payload: reviewProduct
+            })
           };
         }
 
@@ -39,7 +43,7 @@ const byId = (state = {}, action) => {
 
       return {
         ...state,
-        ...nextState,
+        ...nextState
       };
     }
 
@@ -68,7 +72,9 @@ const allIds = (state = [], action) => {
       return union(state, action.payload.result);
 
     case FETCH_REVIEWS.success: {
-      const { entities: { reviews = [] } } = action.payload;
+      const {
+        entities: { reviews = [] }
+      } = action.payload;
       const { result: reviewsIds = [] } = action.payload;
 
       const reviewsProducts = reviewsIds.reduce((arr, id) => {

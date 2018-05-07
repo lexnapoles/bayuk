@@ -1,9 +1,9 @@
-import React from 'react';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import PropTypes from 'prop-types';
-import ProductsSoldByUser from '../../products/productsByUser/ProductsSoldByUser';
-import ProductsOnSellByUser from '../../products/productsByUser/ProductsOnSellByUser';
-import Reviews from '../../reviews/Reviews';
+import React from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import PropTypes from "prop-types";
+import ProductsSoldByUser from "../../products/productsByUser/ProductsSoldByUser";
+import ProductsOnSellByUser from "../../products/productsByUser/ProductsOnSellByUser";
+import Reviews from "../../reviews/Reviews";
 import {
   navigatorContainer,
   navigator,
@@ -29,12 +29,12 @@ const UserNavigator = ({ userId }) => (
       </TabPanel>
       <TabPanel>
         <ProductsSoldByUser user={userId} />
-      </TabPanel >
-      <TabPanel >
+      </TabPanel>
+      <TabPanel>
         <Reviews user={userId} />
-      </TabPanel >
-    </div >
-  </Tabs >
+      </TabPanel>
+    </div>
+  </Tabs>
 );
 
 UserNavigator.propTypes = {

@@ -1,20 +1,20 @@
 import transform, { extractFields } from "./transformer";
 import defaultEmbeddedDataAccessors from "./reviews/embeddedDataAccessors";
 
-const validFields = ['target', 'source', 'product'];
+const validFields = ["target", "source", "product"];
 
 const areValidFields = (fields = []) =>
   fields.every(field => validFields.includes(field));
 
-export const extractIncludeFields = (req) => {
-  const fields = extractFields(req, 'include');
+export const extractIncludeFields = req => {
+  const fields = extractFields(req, "include");
 
   return areValidFields(fields) ? fields : undefined;
 };
 
 async function getFields(req, fields, review, embeddedDataAccessors) {
   const embeddedFields = await Promise.all(
-    fields.map(field => embeddedDataAccessors[field](req, review)),
+    fields.map(field => embeddedDataAccessors[field](req, review))
   );
 
   const embeddedData = embeddedFields.reduce((acc, data, index) => {
@@ -35,7 +35,7 @@ const transformation = ({
   rating,
   description,
   product_id,
-  created_at,
+  created_at
 }) => ({
   id,
   sourceId: source_id,
@@ -43,7 +43,7 @@ const transformation = ({
   rating,
   description,
   productId: product_id,
-  createdAt: created_at,
+  createdAt: created_at
 });
 
 export default async function(

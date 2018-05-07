@@ -1,13 +1,16 @@
-import { REHYDRATE } from 'redux-persist/constants';
-import { combineReducers } from 'redux';
-import { omit } from 'lodash/object';
-import { union } from 'lodash/array';
-import { getJwtPayload } from '../utils';
+import { REHYDRATE } from "redux-persist/constants";
+import { combineReducers } from "redux";
+import { omit } from "lodash/object";
+import { union } from "lodash/array";
+import { getJwtPayload } from "../utils";
 import {
-  FETCH_ONE_USER, FETCH_USERS, REGISTER_USER, LOGIN_USER,
-  FETCH_REVIEWS,
-} from '../constants/actionTypes';
-import user from './user';
+  FETCH_ONE_USER,
+  FETCH_USERS,
+  REGISTER_USER,
+  LOGIN_USER,
+  FETCH_REVIEWS
+} from "../constants/actionTypes";
+import user from "./user";
 
 const currentUserExists = action => {
   const { currentUser } = action.payload;
@@ -32,7 +35,9 @@ const byId = (state = {}, action) => {
     }
 
     case FETCH_REVIEWS.success: {
-      const { entities: { reviews = [] } } = action.payload;
+      const {
+        entities: { reviews = [] }
+      } = action.payload;
       const { result: reviewsIds = [] } = action.payload;
 
       const nextState = reviewsIds.reduce((obj, reviewId) => {
@@ -41,12 +46,10 @@ const byId = (state = {}, action) => {
         if (source) {
           return {
             ...obj,
-            [source.id]: user(
-              undefined,
-              {
-                ...action,
-                payload: source,
-              }),
+            [source.id]: user(undefined, {
+              ...action,
+              payload: source
+            })
           };
         }
 
@@ -55,7 +58,7 @@ const byId = (state = {}, action) => {
 
       return {
         ...state,
-        ...nextState,
+        ...nextState
       };
     }
 
@@ -108,7 +111,9 @@ const allIds = (state = [], action) => {
       return union(state, action.payload.result);
 
     case FETCH_REVIEWS.success: {
-      const { entities: { reviews = [] } } = action.payload;
+      const {
+        entities: { reviews = [] }
+      } = action.payload;
       const { result: reviewsIds = [] } = action.payload;
 
       const users = reviewsIds.reduce((arr, id) => {

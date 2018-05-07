@@ -5,13 +5,13 @@ export default {
   title: "Review",
   properties: {
     sourceId: {
-      type: 'string',
-      format: 'uuid',
+      type: "string",
+      format: "uuid"
     },
 
     targetId: {
-      type: 'string',
-      format: 'uuid',
+      type: "string",
+      format: "uuid"
     },
 
     description: {
@@ -25,9 +25,9 @@ export default {
     },
 
     productId: {
-      type: 'string',
-      format: 'uuid',
-    },
+      type: "string",
+      format: "uuid"
+    }
   },
-  required: ['sourceId', 'targetId', 'description', 'rating', 'productId'],
+  required: ["sourceId", "targetId", "description", "rating", "productId"]
 };

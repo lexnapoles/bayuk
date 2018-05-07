@@ -1,5 +1,5 @@
-import { CALL_API } from 'redux-api-middleware';
-import * as schema from '../actions/schema';
+import { CALL_API } from "redux-api-middleware";
+import * as schema from "../actions/schema";
 
 import {
   FETCH_PRODUCTS,
@@ -13,19 +13,20 @@ import {
   DELETE_PRODUCT,
   REGISTER_USER,
   LOGIN_USER,
-  FETCH_PRODUCTS_SOLD, FETCH_PRODUCTS_ON_SELL,
-  FETCH_REVIEWS,
-} from '../constants/actionTypes';
+  FETCH_PRODUCTS_SOLD,
+  FETCH_PRODUCTS_ON_SELL,
+  FETCH_REVIEWS
+} from "../constants/actionTypes";
 
 import {
   getApiFullUrl,
   processBody,
   processHeader,
   processResponse,
-  stringifyQueryParams,
-} from './apiHelpers';
+  stringifyQueryParams
+} from "./apiHelpers";
 
-const API_ROOT = 'http://localhost:3000/api';
+const API_ROOT = "http://localhost:3000/api";
 
 const getTypes = ({ request, success, failure }) => [request, success, failure];
 
@@ -217,25 +218,28 @@ export const fetchCurrentUser = userId => ({
 export const fetchReviews = (endpoint, params, user) => {
   const meta = user ? { user } : undefined;
 
-  return ({
+  return {
     [CALL_API]: {
       endpoint: `${getApiFullUrl(endpoint)}${stringifyQueryParams(params)}`,
-      method: 'GET',
+      method: "GET",
       types: [
         {
           type: FETCH_REVIEWS.request,
-          meta,
+          meta
         },
         {
           type: FETCH_REVIEWS.success,
-          payload: processResponse([processHeader, processBody(schema.arrayOfReviews)]),
-          meta,
+          payload: processResponse([
+            processHeader,
+            processBody(schema.arrayOfReviews)
+          ]),
+          meta
         },
         {
           type: FETCH_REVIEWS.failure,
-          meta,
-        },
-      ],
-    },
-  });
+          meta
+        }
+      ]
+    }
+  };
 };

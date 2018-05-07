@@ -6,19 +6,18 @@ import { addReview } from "../../api/services/reviews";
 import { MAX_REVIEWS, MAX_USER_RATING } from "../config";
 import { wrapDataInPromise } from "../../utils";
 
-const pickUsersForReview = (ids) => {
+const pickUsersForReview = ids => {
   const sourceId = sample(ids);
 
   let targetId = 0;
 
   do {
     targetId = sample(ids);
-  }
-  while (targetId === sourceId);
+  } while (targetId === sourceId);
 
   return {
     sourceId,
-    targetId,
+    targetId
   };
 };
 

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { reviewsQuery } from '../../apiQueries';
-import { loadReviews } from '../../actions/reviews';
-import { getListOfReviewsById, getReviews } from '../../reducers/root';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { reviewsQuery } from "../../apiQueries";
+import { loadReviews } from "../../actions/reviews";
+import { getListOfReviewsById, getReviews } from "../../reducers/root";
 
-const loadData = (props) => {
+const loadData = props => {
   const userId = props.user;
   const query = reviewsQuery();
 
@@ -28,13 +28,15 @@ const mapStateToProps = (state, { user }) => {
 
   return {
     reviews: filteredReviews,
-    ...pagination,
+    ...pagination
   };
 };
 
 const mapDispatchToProps = (dispatch, { user }) => ({
   loadReviews: (...data) => dispatch(loadReviews(...data)),
-  onLoadMoreClick: () => dispatch(loadReviews(user, {}, true)),
+  onLoadMoreClick: () => dispatch(loadReviews(user, {}, true))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductsOnSellByUser);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  ProductsOnSellByUser
+);

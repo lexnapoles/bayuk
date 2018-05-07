@@ -5,8 +5,8 @@ import {
   FETCH_PRODUCTS_SOLD,
   FETCH_PRODUCTS_ON_SELL,
   FETCH_REVIEWS,
-  NEW_SEARCH,
-} from '../constants/actionTypes';
+  NEW_SEARCH
+} from "../constants/actionTypes";
 
 export default combineReducers({
   productsByFilter: paginate({
@@ -20,12 +20,12 @@ export default combineReducers({
   }),
   productsOnSellByUser: paginate({
     mapActionToKey: action => action.meta.user,
-    type: FETCH_PRODUCTS_ON_SELL,
+    type: FETCH_PRODUCTS_ON_SELL
   }),
   reviews: paginate({
     mapActionToKey: action => action.meta.user,
-    type: FETCH_REVIEWS,
-  }),
+    type: FETCH_REVIEWS
+  })
 });
 
 export const getProductsByFilter = ({ productsByFilter }, filter) =>

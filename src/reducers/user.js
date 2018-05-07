@@ -1,4 +1,4 @@
-import { FETCH_ONE_USER, FETCH_REVIEWS } from '../constants/actionTypes';
+import { FETCH_ONE_USER, FETCH_REVIEWS } from "../constants/actionTypes";
 
 const user = (state, action) => {
   switch (action.type) {
