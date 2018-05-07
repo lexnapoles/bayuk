@@ -7,22 +7,22 @@
   no-tabs
  */
 
-import chai from 'chai';
-import { extractFields } from '../../server/api/transformers/transformer';
+import chai from "chai";
+import { extractFields } from "../../server/api/transformers/transformer";
 
 chai.should();
 
-describe('transformer', function () {
-  it('should extract the required fields', function () {
-    const includeFields = ['targetUser', 'sourceUser'];
+describe("transformer", function() {
+  it("should extract the required fields", function() {
+    const includeFields = ["targetUser", "sourceUser"];
 
     const req = {
       query: {
-        include: includeFields.toString(),
-      },
+        include: includeFields.toString()
+      }
     };
 
-    const extractedFields = extractFields(req, 'include');
+    const extractedFields = extractFields(req, "include");
 
     extractedFields.should.be.deep.equal(includeFields);
   });

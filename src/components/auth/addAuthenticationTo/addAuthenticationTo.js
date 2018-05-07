@@ -1,13 +1,11 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import AuthPage from '../authPage/AuthPage';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import AuthPage from "../authPage/AuthPage";
 
-const addAuthenticationTo = (WrappedComponent) => {
+const addAuthenticationTo = WrappedComponent => {
   class AuthenticatedComponent extends Component {
     static renderWrappedComponent(isLoggedIn, props) {
-      return isLoggedIn
-        ? <WrappedComponent {...props} />
-        : <AuthPage />;
+      return isLoggedIn ? <WrappedComponent {...props} /> : <AuthPage />;
     }
 
     render() {
@@ -18,7 +16,7 @@ const addAuthenticationTo = (WrappedComponent) => {
   }
 
   AuthenticatedComponent.propTypes = {
-    isLoggedIn: PropTypes.bool.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired
   };
 
   return AuthenticatedComponent;

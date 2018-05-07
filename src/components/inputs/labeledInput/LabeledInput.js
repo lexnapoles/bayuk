@@ -1,12 +1,14 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { container, title } from './LabeledInput.css';
+import PropTypes from "prop-types";
+import React from "react";
+import { container, title } from "./LabeledInput.css";
 
 const LabeledInput = ({ value, id, description, onChange, inputConf }) => (
-  <div className={container} >
-    <label className={title} htmlFor={id} >{description}</label >
+  <div className={container}>
+    <label className={title} htmlFor={id}>
+      {description}
+    </label>
     <input id={id} {...inputConf} onChange={onChange} value={value} />
-  </div >
+  </div>
 );
 
 LabeledInput.propTypes = {
@@ -14,12 +16,12 @@ LabeledInput.propTypes = {
   inputConf: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   onChange: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
 };
 
 LabeledInput.defaultProps = {
   value: undefined,
-  inputConf: {},
+  inputConf: {}
 };
 
 export default LabeledInput;

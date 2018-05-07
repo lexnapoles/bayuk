@@ -1,14 +1,14 @@
 // Modified redux real-world example pagination (https://github.com/reactjs/redux/blob/master/examples/real-world/src/reducers/paginate.js)
-import union from 'lodash/union';
-import { isAsyncActionType } from '../constants/actionTypes';
+import union from "lodash/union";
+import { isAsyncActionType } from "../constants/actionTypes";
 
 const paginate = ({ type, reset, mapActionToKey }) => {
   if (!isAsyncActionType(type)) {
-    throw new Error('Type is not an async action type');
+    throw new Error("Type is not an async action type");
   }
 
-  if (typeof mapActionToKey !== 'function') {
-    throw new Error('Expected mapActionToKey to be a function.');
+  if (typeof mapActionToKey !== "function") {
+    throw new Error("Expected mapActionToKey to be a function.");
   }
 
   const { request, success, failure } = type;
@@ -17,7 +17,7 @@ const paginate = ({ type, reset, mapActionToKey }) => {
     isFetching: false,
     nextPageUrl: undefined,
     ids: [],
-    pageCount: 0,
+    pageCount: 0
   };
 
   const updatePagination = (state = defaultState, action) => {
@@ -28,7 +28,7 @@ const paginate = ({ type, reset, mapActionToKey }) => {
       case request:
         return {
           ...state,
-          isFetching: true,
+          isFetching: true
         };
       case success:
         return {
@@ -36,12 +36,12 @@ const paginate = ({ type, reset, mapActionToKey }) => {
           isFetching: false,
           ids: union(state.ids, action.payload.result),
           nextPageUrl: action.payload.nextPageUrl,
-          pageCount: state.pageCount + 1,
+          pageCount: state.pageCount + 1
         };
       case failure:
         return {
           ...state,
-          isFetching: false,
+          isFetching: false
         };
       default:
         return state;
@@ -56,13 +56,13 @@ const paginate = ({ type, reset, mapActionToKey }) => {
       case reset: {
         const key = mapActionToKey(action);
 
-        if (typeof key !== 'string') {
-          throw new Error('Expected key to be a string.');
+        if (typeof key !== "string") {
+          throw new Error("Expected key to be a string.");
         }
 
         return {
           ...state,
-          [key]: updatePagination(state[key], action),
+          [key]: updatePagination(state[key], action)
         };
       }
       default:

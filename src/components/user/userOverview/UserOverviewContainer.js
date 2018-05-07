@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { omit } from 'lodash/object';
-import { connect } from 'react-redux';
-import UserOverview from './UserOverview';
-import { getUserById } from '../../../reducers/root';
-import loadUser from '../../../actions/users';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { omit } from "lodash/object";
+import { connect } from "react-redux";
+import UserOverview from "./UserOverview";
+import { getUserById } from "../../../reducers/root";
+import loadUser from "../../../actions/users";
 
 const loadData = ({ loadUser: load, id }) => load(id);
 
@@ -14,7 +14,7 @@ class UserOverviewContainer extends Component {
   }
 
   render() {
-    const props = omit(this.props, ['loadUser', 'id']);
+    const props = omit(this.props, ["loadUser", "id"]);
 
     return <UserOverview {...props} />;
   }
@@ -22,19 +22,18 @@ class UserOverviewContainer extends Component {
 
 UserOverviewContainer.propTypes = {
   id: PropTypes.string.isRequired,
-  loadUser: PropTypes.func.isRequired,
+  loadUser: PropTypes.func.isRequired
 };
-
 
 const mapStateToProps = (state, { id }) => {
   const user = getUserById(state, id);
 
   return {
     id,
-    user,
+    user
   };
 };
 
 export default connect(mapStateToProps, {
-  loadUser,
+  loadUser
 })(UserOverviewContainer);

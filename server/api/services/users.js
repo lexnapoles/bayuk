@@ -1,8 +1,8 @@
-import { omit } from 'lodash/object';
-import db from '../../database/db';
-import { users } from '../../database/sql/sql';
-import { createCredentials } from './authentication';
-import { updateUserImage, deleteUserImageFromDisk } from './userImages';
+import { omit } from "lodash/object";
+import db from "../../database/db";
+import { users } from "../../database/sql/sql";
+import { createCredentials } from "./authentication";
+import { updateUserImage, deleteUserImageFromDisk } from "./userImages";
 
 export const getUsers = () => db.any(users.getAll);
 
@@ -18,7 +18,7 @@ export const addUser = async function addUser(user) {
   try {
     const newUserCredentials = await createCredentials(user.password);
 
-    return addUserToDB({ ...omit(user, 'password'), ...newUserCredentials });
+    return addUserToDB({ ...omit(user, "password"), ...newUserCredentials });
   } catch (error) {
     throw new Error(error);
   }
@@ -38,7 +38,7 @@ export const updateUser = async function updateUser(user) {
 export const updateEmail = (id, email) =>
   db.one(users.updateEmail, {
     id,
-    email,
+    email
   });
 
 export const updatePassword = async function updatePassword(id, password) {

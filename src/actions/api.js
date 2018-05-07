@@ -1,8 +1,8 @@
-import parse from 'parse-link-header';
-import { CALL_API, getJSON } from 'redux-api-middleware';
-import queryString from 'query-string';
-import { normalize } from 'normalizr';
-import * as schema from '../actions/schema';
+import parse from "parse-link-header";
+import { CALL_API, getJSON } from "redux-api-middleware";
+import queryString from "query-string";
+import { normalize } from "normalizr";
+import * as schema from "../actions/schema";
 import {
   FETCH_PRODUCTS,
   FETCH_USERS,
@@ -15,67 +15,63 @@ import {
   DELETE_PRODUCT,
   REGISTER_USER,
   LOGIN_USER,
-  FETCH_PRODUCTS_SOLD, FETCH_PRODUCTS_ON_SELL,
-} from '../constants/actionTypes';
+  FETCH_PRODUCTS_SOLD,
+  FETCH_PRODUCTS_ON_SELL
+} from "../constants/actionTypes";
 
-const API_ROOT = 'http://localhost:3000/api';
+const API_ROOT = "http://localhost:3000/api";
 
-const getApiFullUrl = (endpoint) => {
+const getApiFullUrl = endpoint => {
   const isPartialUrl = endpoint.indexOf(API_ROOT) === -1;
 
   return isPartialUrl ? `${API_ROOT}/${endpoint}` : endpoint;
 };
 
-const stringifyQueryParams = params => (
-  Object.keys(params).length
-    ? `?${queryString.stringify(params)}`
-    : ''
-);
+const stringifyQueryParams = params =>
+  Object.keys(params).length ? `?${queryString.stringify(params)}` : "";
 
 const getTypes = ({ request, success, failure }) => [request, success, failure];
 
 const processBody = bodySchema => (action, state, res) =>
-  getJSON(res)
-    .then(json => normalize(json, bodySchema));
+  getJSON(res).then(json => normalize(json, bodySchema));
 
 const processHeader = (action, state, res) => {
-  const link = res.headers.get('Link');
+  const link = res.headers.get("Link");
 
   return {
-    nextPageUrl: link ? parse(link).next.url : undefined,
+    nextPageUrl: link ? parse(link).next.url : undefined
   };
 };
 
-const processResponse = (processors = []) =>
-  (action, state, res) =>
-    processors.reduce((promise, processor) => {
-      let payload;
+const processResponse = (processors = []) => (action, state, res) =>
+  processors.reduce((promise, processor) => {
+    let payload;
 
-      return promise
-        .then((previousPayload) => {
-          payload = previousPayload;
-        })
-        .then(() => processor(action, state, res))
-        .then(processedData => ({
-          ...payload,
-          ...processedData,
-        }));
-    }, Promise.resolve({}));
+    return promise
+      .then(previousPayload => {
+        payload = previousPayload;
+      })
+      .then(() => processor(action, state, res))
+      .then(processedData => ({
+        ...payload,
+        ...processedData
+      }));
+  }, Promise.resolve({}));
 
 export const fetchCategories = endpoint => ({
   [CALL_API]: {
     endpoint: getApiFullUrl(endpoint),
-    method: 'GET',
-    types: getTypes(FETCH_CATEGORIES),
-  },
+    method: "GET",
+    types: getTypes(FETCH_CATEGORIES)
+  }
 });
 
 const fetchProducts = (endpoint, params, types) => ({
   [CALL_API]: {
     endpoint: `${getApiFullUrl(endpoint)}${stringifyQueryParams(params)}`,
-    method: 'GET',
-    types,
-  },
+    method: "GET",
+    types
+  }
 });
 
 export const fetchProductsByFilter = (endpoint, params = {}, filter) => {
@@ -84,17 +80,20 @@ export const fetchProductsByFilter = (endpoint, params = {}, filter) => {
   const types = [
     {
       type: FETCH_PRODUCTS.request,
-      meta,
+      meta
     },
     {
       type: FETCH_PRODUCTS.success,
-      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
-      meta,
+      payload: processResponse([
+        processHeader,
+        processBody(schema.arrayOfProducts)
+      ]),
+      meta
     },
     {
       type: FETCH_PRODUCTS.failure,
-      meta,
-    },
+      meta
+    }
   ];
 
   return fetchProducts(endpoint, params, types);
@@ -106,17 +105,20 @@ export const fetchProductsSoldByUser = (endpoint, params = {}, user) => {
   const types = [
     {
       type: FETCH_PRODUCTS_SOLD.request,
-      meta,
+      meta
     },
     {
       type: FETCH_PRODUCTS_SOLD.success,
-      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
-      meta,
+      payload: processResponse([
+        processHeader,
+        processBody(schema.arrayOfProducts)
+      ]),
+      meta
     },
     {
       type: FETCH_PRODUCTS_SOLD.failure,
-      meta,
-    },
+      meta
+    }
   ];
 
   return fetchProducts(endpoint, params, types);
@@ -128,17 +130,20 @@ export const fetchProductsOnSellByUser = (endpoint, params = {}, user) => {
   const types = [
     {
       type: FETCH_PRODUCTS_ON_SELL.request,
-      meta,
+      meta
     },
     {
       type: FETCH_PRODUCTS_ON_SELL.success,
-      payload: processResponse([processHeader, processBody(schema.arrayOfProducts)]),
-      meta,
+      payload: processResponse([
+        processHeader,
+        processBody(schema.arrayOfProducts)
+      ]),
+      meta
     },
     {
       type: FETCH_PRODUCTS_ON_SELL.failure,
-      meta,
-    },
+      meta
+    }
   ];
 
   return fetchProducts(endpoint, params, types);
@@ -151,84 +156,89 @@ export const addProduct = product => ({
   [CALL_API]: {
     endpoint: `${API_ROOT}/products`,
     headers: ({ currentUser }) => ({
-      'Content-type': 'application/json',
-      Authorization: `Bearer ${currentUser.token}`,
+      "Content-type": "application/json",
+      Authorization: `Bearer ${currentUser.token}`
     }),
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(product),
-    types: getTypes(ADD_PRODUCT),
-  },
+    types: getTypes(ADD_PRODUCT)
+  }
 });
 
 export const deleteProduct = productId => ({
   [CALL_API]: {
     endpoint: `${API_ROOT}/products/${productId}`,
-    headers: ({ currentUser }) => ({ Authorization: `Bearer ${currentUser.token}` }),
-    method: 'DELETE',
-    types: getTypes(DELETE_PRODUCT),
-  },
+    headers: ({ currentUser }) => ({
+      Authorization: `Bearer ${currentUser.token}`
+    }),
+    method: "DELETE",
+    types: getTypes(DELETE_PRODUCT)
+  }
 });
 
 export const updateProduct = product => ({
   [CALL_API]: {
     endpoint: `${API_ROOT}/products`,
     headers: ({ currentUser }) => ({
-      'Content-type': 'application/json',
-      Authorization: `Bearer ${currentUser.token}`,
+      "Content-type": "application/json",
+      Authorization: `Bearer ${currentUser.token}`
     }),
-    method: 'PUT',
+    method: "PUT",
     body: JSON.stringify(product),
-    types: getTypes(UPDATE_PRODUCT),
-  },
+    types: getTypes(UPDATE_PRODUCT)
+  }
 });
 
 export const registerUser = user => ({
   [CALL_API]: {
     endpoint: `${API_ROOT}/register`,
-    headers: { 'Content-type': 'application/json' },
-    method: 'POST',
+    headers: { "Content-type": "application/json" },
+    method: "POST",
     body: JSON.stringify(user),
-    types: getTypes(REGISTER_USER),
-  },
+    types: getTypes(REGISTER_USER)
+  }
 });
 
 export const logInUser = user => ({
   [CALL_API]: {
     endpoint: `${API_ROOT}/login`,
-    headers: { 'Content-type': 'application/json' },
-    method: 'POST',
+    headers: { "Content-type": "application/json" },
+    method: "POST",
     body: JSON.stringify(user),
-    types: getTypes(LOGIN_USER),
-  },
+    types: getTypes(LOGIN_USER)
+  }
 });
 
 export const fetchUsers = () => ({
   [CALL_API]: {
     endpoint: `${API_ROOT}/users`,
-    method: 'GET',
+    method: "GET",
     types: [
       FETCH_USERS.request,
       {
         type: FETCH_USERS.success,
-        payload: processResponse([processHeader, processBody(schema.arrayOfUsers)]),
+        payload: processResponse([
+          processHeader,
+          processBody(schema.arrayOfUsers)
+        ])
       },
-      FETCH_USERS.failure,
-    ],
-  },
+      FETCH_USERS.failure
+    ]
+  }
 });
 
 export const fetchOneUser = userId => ({
   [CALL_API]: {
     endpoint: `${API_ROOT}/users/${userId}`,
-    method: 'GET',
-    types: getTypes(FETCH_ONE_USER),
-  },
+    method: "GET",
+    types: getTypes(FETCH_ONE_USER)
+  }
 });
 
 export const fetchCurrentUser = userId => ({
   [CALL_API]: {
     endpoint: `${API_ROOT}/users/${userId}`,
-    method: 'GET',
-    types: getTypes(FETCH_CURRENT_USER),
-  },
+    method: "GET",
+    types: getTypes(FETCH_CURRENT_USER)
+  }
 });

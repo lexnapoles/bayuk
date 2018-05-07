@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import Form from '../../form/Form';
-import TextFilter from '../../filters/textFilter/TextFilter';
-import Filter from '../../filters/filter/Filter';
-import ImagesFilter from '../../filters/imagesFilter/ImagesFilterContainer';
-import CheckBoxFilterContainer from '../../filters/checkBoxFilter/CheckBoxFilterContainer';
+import PropTypes from "prop-types";
+import React from "react";
+import Form from "../../form/Form";
+import TextFilter from "../../filters/textFilter/TextFilter";
+import Filter from "../../filters/filter/Filter";
+import ImagesFilter from "../../filters/imagesFilter/ImagesFilterContainer";
+import CheckBoxFilterContainer from "../../filters/checkBoxFilter/CheckBoxFilterContainer";
 
 const AddProduct = ({
   form,
@@ -15,10 +15,14 @@ const AddProduct = ({
   onImagesChange,
   onDescriptionChange,
   onCategoriesChange,
-  onPriceChange,
+  onPriceChange
 }) => (
-  <Form formName="addForm" onSubmit={onSubmit} >
-    <ImagesFilter error={errors.images} maxImages={maxImages} onChange={onImagesChange} />
+  <Form formName="addForm" onSubmit={onSubmit}>
+    <ImagesFilter
+      error={errors.images}
+      maxImages={maxImages}
+      onChange={onImagesChange}
+    />
 
     <TextFilter
       name={form.name}
@@ -43,14 +47,14 @@ const AddProduct = ({
       onChange={onCategoriesChange}
     />
 
-    <Filter title="Price" error={errors.price} >
+    <Filter title="Price" error={errors.price}>
       <input type="number" min="0" placeholder="0" onChange={onPriceChange} />
-    </Filter >
-  </Form >
+    </Filter>
+  </Form>
 );
 
 const formPropTypes = PropTypes.shape({
-  categories: PropTypes.objectOf(PropTypes.bool).isRequired,
+  categories: PropTypes.objectOf(PropTypes.bool).isRequired
 });
 
 AddProduct.propTypes = {
@@ -62,7 +66,7 @@ AddProduct.propTypes = {
   onImagesChange: PropTypes.func.isRequired,
   onDescriptionChange: PropTypes.func.isRequired,
   onCategoriesChange: PropTypes.func.isRequired,
-  onPriceChange: PropTypes.func.isRequired,
+  onPriceChange: PropTypes.func.isRequired
 };
 
 export default AddProduct;

@@ -1,6 +1,6 @@
-import { fetchCurrentUser } from './api';
-import { getUserById, getCurrentUser } from '../reducers/root';
-import { isNotEmpty } from '../utils';
+import { fetchCurrentUser } from "./api";
+import { getUserById, getCurrentUser } from "../reducers/root";
+import { isNotEmpty } from "../utils";
 
 export default () => (dispatch, getState) => {
   const loggedUser = getCurrentUser(getState());

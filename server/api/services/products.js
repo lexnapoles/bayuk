@@ -1,18 +1,18 @@
-import db from '../../database/db';
-import { products } from '../../database/sql/sql';
+import db from "../../database/db";
+import { products } from "../../database/sql/sql";
 import {
   writeProductImagesToDisk,
   deleteProductImagesFromDisk,
   updateProductImages,
-  getImagesOfProduct,
-} from './productImages';
-import { generateImagesObjs } from '../../utils';
+  getImagesOfProduct
+} from "./productImages";
+import { generateImagesObjs } from "../../utils";
 
-export const getProducts = (filters) => {
+export const getProducts = filters => {
   const byOwnerParameters = {
     sold: undefined,
     lastId: undefined,
-    ...filters,
+    ...filters
   };
 
   const sortingParameters = {
@@ -21,7 +21,7 @@ export const getProducts = (filters) => {
     lastId: undefined,
     category: undefined,
     sold: undefined,
-    ...filters,
+    ...filters
   };
 
   return filters.owner
@@ -29,12 +29,13 @@ export const getProducts = (filters) => {
     : db.any(products.getByFilters, sortingParameters);
 };
 
-export const getProductById = productId => db.one(products.getById, { productId });
+export const getProductById = productId =>
+  db.one(products.getById, { productId });
 
 const addProductToDB = product =>
   db.one(products.add, {
     ...product,
-    images_count: product.images.length,
+    images_count: product.images.length
   });
 
 export const addProduct = async function addProduct(product) {
@@ -65,7 +66,7 @@ export const updateProduct = async function updateProduct(product) {
   }
 };
 
-const deleteProductFromDB = productId => db.proc('delete_product', productId);
+const deleteProductFromDB = productId => db.proc("delete_product", productId);
 
 export const deleteProduct = async function deleteProduct(productId) {
   try {
@@ -79,4 +80,5 @@ export const deleteProduct = async function deleteProduct(productId) {
   }
 };
 
-export const addProductWithAllFields = product => db.one(products.addWithAllFields, product);
+export const addProductWithAllFields = product =>
+  db.one(products.addWithAllFields, product);

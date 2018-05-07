@@ -1,14 +1,10 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import LocationFilter from './LocationFilter';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import LocationFilter from "./LocationFilter";
 
 class LocationFilterContainer extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      coords: {},
-    };
 
     this.onLocationChange = this.onLocationChange.bind(this);
   }
@@ -16,27 +12,29 @@ class LocationFilterContainer extends Component {
   onLocationChange({ location: { lat, lng } }) {
     const coords = {
       latitude: lat,
-      longitude: lng,
+      longitude: lng
     };
-
-    this.setState({ coords });
 
     this.props.onChange(coords);
   }
 
   render() {
-    return <LocationFilter onChange={this.onLocationChange} error={this.props.error} />;
+    return (
+      <LocationFilter
+        onChange={this.onLocationChange}
+        error={this.props.error}
+      />
+    );
   }
 }
 
-
 LocationFilterContainer.propTypes = {
   onChange: PropTypes.func.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.string
 };
 
 LocationFilterContainer.defaultProps = {
-  error: '',
+  error: ""
 };
 
 export default LocationFilterContainer;

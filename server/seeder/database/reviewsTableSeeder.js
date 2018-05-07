@@ -1,24 +1,23 @@
-import faker from 'faker';
-import { sample } from 'lodash/collection';
-import { times } from 'lodash/util';
-import { random } from 'lodash/number';
-import { addReview } from '../../api/services/reviews';
-import { MAX_REVIEWS, MAX_USER_RATING } from '../config';
-import { wrapDataInPromise } from '../../utils';
+import faker from "faker";
+import { sample } from "lodash/collection";
+import { times } from "lodash/util";
+import { random } from "lodash/number";
+import { addReview } from "../../api/services/reviews";
+import { MAX_REVIEWS, MAX_USER_RATING } from "../config";
+import { wrapDataInPromise } from "../../utils";
 
-const pickUsersForReview = (ids) => {
+const pickUsersForReview = ids => {
   const source = sample(ids);
 
   let target = 0;
 
   do {
     target = sample(ids);
-  }
-  while (target === source);
+  } while (target === source);
 
   return {
     source,
-    target,
+    target
   };
 };
 
@@ -27,7 +26,7 @@ const getReview = (ids, products, users = {}) => ({
   description: faker.lorem.sentence(),
   product: sample(products).uuid,
   ...pickUsersForReview(ids),
-  ...users,
+  ...users
 });
 
 export default (users, products) => {
