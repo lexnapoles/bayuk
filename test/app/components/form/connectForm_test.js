@@ -8,18 +8,23 @@
   import/no-unresolved
  */
 
-import React from 'react';
-import { shallow } from 'enzyme';
-import { pick } from 'lodash/object';
-import connectForm from 'Components/form/connectForm/connectForm';
+import React from "react";
+import { shallow } from "enzyme";
+import { pick } from "lodash/object";
+import connectForm from "Components/form/connectForm/connectForm";
 
-const SomeComponent = () => <div >A Component</div >;
+const SomeComponent = () => <div>A Component</div>;
 
-const getProps = wrapper => pick(wrapper.props(),
-  ['elements', 'handlers', 'validation', 'errorMessages']);
+const getProps = wrapper =>
+  pick(wrapper.props(), [
+    "elements",
+    "handlers",
+    "validation",
+    "errorMessages"
+  ]);
 
 const defaultRequiredProps = {
-  elements: ['first'],
+  elements: ["first"]
 };
 
 const getForm = (props = {}, children = SomeComponent) => {
@@ -29,72 +34,72 @@ const getForm = (props = {}, children = SomeComponent) => {
   return shallow(<Form onSubmit={() => undefined} />);
 };
 
-describe('connectForm', function () {
-  it('returns a React.Component wrapping formWrapper(WrappedComponent)', function () {
+describe("connectForm", function() {
+  it("returns a React.Component wrapping formWrapper(WrappedComponent)", function() {
     const component = connectForm(defaultRequiredProps)(SomeComponent);
 
     assert.isTrue(Boolean(component.prototype.isReactComponent));
   });
 
-
-  it('uses a default handlers object if no custom one has been passed', function () {
+  it("uses a default handlers object if no custom one has been passed", function() {
     const requiredProps = {
-      elements: ['first'],
+      elements: ["first"],
       validation: { first: () => undefined },
-      errorMessages: { first: 'First Error' },
+      errorMessages: { first: "First Error" }
     };
 
     const Form = connectForm(requiredProps)(SomeComponent);
     const wrapper = shallow(<Form onSubmit={() => undefined} />);
 
-    assert.property(getProps(wrapper), 'handlers');
+    assert.property(getProps(wrapper), "handlers");
   });
 
-  it('uses a custom handler object if one has been passed', function () {
-    const customMessage = 'Custom name handler';
+  it("uses a custom handler object if one has been passed", function() {
+    const customMessage = "Custom name handler";
     const customProps = {
       ...defaultRequiredProps,
-      elements: ['name'],
-      handlers: { onNameChange: () => customMessage },
+      elements: ["name"],
+      handlers: { onNameChange: () => customMessage }
     };
 
-    const onNameChange = getForm(customProps).prop('handlers').onNameChange;
+    const onNameChange = getForm(customProps).prop("handlers").onNameChange;
 
     assert.equal(onNameChange(), customMessage);
   });
 
-  it('shows the displayName ConnectForm([WrappedComponent])', function () {
-    assert.equal(getForm().name(), 'ConnectForm(SomeComponent)');
+  it("shows the displayName ConnectForm([WrappedComponent])", function() {
+    assert.equal(getForm().name(), "ConnectForm(SomeComponent)");
   });
 
-  describe('Error handling', function () {
-    it('throws an exception if there is no elements variable', function () {
+  describe("Error handling", function() {
+    it("throws an exception if there is no elements variable", function() {
       assert.throws(connectForm(), /Elements variable is required/);
     });
 
-    it('throws an exception if elements is empty', function () {
+    it("throws an exception if elements is empty", function() {
       const props = {
-        elements: [],
+        elements: []
       };
 
       assert.throws(connectForm(props), /Elements variable cannot be empty/);
     });
 
-    it('throws an exception if validators are included but the corresponding error messages are not',
-      function () {
-        const props = {
-          ...defaultRequiredProps,
-          validation: {
-            name: () => true,
-            email: () => true,
-          },
-          errorMessages: {
-            name: 'Error',
-          },
-        };
+    it("throws an exception if validators are included but the corresponding error messages are not", function() {
+      const props = {
+        ...defaultRequiredProps,
+        validation: {
+          name: () => true,
+          email: () => true
+        },
+        errorMessages: {
+          name: "Error"
+        }
+      };
 
-        assert.throws(connectForm(props),
-          /A validator doesn't have its corresponding error message/);
-      });
+      assert.throws(
+        connectForm(props),
+        /A validator doesn't have its corresponding error message/
+      );
+    });
   });
 });
