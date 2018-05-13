@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
-import createLogger from "redux-logger";
+import { composeWithDevTools } from "redux-devtools-extension";
 import { persistStore, autoRehydrate } from "redux-persist";
 import { apiMiddleware } from "redux-api-middleware";
 import thunkMiddleware from "redux-thunk";
@@ -14,23 +14,15 @@ const middlewares = [
   authMiddleware
 ];
 
-if (process.env.NODE_ENV !== "production") {
-  const logger = createLogger({
-    actionTransformer: action => ({
-      ...action,
-      type: String(action.type)
-    })
-  });
-
-  middlewares.push(logger);
-}
+/* eslint-disable no-underscore-dangle */
 
 const configureStore = () => {
   const store = createStore(
     rootReducer,
-    applyMiddleware(...middlewares),
-    autoRehydrate()
+    composeWithDevTools(applyMiddleware(...middlewares), autoRehydrate())
   );
+
+  /* eslint-enable */
 
   persistStore(store, {
     whitelist: ["currentUser"]
