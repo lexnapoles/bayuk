@@ -4,10 +4,6 @@
     margin-top: 1rem;
 }
 
-.item:last-child hr {
-    display: none;
-}
-
 .item {
     display: flex;
     flex-flow: column nowrap;
@@ -17,10 +13,24 @@
    margin: 2rem 0;
 }
 
+.item:last-child hr {
+    display: none;
+}
+
 .item > p {
     padding-bottom: .5rem;
 }
 
 .itemTitle {
     padding-bottom: 1rem;
+}
+
+.userLink {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.ratingContainer {
+    padding-top: .2rem;
 }

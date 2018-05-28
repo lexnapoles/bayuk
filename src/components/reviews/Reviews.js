@@ -3,10 +3,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Icon from "react-fa";
 import { times } from "lodash/util";
+import { Link } from "react-router";
 import { reviewsQuery } from "../../apiQueries";
 import { loadReviews } from "../../actions/reviews";
 import { getListOfReviewsById, getReviews } from "../../reducers/root";
-import { listContainer, item, itemTitle } from "./reviews.css";
+import {
+  listContainer,
+  userLink,
+  item,
+  itemTitle,
+  ratingContainer
+} from "./reviews.css";
 
 const loadData = props => {
   const userId = props.user;
@@ -47,13 +54,17 @@ class Reviews extends Component {
           ({
             description: review,
             rating,
+            sourceId: reviewerId,
             source: { name: reviewer },
+            productId,
             product: { category: productCategory }
           }) => (
-            <div className={item}>
+            <div className={item} key={productId}>
               <div className={itemTitle}>
-                <div>{reviewer}</div>
-                {renderRating(rating)}
+                <Link className={userLink} to={`/user/${reviewerId}`}>
+                  <div>{reviewer}</div>
+                </Link>
+                <div className={ratingContainer}>{renderRating(rating)}</div>
               </div>
               <p>
                 {reviewer} bought a product of {productCategory}

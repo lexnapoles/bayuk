@@ -91,7 +91,7 @@ const productPropTypes = PropTypes.shape({
 ProductTable.propTypes = {
   products: PropTypes.arrayOf(productPropTypes),
   onLoadMoreClick: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  isFetching: PropTypes.bool,
   children: PropTypes.element,
   pageCount: PropTypes.number,
   nextPageUrl: PropTypes.string
@@ -101,7 +101,8 @@ ProductTable.defaultProps = {
   products: [],
   children: undefined,
   nextPageUrl: undefined,
-  pageCount: 0
+  pageCount: 0,
+  isFetching: true
 };
 
 export default ProductTable;

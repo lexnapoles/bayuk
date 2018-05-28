@@ -3,9 +3,10 @@ import React from "react";
 import { browserHistory } from "react-router";
 import { container, userImage, text } from "./thumbnail.css";
 
+const defaultImageUrl = "image/user/default.jpg";
+
 const UserMenuThumbnail = ({ user }) => {
   const { id, name, image } = user;
-  const defaultImageUrl = "image/user/default.jpg";
   const onClick = () => browserHistory.push(`${id ? `/user/${id}` : "/auth"}`);
 
   return (
