@@ -1,0 +1,26 @@
+.listContainer {
+	display: flex;
+	flex-flow: column nowrap;
+    margin-top: 1rem;
+}
+
+.item:last-child hr {
+    display: none;
+}
+
+.item {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.item hr {
+   margin: 2rem 0;
+}
+
+.item > p {
+    padding-bottom: .5rem;
+}
+
+.itemTitle {
+    padding-bottom: 1rem;
+}
