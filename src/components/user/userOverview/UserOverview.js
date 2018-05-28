@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import Icon from "react-fa";
 import { times } from "lodash/util";
+import { browserHistory } from "react-router";
 import {
   container,
   userImage,
@@ -28,19 +29,32 @@ const renderRating = (rating = 0) => {
   ];
 };
 
-const renderUser = (user, className, style) => (
-  <div className={`${container} ${className}`} style={style}>
-    <img
-      className={userImage}
-      width="100"
-      height="100"
-      src={user.image}
-      alt="userPic"
-    />
-    <p>{user.name}</p>
-    <div className={ratingClassName}>{renderRating(user.rating)}</div>
-  </div>
-);
+const renderUser = (user, className, style) => {
+  const { id, name, rating, image } = user;
+
+  const onClick = () => browserHistory.push(`/user/${id}`);
+
+  return (
+    <div
+      role="button"
+      tabIndex={-1}
+      className={`${container} ${className}`}
+      style={style}
+      onClick={onClick}
+      onKeyDown={onClick}
+    >
+      <img
+        className={userImage}
+        width="100"
+        height="100"
+        src={image}
+        alt="userPic"
+      />
+      <p>{name}</p>
+      <div className={ratingClassName}>{renderRating(rating)}</div>
+    </div>
+  );
+};
 
 const UserOverview = ({ user, className, style }) => (
   <div>

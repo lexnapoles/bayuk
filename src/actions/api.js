@@ -1,8 +1,6 @@
-import parse from "parse-link-header";
-import { CALL_API, getJSON } from "redux-api-middleware";
-import queryString from "query-string";
-import { normalize } from "normalizr";
+import { CALL_API } from "redux-api-middleware";
 import * as schema from "../actions/schema";
+
 import {
   FETCH_PRODUCTS,
   FETCH_USERS,
@@ -16,47 +14,21 @@ import {
   REGISTER_USER,
   LOGIN_USER,
   FETCH_PRODUCTS_SOLD,
-  FETCH_PRODUCTS_ON_SELL
+  FETCH_PRODUCTS_ON_SELL,
+  FETCH_REVIEWS
 } from "../constants/actionTypes";
+
+import {
+  getApiFullUrl,
+  processBody,
+  processHeader,
+  processResponse,
+  stringifyQueryParams
+} from "./apiHelpers";
 
 const API_ROOT = "http://localhost:3000/api";
 
-const getApiFullUrl = endpoint => {
-  const isPartialUrl = endpoint.indexOf(API_ROOT) === -1;
-
-  return isPartialUrl ? `${API_ROOT}/${endpoint}` : endpoint;
-};
-
-const stringifyQueryParams = params =>
-  Object.keys(params).length ? `?${queryString.stringify(params)}` : "";
-
 const getTypes = ({ request, success, failure }) => [request, success, failure];
-
-const processBody = bodySchema => (action, state, res) =>
-  getJSON(res).then(json => normalize(json, bodySchema));
-
-const processHeader = (action, state, res) => {
-  const link = res.headers.get("Link");
-
-  return {
-    nextPageUrl: link ? parse(link).next.url : undefined
-  };
-};
-
-const processResponse = (processors = []) => (action, state, res) =>
-  processors.reduce((promise, processor) => {
-    let payload;
-
-    return promise
-      .then(previousPayload => {
-        payload = previousPayload;
-      })
-      .then(() => processor(action, state, res))
-      .then(processedData => ({
-        ...payload,
-        ...processedData
-      }));
-  }, Promise.resolve({}));
 
 export const fetchCategories = endpoint => ({
   [CALL_API]: {
@@ -242,3 +214,32 @@ export const fetchCurrentUser = userId => ({
     types: getTypes(FETCH_CURRENT_USER)
   }
 });
+
+export const fetchReviews = (endpoint, params, user) => {
+  const meta = user ? { user } : undefined;
+
+  return {
+    [CALL_API]: {
+      endpoint: `${getApiFullUrl(endpoint)}${stringifyQueryParams(params)}`,
+      method: "GET",
+      types: [
+        {
+          type: FETCH_REVIEWS.request,
+          meta
+        },
+        {
+          type: FETCH_REVIEWS.success,
+          payload: processResponse([
+            processHeader,
+            processBody(schema.arrayOfReviews)
+          ]),
+          meta
+        },
+        {
+          type: FETCH_REVIEWS.failure,
+          meta
+        }
+      ]
+    }
+  };
+};

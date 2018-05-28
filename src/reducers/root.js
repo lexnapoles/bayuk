@@ -38,6 +38,12 @@ export const isUserLoggedIn = ({ currentUser }) =>
 export const getGeolocation = ({ location }) =>
   fromLocation.getGeolocation(location);
 
+export const getReviews = ({ pagination }, userId) =>
+  fromPagination.getReviews(pagination, userId);
+
+export const getListOfReviewsById = ({ entities }, ids) =>
+  fromEntities.getListOfReviewsById(entities, ids);
+
 export default combineReducers({
   entities: entitiesReducer,
   currentUser: currentUserReducer,

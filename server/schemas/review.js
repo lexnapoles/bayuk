@@ -4,12 +4,12 @@ export default {
   type: "object",
   title: "Review",
   properties: {
-    source: {
+    sourceId: {
       type: "string",
       format: "uuid"
     },
 
-    target: {
+    targetId: {
       type: "string",
       format: "uuid"
     },
@@ -24,10 +24,10 @@ export default {
       maxItems: 5
     },
 
-    product: {
+    productId: {
       type: "string",
       format: "uuid"
     }
   },
-  required: ["source", "target", "description", "rating", "product"]
+  required: ["sourceId", "targetId", "description", "rating", "productId"]
 };

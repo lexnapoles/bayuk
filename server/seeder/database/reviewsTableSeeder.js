@@ -7,24 +7,24 @@ import { MAX_REVIEWS, MAX_USER_RATING } from "../config";
 import { wrapDataInPromise } from "../../utils";
 
 const pickUsersForReview = ids => {
-  const source = sample(ids);
+  const sourceId = sample(ids);
 
-  let target = 0;
+  let targetId = 0;
 
   do {
-    target = sample(ids);
-  } while (target === source);
+    targetId = sample(ids);
+  } while (targetId === sourceId);
 
   return {
-    source,
-    target
+    sourceId,
+    targetId
   };
 };
 
 const getReview = (ids, products, users = {}) => ({
   rating: random(MAX_USER_RATING),
   description: faker.lorem.sentence(),
-  product: sample(products).uuid,
+  productId: sample(products).uuid,
   ...pickUsersForReview(ids),
   ...users
 });

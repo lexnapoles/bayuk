@@ -14,3 +14,7 @@ const productsByUser = (owner, sold) => ({
 export const productsSoldByUserQuery = owner => productsByUser(owner, true);
 
 export const productsOnSellByUserQuery = owner => productsByUser(owner, false);
+
+export const reviewsQuery = () => ({
+  include: "source,product"
+});

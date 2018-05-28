@@ -3,6 +3,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import PropTypes from "prop-types";
 import ProductsSoldByUser from "../../products/productsByUser/ProductsSoldByUser";
 import ProductsOnSellByUser from "../../products/productsByUser/ProductsOnSellByUser";
+import Reviews from "../../reviews/Reviews";
 import {
   navigatorContainer,
   navigator,
@@ -30,7 +31,7 @@ const UserNavigator = ({ userId }) => (
         <ProductsSoldByUser user={userId} />
       </TabPanel>
       <TabPanel>
-        <h2>Reviews coming soon!</h2>
+        <Reviews user={userId} />
       </TabPanel>
     </div>
   </Tabs>

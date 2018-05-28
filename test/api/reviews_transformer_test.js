@@ -16,21 +16,21 @@ chai.should();
 
 const review = {
   id: 1,
-  source: "07778ec9-e448-49f3-8250-78301f865d5d",
-  target: "06548ec9-e448-49f3-8250-78301f865d5d",
+  source_id: "07778ec9-e448-49f3-8250-78301f865d5d",
+  target_id: "06548ec9-e448-49f3-8250-78301f865d5d",
   rating: 5,
   description: "Great seller",
-  product: "61a71082-a00d-44af-b99c-5e10f7cf4878",
+  product_id: "61a71082-a00d-44af-b99c-5e10f7cf4878",
   created_at: "2017-03-23 13:46:41.327"
 };
 
 const transformedReview = {
   id: 1,
-  source: "07778ec9-e448-49f3-8250-78301f865d5d",
-  target: "06548ec9-e448-49f3-8250-78301f865d5d",
+  sourceId: "07778ec9-e448-49f3-8250-78301f865d5d",
+  targetId: "06548ec9-e448-49f3-8250-78301f865d5d",
   rating: 5,
   description: "Great seller",
-  product: "61a71082-a00d-44af-b99c-5e10f7cf4878",
+  productId: "61a71082-a00d-44af-b99c-5e10f7cf4878",
   createdAt: "2017-03-23 13:46:41.327"
 };
 
@@ -87,11 +87,11 @@ describe("review transformer", function() {
 
     data.should.be.deep.equal({
       ...transformedReview,
-      users: ["data"]
+      target: "data"
     });
   });
 
-  it("should embed source and target users in a users property", async function() {
+  it("should embed source and target", async function() {
     const includeFields = ["target", "source"];
 
     const req = {
@@ -109,7 +109,29 @@ describe("review transformer", function() {
 
     data.should.be.deep.equal({
       ...transformedReview,
-      users: ["target", "source"]
+      target: "target",
+      source: "source"
+    });
+  });
+
+  it("should embed the product", async function() {
+    const includeFields = ["product"];
+
+    const req = {
+      query: {
+        include: includeFields.toString()
+      }
+    };
+
+    const accessors = {
+      product: () => "product"
+    };
+
+    const data = await transformReview(req, review, accessors);
+
+    data.should.be.deep.equal({
+      ...transformedReview,
+      product: "product"
     });
   });
 });

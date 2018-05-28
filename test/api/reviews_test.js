@@ -83,22 +83,22 @@ const generateReviewData = () => {
     )
     .then(data => ({
       ...usersData,
-      product: data.id
+      productId: data.id
     }));
 };
 
 const addRandomReview = () =>
-  generateReviewData().then(({ source, target, product: reviewProduct }) =>
+  generateReviewData().then(({ source, target, productId }) =>
     addReview({
       rating: 5,
       description: faker.lorem.sentences(),
-      source: source.user.id,
-      target: target.user.id,
-      product: reviewProduct
+      sourceId: source.user.id,
+      targetId: target.user.id,
+      productId
     })
   );
 
-describe.only("Reviews", function() {
+describe("Reviews", function() {
   beforeEach(function() {
     return cleanAllPreviouslyCreatedImages()
       .then(() => db.none(global.truncateAll))
@@ -115,12 +115,12 @@ describe.only("Reviews", function() {
   });
 
   describe("GET /reviews/:userId", function() {
-    it.only("should get the user reviews", function() {
+    it("should get the user reviews", function() {
       return addRandomReview()
-        .then(({ target }) =>
+        .then(({ target_id }) =>
           request(server)
-            .get(`/api/reviews/${target}`)
-            .expect(400)
+            .get(`/api/reviews/${target_id}`)
+            .expect(200)
         )
         .then(response => {
           const reviews = response.body;
@@ -133,20 +133,20 @@ describe.only("Reviews", function() {
             "id",
             "rating",
             "description",
-            "source",
-            "target",
-            "product"
+            "sourceId",
+            "targetId",
+            "productId"
           ]);
         });
     });
 
-    it("should get selected fields", function() {
-      const selectedFields = ["rating", "source", "target"];
+    it("should show only selected fields", function() {
+      const selectedFields = ["rating", "sourceId", "targetId"];
 
       return addRandomReview()
-        .then(({ target }) =>
+        .then(({ target_id }) =>
           request(server)
-            .get(`/api/reviews/${target}`)
+            .get(`/api/reviews/${target_id}`)
             .query({
               fields: selectedFields.join()
             })
@@ -159,22 +159,57 @@ describe.only("Reviews", function() {
         });
     });
 
-    it("should embed included user fields", function() {
-      const includeFields = ["source", "target"];
+    it("should embed included users", function() {
+      const source = "source";
+      const target = "target";
 
       return addRandomReview()
-        .then(({ target }) =>
+        .then(({ target_id }) =>
           request(server)
-            .get(`/api/reviews/${target}`)
+            .get(`/api/reviews/${target_id}`)
             .query({
-              include: includeFields.join()
+              include: [source, target].join()
             })
             .expect(200)
         )
         .then(response => {
           const review = response.body[0];
 
-          review.should.have.property("users");
+          review.should.have.property(source);
+          review.should.have.property(target);
+        });
+    });
+
+    it("should embed included product", function() {
+      return addRandomReview()
+        .then(({ target_id }) =>
+          request(server)
+            .get(`/api/reviews/${target_id}`)
+            .query({
+              include: "product"
+            })
+            .expect(200)
+        )
+        .then(response => {
+          const review = response.body[0];
+
+          review.should.have.property("product");
+
+          const { product: reviewedProduct } = review;
+
+          reviewedProduct.should.include.all.keys([
+            "id",
+            "name",
+            "images",
+            "owner",
+            "description",
+            "category",
+            "createdAt",
+            "price",
+            "latitude",
+            "longitude",
+            "sold"
+          ]);
         });
     });
 
@@ -200,7 +235,7 @@ describe.only("Reviews", function() {
   describe("POST /reviews", function() {
     it("should add a new review", function() {
       return generateReviewData()
-        .then(({ source, target, product: reviewProduct }) => {
+        .then(({ source, target, productId }) => {
           const {
             user: { id: buyerId },
             token
@@ -213,11 +248,11 @@ describe.only("Reviews", function() {
             .post("/api/reviews")
             .set("Authorization", `Bearer ${token}`)
             .send({
-              source: buyerId,
-              target: sellerId,
+              sourceId: buyerId,
+              targetId: sellerId,
               rating: 4,
               description: "Good seller, product in good condition",
-              product: reviewProduct
+              productId
             })
             .expect(201)
             .expect("Location", `/api/reviews/${sellerId}`);
@@ -229,9 +264,9 @@ describe.only("Reviews", function() {
             "id",
             "rating",
             "description",
-            "source",
-            "target",
-            "product"
+            "sourceId",
+            "targetId",
+            "productId"
           ]);
         });
     });
@@ -255,7 +290,7 @@ describe.only("Reviews", function() {
 
     it("should fail when invalid data has been sent", function() {
       return generateReviewData()
-        .then(({ source, product: reviewProduct }) => {
+        .then(({ source, productId }) => {
           const {
             user: { id: buyerId },
             token
@@ -265,11 +300,11 @@ describe.only("Reviews", function() {
             .post("/api/reviews")
             .set("Authorization", `Bearer ${token}`)
             .send({
-              source: buyerId,
-              target: "Invalid seller",
+              sourceId: buyerId,
+              targetId: "Invalid seller",
               rating: "A rating",
               description: "Good seller",
-              product: reviewProduct
+              productId
             })
             .expect(400);
         })
@@ -277,7 +312,7 @@ describe.only("Reviews", function() {
           const errors = response.body;
           const ratingError = invalidReview("rating", "should be integer");
           const targetError = invalidReview(
-            "target",
+            "targetId",
             'should match format "uuid"'
           );
 
@@ -317,7 +352,7 @@ describe.only("Reviews", function() {
 
     it("should fail when the token user is not the one to write the review", function() {
       return generateReviewData()
-        .then(({ source, target, product: reviewProduct }) => {
+        .then(({ source, target, productId }) => {
           const { token } = source;
           const {
             user: { id: sellerId }
@@ -327,11 +362,11 @@ describe.only("Reviews", function() {
             .post("/api/reviews")
             .set("Authorization", `Bearer ${token}`)
             .send({
-              target: sellerId,
-              source: faker.random.uuid(),
+              targetId: sellerId,
+              sourceId: faker.random.uuid(),
               rating: 4,
               description: "Good seller, product in good condition",
-              product: reviewProduct
+              productId
             })
             .expect(401);
         })

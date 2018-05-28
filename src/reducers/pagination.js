@@ -4,6 +4,7 @@ import {
   FETCH_PRODUCTS,
   FETCH_PRODUCTS_SOLD,
   FETCH_PRODUCTS_ON_SELL,
+  FETCH_REVIEWS,
   NEW_SEARCH
 } from "../constants/actionTypes";
 
@@ -20,6 +21,10 @@ export default combineReducers({
   productsOnSellByUser: paginate({
     mapActionToKey: action => action.meta.user,
     type: FETCH_PRODUCTS_ON_SELL
+  }),
+  reviews: paginate({
+    mapActionToKey: action => action.meta.user,
+    type: FETCH_REVIEWS
   })
 });
 
@@ -31,3 +36,5 @@ export const getProductsSoldByUser = ({ productsSoldByUser }, id) =>
 
 export const getProductsOnSellByUser = ({ productsOnSellByUser }, id) =>
   productsOnSellByUser[id];
+
+export const getReviews = ({ reviews }, id) => reviews[id];

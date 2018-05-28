@@ -1,57 +1,48 @@
 import transform, { extractFields } from "./transformer";
 import defaultEmbeddedDataAccessors from "./reviews/embeddedDataAccessors";
 
-const validFields = ["target", "source"];
+const validFields = ["target", "source", "product"];
 
 const areValidFields = (fields = []) =>
   fields.every(field => validFields.includes(field));
 
-export const extractIncludeFields = (req, embeddedDataAccessors) => {
+export const extractIncludeFields = req => {
   const fields = extractFields(req, "include");
 
-  return areValidFields(fields, embeddedDataAccessors) ? fields : undefined;
-};
-
-const hasUserFields = fields =>
-  fields.includes("source") || fields.includes("target");
-
-const getUsers = (req, fields, review, embeddedDataAccessors) => {
-  if (!hasUserFields(fields)) {
-    return [];
-  }
-
-  const userFields = fields.filter(
-    field => field === "source" || field === "target"
-  );
-
-  return Promise.all(
-    userFields.map(field => embeddedDataAccessors[field](req, review))
-  );
+  return areValidFields(fields) ? fields : undefined;
 };
 
 async function getFields(req, fields, review, embeddedDataAccessors) {
-  const users = await getUsers(req, fields, review, embeddedDataAccessors);
+  const embeddedFields = await Promise.all(
+    fields.map(field => embeddedDataAccessors[field](req, review))
+  );
 
-  return {
-    users: users.length ? users : undefined
-  };
+  const embeddedData = embeddedFields.reduce((acc, data, index) => {
+    const fieldName = fields[index];
+
+    acc[fieldName] = data;
+
+    return acc;
+  }, {});
+
+  return embeddedData;
 }
 
 const transformation = ({
   id,
-  source,
-  target,
+  source_id,
+  target_id,
   rating,
   description,
-  product,
+  product_id,
   created_at
 }) => ({
   id,
-  source,
-  target,
+  sourceId: source_id,
+  targetId: target_id,
   rating,
   description,
-  product,
+  productId: product_id,
   createdAt: created_at
 });
 
