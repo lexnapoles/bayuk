@@ -662,6 +662,41 @@ CREATE TABLE public.products (
     owner uuid NOT NULL
 );
 
+CREATE TABLE public.chats (
+    seller_id uuid NOT NULL,
+    buyer_id uuid NOT NULL,
+    uuid uuid NOT NULL DEFAULT gen_random_uuid(),
+    product_id uuid NOT NULL,
+    CONSTRAINT uuid UNIQUE (uuid),
+    CONSTRAINT buyer FOREIGN KEY (buyer_id)
+        REFERENCES public.users (uuid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT product FOREIGN KEY (product_id)
+        REFERENCES public.products (uuid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT seller FOREIGN KEY (seller_id)
+        REFERENCES public.users (uuid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT buyer_and_sellers_are_different CHECK (buyer_id <> seller_id)
+)
+
+CREATE TABLE public.chat_messages (
+    message text COLLATE pg_catalog."default" NOT NULL,
+    author_id uuid NOT NULL,
+    "timestamp" time with time zone NOT NULL,
+    chat_id uuid NOT NULL,
+    CONSTRAINT author FOREIGN KEY (author_id)
+        REFERENCES public.users (uuid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT chat FOREIGN KEY (chat_id)
+        REFERENCES public.chats (uuid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
 
 --
 -- TOC entry 291 (class 1259 OID 28623)
