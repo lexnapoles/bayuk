@@ -1,0 +1,18 @@
+.logo {
+    flex: 1;
+    text-align: center;
+}
+
+.toolbar {
+    display: flex;
+}
+
+.addProduct {
+    composes: button from '../../global.css';
+    display: flex;
+    flex-flow: row nowrap;
+    margin: -.35rem 0 0 .5rem;
+    padding: .2rem .6rem;
+    background-color: #46BEBC;
+}
+

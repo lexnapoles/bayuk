@@ -1,0 +1,1 @@
+SELECT * from get_products_paginated(${sort}, ${sortOrder}, ${radius}, ${latitude}, ${longitude}, ${lastId}, ${category}, ${minPrice}, ${maxPrice}, ${sold});

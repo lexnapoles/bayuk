@@ -1,0 +1,1 @@
+SELECT * from users_details WHERE email=$1;

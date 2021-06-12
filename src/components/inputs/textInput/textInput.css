@@ -1,0 +1,21 @@
+.invalid {
+	composes: invalidWell from "../../global.css";
+}
+
+.errorText {
+	composes: errorText from "../../global.css";
+	margin-top: 1rem;
+}
+
+.input {
+	width: 100%;
+	border: none;
+}
+
+.invalidInput {
+	composes: input invalid;
+}
+
+.underline {
+	opacity: 0.4;
+}

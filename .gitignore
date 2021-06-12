@@ -1,0 +1,14 @@
+#Webstorm
+.idea
+
+#npm
+node_modules
+
+#Distribution files
+dist
+
+#ENV file
+.env
+
+#ES5 main.js
+server/main.js

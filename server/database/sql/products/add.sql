@@ -1,0 +1,1 @@
+SELECT * FROM add_product(${name}, ${owner}, ${description}, ${category}, ${price}, ${images_count});

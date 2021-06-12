@@ -1,0 +1,71 @@
+.container {
+	composes: container from "../../layout.css";
+}
+
+.productContainer {
+	composes: container;
+}
+
+.info {
+	composes: container;
+}
+
+.carousel {
+	width: 100%;
+}
+
+.lineStyle {
+	margin: 5rem 0;
+	border: 0;
+	height: 0;
+}
+
+.line {
+  composes: lineStyle;
+	border-top: 3px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+
+@media (min-width: 1024px) {
+	.productContainer {
+		flex-flow: row nowrap;
+		align-self: center;
+		max-width: 80%;
+		padding: 5rem 0;
+	}
+
+	.line {
+		display: none;
+	}
+
+	.info {
+		flex: 1;
+		margin-left: 2rem;
+	}
+
+	.infoSection {
+		border: 1px grey solid;
+		border-radius: 3%;
+		box-shadow: 2px 2px 5px grey;
+
+	}
+
+	.map {
+		composes: infoSection;
+		margin: 2rem 0;
+	}
+
+	.carousel {
+		box-shadow: 3px 3px 5px grey;
+		width: 50%;
+		align-self: center;
+	}
+}
+
+@media (min-width: 1440px) {
+	.productContainer {
+		max-width: 50%;
+	}
+}
+

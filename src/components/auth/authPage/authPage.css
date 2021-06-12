@@ -1,0 +1,56 @@
+.alignCenter {
+	composes: alignCenter from "../../layout.css";
+}
+
+.authContainer {
+	composes: alignCenter;
+	width: 100vw;
+	height: 100vh;
+}
+
+.auth {
+	width: 100%;
+	padding: 1rem;
+}
+
+.message {
+	text-align: center;
+	margin-bottom: 4rem;
+}
+
+.buttonsContainer {
+	composes: container from "../../layout.css";
+}
+
+.button {
+	height: 50px;
+	margin-bottom: 1rem;
+}
+
+@media (min-width: 600px) {
+	.buttonsContainer {
+		flex-flow: row nowrap;
+		justify-content: center;
+	}
+
+	.button {
+		width: 300px;
+		margin: 0 1rem;
+	}
+}
+
+@media (min-width: 800px) {
+	.auth {
+		width: 80%;
+		padding: 4rem 1rem 5rem 1rem;
+		border: 2px solid lightgrey;
+		border-radius: 10px;
+		overflow: hidden;
+	}
+}
+
+@media (min-width: 1200px) {
+	.auth {
+		width: 50%;
+	}
+}

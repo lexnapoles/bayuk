@@ -1,0 +1,1 @@
+SELECT * from get_user_image(${id}) AS image;

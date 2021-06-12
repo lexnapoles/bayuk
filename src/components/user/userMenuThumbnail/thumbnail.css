@@ -1,0 +1,15 @@
+.container {
+	display: flex;
+	padding: 1rem;
+}
+
+.text {
+	composes: alignCenter from "../../layout.css";
+	padding: 1rem;
+}
+
+.userImage {
+	composes: userImage from "../../layout.css";
+	width: 55px;
+	height:55px;
+}

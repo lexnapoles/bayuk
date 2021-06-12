@@ -1,0 +1,15 @@
+.container {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
+.spinner {
+	composes: alignCenter from "../../layout.css";
+}
+
+@media (min-width: 580px) {
+	.container {
+		justify-content: space-between;
+	}
+}

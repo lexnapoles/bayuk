@@ -1,0 +1,11 @@
+.product {
+	composes: well from "../../global.css";
+	text-align: center;
+	padding-bottom: 1rem;
+	margin-bottom: 1rem;
+}
+
+.product img {
+	width: 200px;
+	height: 200px;
+}

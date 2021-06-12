@@ -1,0 +1,65 @@
+.authContainer {
+	composes: alignCenter from "../../layout.css";
+	width: 100vw;
+	height: 100vh;
+}
+
+.formContainer {
+	padding: 1rem;
+}
+
+.inputsContainer {
+	padding: 2rem 0;
+}
+
+.auth {
+	width: 100%;
+	padding: 1rem;
+}
+
+.title {
+	margin: -0.5rem;
+}
+
+.inputs {
+	padding-top: 3rem;
+}
+
+h1 {
+	text-align: center;
+}
+
+.submitButton {
+	width: 100%;
+	height: 50px;
+	margin-top: 2rem;
+}
+
+@media (min-width: 600px) {
+	.buttonsContainer {
+		flex-flow: row nowrap;
+		justify-content: center;
+	}
+
+	.button {
+		width: 300px;
+		margin: 0 1rem;
+	}
+}
+
+@media (min-width: 800px) {
+	.auth {
+		width: 50%;
+		padding: 2rem;
+		border: 2px solid lightgrey;
+		border-radius: 10px;
+		overflow: hidden;
+	}
+}
+
+@media (min-width: 1200px) {
+	.auth {
+		padding: 6rem;
+		width: 30%;
+	}
+}

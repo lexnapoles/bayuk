@@ -1,0 +1,27 @@
+.container {
+	width: 100%;
+	padding: 1rem;
+	text-align: center;
+}
+
+.userImage {
+	composes: userImage from "../../layout.css";
+	width: 75px;
+	height:75px;
+}
+
+.rating {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	margin-top: 1rem;
+}
+
+.rating span  {
+	margin-right: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+	.container {
+	}
+}

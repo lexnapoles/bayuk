@@ -1,0 +1,3 @@
+.alignCenter {
+	composes: alignCenter from "../../layout.css";
+}

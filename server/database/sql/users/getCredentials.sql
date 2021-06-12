@@ -1,0 +1,1 @@
+SELECT hash, salt from users WHERE email=$1

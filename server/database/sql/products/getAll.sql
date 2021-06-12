@@ -1,0 +1,1 @@
+SELECT * from products_with_images;

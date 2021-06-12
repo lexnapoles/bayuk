@@ -1,0 +1,20 @@
+.thumbnailSize {
+	width: 100px;
+	height: 100px;
+}
+
+.thumbnailContainer {
+	composes: thumbnailSize;
+	border-radius: 5%;
+	overflow: hidden;
+	background: whitesmoke;
+}
+
+.alignCenter {
+	composes: alignCenter from "../../../layout.css";
+}
+
+.inputContainer {
+	composes: thumbnailContainer alignCenter;
+}
+

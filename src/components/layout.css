@@ -1,0 +1,25 @@
+@import "./global.css";
+
+.container {
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.main {
+	flex: 1;
+	padding: 2rem;
+}
+
+.alignCenter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.userImage {
+	background: whitesmoke;
+	margin-bottom: 0.5rem;
+	border: double 5px lightgray;
+	padding: 0.1rem;
+	border-radius: 50%;
+}
