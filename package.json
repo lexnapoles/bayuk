@@ -90,7 +90,7 @@
     "url-loader": "^1.0.1"
   },
   "dependencies": {
-    "ajv": "^5.0.0",
+    "ajv": "^6.12.3",
     "autoprefixer": "^7.1.2",
     "body-parser": "^1.15.2",
     "debug": "^2.6.8",
