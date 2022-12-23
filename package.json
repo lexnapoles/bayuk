@@ -100,7 +100,7 @@
     "font-awesome": "^4.6.1",
     "fs-promise": "^1.0.0",
     "history": "^2.0.0",
-    "jsonwebtoken": "^7.2.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.4",
     "normalize.css": "^7.0.0",
     "normalizr": "^2.3.0",
